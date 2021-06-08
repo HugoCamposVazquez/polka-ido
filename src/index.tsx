@@ -1,4 +1,6 @@
 import './index.css';
+import '@fontsource/odibee-sans';
+import '@fontsource/titillium-web';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
