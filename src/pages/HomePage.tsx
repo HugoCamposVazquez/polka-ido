@@ -1,17 +1,20 @@
 import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
+import { MainButton } from '../shared/MainButton';
 import { ProjectCard } from '../shared/ProjectCard';
+import { TextField } from '../shared/TextField';
 import { cs, styled } from '../utils/css';
 
 const mainImageStyle = styled.cssStyle`
-  position: fixed;
+  position: absolute;
   height: 50rem;
   width: 57rem;
   top: 0;
   right: 0;
 `;
 
-const mainImageShadowStyle = styled.cssStyle`
+const imageShadowStyle = styled.cssStyle`
   background: linear-gradient(180deg, rgba(1, 1, 1, 0) 91.75%, #010101 100%, #010101 100%),
     linear-gradient(70.6deg, #010101 13.02%, rgba(1, 1, 1, 0) 86.98%);
 `;
@@ -61,15 +64,66 @@ const featuredProjectsContainerStyle = styled.cssStyle`
 
 const featuredProjectsCardsContainerStyle = styled.cssStyle`
   display: grid;
-  grid-template-columns: repeat(4, 25%);
+  grid-template-columns: repeat(4, minmax(0, 300px));
   gap: 1.25rem;
 `;
 
+const mainImage2Style = styled.cssStyle`
+  position: absolute;
+  height: 526px;
+  width: 792px;
+  top: 20px;
+  right: 120px;
+`;
+
+const tellUsAboutYourProjectTextStyle = styled.cssStyle`
+  font-weight: 600;
+  font-size: 2.25rem;
+  line-height: 3.4rem;
+  font-family: Titillium Web;
+  width: 80%;
+`;
+
+const topLeftBottomRightNotch = styled.cssStyle`
+  --notchSize: 1.63rem;
+
+  clip-path: polygon(
+    0% var(--notchSize),
+    var(--notchSize) 0%,
+    calc(100%) 0%,
+    100% var(--notchSize),
+    100% calc(100% - var(--notchSize)),
+    calc(100% - var(--notchSize)) 100%,
+    0% 100%,
+    0% calc(100% - var(--notchSize))
+  );
+`;
+
 export const HomePage = () => {
+  const methods = useForm({
+    defaultValues: {
+      email: '',
+      message: '',
+    },
+    //resolver: yupResolver(loginValidationSchema),
+  });
+
+  const onSubmit = async ({ email, message }: any) => {
+    try {
+      console.log('test');
+      // const { token } = await generalHTTP.login(email, message);
+      // localStorage.setItem('token', token);
+      // window.location.reload();
+    } catch (e) {
+      console.log(e);
+      // show notification or error message
+    }
+  };
+
   return (
-    <div style={{ height: '100%' }}>
+    <div>
       <img style={mainImageStyle} src={process.env.PUBLIC_URL + '/ryu.png'} />
-      <div style={cs(mainImageStyle, mainImageShadowStyle)}></div>
+      <div style={cs(mainImageStyle, imageShadowStyle)}></div>
       <div style={titleContainerParentStyle}>
         <div style={titleContainerStyle}>
           <div style={titleStyle}>LOREM IPSUM DOLOR SIT AMET</div>
@@ -86,6 +140,55 @@ export const HomePage = () => {
           <ProjectCard />
           <ProjectCard />
           <ProjectCard />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+          <div
+            style={{
+              fontWeight: 600,
+              marginRight: '10px',
+              fontSize: '15px',
+              fontFamily: 'Titillium Web',
+              color: '#d2307a',
+            }}>
+            View all projects
+          </div>
+          <img src={process.env.PUBLIC_URL + '/arrow_left.svg'} />
+        </div>
+      </div>
+      <div
+        style={{
+          height: '546px',
+          position: 'relative',
+          padding: '0 120px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}>
+        <div
+          style={cs(
+            {
+              height: '120px',
+              width: '120px',
+              backgroundColor: '#d2307a',
+              top: 0,
+              right: 100,
+              position: 'absolute',
+            },
+            topLeftBottomRightNotch,
+          )}
+        />
+        {/* eslint-disable-next-line no-undef */}
+        <img style={mainImage2Style} src={process.env.PUBLIC_URL + '/ryu2.png'} />
+        <div style={cs(mainImage2Style, imageShadowStyle)}></div>
+        <div style={{ width: '35%', maxWidth: '400px', position: 'relative' }}>
+          <div style={tellUsAboutYourProjectTextStyle}>Tell us about your project</div>
+          <FormProvider {...methods}>
+            <form>
+              <TextField name="email" placeholder="E-mail" />
+              <TextField name="message" placeholder="Message" />
+              <MainButton title="Send" onClick={methods.handleSubmit(onSubmit)} />
+            </form>
+          </FormProvider>
         </div>
       </div>
     </div>
