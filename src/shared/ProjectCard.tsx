@@ -161,11 +161,16 @@ const detailsValueStyle = styled.cssStyle`
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.52rem;
+  margin-right: 12px;
 `;
 
-export const ProjectCard = () => {
+type IProps = {
+  direction: 'left' | 'right';
+};
+
+export const ProjectCard = ({ direction }: IProps) => {
   return (
-    <div style={cs(projectCardContainer, topLeftBottomRightNotch)}>
+    <div style={cs(projectCardContainer, direction === 'left' ? topLeftBottomRightNotch : topRightBottomLeftNotch)}>
       <div style={projectCardHeaderContainer}>
         <div style={{ flex: 1 }}>
           <div style={projectCardHeaderIconContainer}>
@@ -202,20 +207,29 @@ export const ProjectCard = () => {
         />
       </div>
       <div
-        style={cs(
-          { margin: '1rem', marginLeft: '1rem', backgroundColor: 'black', paddingLeft: '1.5rem' },
-          bottomRightNotch,
-        )}>
+        style={
+          direction === 'left'
+            ? cs(
+                { margin: '1rem', backgroundColor: 'black', paddingLeft: '1rem' },
+                { marginLeft: 0, marginRight: '1rem' },
+                bottomRightNotch,
+              )
+            : cs(
+                { margin: '1rem', backgroundColor: 'black', paddingLeft: '1.5rem' },
+                { marginLeft: '1rem', marginRight: 0 },
+                bottomLeftNotch,
+              )
+        }>
         <div style={{ display: 'flex' }}>
-          <div style={{ flex: 1 }}>
+          <div>
             <div style={detailsTitleStyle}>Per token</div>
             <div style={detailsValueStyle}>0.012 USDT</div>
           </div>
-          <div style={{ flex: 1 }}>
+          <div>
             <div style={detailsTitleStyle}>Starts</div>
             <div style={detailsValueStyle}>24/06/21</div>
           </div>
-          <div style={{ flex: 1 }}>
+          <div>
             <div style={detailsTitleStyle}>Access</div>
             <div style={detailsValueStyle}>Whitelist</div>
           </div>

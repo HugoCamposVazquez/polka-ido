@@ -136,10 +136,10 @@ export const HomePage = () => {
       <div style={featuredProjectsContainerStyle}>
         <div style={featuredProjectsTitleStyle}>Featured projects</div>
         <div style={featuredProjectsCardsContainerStyle}>
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
-          <ProjectCard />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
           <div
