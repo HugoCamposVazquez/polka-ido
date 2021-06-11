@@ -42,13 +42,11 @@ export const Footer = withRouter((props) => {
   return (
     <div
       style={{ display: 'flex', marginBottom: '40px', marginTop: '126px', marginLeft: '120px', marginRight: '120px' }}>
-      <div style={{ flex: 0.5 }}>
-        <div>
-          <div style={ryuTextStyle}>RYU</div>
-          <div style={ryu2021TextStyle}>RYU 2021</div>
-        </div>
+      <div>
+        <div style={ryuTextStyle}>RYU</div>
+        <div style={ryu2021TextStyle}>RYU 2021</div>
       </div>
-      <div style={{ flex: 0.5 }}>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
         <div style={{ display: 'flex' }}>
           <div style={{ marginRight: '95px' }}>
             <div style={linkTitleTextStyle}>Social media</div>
