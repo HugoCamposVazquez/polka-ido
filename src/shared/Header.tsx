@@ -27,6 +27,7 @@ const headerContentStyle = styled.cssStyle`
 
 const ryuTextStyle = styled.cssStyle`
   font-weight: 400;
+  line-height: 0;
   font-size: 24px;
   font-family: Odibee Sans;
   flex: 1;
@@ -82,12 +83,27 @@ const menuItemSelectedStyle = styled.cssClassName`
   }
 `;
 
+const menuItemsContainerClassName = styled.cssClassName`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 830px) {
+    display: none;
+  }
+`;
+
+const menuIconClassName = styled.cssClassName`
+  @media (min-width: 830px) {
+    display: none;
+  }
+`;
+
 export const Header = withRouter((props) => {
   return (
     <div style={headerContainerStyle}>
       <div style={headerContentStyle}>
         <div style={ryuTextStyle}>RYU</div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={menuItemsContainerClassName}>
           <div className={props.location.pathname === '/home' ? menuItemSelectedStyle : menuItemNotSelectedStyle}>
             <Link to="/home">Home</Link>
           </div>
@@ -95,6 +111,9 @@ export const Header = withRouter((props) => {
             <Link to="/launchpad">Launchpad</Link>
           </div>
           <MainButton title={'Connect wallet'} onClick={() => {}} />
+        </div>
+        <div className={menuIconClassName}>
+          <img src={process.env.PUBLIC_URL + '/menu_icon.svg'} />
         </div>
       </div>
     </div>
