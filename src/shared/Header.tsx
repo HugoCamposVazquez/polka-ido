@@ -28,7 +28,6 @@ const headerContentStyle = styled.cssStyle`
 const ryuTextStyle = styled.cssStyle`
   font-weight: 400;
   font-size: 24px;
-  line-height: 16.59px;
   font-family: Odibee Sans;
   flex: 1;
 `;
