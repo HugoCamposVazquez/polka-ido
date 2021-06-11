@@ -20,7 +20,6 @@ const imageShadowStyle = styled.cssStyle`
 `;
 
 const titleContainerParentStyle = styled.cssStyle`
-  height: 42.5rem;
   position: relative;
   display: flex;
   padding: 0 7.5rem;
@@ -38,6 +37,7 @@ const titleStyle = styled.cssStyle`
   font-size: 4rem;
   line-height: 4.5rem;
   font-family: Odibee Sans;
+  margin-top: 220px;
 `;
 
 const subTitleStyle = styled.cssStyle`
@@ -57,15 +57,24 @@ const featuredProjectsTitleStyle = styled.cssStyle`
 `;
 
 const featuredProjectsContainerStyle = styled.cssStyle`
-  height: 42.5rem;
+  margin-top: 220px;
+  margin-bottom: 160px;
   position: relative;
   padding: 0 7.5rem;
 `;
 
-const featuredProjectsCardsContainerStyle = styled.cssStyle`
+const featuredProjectsCardsContainerClassName = styled.cssClassName`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 300px));
   gap: 1.25rem;
+
+  @media (max-width: 1435px) {
+    grid-template-columns: repeat(2, minmax(0, 300px));
+  }
+
+  @media (max-width: 830px) {
+    grid-template-columns: repeat(1, minmax(0, 300px));
+  }
 `;
 
 const mainImage2Style = styled.cssStyle`
@@ -135,7 +144,7 @@ export const HomePage = () => {
       </div>
       <div style={featuredProjectsContainerStyle}>
         <div style={featuredProjectsTitleStyle}>Featured projects</div>
-        <div style={featuredProjectsCardsContainerStyle}>
+        <div className={featuredProjectsCardsContainerClassName}>
           <ProjectCard direction={'right'} />
           <ProjectCard direction={'left'} />
           <ProjectCard direction={'right'} />
@@ -179,8 +188,8 @@ export const HomePage = () => {
         />
         {/* eslint-disable-next-line no-undef */}
         <img style={mainImage2Style} src={process.env.PUBLIC_URL + '/ryu2.png'} />
-        <div style={cs(mainImage2Style, imageShadowStyle)}></div>
-        <div style={{ width: '35%', maxWidth: '400px', position: 'relative' }}>
+        <div style={cs(mainImage2Style, imageShadowStyle)} />
+        <div style={{ minWidth: '200px', maxWidth: '400px', position: 'relative' }}>
           <div style={tellUsAboutYourProjectTextStyle}>Tell us about your project</div>
           <FormProvider {...methods}>
             <form>
