@@ -152,13 +152,11 @@ const mainImage2Style = styled.cssClassName`
 `;
 
 const bottomImageContainerClassName = styled.cssClassName`
-  display: block;
+  display: flex;
+  flex-direction: column;
   height: 546px;
   position: relative;
   padding: 0 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
   @media (max-width: 830px) {
     height: auto;
@@ -181,6 +179,10 @@ const tellUsAboutYourProjectParentClassName = styled.cssClassName`
   min-width: 200px;
   max-width: 400px;
   position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   @media (max-width: 830px) {
     padding: 0 24px;
