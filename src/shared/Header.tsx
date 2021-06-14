@@ -14,6 +14,7 @@ const headerContainerStyle = styled.cssStyle`
   z-index: 1000;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #292929;
 `;
 
 const headerContentStyle = styled.cssClassName`
