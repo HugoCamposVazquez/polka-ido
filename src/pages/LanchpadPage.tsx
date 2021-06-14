@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ProjectCard } from '../shared/ProjectCard';
 import { cs, styled } from '../utils/css';
 
 const mainImageContainerClassName = styled.cssClassName`
@@ -93,6 +94,7 @@ const launchpadParentClassName = styled.cssClassName`
   @media (max-width: 830px) {
     padding: 0 24px;
     margin-bottom: 40px;
+    max-width: initial;
   }
 `;
 
@@ -101,6 +103,10 @@ const launchpadTextClassName = styled.cssClassName`
   font-size: 4rem;
   line-height: 4.5rem;
   font-family: Odibee Sans;
+
+  @media (max-width: 830px) {
+    font-size: 42px;
+  }
 `;
 
 const boldTextStyle = styled.cssStyle`
@@ -108,6 +114,10 @@ const boldTextStyle = styled.cssStyle`
   font-size: 20px;
   line-height: 30.42px;
   font-family: Titillium Web;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+  }
 `;
 
 const normalTextStyle = styled.cssStyle`
@@ -115,6 +125,64 @@ const normalTextStyle = styled.cssStyle`
   font-size: 20px;
   line-height: 30.42px;
   font-family: Titillium Web;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+  }
+`;
+
+const projectsCardsHeaderClassName = styled.cssClassName`
+  padding: 0 120px;
+  display: flex;
+  border-bottom: 1px solid #292929;
+
+  @media (max-width: 830px) {
+    padding: 0 24px;
+    margin-top: 40px;
+  }
+`;
+
+const projectsCardsHeaderItemClassName = styled.cssClassName`
+  margin-right: 36px;
+  padding-bottom: 15px;
+
+  @media (max-width: 830px) {
+    margin-right: 24px;
+  }
+`;
+
+const projectsCardsContainerParentClassName = styled.cssClassName`
+  margin-top: 30px;
+  margin-left: 120px;
+  margin-right: 120px;
+
+  @media (max-width: 830px) {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+`;
+
+const searchIconClassName = styled.cssClassName`
+  display: grid;
+
+  @media (max-width: 830px) {
+    display: none;
+  }
+`;
+
+const projectsCardsContainerClassName = styled.cssClassName`
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+
+  @media (max-width: 1435px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 830px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 `;
 
 export const LaunchpadPage = () => {
@@ -146,6 +214,39 @@ export const LaunchpadPage = () => {
               <div style={boldTextStyle}>3494</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className={projectsCardsHeaderClassName}>
+        <div style={{ flex: 1, display: 'flex' }}>
+          <div className={projectsCardsHeaderItemClassName} style={{ borderBottom: '4px solid #D2307A' }}>
+            Upcoming
+          </div>
+          <div className={projectsCardsHeaderItemClassName}>Featured</div>
+          <div className={projectsCardsHeaderItemClassName}>Joined</div>
+          <div className={projectsCardsHeaderItemClassName}>All</div>
+        </div>
+        <div className={searchIconClassName}>
+          <img src={process.env.PUBLIC_URL + '/search_icon.svg'} />
+        </div>
+      </div>
+      <div className={projectsCardsContainerParentClassName}>
+        <div className={projectsCardsContainerClassName}>
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'right'} />
+          <ProjectCard direction={'left'} />
+          <ProjectCard direction={'right'} />
         </div>
       </div>
     </div>
