@@ -38,30 +38,78 @@ const linkTextStyle = styled.cssStyle`
   margin: 2px 0;
 `;
 
+const footerContainerClassName = styled.cssClassName`
+  display: flex;
+  margin-bottom: 40px;
+  margin-top: 126px;
+  margin-left: 120px;
+  margin-right: 120px;
+
+  @media (max-width: 830px) {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+`;
+
+const footerLinksParentContainerClassName = styled.cssClassName`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+`;
+
+const footerLinksContainerClassName = styled.cssClassName`
+  display: flex;
+  @media (max-width: 830px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const linksGroupsClassName = styled.cssClassName`
+  margin-right: 95px;
+  @media (max-width: 830px) {
+    margin-right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+  }
+`;
+const footerCopyrightParentClassName = styled.cssClassName`
+  display: block;
+  @media (max-width: 830px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
 export const Footer = withRouter((props) => {
   return (
-    <div
-      style={{ display: 'flex', marginBottom: '40px', marginTop: '126px', marginLeft: '120px', marginRight: '120px' }}>
-      <div>
+    <div className={footerContainerClassName}>
+      <div className={footerCopyrightParentClassName}>
         <div style={ryuTextStyle}>RYU</div>
         <div style={ryu2021TextStyle}>RYU 2021</div>
       </div>
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-        <div style={{ display: 'flex' }}>
-          <div style={{ marginRight: '95px' }}>
+      <div className={footerLinksParentContainerClassName}>
+        <div className={footerLinksContainerClassName}>
+          <div className={linksGroupsClassName}>
             <div style={linkTitleTextStyle}>Social media</div>
             <div style={linkTextStyle}>Twitter</div>
             <div style={linkTextStyle}>Medium</div>
             <div style={linkTextStyle}>Telegram</div>
           </div>
-          <div style={{ marginRight: '95px' }}>
+          <div className={linksGroupsClassName}>
             <div>
               <div style={linkTitleTextStyle}>Company</div>
               <div style={linkTextStyle}>About us</div>
             </div>
           </div>
           <div>
-            <div>
+            <div className={linksGroupsClassName}>
               <div style={linkTitleTextStyle}>Support</div>
               <div style={linkTextStyle}>Contact us</div>
             </div>

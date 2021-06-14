@@ -50,10 +50,14 @@ const imageShadowStyle = styled.cssStyle`
     linear-gradient(70.6deg, #010101 13.02%, rgba(1, 1, 1, 0) 86.98%);
 `;
 
-const titleContainerParentStyle = styled.cssStyle`
+const titleContainerParentStyle = styled.cssClassName`
   position: relative;
   display: flex;
   padding: 0 7.5rem;
+
+  @media (max-width: 830px) {
+    padding: 0 24px;
+  }
 `;
 
 const titleContainerClassName = styled.cssClassName`
@@ -100,20 +104,21 @@ const featuredProjectsContainerClassName = styled.cssClassName`
   @media (max-width: 830px) {
     margin-top: 36px;
     margin-bottom: 80px;
+    padding: 0 24px;
   }
 `;
 
 const featuredProjectsCardsContainerClassName = styled.cssClassName`
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 300px));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.25rem;
 
   @media (max-width: 1435px) {
-    grid-template-columns: repeat(2, minmax(0, 300px));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (max-width: 830px) {
-    grid-template-columns: repeat(1, minmax(0, 300px));
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;
 
@@ -178,7 +183,7 @@ const tellUsAboutYourProjectParentClassName = styled.cssClassName`
   position: relative;
 
   @media (max-width: 830px) {
-    padding: 0 120px;
+    padding: 0 24px;
     max-width: initial;
     margin-bottom: 40px;
   }
@@ -239,7 +244,7 @@ export const HomePage = () => {
           <img className={mainImageStyle} src={process.env.PUBLIC_URL + '/ryu.png'} />
           <div style={imageShadowStyle}></div>
         </div>
-        <div style={titleContainerParentStyle}>
+        <div className={titleContainerParentStyle}>
           <div className={titleContainerClassName}>
             <div style={titleStyle}>LOREM IPSUM DOLOR SIT AMET</div>
             <div style={subTitleStyle}>

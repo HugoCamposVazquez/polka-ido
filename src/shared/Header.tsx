@@ -16,13 +16,18 @@ const headerContainerStyle = styled.cssStyle`
   align-items: center;
 `;
 
-const headerContentStyle = styled.cssStyle`
+const headerContentStyle = styled.cssClassName`
   position: relative;
   padding-left: 120px;
   padding-right: 120px;
   display: flex;
   align-items: center;
   flex: 1;
+
+  @media (max-width: 830px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 `;
 
 const ryuTextStyle = styled.cssStyle`
@@ -101,7 +106,7 @@ const menuIconClassName = styled.cssClassName`
 export const Header = withRouter((props) => {
   return (
     <div style={headerContainerStyle}>
-      <div style={headerContentStyle}>
+      <div className={headerContentStyle}>
         <div style={ryuTextStyle}>RYU</div>
         <div className={menuItemsContainerClassName}>
           <div className={props.location.pathname === '/home' ? menuItemSelectedStyle : menuItemNotSelectedStyle}>
