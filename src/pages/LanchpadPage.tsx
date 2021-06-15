@@ -35,7 +35,7 @@ const mainImageStyle = styled.cssClassName`
 const imageContainerClassName = styled.cssClassName`
   display: flex;
   flex-direction: column;
-  height: 546px;
+  height: 477px;
   position: relative;
   padding: 0 120px;
   margin-top: 180px;
@@ -135,6 +135,7 @@ const projectsCardsHeaderClassName = styled.cssClassName`
   padding: 0 120px;
   display: flex;
   border-bottom: 1px solid #292929;
+  margin-top: 40px;
 
   @media (max-width: 830px) {
     padding: 0 24px;

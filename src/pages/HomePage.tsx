@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { MainButton } from '../shared/MainButton';
 import { ProjectCard } from '../shared/ProjectCard';
 import { TextField } from '../shared/TextField';
-import { cs, styled } from '../utils/css';
+import { styled } from '../utils/css';
 
 const pageIntroContainerClassName = styled.cssClassName`
   display: block;
@@ -218,6 +218,14 @@ const topLeftBottomRightNotch = styled.cssStyle`
   );
 `;
 
+const viewAllProjectsStyle = styled.cssStyle`
+  font-weight: 600;
+  margin-right: 10px;
+  font-size: 15px;
+  font-family: Titillium Web;
+  color: #d2307a;
+`;
+
 export const HomePage = () => {
   const methods = useForm({
     defaultValues: {
@@ -265,16 +273,7 @@ export const HomePage = () => {
           <ProjectCard direction={'left'} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-          <div
-            style={{
-              fontWeight: 600,
-              marginRight: '10px',
-              fontSize: '15px',
-              fontFamily: 'Titillium Web',
-              color: '#d2307a',
-            }}>
-            View all projects
-          </div>
+          <div style={viewAllProjectsStyle}>View all projects</div>
           <img src={process.env.PUBLIC_URL + '/arrow_left.svg'} />
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Footer } from '../../shared/Footer';
 import { Header } from '../../shared/Header';
 import { HomePage } from '../HomePage';
 import { LaunchpadPage } from '../LanchpadPage';
+import { ProjectDetailsPage } from '../ProjectDetailsPage';
 
 export const MainRouter = (): any => {
   return (
@@ -13,6 +14,7 @@ export const MainRouter = (): any => {
       <Switch>
         <Route exact path="/home" component={HomePage} />
         <Route exact path="/launchpad" component={LaunchpadPage} />
+        <Route exact path="/projectDetails" component={ProjectDetailsPage} />
         <Redirect from="/" to="/home" />
       </Switch>
       <Footer />
