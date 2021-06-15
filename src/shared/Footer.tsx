@@ -36,6 +36,7 @@ const linkTextStyle = styled.cssStyle`
   text-size: 20px;
   line-height: 30.42px;
   margin: 2px 0;
+  text-decoration: none;
 `;
 
 const footerContainerClassName = styled.cssClassName`
@@ -70,10 +71,12 @@ const footerLinksContainerClassName = styled.cssClassName`
 
 const linksGroupsClassName = styled.cssClassName`
   margin-right: 95px;
+  display: flex;
+  flex-direction: column;
+
   @media (max-width: 830px) {
     margin-right: 0;
-    display: flex;
-    flex-direction: column;
+
     align-items: center;
     margin-top: 40px;
   }
@@ -98,20 +101,30 @@ export const Footer = withRouter((props) => {
         <div className={footerLinksContainerClassName}>
           <div className={linksGroupsClassName}>
             <div style={linkTitleTextStyle}>Social media</div>
-            <div style={linkTextStyle}>Twitter</div>
-            <div style={linkTextStyle}>Medium</div>
-            <div style={linkTextStyle}>Telegram</div>
+            <a target="_blank" href="#" style={linkTextStyle}>
+              Twitter
+            </a>
+            <a target="_blank" href="#" style={linkTextStyle}>
+              Medium
+            </a>
+            <a target="_blank" href="#" style={linkTextStyle}>
+              Telegram
+            </a>
           </div>
           <div className={linksGroupsClassName}>
             <div>
               <div style={linkTitleTextStyle}>Company</div>
-              <div style={linkTextStyle}>About us</div>
+              <a target="_blank" href="#" style={linkTextStyle}>
+                About us
+              </a>
             </div>
           </div>
           <div>
             <div className={linksGroupsClassName}>
               <div style={linkTitleTextStyle}>Support</div>
-              <div style={linkTextStyle}>Contact us</div>
+              <a target="_blank" href="#" style={linkTextStyle}>
+                Contact us
+              </a>
             </div>
           </div>
         </div>
