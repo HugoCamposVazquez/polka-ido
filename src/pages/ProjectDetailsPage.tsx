@@ -135,6 +135,71 @@ const descriptionParentStyle = styled.cssStyle`
   align-items: center;
 `;
 
+const smallTextStyle = styled.cssStyle`
+  margin-top: 4px;
+  font-size: 14px;
+  color: #7a7a7a;
+  font-family: Titillium Web;
+  font-weight: 400;
+`;
+
+const valueDescTextStyle = styled.cssStyle`
+  font-family: Odibee Sans;
+  font-weight: 400;
+  font-size: 36px;
+  color: #d2307a;
+`;
+const projectImageBackgroundStyle = styled.cssStyle`
+  height: 120px;
+  width: 120px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const projectStatusBackgroundStyle = styled.cssStyle`
+  height: 28px;
+  width: 108px;
+  background-color: #42f027;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const projectDetailsBtnsParentStyle = styled.cssStyle`
+  margin-top: 24px;
+  margin-right: 36px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const claimTokensBtnStyle = styled.cssStyle`
+  border: 1px solid #d2307a;
+  height: 48px;
+  width: 196px;
+  margin-right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #d2307a;
+  font-size: 16px;
+  font-family: Titillium Web;
+  font-weight: 700;
+`;
+const joinBtnStyle = styled.cssStyle`
+  height: 48px;
+  width: 196px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d2307a;
+  font-size: 16px;
+  font-family: Titillium Web;
+  font-weight: 700;
+  border: 1px solid #d2307a;
+`;
+
 const topRightBottomLeftNotch = styled.cssStyle`
   --notchSize: 1.63rem;
 
@@ -165,30 +230,11 @@ export const ProjectDetailsPage = () => {
         <div style={{ height: '100%', margin: '20px', zIndex: 1000, display: 'flex' }}>
           <div style={{ flex: 0.5 }}>
             <div style={{ marginTop: '36px', marginLeft: '36px', marginRight: '36px', display: 'flex' }}>
-              <div
-                style={cs(
-                  {
-                    height: '120px',
-                    width: '120px',
-                    backgroundColor: 'black',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  },
-                  topRightBottomLeftNotch,
-                )}>
+              <div style={cs(projectImageBackgroundStyle, topRightBottomLeftNotch)}>
                 <img style={{ margin: '24px' }} src={process.env.PUBLIC_URL + '/horse_image.png'} />
               </div>
               <div style={{ marginLeft: '24px' }}>
-                <div
-                  style={{
-                    height: '28px',
-                    width: '108px',
-                    backgroundColor: '#42F027',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                <div style={projectStatusBackgroundStyle}>
                   <div style={projectStatusTextStyle}>Ended</div>
                 </div>
                 <div style={projectNameTextStyle}>My project 1</div>
@@ -237,9 +283,7 @@ export const ProjectDetailsPage = () => {
               </div>
             </div>
             <div style={{ marginTop: '36px', marginRight: '36px' }}>
-              <div style={{ fontFamily: 'Odibee Sans', fontWeight: 400, fontSize: '36px', color: '#D2307A' }}>
-                7273/10000 USDT
-              </div>
+              <div style={valueDescTextStyle}>7273/10000 USDT</div>
               <div style={{ marginTop: '12px' }}>
                 <ProgressBar
                   completed={(7273 / 10000) * 100}
@@ -250,55 +294,11 @@ export const ProjectDetailsPage = () => {
                   borderRadius={'0rem'}
                 />
               </div>
-              <div
-                style={{
-                  marginTop: '4px',
-                  fontSize: '14px',
-                  color: '#7A7A7A',
-                  fontFamily: 'Titillium Web',
-                  fontWeight: 400,
-                }}>
-                1 TKN = 0.0002 USDT
-              </div>
+              <div style={smallTextStyle}>1 TKN = 0.0002 USDT</div>
             </div>
-            <div
-              style={{
-                marginTop: '24px',
-                marginRight: '36px',
-                display: 'flex',
-                justifyContent: 'flex-end',
-              }}>
-              <div
-                style={{
-                  border: '1px solid #D2307A',
-                  height: '48px',
-                  width: '196px',
-                  marginRight: '12px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  color: '#D2307A',
-                  fontSize: '16px',
-                  fontFamily: 'Titillium Web',
-                  fontWeight: 700,
-                }}>
-                CLAIM TOKENS
-              </div>
-              <div
-                style={{
-                  border: '1px solid black',
-                  height: '48px',
-                  width: '196px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: '#D2307A',
-                  fontSize: '16px',
-                  fontFamily: 'Titillium Web',
-                  fontWeight: 700,
-                }}>
-                JOIN
-              </div>
+            <div style={projectDetailsBtnsParentStyle}>
+              <div style={claimTokensBtnStyle}>CLAIM TOKENS</div>
+              <div style={joinBtnStyle}>JOIN</div>
             </div>
           </div>
         </div>
