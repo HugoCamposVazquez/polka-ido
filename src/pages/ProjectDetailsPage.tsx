@@ -1,6 +1,7 @@
+import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
 
-import { styled } from '../utils/css';
+import { cs, styled } from '../utils/css';
 
 const imageParentContainerClassName = styled.cssClassName`
   display: flex;
@@ -31,19 +32,10 @@ const customBottomLeftObjectClassName = styled.cssClassName`
   height: 120px;
   width: 120px;
   background-color: #d2307a;
-  top: 403px;
+  top: 443px;
   left: 0;
 `;
 
-const imageShadowStyle = styled.cssStyle`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  right: 0;
-  background: linear-gradient(180deg, rgba(1, 1, 1, 0) 91.75%, #010101 100%, #010101 100%),
-    linear-gradient(70.6deg, #010101 13.02%, rgba(1, 1, 1, 0) 86.98%);
-`;
 const topLeftBottomRightNotch = styled.cssStyle`
   --notchSize: 1.63rem;
 
@@ -60,8 +52,7 @@ const topLeftBottomRightNotch = styled.cssStyle`
 `;
 const imageContainerClassName = styled.cssClassName`
   position: absolute;
-  height: 483px;
-
+  height: 523px;
   top: 20px;
   right: 20px;
   left: 20px;
@@ -87,31 +78,76 @@ const imageStyle = styled.cssClassName`
     position: relative;
   }
 `;
-const launchpadParentClassName = styled.cssClassName`
-  min-width: 300px;
-  max-width: min-content;
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
-  @media (max-width: 830px) {
-    padding: 0 24px;
-    margin-bottom: 40px;
-    max-width: initial;
-  }
+const projectStatusTextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 400;
+  font-size: 14px;
+  color: #000000;
 `;
 
-const launchpadTextClassName = styled.cssClassName`
-  font-weight: 400;
-  font-size: 4rem;
-  line-height: 4.5rem;
+const projectNameTextStyle = styled.cssStyle`
   font-family: Odibee Sans;
+  font-weight: 400;
+  font-size: 64px;
+`;
 
-  @media (max-width: 830px) {
-    font-size: 42px;
-  }
+const shortDescriptionTextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 700;
+  font-size: 16px;
+  color: #d2307a;
+`;
+
+const descriptionTextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 400;
+  font-size: 16px;
+  color: #b8b8b8;
+`;
+
+const description2TextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+`;
+
+const contentTextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 700;
+  font-size: 20px;
+  color: #d2307a;
+`;
+
+const content2TextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+`;
+
+const descriptionParentStyle = styled.cssStyle`
+  border-bottom: 1px solid #7a7a7a;
+  padding-bottom: 8px;
+  display: flex;
+  margin-top: 8px;
+  align-items: center;
+`;
+
+const topRightBottomLeftNotch = styled.cssStyle`
+  --notchSize: 1.63rem;
+
+  clip-path: polygon(
+    0% 0%,
+    var(--notchSize) 0%,
+    calc(100% - var(--notchSize)) 0%,
+    100% var(--notchSize),
+    100% calc(100%),
+    calc(100% - var(--notchSize)) 100%,
+    var(--notchSize) 100%,
+    0% calc(100% - var(--notchSize))
+  );
 `;
 
 export const ProjectDetailsPage = () => {
@@ -123,8 +159,147 @@ export const ProjectDetailsPage = () => {
           <div className={customBottomLeftObjectClassName} style={topLeftBottomRightNotch} />
 
           <div className={imageContainerClassName}>
-            <img className={imageStyle} src={process.env.PUBLIC_URL + '/rectangle_image.png'} />
-            <div style={imageShadowStyle} />
+            <img className={imageStyle} src={process.env.PUBLIC_URL + '/rectangle2_image.png'} />
+          </div>
+        </div>
+        <div style={{ height: '100%', margin: '20px', zIndex: 1000, display: 'flex' }}>
+          <div style={{ flex: 0.5 }}>
+            <div style={{ marginTop: '36px', marginLeft: '36px', marginRight: '36px', display: 'flex' }}>
+              <div
+                style={cs(
+                  {
+                    height: '120px',
+                    width: '120px',
+                    backgroundColor: 'black',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
+                  topRightBottomLeftNotch,
+                )}>
+                <img style={{ margin: '24px' }} src={process.env.PUBLIC_URL + '/horse_image.png'} />
+              </div>
+              <div style={{ marginLeft: '24px' }}>
+                <div
+                  style={{
+                    height: '28px',
+                    width: '108px',
+                    backgroundColor: '#42F027',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <div style={projectStatusTextStyle}>Ended</div>
+                </div>
+                <div style={projectNameTextStyle}>My project 1</div>
+              </div>
+            </div>
+            <div style={{ marginTop: '52px', marginLeft: '36px', marginRight: '36px' }}>
+              <div style={shortDescriptionTextStyle}>Short description</div>
+              <div style={cs({ marginTop: '12px', maxWidth: '400px' }, descriptionTextStyle)}>
+                For athletes, high altitude produces two contradictory effects on performance. For explosive events
+                (sprints up to 400 metres, long jump, triple jump)
+              </div>
+              <div style={{ marginTop: '36px', display: 'flex' }}>
+                <div style={{ padding: '4px 24px', border: '1px solid #FFFFFF' }}>Etherscan</div>
+
+                <img style={{ marginLeft: '24px' }} src={process.env.PUBLIC_URL + '/web_icon.svg'} />
+                <img style={{ marginLeft: '16px' }} src={process.env.PUBLIC_URL + '/twitter_icon.svg'} />
+                <img style={{ marginLeft: '16px' }} src={process.env.PUBLIC_URL + '/telegram_icon.svg'} />
+              </div>
+            </div>
+          </div>
+          <div style={{ flex: 0.5 }}>
+            <div style={{ marginTop: '28px', marginRight: '36px' }}>
+              <div style={descriptionParentStyle}>
+                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Starts</div>
+                <div style={contentTextStyle}>May 20, 2021 4:00 PM</div>
+              </div>
+              <div style={descriptionParentStyle}>
+                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Ends</div>
+                <div style={contentTextStyle}>June 20, 2021 4:00 PM</div>
+              </div>
+              <div style={descriptionParentStyle}>
+                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Allocation</div>
+                <div style={contentTextStyle}>10,000,000</div>
+              </div>
+              <div style={descriptionParentStyle}>
+                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Access</div>
+                <div style={contentTextStyle}>Whitelist</div>
+              </div>
+              <div style={descriptionParentStyle}>
+                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Token price</div>
+                <div style={contentTextStyle}>0.022ETH</div>
+              </div>
+              <div style={descriptionParentStyle}>
+                <div style={cs({ flex: 1 }, description2TextStyle)}>Your allocation</div>
+                <div style={content2TextStyle}>{'0.02 ETH > 349857 TKN'}</div>
+              </div>
+            </div>
+            <div style={{ marginTop: '36px', marginRight: '36px' }}>
+              <div style={{ fontFamily: 'Odibee Sans', fontWeight: 400, fontSize: '36px', color: '#D2307A' }}>
+                10000/10000 USDT
+              </div>
+              <div style={{ marginTop: '12px' }}>
+                <ProgressBar
+                  completed={(10000 / 10000) * 100}
+                  isLabelVisible={false}
+                  height={'0.38rem'}
+                  bgColor={'#d2307a'}
+                  baseBgColor={'#7A7A7A'}
+                  borderRadius={'0rem'}
+                />
+              </div>
+              <div
+                style={{
+                  marginTop: '4px',
+                  fontSize: '14px',
+                  color: '#7A7A7A',
+                  fontFamily: 'Titillium Web',
+                  fontWeight: 400,
+                }}>
+                1 TKN = 0.0002 USDT
+              </div>
+            </div>
+            <div
+              style={{
+                marginTop: '24px',
+                marginRight: '36px',
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}>
+              <div
+                style={{
+                  border: '1px solid #D2307A',
+                  height: '48px',
+                  width: '196px',
+                  marginRight: '12px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  color: '#D2307A',
+                  fontSize: '16px',
+                  fontFamily: 'Titillium Web',
+                  fontWeight: 700,
+                }}>
+                CLAIM TOKENS
+              </div>
+              <div
+                style={{
+                  border: '1px solid black',
+                  height: '48px',
+                  width: '196px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#D2307A',
+                  fontSize: '16px',
+                  fontFamily: 'Titillium Web',
+                  fontWeight: 700,
+                }}>
+                JOIN
+              </div>
+            </div>
           </div>
         </div>
       </div>

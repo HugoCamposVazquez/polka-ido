@@ -109,7 +109,7 @@ const launchpadTextClassName = styled.cssClassName`
   }
 `;
 
-const boldTextStyle = styled.cssStyle`
+const boldTextStyle = styled.cssClassName`
   font-weight: 700;
   font-size: 20px;
   line-height: 30.42px;
@@ -120,7 +120,7 @@ const boldTextStyle = styled.cssStyle`
   }
 `;
 
-const normalTextStyle = styled.cssStyle`
+const normalTextStyle = styled.cssClassName`
   font-weight: 400;
   font-size: 20px;
   line-height: 30.42px;
@@ -203,16 +203,24 @@ export const LaunchpadPage = () => {
           <div className={launchpadTextClassName}>LAUNCHPAD</div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', marginTop: '12px' }}>
-              <div style={cs(boldTextStyle, { flex: 1, color: '#D2307A' })}>Projects launched</div>
-              <div style={cs(boldTextStyle, { color: '#D2307A' })}>12</div>
+              <div className={boldTextStyle} style={cs({ flex: 1, color: '#D2307A' })}>
+                Projects launched
+              </div>
+              <div className={boldTextStyle} style={cs({ color: '#D2307A' })}>
+                12
+              </div>
             </div>
             <div style={{ display: 'flex', marginTop: '12px' }}>
-              <div style={cs({ flex: 1 }, normalTextStyle)}>Funds raised</div>
-              <div style={boldTextStyle}>238753 USDT</div>
+              <div className={normalTextStyle} style={cs({ flex: 1 })}>
+                Funds raised
+              </div>
+              <div className={boldTextStyle}>238753 USDT</div>
             </div>
             <div style={{ display: 'flex', marginTop: '12px' }}>
-              <div style={cs({ flex: 1 }, normalTextStyle)}>Users participated</div>
-              <div style={boldTextStyle}>3494</div>
+              <div className={normalTextStyle} style={cs({ flex: 1 })}>
+                Users participated
+              </div>
+              <div className={boldTextStyle}>3494</div>
             </div>
           </div>
         </div>
