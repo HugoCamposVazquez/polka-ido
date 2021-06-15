@@ -238,11 +238,11 @@ export const ProjectDetailsPage = () => {
             </div>
             <div style={{ marginTop: '36px', marginRight: '36px' }}>
               <div style={{ fontFamily: 'Odibee Sans', fontWeight: 400, fontSize: '36px', color: '#D2307A' }}>
-                10000/10000 USDT
+                7273/10000 USDT
               </div>
               <div style={{ marginTop: '12px' }}>
                 <ProgressBar
-                  completed={(10000 / 10000) * 100}
+                  completed={(7273 / 10000) * 100}
                   isLabelVisible={false}
                   height={'0.38rem'}
                   bgColor={'#d2307a'}

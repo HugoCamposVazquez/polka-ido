@@ -56,9 +56,7 @@ const footerContainerClassName = styled.cssClassName`
 `;
 
 const footerLinksParentContainerClassName = styled.cssClassName`
-  flex: 1;
   display: flex;
-  justify-content: center;
 `;
 
 const footerLinksContainerClassName = styled.cssClassName`
@@ -83,6 +81,7 @@ const linksGroupsClassName = styled.cssClassName`
 `;
 const footerCopyrightParentClassName = styled.cssClassName`
   display: block;
+  flex: 0.8;
   @media (max-width: 830px) {
     display: flex;
     flex-direction: column;

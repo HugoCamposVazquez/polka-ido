@@ -11,7 +11,7 @@ const headerContainerStyle = styled.cssStyle`
   width: 100%;
   position: fixed;
   background-color: rgba(1, 1, 1, 0.6);
-  z-index: 1000;
+  z-index: 2000;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #292929;
