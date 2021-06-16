@@ -7,8 +7,14 @@ const imageParentContainerClassName = styled.cssClassName`
   display: flex;
   flex-direction: column;
   position: relative;
-  margin: 0 120px;
+  margin-left: 120px;
+  margin-right: 120px;
   margin-top: 180px;
+
+  @media (max-width: 830px) {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
 `;
 const customTopRightObjectClassName = styled.cssClassName`
   position: absolute;
@@ -17,6 +23,10 @@ const customTopRightObjectClassName = styled.cssClassName`
   background-color: #d2307a;
   top: 0;
   right: 0;
+
+  @media (max-width: 830px) {
+    display: none;
+  }
 `;
 
 const customBottomLeftObjectClassName = styled.cssClassName`
@@ -26,6 +36,10 @@ const customBottomLeftObjectClassName = styled.cssClassName`
   background-color: #d2307a;
   bottom: 0;
   left: 0;
+
+  @media (max-width: 830px) {
+    display: none;
+  }
 `;
 
 const topLeftBottomRightNotch = styled.cssStyle`
@@ -48,6 +62,13 @@ const imageContainerClassName = styled.cssClassName`
   right: 20px;
   left: 20px;
   bottom: 20px;
+
+  @media (max-width: 830px) {
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+  }
 `;
 const imageStyle = styled.cssClassName`
   position: absolute;
@@ -63,10 +84,15 @@ const projectStatusTextStyle = styled.cssStyle`
   color: #000000;
 `;
 
-const projectNameTextStyle = styled.cssStyle`
+const projectNameTextStyle = styled.cssClassName`
   font-family: Odibee Sans;
   font-weight: 400;
   font-size: 64px;
+  margin-top: 12px;
+
+  @media (max-width: 830px) {
+    font-size: 36px;
+  }
 `;
 
 const shortDescriptionTextStyle = styled.cssStyle`
@@ -76,39 +102,59 @@ const shortDescriptionTextStyle = styled.cssStyle`
   color: #d2307a;
 `;
 
-const descriptionTextStyle = styled.cssStyle`
+const descriptionTextStyle = styled.cssClassName`
   font-family: Titillium Web;
   font-weight: 400;
   font-size: 16px;
   color: #b8b8b8;
+
+  @media (max-width: 830px) {
+    font-size: 12px;
+  }
 `;
 
-const description2TextStyle = styled.cssStyle`
+const description2TextStyle = styled.cssClassName`
   font-family: Titillium Web;
   font-weight: 600;
   font-size: 16px;
   color: white;
+
+  @media (max-width: 830px) {
+    font-size: 12px;
+  }
 `;
 
-const contentTextStyle = styled.cssStyle`
+const contentTextStyle = styled.cssClassName`
   font-family: Titillium Web;
   font-weight: 700;
   font-size: 20px;
   color: #d2307a;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+  }
 `;
 
-const content2TextStyle = styled.cssStyle`
+const content2TextStyle = styled.cssClassName`
   font-family: Titillium Web;
   font-weight: 700;
   font-size: 20px;
   color: white;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+  }
 `;
 
-const content3TextStyle = styled.cssStyle`
+const content3TextStyle = styled.cssClassName`
   font-family: Titillium Web;
   font-weight: 600;
   font-size: 16px;
   color: #d2307a;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+  }
 `;
 
 const projectContainerStyle = styled.cssClassName`
@@ -119,6 +165,10 @@ const projectContainerStyle = styled.cssClassName`
 
   @media (max-width: 1200px) {
     flex-direction: column;
+  }
+
+  @media (max-width: 830px) {
+    margin: 0px;
   }
 `;
 
@@ -138,37 +188,56 @@ const smallTextStyle = styled.cssStyle`
   font-weight: 400;
 `;
 
-const valueDescTextStyle = styled.cssStyle`
+const valueDescTextStyle = styled.cssClassName`
   font-family: Odibee Sans;
   font-weight: 400;
   font-size: 36px;
   color: #d2307a;
+
+  @media (max-width: 830px) {
+    font-size: 26px;
+  }
 `;
-const projectImageBackgroundStyle = styled.cssStyle`
+const projectImageBackgroundStyle = styled.cssClassName`
   height: 120px;
   width: 120px;
   background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 830px) {
+    height: 80px;
+    width: 80px;
+  }
 `;
 
-const projectStatusBackgroundStyle = styled.cssStyle`
+const projectStatusBackgroundStyle = styled.cssClassName`
   height: 28px;
   width: 108px;
   background-color: #42f027;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 830px) {
+    height: 25px;
+    width: 98px;
+  }
 `;
 
-const projectDetailsBtnsParentStyle = styled.cssStyle`
+const projectDetailsBtnsParentStyle = styled.cssClassName`
   margin-top: 24px;
   margin-bottom: 24px;
   margin-right: 36px;
   margin-left: 36px;
   display: flex;
   justify-content: flex-end;
+
+  @media (max-width: 830px) {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
 `;
 
 const claimTokensBtnStyle = styled.cssStyle`
@@ -197,37 +266,57 @@ const joinBtnStyle = styled.cssStyle`
   border: 1px solid #d2307a;
 `;
 
-const allocationsTitleStyle = styled.cssStyle`
+const allocationsTitleStyle = styled.cssClassName`
   font-familiy: Titillium Web;
   font-weight: 700;
   font-size: 20px;
   color: white;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+  }
 `;
 
-const allocationsItemNormalStyle = styled.cssStyle`
+const allocationsItemNormalStyle = styled.cssClassName`
   font-familiy: Titillium Web;
   font-weight: 400;
   font-size: 16px;
   color: #b8b8b8;
+
+  @media (max-width: 830px) {
+    font-size: 12px;
+  }
 `;
 
-const allocationsItemBoldStyle = styled.cssStyle`
+const allocationsItemBoldStyle = styled.cssClassName`
   font-familiy: Titillium Web;
   font-weight: 700;
   font-size: 16px;
   color: white;
+
+  @media (max-width: 830px) {
+    font-size: 12px;
+  }
 `;
 
-const allocationsTotalTextStyle = styled.cssStyle`
+const allocationsTotalTextStyle = styled.cssClassName`
   font-familiy: Titillium Web;
   font-weight: 400;
   font-size: 20px;
   color: #b8b8b8;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+  }
 `;
-const subtitleStyle = styled.cssStyle`
+const subtitleStyle = styled.cssClassName`
   font-family: Titillium Web;
   font-weight: 600;
   font-size: 36px;
+
+  @media (max-width: 830px) {
+    font-size: 26px;
+  }
 `;
 
 const projectDetailsSubtitleStyle = styled.cssStyle`
@@ -251,11 +340,21 @@ const projectContainerRightStyle = styled.cssClassName`
   @media (max-width: 1200px) {
     margin-left: 36px;
   }
+
+  @media (max-width: 830px) {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
 `;
 
 const shortDescriptionTextClassName = styled.cssClassName`
   margin-top: 12px;
   max-width: 400px;
+
+  font-family: Titillium Web;
+  font-weight: 400;
+  font-size: 16px;
+  color: #b8b8b8;
 
   @media (max-width: 1200px) {
     max-width: initial;
@@ -277,6 +376,75 @@ const projectDetailsTokenClassName = styled.cssClassName`
 
   @media (max-width: 1200px) {
     margin-top: 36px !important;
+  }
+`;
+
+const projectImageContainerClassName = styled.cssClassName`
+  margin-top: 36px;
+  margin-left: 36px;
+  margin-right: 36px;
+  display: flex;
+
+  @media (max-width: 830px) {
+    margin-top: 24px;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+`;
+
+const shortDescriptionContainerClassName = styled.cssClassName`
+  margin-top: 52px;
+  margin-left: 36px;
+  margin-right: 36px;
+
+  @media (max-width: 830px) {
+    margin-left: 24px;
+    margin-right: 24px;
+    margin-top: 36px;
+  }
+`;
+
+const projectIconClassName = styled.cssClassName`
+  height: 72px;
+  width: 72px;
+
+  @media (max-width: 830px) {
+    height: 48px;
+    width: 48px;
+  }
+`;
+
+const allocationsContainerClassName = styled.cssClassName`
+  margin: 120px;
+  max-width: 700px;
+
+  @media (max-width: 830px) {
+    margin-left: 24px;
+    margin-right: 24px;
+    margin-top: 72px;
+    margin-bottom: 72px;
+  }
+`;
+
+const projectDetailsRootContainerClassName = styled.cssClassName`
+  margin: 120px;
+
+  @media (max-width: 830px) {
+    margin-left: 24px;
+    margin-right: 24px;
+    margin-top: 72px;
+    margin-bottom: 72px;
+  }
+`;
+
+const aboutTheProjectContainerClassName = styled.cssClassName`
+  margin: 120px;
+  margin-bottom: 0px;
+
+  @media (max-width: 830px) {
+    margin-left: 24px;
+    margin-right: 24px;
+    margin-top: 72px;
   }
 `;
 
@@ -307,26 +475,20 @@ export const ProjectDetailsPage = () => {
 
         <div className={projectContainerStyle}>
           <div style={{ flex: 0.5 }}>
-            <div
-              style={{
-                marginTop: '36px',
-                marginLeft: '36px',
-                marginRight: '36px',
-                display: 'flex',
-              }}>
-              <div style={cs(projectImageBackgroundStyle, topRightBottomLeftNotch)}>
-                <img style={{ margin: '24px' }} src={process.env.PUBLIC_URL + '/horse_image.png'} />
+            <div className={projectImageContainerClassName}>
+              <div style={topRightBottomLeftNotch} className={projectImageBackgroundStyle}>
+                <img className={projectIconClassName} src={process.env.PUBLIC_URL + '/horse_image.png'} />
               </div>
               <div style={{ marginLeft: '24px' }}>
-                <div style={projectStatusBackgroundStyle}>
+                <div className={projectStatusBackgroundStyle}>
                   <div style={projectStatusTextStyle}>Ended</div>
                 </div>
-                <div style={projectNameTextStyle}>My project 1</div>
+                <div className={projectNameTextStyle}>My project 1</div>
               </div>
             </div>
-            <div style={{ marginTop: '52px', marginLeft: '36px', marginRight: '36px' }}>
+            <div className={shortDescriptionContainerClassName}>
               <div style={shortDescriptionTextStyle}>Short description</div>
-              <div style={descriptionTextStyle} className={shortDescriptionTextClassName}>
+              <div className={shortDescriptionTextClassName}>
                 For athletes, high altitude produces two contradictory effects on performance. For explosive events
                 (sprints up to 400 metres, long jump, triple jump)
               </div>
@@ -342,32 +504,44 @@ export const ProjectDetailsPage = () => {
           <div style={{ flex: 0.5 }}>
             <div className={projectContainerRightStyle}>
               <div style={descriptionParentStyle}>
-                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Starts</div>
-                <div style={contentTextStyle}>May 20, 2021 4:00 PM</div>
+                <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                  Starts
+                </div>
+                <div className={contentTextStyle}>May 20, 2021 4:00 PM</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Ends</div>
-                <div style={contentTextStyle}>June 20, 2021 4:00 PM</div>
+                <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                  Ends
+                </div>
+                <div className={contentTextStyle}>June 20, 2021 4:00 PM</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Allocation</div>
-                <div style={contentTextStyle}>10,000,000</div>
+                <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                  Allocation
+                </div>
+                <div className={contentTextStyle}>10,000,000</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Access</div>
-                <div style={contentTextStyle}>Whitelist</div>
+                <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                  Access
+                </div>
+                <div className={contentTextStyle}>Whitelist</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={cs({ flex: 1 }, descriptionTextStyle)}>Token price</div>
-                <div style={contentTextStyle}>0.022ETH</div>
+                <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                  Token price
+                </div>
+                <div className={contentTextStyle}>0.022ETH</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={cs({ flex: 1 }, description2TextStyle)}>Your allocation</div>
-                <div style={content2TextStyle}>{'0.02 ETH > 349857 TKN'}</div>
+                <div style={{ flex: 1 }} className={description2TextStyle}>
+                  Your allocation
+                </div>
+                <div className={content2TextStyle}>{'0.02 ETH > 349857 TKN'}</div>
               </div>
 
               <div style={{ marginTop: '36px' }}>
-                <div style={valueDescTextStyle}>7273/10000 USDT</div>
+                <div className={valueDescTextStyle}>7273/10000 USDT</div>
                 <div style={{ marginTop: '12px' }}>
                   <ProgressBar
                     completed={(7273 / 10000) * 100}
@@ -382,66 +556,108 @@ export const ProjectDetailsPage = () => {
               </div>
             </div>
 
-            <div style={projectDetailsBtnsParentStyle}>
+            <div className={projectDetailsBtnsParentStyle}>
               <div style={claimTokensBtnStyle}>CLAIM TOKENS</div>
               <div style={joinBtnStyle}>JOIN</div>
             </div>
           </div>
         </div>
       </div>
-      <div style={{ margin: '120px' }}>
-        <div style={subtitleStyle}>Allocations</div>
+      <div className={allocationsContainerClassName}>
+        <div className={subtitleStyle}>Allocations</div>
         <div style={{ marginTop: '24px', display: 'flex' }}>
-          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Purchased</div>
-          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Amount</div>
-          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Dollars</div>
-          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Tokens</div>
+          <div style={{ flex: 0.25 }} className={allocationsTitleStyle}>
+            Purchased
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsTitleStyle}>
+            Amount
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsTitleStyle}>
+            Dollars
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsTitleStyle}>
+            Tokens
+          </div>
         </div>
         <div style={{ padding: '12px 0', display: 'flex', borderBottom: '1px solid #B8B8B8' }}>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>6/21/19</div>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>0.28 ETH</div>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>1,239 USDT</div>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>304,985 TKN</div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            6/21/19
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            0.28 ETH
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            1,239 USDT
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            304,985 TKN
+          </div>
         </div>
         <div style={{ padding: '12px 0', display: 'flex', borderBottom: '1px solid #B8B8B8' }}>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>6/21/19</div>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>0.012 ETH</div>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>190 USDT</div>
-          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>23,498 TKN</div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            6/21/19
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            0.012 ETH
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            190 USDT
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemNormalStyle}>
+            23,498 TKN
+          </div>
         </div>
-        <div style={{ padding: '24px 0', display: 'flex' }}>
-          <div style={cs(allocationsTotalTextStyle, { flex: 0.2 })}>Total</div>
-          <div style={cs(allocationsItemBoldStyle, { flex: 0.2 })}>0.292 ETH</div>
-          <div style={cs(allocationsItemBoldStyle, { flex: 0.2 })}>1,429 USDT</div>
-          <div style={cs(allocationsItemBoldStyle, { flex: 0.2 })}>328,483 TKN</div>
+        <div style={{ padding: '24px 0', alignItems: 'center', display: 'flex' }}>
+          <div style={{ flex: 0.25 }} className={allocationsTotalTextStyle}>
+            Total
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemBoldStyle}>
+            0.292 ETH
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemBoldStyle}>
+            1,429 USDT
+          </div>
+          <div style={{ flex: 0.25 }} className={allocationsItemBoldStyle}>
+            328,483 TKN
+          </div>
         </div>
       </div>
-      <div style={{ margin: '120px' }}>
-        <div style={subtitleStyle}>Project details</div>
+      <div className={projectDetailsRootContainerClassName}>
+        <div className={subtitleStyle}>Project details</div>
         <div className={projectDetailsContainerClassName}>
           <div style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}>
             <div style={{ padding: '24px' }}>
               <div style={projectDetailsSubtitleStyle}>PROJECT</div>
               <div style={{ marginTop: '36px' }}>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Token distribution</div>
-                  <div style={content3TextStyle}>June 21, 2021 4:00 PM</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Token distribution
+                  </div>
+                  <div className={content3TextStyle}>June 21, 2021 4:00 PM</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Min. Allocation</div>
-                  <div style={content3TextStyle}>0</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Min. Allocation
+                  </div>
+                  <div className={content3TextStyle}>0</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Max. Allocation</div>
-                  <div style={content3TextStyle}>0.02 ETH</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Max. Allocation
+                  </div>
+                  <div className={content3TextStyle}>0.02 ETH</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Min. swap level</div>
-                  <div style={content3TextStyle}>2 ETH</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Min. swap level
+                  </div>
+                  <div className={content3TextStyle}>2 ETH</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Whitelist status</div>
-                  <div style={content3TextStyle}>Whitelisted</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Whitelist status
+                  </div>
+                  <div className={content3TextStyle}>Whitelisted</div>
                 </div>
               </div>
             </div>
@@ -454,32 +670,42 @@ export const ProjectDetailsPage = () => {
               <div style={projectDetailsSubtitleStyle}>TOKEN</div>
               <div style={{ marginTop: '36px' }}>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Name</div>
-                  <div style={content3TextStyle}>takename</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Name
+                  </div>
+                  <div className={content3TextStyle}>takename</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Symbol</div>
-                  <div style={content3TextStyle}>TKN</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Symbol
+                  </div>
+                  <div className={content3TextStyle}>TKN</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Decimals</div>
-                  <div style={content3TextStyle}>24</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Decimals
+                  </div>
+                  <div className={content3TextStyle}>24</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Address</div>
-                  <div style={content3TextStyle}>0x19273h348fo837ffo38974fh</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Address
+                  </div>
+                  <div className={content3TextStyle}>0x19273h348fo837ffo38974fh</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0' }}>
-                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Total supply</div>
-                  <div style={content3TextStyle}>10,000,000</div>
+                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
+                    Total supply
+                  </div>
+                  <div className={content3TextStyle}>10,000,000</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div style={{ margin: '120px', marginBottom: '0px' }}>
-        <div style={subtitleStyle}>About the project</div>
+      <div className={aboutTheProjectContainerClassName}>
+        <div className={subtitleStyle}>About the project</div>
         <div style={aboutTextStyle}>
           Physiological respiration involves the mechanisms that ensure that the composition of the functional residual
           capacity is kept constant, and equilibrates with the gases dissolved in the pulmonary capillary blood, and
