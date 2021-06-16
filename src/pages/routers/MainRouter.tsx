@@ -14,7 +14,7 @@ export const MainRouter = (): any => {
       <Switch>
         <Route exact path="/home" component={HomePage} />
         <Route exact path="/launchpad" component={LaunchpadPage} />
-        <Route exact path="/projectDetails" component={ProjectDetailsPage} />
+        <Route exact path="/project/:id" component={ProjectDetailsPage} />
         <Redirect from="/" to="/home" />
       </Switch>
       <Footer />

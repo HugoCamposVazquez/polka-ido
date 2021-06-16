@@ -1,10 +1,12 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { cs, styled } from '../utils/css';
 
 const projectCardContainer = styled.cssStyle`
   background-color: #484848;
+  cursor: pointer;
 `;
 
 const topRightBottomLeftNotch = styled.cssStyle`
@@ -169,8 +171,14 @@ type IProps = {
 };
 
 export const ProjectCard = ({ direction }: IProps) => {
+  const navigation = useHistory();
+
   return (
-    <div style={cs(projectCardContainer, direction === 'left' ? topLeftBottomRightNotch : topRightBottomLeftNotch)}>
+    <div
+      style={cs(projectCardContainer, direction === 'left' ? topLeftBottomRightNotch : topRightBottomLeftNotch)}
+      onClick={() => {
+        navigation.push('/project/1');
+      }}>
       <div style={projectCardHeaderContainer}>
         <div style={{ flex: 1 }}>
           <div style={projectCardHeaderIconContainer}>
