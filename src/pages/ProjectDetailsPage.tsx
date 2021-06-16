@@ -200,6 +200,39 @@ const joinBtnStyle = styled.cssStyle`
   border: 1px solid #d2307a;
 `;
 
+const allocationsTitleStyle = styled.cssStyle`
+  font-familiy: Titillium Web;
+  font-weight: 700;
+  font-size: 20px;
+  color: white;
+`;
+
+const allocationsItemNormalStyle = styled.cssStyle`
+  font-familiy: Titillium Web;
+  font-weight: 400;
+  font-size: 16px;
+  color: #b8b8b8;
+`;
+
+const allocationsItemBoldStyle = styled.cssStyle`
+  font-familiy: Titillium Web;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+`;
+
+const allocationsTotalTextStyle = styled.cssStyle`
+  font-familiy: Titillium Web;
+  font-weight: 400;
+  font-size: 20px;
+  color: #b8b8b8;
+`;
+const subtitleStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 600;
+  font-size: 36px;
+`;
+
 const topRightBottomLeftNotch = styled.cssStyle`
   --notchSize: 1.63rem;
 
@@ -301,6 +334,111 @@ export const ProjectDetailsPage = () => {
               <div style={joinBtnStyle}>JOIN</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div style={{ margin: '120px' }}>
+        <div style={subtitleStyle}>Allocations</div>
+        <div style={{ marginTop: '24px', display: 'flex' }}>
+          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Purchased</div>
+          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Amount</div>
+          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Dollars</div>
+          <div style={cs({ flex: 0.2 }, allocationsTitleStyle)}>Tokens</div>
+        </div>
+        <div style={{ padding: '12px 0', display: 'flex', borderBottom: '1px solid #B8B8B8' }}>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>6/21/19</div>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>0.28 ETH</div>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>1,239 USDT</div>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>304,985 TKN</div>
+        </div>
+        <div style={{ padding: '12px 0', display: 'flex', borderBottom: '1px solid #B8B8B8' }}>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>6/21/19</div>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>0.012 ETH</div>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>190 USDT</div>
+          <div style={cs({ flex: 0.2 }, allocationsItemNormalStyle)}>23,498 TKN</div>
+        </div>
+        <div style={{ padding: '24px 0', display: 'flex' }}>
+          <div style={cs(allocationsTotalTextStyle, { flex: 0.2 })}>Total</div>
+          <div style={cs(allocationsItemBoldStyle, { flex: 0.2 })}>0.292 ETH</div>
+          <div style={cs(allocationsItemBoldStyle, { flex: 0.2 })}>1,429 USDT</div>
+          <div style={cs(allocationsItemBoldStyle, { flex: 0.2 })}>328,483 TKN</div>
+        </div>
+      </div>
+      <div style={{ margin: '120px' }}>
+        <div style={subtitleStyle}>Project details</div>
+        <div style={{ display: 'flex', margin: '0 -24px', marginTop: '36px' }}>
+          <div style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}>
+            <div style={{ padding: '24px' }}>
+              <div>PROJECT</div>
+              <div style={{ marginTop: '36px' }}>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Token distribution</div>
+                  <div>June 21, 2021 4:00 PM</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Min. Allocation</div>
+                  <div>0</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Max. Allocation</div>
+                  <div>0.02 ETH</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Min. swap level</div>
+                  <div>2 ETH</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0' }}>
+                  <div style={{ flex: 1 }}>Whitelist status</div>
+                  <div>Whitelisted</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}>
+            <div style={{ padding: '24px' }}>
+              <div>TOKEN</div>
+              <div style={{ marginTop: '36px' }}>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Name</div>
+                  <div>takename</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Symbol</div>
+                  <div>TKN</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Decimals</div>
+                  <div>24</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
+                  <div style={{ flex: 1 }}>Address</div>
+                  <div>0x19273h348fo837ffo38974fh</div>
+                </div>
+                <div style={{ display: 'flex', padding: '12px 0' }}>
+                  <div style={{ flex: 1 }}>Total supply</div>
+                  <div>10,000,000</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={{ margin: '120px', marginBottom: '0px' }}>
+        <div style={subtitleStyle}>About the project</div>
+        <div
+          style={{
+            marginTop: '24px',
+            fontFamily: 'Titillium Web',
+            fontWeight: 400,
+            fontSize: '16px',
+            color: '#B8B8B8',
+          }}>
+          Physiological respiration involves the mechanisms that ensure that the composition of the functional residual
+          capacity is kept constant, and equilibrates with the gases dissolved in the pulmonary capillary blood, and
+          thus throughout the body. Thus, in precise usage, the words breathing and ventilation are hyponyms, not
+          synonyms, of respiration; but this prescription is not consistently followed, even by most health care
+          providers, because the term respiratory rate (RR) is a well-established term in health care, even though it
+          would need to be consistently replaced with ventilation rate if the precise usage were to be followed.
         </div>
       </div>
     </div>
