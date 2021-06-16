@@ -106,6 +106,7 @@ const launchpadTextClassName = styled.cssClassName`
 
   @media (max-width: 830px) {
     font-size: 42px;
+    line-height: 46.54px;
   }
 `;
 
@@ -114,10 +115,6 @@ const boldTextStyle = styled.cssClassName`
   font-size: 20px;
   line-height: 30.42px;
   font-family: Titillium Web;
-
-  @media (max-width: 830px) {
-    font-size: 14px;
-  }
 `;
 
 const normalTextStyle = styled.cssClassName`
@@ -125,10 +122,6 @@ const normalTextStyle = styled.cssClassName`
   font-size: 20px;
   line-height: 30.42px;
   font-family: Titillium Web;
-
-  @media (max-width: 830px) {
-    font-size: 14px;
-  }
 `;
 
 const projectsCardsHeaderClassName = styled.cssClassName`

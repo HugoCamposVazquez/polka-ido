@@ -111,12 +111,10 @@ export const Footer = withRouter((props) => {
             </a>
           </div>
           <div className={linksGroupsClassName}>
-            <div>
-              <div style={linkTitleTextStyle}>Company</div>
-              <a target="_blank" href="#" style={linkTextStyle}>
-                About us
-              </a>
-            </div>
+            <div style={linkTitleTextStyle}>Company</div>
+            <a target="_blank" href="#" style={linkTextStyle}>
+              About us
+            </a>
           </div>
           <div>
             <div className={linksGroupsClassName}>

@@ -116,7 +116,7 @@ export const Header = withRouter((props) => {
           <div className={props.location.pathname === '/launchpad' ? menuItemSelectedStyle : menuItemNotSelectedStyle}>
             <Link to="/launchpad">Launchpad</Link>
           </div>
-          <MainButton title={'Connect wallet'} onClick={() => {}} />
+          <MainButton title={'Connect wallet'} type={'fill'} onClick={() => {}} />
         </div>
         <div className={menuIconClassName}>
           <img src={process.env.PUBLIC_URL + '/menu_icon.svg'} />

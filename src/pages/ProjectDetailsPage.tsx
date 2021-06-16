@@ -1,6 +1,7 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
 
+import { MainButton } from '../shared/MainButton';
 import { cs, styled } from '../utils/css';
 
 const imageParentContainerClassName = styled.cssClassName`
@@ -238,32 +239,6 @@ const projectDetailsBtnsParentStyle = styled.cssClassName`
     margin-left: 24px;
     margin-right: 24px;
   }
-`;
-
-const claimTokensBtnStyle = styled.cssStyle`
-  border: 1px solid #d2307a;
-  height: 48px;
-  width: 196px;
-  margin-right: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #d2307a;
-  font-size: 16px;
-  font-family: Titillium Web;
-  font-weight: 700;
-`;
-const joinBtnStyle = styled.cssStyle`
-  height: 48px;
-  width: 196px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #d2307a;
-  font-size: 16px;
-  font-family: Titillium Web;
-  font-weight: 700;
-  border: 1px solid #d2307a;
 `;
 
 const allocationsTitleStyle = styled.cssClassName`
@@ -557,8 +532,8 @@ export const ProjectDetailsPage = () => {
             </div>
 
             <div className={projectDetailsBtnsParentStyle}>
-              <div style={claimTokensBtnStyle}>CLAIM TOKENS</div>
-              <div style={joinBtnStyle}>JOIN</div>
+              <MainButton title="CLAIM TOKENS" type={'bordered'} onClick={() => {}} />
+              <MainButton title="JOIN" type={'fill'} onClick={() => {}} />
             </div>
           </div>
         </div>

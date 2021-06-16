@@ -71,28 +71,44 @@ const titleContainerClassName = styled.cssClassName`
   }
 `;
 
-const titleStyle = styled.cssStyle`
+const titleStyle = styled.cssClassName`
   font-weight: 400;
   font-size: 4rem;
   line-height: 4.5rem;
   font-family: Odibee Sans;
   margin-top: 220px;
+
+  @media (max-width: 830px) {
+    font-size: 42px;
+
+    line-height: 46.54px;
+  }
 `;
 
-const subTitleStyle = styled.cssStyle`
+const subTitleStyle = styled.cssClassName`
   font-weight: 400;
   font-size: 1.25rem;
   line-height: 1.75rem;
   margin-top: 0.94rem;
   font-family: Titillium Web;
+
+  @media (max-width: 830px) {
+    font-size: 14px;
+    line-height: 19.6px;
+  }
 `;
 
-const featuredProjectsTitleStyle = styled.cssStyle`
+const featuredProjectsTitleStyle = styled.cssClassName`
   font-weight: 600;
   font-size: 2.25rem;
   line-height: 3.4rem;
   font-family: Titillium Web;
   margin-bottom: 0.63rem;
+
+  @media (max-width: 830px) {
+    font-size: 26px;
+    line-height: 39.55px;
+  }
 `;
 
 const featuredProjectsContainerClassName = styled.cssClassName`
@@ -200,6 +216,8 @@ const tellUsAboutYourProjectTextClassName = styled.cssClassName`
 
   @media (max-width: 830px) {
     width: 100%;
+    font-size: 26px;
+    line-height: 39.55px;
   }
 `;
 
@@ -256,8 +274,8 @@ export const HomePage = () => {
         </div>
         <div className={titleContainerParentStyle}>
           <div className={titleContainerClassName}>
-            <div style={titleStyle}>LOREM IPSUM DOLOR SIT AMET</div>
-            <div style={subTitleStyle}>
+            <div className={titleStyle}>LOREM IPSUM DOLOR SIT AMET</div>
+            <div className={subTitleStyle}>
               For athletes, high altitude produces two contradictory effects on performance. For explosive events
               (sprints up to 400 metres, long jump, triple jump)
             </div>
@@ -265,7 +283,7 @@ export const HomePage = () => {
         </div>
       </div>
       <div className={featuredProjectsContainerClassName}>
-        <div style={featuredProjectsTitleStyle}>Featured projects</div>
+        <div className={featuredProjectsTitleStyle}>Featured projects</div>
         <div className={featuredProjectsCardsContainerClassName}>
           <ProjectCard direction={'right'} />
           <ProjectCard direction={'left'} />
@@ -293,7 +311,7 @@ export const HomePage = () => {
             <form>
               <TextField name="email" placeholder="E-mail" />
               <TextField name="message" placeholder="Message" />
-              <MainButton title="Send" onClick={methods.handleSubmit(onSubmit)} />
+              <MainButton title="Send" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
             </form>
           </FormProvider>
         </div>
