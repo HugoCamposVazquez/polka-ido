@@ -10,13 +10,6 @@ const imageParentContainerClassName = styled.cssClassName`
   position: relative;
   padding: 0 120px;
   margin-top: 180px;
-
-  @media (max-width: 830px) {
-    height: auto;
-    padding: 0;
-    display: flex;
-    flex-direction: column-reverse;
-  }
 `;
 const customTopRightObjectClassName = styled.cssClassName`
   position: absolute;
@@ -56,27 +49,12 @@ const imageContainerClassName = styled.cssClassName`
   top: 20px;
   right: 20px;
   left: 20px;
-
-  @media (max-width: 830px) {
-    position: relative;
-    height: auto;
-    width: auto;
-    top: 0;
-    right: 0;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
 `;
 const imageStyle = styled.cssClassName`
   position: absolute;
   height: 100%;
   width: 100%;
   object-fit: cover;
-
-  @media (max-width: 830px) {
-    position: relative;
-  }
 `;
 
 const projectStatusTextStyle = styled.cssStyle`
@@ -125,6 +103,13 @@ const content2TextStyle = styled.cssStyle`
   font-weight: 700;
   font-size: 20px;
   color: white;
+`;
+
+const content3TextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 600;
+  font-size: 16px;
+  color: #d2307a;
 `;
 
 const descriptionParentStyle = styled.cssStyle`
@@ -231,6 +216,20 @@ const subtitleStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 600;
   font-size: 36px;
+`;
+
+const projectDetailsSubtitleStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 700;
+  font-size: 24px;
+`;
+
+const aboutTextStyle = styled.cssStyle`
+  margin-top: 24px;
+  font-family: Titillium Web;
+  font-weight: 400;
+  font-size: 16px;
+  color: #b8b8b8;
 `;
 
 const topRightBottomLeftNotch = styled.cssStyle`
@@ -368,27 +367,27 @@ export const ProjectDetailsPage = () => {
         <div style={{ display: 'flex', margin: '0 -24px', marginTop: '36px' }}>
           <div style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}>
             <div style={{ padding: '24px' }}>
-              <div>PROJECT</div>
+              <div style={projectDetailsSubtitleStyle}>PROJECT</div>
               <div style={{ marginTop: '36px' }}>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Token distribution</div>
-                  <div>June 21, 2021 4:00 PM</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Token distribution</div>
+                  <div style={content3TextStyle}>June 21, 2021 4:00 PM</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Min. Allocation</div>
-                  <div>0</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Min. Allocation</div>
+                  <div style={content3TextStyle}>0</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Max. Allocation</div>
-                  <div>0.02 ETH</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Max. Allocation</div>
+                  <div style={content3TextStyle}>0.02 ETH</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Min. swap level</div>
-                  <div>2 ETH</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Min. swap level</div>
+                  <div style={content3TextStyle}>2 ETH</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0' }}>
-                  <div style={{ flex: 1 }}>Whitelist status</div>
-                  <div>Whitelisted</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Whitelist status</div>
+                  <div style={content3TextStyle}>Whitelisted</div>
                 </div>
               </div>
             </div>
@@ -396,27 +395,27 @@ export const ProjectDetailsPage = () => {
 
           <div style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}>
             <div style={{ padding: '24px' }}>
-              <div>TOKEN</div>
+              <div style={projectDetailsSubtitleStyle}>TOKEN</div>
               <div style={{ marginTop: '36px' }}>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Name</div>
-                  <div>takename</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Name</div>
+                  <div style={content3TextStyle}>takename</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Symbol</div>
-                  <div>TKN</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Symbol</div>
+                  <div style={content3TextStyle}>TKN</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Decimals</div>
-                  <div>24</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Decimals</div>
+                  <div style={content3TextStyle}>24</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }}>Address</div>
-                  <div>0x19273h348fo837ffo38974fh</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Address</div>
+                  <div style={content3TextStyle}>0x19273h348fo837ffo38974fh</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0' }}>
-                  <div style={{ flex: 1 }}>Total supply</div>
-                  <div>10,000,000</div>
+                  <div style={cs(descriptionTextStyle, { flex: 1 })}>Total supply</div>
+                  <div style={content3TextStyle}>10,000,000</div>
                 </div>
               </div>
             </div>
@@ -425,14 +424,7 @@ export const ProjectDetailsPage = () => {
       </div>
       <div style={{ margin: '120px', marginBottom: '0px' }}>
         <div style={subtitleStyle}>About the project</div>
-        <div
-          style={{
-            marginTop: '24px',
-            fontFamily: 'Titillium Web',
-            fontWeight: 400,
-            fontSize: '16px',
-            color: '#B8B8B8',
-          }}>
+        <div style={aboutTextStyle}>
           Physiological respiration involves the mechanisms that ensure that the composition of the functional residual
           capacity is kept constant, and equilibrates with the gases dissolved in the pulmonary capillary blood, and
           thus throughout the body. Thus, in precise usage, the words breathing and ventilation are hyponyms, not
