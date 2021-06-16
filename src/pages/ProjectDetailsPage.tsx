@@ -6,9 +6,8 @@ import { cs, styled } from '../utils/css';
 const imageParentContainerClassName = styled.cssClassName`
   display: flex;
   flex-direction: column;
-  height: 563px;
   position: relative;
-  padding: 0 120px;
+  margin: 0 120px;
   margin-top: 180px;
 `;
 const customTopRightObjectClassName = styled.cssClassName`
@@ -25,7 +24,7 @@ const customBottomLeftObjectClassName = styled.cssClassName`
   height: 120px;
   width: 120px;
   background-color: #d2307a;
-  top: 443px;
+  bottom: 0;
   left: 0;
 `;
 
@@ -45,10 +44,10 @@ const topLeftBottomRightNotch = styled.cssStyle`
 `;
 const imageContainerClassName = styled.cssClassName`
   position: absolute;
-  height: 523px;
   top: 20px;
   right: 20px;
   left: 20px;
+  bottom: 20px;
 `;
 const imageStyle = styled.cssClassName`
   position: absolute;
@@ -112,6 +111,17 @@ const content3TextStyle = styled.cssStyle`
   color: #d2307a;
 `;
 
+const projectContainerStyle = styled.cssClassName`
+  height: 100%;
+  margin: 20px;
+  z-index: 1000;
+  display: flex;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+`;
+
 const descriptionParentStyle = styled.cssStyle`
   border-bottom: 1px solid #7a7a7a;
   padding-bottom: 8px;
@@ -154,7 +164,9 @@ const projectStatusBackgroundStyle = styled.cssStyle`
 
 const projectDetailsBtnsParentStyle = styled.cssStyle`
   margin-top: 24px;
+  margin-bottom: 24px;
   margin-right: 36px;
+  margin-left: 36px;
   display: flex;
   justify-content: flex-end;
 `;
@@ -232,6 +244,42 @@ const aboutTextStyle = styled.cssStyle`
   color: #b8b8b8;
 `;
 
+const projectContainerRightStyle = styled.cssClassName`
+  margin-top: 28px;
+  margin-right: 36px;
+
+  @media (max-width: 1200px) {
+    margin-left: 36px;
+  }
+`;
+
+const shortDescriptionTextClassName = styled.cssClassName`
+  margin-top: 12px;
+  max-width: 400px;
+
+  @media (max-width: 1200px) {
+    max-width: initial;
+  }
+`;
+
+const projectDetailsContainerClassName = styled.cssClassName`
+  display: flex;
+  margin: 0 -24px;
+  margin-top: 36px;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+`;
+
+const projectDetailsTokenClassName = styled.cssClassName`
+  margin-top: 0px !important;
+
+  @media (max-width: 1200px) {
+    margin-top: 36px !important;
+  }
+`;
+
 const topRightBottomLeftNotch = styled.cssStyle`
   --notchSize: 1.63rem;
 
@@ -251,17 +299,21 @@ export const ProjectDetailsPage = () => {
   return (
     <div>
       <div className={imageParentContainerClassName}>
-        <div style={{ position: 'relative' }}>
-          <div className={customTopRightObjectClassName} style={topLeftBottomRightNotch} />
-          <div className={customBottomLeftObjectClassName} style={topLeftBottomRightNotch} />
-
-          <div className={imageContainerClassName}>
-            <img className={imageStyle} src={process.env.PUBLIC_URL + '/rectangle2_image.png'} />
-          </div>
+        <div className={customTopRightObjectClassName} style={topLeftBottomRightNotch} />
+        <div className={customBottomLeftObjectClassName} style={topLeftBottomRightNotch} />
+        <div className={imageContainerClassName}>
+          <img className={imageStyle} src={process.env.PUBLIC_URL + '/rectangle2_image.png'} />
         </div>
-        <div style={{ height: '100%', margin: '20px', zIndex: 1000, display: 'flex' }}>
+
+        <div className={projectContainerStyle}>
           <div style={{ flex: 0.5 }}>
-            <div style={{ marginTop: '36px', marginLeft: '36px', marginRight: '36px', display: 'flex' }}>
+            <div
+              style={{
+                marginTop: '36px',
+                marginLeft: '36px',
+                marginRight: '36px',
+                display: 'flex',
+              }}>
               <div style={cs(projectImageBackgroundStyle, topRightBottomLeftNotch)}>
                 <img style={{ margin: '24px' }} src={process.env.PUBLIC_URL + '/horse_image.png'} />
               </div>
@@ -274,7 +326,7 @@ export const ProjectDetailsPage = () => {
             </div>
             <div style={{ marginTop: '52px', marginLeft: '36px', marginRight: '36px' }}>
               <div style={shortDescriptionTextStyle}>Short description</div>
-              <div style={cs({ marginTop: '12px', maxWidth: '400px' }, descriptionTextStyle)}>
+              <div style={descriptionTextStyle} className={shortDescriptionTextClassName}>
                 For athletes, high altitude produces two contradictory effects on performance. For explosive events
                 (sprints up to 400 metres, long jump, triple jump)
               </div>
@@ -288,7 +340,7 @@ export const ProjectDetailsPage = () => {
             </div>
           </div>
           <div style={{ flex: 0.5 }}>
-            <div style={{ marginTop: '28px', marginRight: '36px' }}>
+            <div className={projectContainerRightStyle}>
               <div style={descriptionParentStyle}>
                 <div style={cs({ flex: 1 }, descriptionTextStyle)}>Starts</div>
                 <div style={contentTextStyle}>May 20, 2021 4:00 PM</div>
@@ -313,21 +365,23 @@ export const ProjectDetailsPage = () => {
                 <div style={cs({ flex: 1 }, description2TextStyle)}>Your allocation</div>
                 <div style={content2TextStyle}>{'0.02 ETH > 349857 TKN'}</div>
               </div>
-            </div>
-            <div style={{ marginTop: '36px', marginRight: '36px' }}>
-              <div style={valueDescTextStyle}>7273/10000 USDT</div>
-              <div style={{ marginTop: '12px' }}>
-                <ProgressBar
-                  completed={(7273 / 10000) * 100}
-                  isLabelVisible={false}
-                  height={'0.38rem'}
-                  bgColor={'#d2307a'}
-                  baseBgColor={'#7A7A7A'}
-                  borderRadius={'0rem'}
-                />
+
+              <div style={{ marginTop: '36px' }}>
+                <div style={valueDescTextStyle}>7273/10000 USDT</div>
+                <div style={{ marginTop: '12px' }}>
+                  <ProgressBar
+                    completed={(7273 / 10000) * 100}
+                    isLabelVisible={false}
+                    height={'0.38rem'}
+                    bgColor={'#d2307a'}
+                    baseBgColor={'#7A7A7A'}
+                    borderRadius={'0rem'}
+                  />
+                </div>
+                <div style={smallTextStyle}>1 TKN = 0.0002 USDT</div>
               </div>
-              <div style={smallTextStyle}>1 TKN = 0.0002 USDT</div>
             </div>
+
             <div style={projectDetailsBtnsParentStyle}>
               <div style={claimTokensBtnStyle}>CLAIM TOKENS</div>
               <div style={joinBtnStyle}>JOIN</div>
@@ -364,7 +418,7 @@ export const ProjectDetailsPage = () => {
       </div>
       <div style={{ margin: '120px' }}>
         <div style={subtitleStyle}>Project details</div>
-        <div style={{ display: 'flex', margin: '0 -24px', marginTop: '36px' }}>
+        <div className={projectDetailsContainerClassName}>
           <div style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}>
             <div style={{ padding: '24px' }}>
               <div style={projectDetailsSubtitleStyle}>PROJECT</div>
@@ -393,7 +447,9 @@ export const ProjectDetailsPage = () => {
             </div>
           </div>
 
-          <div style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}>
+          <div
+            style={cs({ flex: 0.5, margin: '0 24px', backgroundColor: '#484848' }, topRightBottomLeftNotch)}
+            className={projectDetailsTokenClassName}>
             <div style={{ padding: '24px' }}>
               <div style={projectDetailsSubtitleStyle}>TOKEN</div>
               <div style={{ marginTop: '36px' }}>
