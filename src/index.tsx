@@ -9,11 +9,14 @@ import { BrowserRouter } from 'react-router-dom';
 import { MainRouter } from './pages/routers/MainRouter';
 import * as serviceWorker from './serviceWorker';
 import { ErrorBoundary } from './shared/wrappers/ErrorBoundary';
+import ScrollToTop from './utils/scroll-to-top';
 
 ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
-      <MainRouter />
+      <ScrollToTop>
+        <MainRouter />
+      </ScrollToTop>
     </BrowserRouter>
   </ErrorBoundary>,
 
