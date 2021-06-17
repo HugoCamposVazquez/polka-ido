@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ProjectCard } from '../shared/ProjectCard';
+import { ProjectStatus } from '../types/enums/ProjectStatus';
 import { cs, styled } from '../utils/css';
 
 const mainImageContainerClassName = styled.cssClassName`
@@ -139,6 +140,9 @@ const projectsCardsHeaderClassName = styled.cssClassName`
 const projectsCardsHeaderItemClassName = styled.cssClassName`
   margin-right: 36px;
   padding-bottom: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
 
   @media (max-width: 830px) {
     margin-right: 24px;
@@ -180,6 +184,8 @@ const projectsCardsContainerClassName = styled.cssClassName`
 `;
 
 export const LaunchpadPage = () => {
+  const [shownProjects, setShownProjects] = useState<ProjectStatus | undefined>('upcoming');
+
   return (
     <div>
       <div className={imageContainerClassName}>
@@ -220,12 +226,38 @@ export const LaunchpadPage = () => {
       </div>
       <div className={projectsCardsHeaderClassName}>
         <div style={{ flex: 1, display: 'flex' }}>
-          <div className={projectsCardsHeaderItemClassName} style={{ borderBottom: '4px solid #D2307A' }}>
+          <div
+            className={projectsCardsHeaderItemClassName}
+            style={shownProjects === 'upcoming' ? { borderBottom: '4px solid #D2307A' } : {}}
+            onClick={() => {
+              setShownProjects('upcoming');
+            }}>
             Upcoming
           </div>
-          <div className={projectsCardsHeaderItemClassName}>Featured</div>
-          <div className={projectsCardsHeaderItemClassName}>Joined</div>
-          <div className={projectsCardsHeaderItemClassName}>All</div>
+          <div
+            className={projectsCardsHeaderItemClassName}
+            style={shownProjects === 'featured' ? { borderBottom: '4px solid #D2307A' } : {}}
+            onClick={() => {
+              setShownProjects('featured');
+            }}>
+            Featured
+          </div>
+          <div
+            className={projectsCardsHeaderItemClassName}
+            style={shownProjects === 'joined' ? { borderBottom: '4px solid #D2307A' } : {}}
+            onClick={() => {
+              setShownProjects('joined');
+            }}>
+            Joined
+          </div>
+          <div
+            className={projectsCardsHeaderItemClassName}
+            style={shownProjects === undefined ? { borderBottom: '4px solid #D2307A' } : {}}
+            onClick={() => {
+              setShownProjects(undefined);
+            }}>
+            All
+          </div>
         </div>
         <div className={searchIconClassName}>
           <img src={process.env.PUBLIC_URL + '/search_icon.svg'} />
