@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { styled } from '../utils/css';
+import { styled } from '../../utils/css';
 
 export class ErrorBoundary extends React.Component<React.ComponentClass, { hasError: boolean }> {
   public constructor(props: any) {

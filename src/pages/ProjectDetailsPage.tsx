@@ -1,7 +1,7 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
 
-import { MainButton } from '../shared/MainButton';
+import { MainButton } from '../shared/gui/MainButton';
 import { cs, styled } from '../utils/css';
 
 const imageParentContainerClassName = styled.cssClassName`
@@ -445,7 +445,7 @@ export const ProjectDetailsPage = () => {
         <div className={customTopRightObjectClassName} style={topLeftBottomRightNotch} />
         <div className={customBottomLeftObjectClassName} style={topLeftBottomRightNotch} />
         <div className={imageContainerClassName}>
-          <img className={imageStyle} src={process.env.PUBLIC_URL + '/rectangle2_image.png'} />
+          <img className={imageStyle} src={process.env.PUBLIC_URL + '/project_card_background.png'} />
         </div>
 
         <div className={projectContainerStyle}>

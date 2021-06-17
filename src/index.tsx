@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { MainRouter } from './pages/routers/MainRouter';
 import * as serviceWorker from './serviceWorker';
-import { ErrorBoundary } from './shared/ErrorBoundary';
+import { ErrorBoundary } from './shared/wrappers/ErrorBoundary';
 
 ReactDOM.render(
   <ErrorBoundary>
@@ -17,6 +17,7 @@ ReactDOM.render(
     </BrowserRouter>
   </ErrorBoundary>,
 
+  // eslint-disable-next-line no-undef
   document.getElementById('root'),
 );
 

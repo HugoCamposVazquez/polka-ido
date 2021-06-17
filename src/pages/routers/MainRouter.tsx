@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { Footer } from '../../shared/Footer';
-import { Header } from '../../shared/Header';
+import { Footer } from '../../shared/insets/Footer';
+import { Header } from '../../shared/insets/Header';
 import { HomePage } from '../HomePage';
 import { LaunchpadPage } from '../LanchpadPage';
 import { ProjectDetailsPage } from '../ProjectDetailsPage';

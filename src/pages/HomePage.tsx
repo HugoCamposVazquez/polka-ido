@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { MainButton } from '../shared/MainButton';
+import { MainButton } from '../shared/gui/MainButton';
+import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
-import { TextField } from '../shared/TextField';
 import { styled } from '../utils/css';
 
 const pageIntroContainerClassName = styled.cssClassName`
@@ -242,6 +242,7 @@ const viewAllProjectsStyle = styled.cssStyle`
   font-size: 15px;
   font-family: Titillium Web;
   color: #d2307a;
+  cursor: pointer;
 `;
 
 export const HomePage = () => {

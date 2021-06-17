@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { styled } from '../utils/css';
+import { styled } from '../../utils/css';
 
 const ryuTextStyle = styled.cssStyle`
   font-family: Odibee Sans;

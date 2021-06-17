@@ -110,10 +110,22 @@ const projectNameStyle = styled.cssStyle`
   line-height: 1.94rem;
 `;
 
-const projectDescriptionContainerStyle = styled.cssStyle`
+const projectDescriptionContainerStyle = styled.cssClassName`
   margin: 0.63rem 1rem;
   height: 6.88rem;
   overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: rgba(144, 139, 139, 0.35);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
 `;
 
 const projectDescriptionStyle = styled.cssStyle`
@@ -191,7 +203,7 @@ export const ProjectCard = ({ direction }: IProps) => {
         <div style={projectNameStyle}>Project name</div>
       </div>
 
-      <div style={projectDescriptionContainerStyle}>
+      <div className={projectDescriptionContainerStyle}>
         <div style={projectDescriptionStyle}>
           For athletes, high altitude produces two contradictory effects on performance. For explosive events (sprints
           up to 400 metres, long jump, triple jump) For athletes, high altitude produces two contradictory effects on

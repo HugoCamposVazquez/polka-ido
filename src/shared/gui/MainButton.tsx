@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled } from '../utils/css';
+import { styled } from '../../utils/css';
 
 const fillButtonStyle = styled.cssStyle`
   height: 48px;
@@ -14,6 +14,7 @@ const fillButtonStyle = styled.cssStyle`
   font-weight: 700;
   border: 1px solid #d2307a;
   color: white;
+  cursor: pointer;
 `;
 
 const borderedButtonStyle = styled.cssStyle`
@@ -29,6 +30,7 @@ const borderedButtonStyle = styled.cssStyle`
   font-size: 16px;
   font-family: Titillium Web;
   font-weight: 700;
+  cursor: pointer;
 `;
 
 type IProps = {
