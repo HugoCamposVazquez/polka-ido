@@ -141,7 +141,14 @@ export const Header = withRouter((props) => {
             : { backgroundColor: 'rgba(1, 1, 1, 0.6)' },
         )}>
         <div className={headerContentStyle}>
-          <div style={ryuTextStyle} onClick={() => window.location.reload()}>
+          <div
+            style={ryuTextStyle}
+            onClick={() => {
+              // eslint-disable-next-line no-undef
+              window.scrollTo(0, 0);
+              // eslint-disable-next-line no-undef
+              window.location.reload();
+            }}>
             RYU
           </div>
           <div className={menuItemsContainerClassName}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 
 import { MainButton } from '../shared/gui/MainButton';
 import { TextField } from '../shared/gui/TextField';
@@ -246,6 +247,8 @@ const viewAllProjectsStyle = styled.cssStyle`
 `;
 
 export const HomePage = () => {
+  const navigation = useHistory();
+
   const methods = useForm({
     defaultValues: {
       email: '',
@@ -292,7 +295,13 @@ export const HomePage = () => {
           <ProjectCard direction={'left'} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-          <div style={viewAllProjectsStyle}>View all projects</div>
+          <div
+            style={viewAllProjectsStyle}
+            onClick={() => {
+              navigation.push('/launchpad');
+            }}>
+            View all projects
+          </div>
           <img src={process.env.PUBLIC_URL + '/arrow_left.svg'} />
         </div>
       </div>
