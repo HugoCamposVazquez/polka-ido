@@ -1,29 +1,14 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { cs, styled } from '../../utils/css';
+import { styled } from '../../utils/css';
 
 const inputParentStyle = styled.cssStyle`
   display: flex;
+  flex: 1;
 `;
 
 const inputClassName = styled.cssClassName`
-  ::-webkit-input-placeholder {
-    /* Edge */
-    color: #b8b8b8;
-  }
-
-  :-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
-    color: #b8b8b8;
-  }
-
-  ::placeholder {
-    color: #b8b8b8;
-  }
-`;
-
-const inputStyle = styled.cssStyle`
   flex: 1;
   background-color: transparent;
   outline: 0;
@@ -39,6 +24,20 @@ const inputStyle = styled.cssStyle`
   line-height: 24px;
   border-style: solid;
   resize: none;
+
+  ::-webkit-input-placeholder {
+    /* Edge */
+    color: #b8b8b8;
+  }
+
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #b8b8b8;
+  }
+
+  ::placeholder {
+    color: #b8b8b8;
+  }
 `;
 
 type IProps = {
@@ -46,9 +45,10 @@ type IProps = {
   placeholder?: string;
   disabled?: boolean;
   style?: any;
+  autoFocus?: boolean;
 };
 
-export const TextArea = ({ name, placeholder, disabled, style }: IProps) => {
+export const TextArea = ({ name, placeholder, disabled, style, autoFocus }: IProps) => {
   const { control } = useFormContext();
 
   return (
@@ -60,11 +60,12 @@ export const TextArea = ({ name, placeholder, disabled, style }: IProps) => {
           return (
             <textarea
               className={inputClassName}
-              style={cs(inputStyle, style)}
+              style={style}
               value={value}
               placeholder={placeholder}
               disabled={disabled}
               onChange={onChange}
+              autoFocus={autoFocus}
             />
           );
         }}

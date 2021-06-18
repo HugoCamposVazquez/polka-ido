@@ -90,6 +90,24 @@ const selectedTabStyle = styled.cssStyle`
   border-bottom: 4px solid #d2307a;
 `;
 
+const searchFormStyle = styled.cssStyle`
+  display: flex;
+  flex: 1;
+  align-items: center;
+`;
+
+const searchIconStyle = styled.cssStyle`
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+`;
+
+const searchFormContainerStyle = styled.cssStyle`
+  display: flex;
+  flex: 1;
+  border-bottom: 1px solid #b8b8b8;
+`;
+
 const launchpadDetailsItemStyle = styled.cssStyle`
   display: flex;
   margin-top: 12px;
@@ -152,6 +170,7 @@ const projectsCardsHeaderClassName = styled.cssClassName`
 const projectsCardsHeaderItemClassName = styled.cssClassName`
   margin-right: 36px;
   padding-bottom: 15px;
+  padding-top: 15px;
   padding-left: 5px;
   padding-right: 5px;
   cursor: pointer;
@@ -173,7 +192,8 @@ const projectsCardsContainerParentClassName = styled.cssClassName`
 `;
 
 const searchParentClassName = styled.cssClassName`
-  display: grid;
+  display: flex;
+  align-items: center;
 
   @media (max-width: 830px) {
     display: none;
@@ -298,10 +318,10 @@ export const LaunchpadPage = () => {
             All
           </div>
         </div>
-        <div className={searchParentClassName} style={searchTextVisible ? { width: '400px' } : {}}>
+        <div className={searchParentClassName} style={cs(searchTextVisible ? { width: '300px' } : {})}>
           {!searchTextVisible && (
             <img
-              style={{ cursor: 'pointer' }}
+              style={searchIconStyle}
               src={process.env.PUBLIC_URL + '/search_icon.svg'}
               onClick={() => {
                 setSearchTextVisible(true);
@@ -309,17 +329,12 @@ export const LaunchpadPage = () => {
             />
           )}
           {searchTextVisible && (
-            <div style={{ position: 'relative' }}>
+            <div style={searchFormContainerStyle}>
               <FormProvider {...methods}>
-                <form>
-                  <TextField
-                    name="search"
-                    placeholder="Search here"
-                    style={{ paddingRight: '32px' }}
-                    type={'underlined'}
-                  />
+                <form style={searchFormStyle}>
+                  <TextField name="search" placeholder="Search here" type={'none'} autoFocus={true} />
                   <img
-                    style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0 }}
+                    style={searchIconStyle}
                     src={process.env.PUBLIC_URL + '/search_icon.svg'}
                     onClick={methods.handleSubmit(onSearch)}
                   />

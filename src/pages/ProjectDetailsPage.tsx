@@ -104,6 +104,7 @@ const shortDescriptionTextStyle = styled.cssStyle`
 `;
 
 const descriptionTextStyle = styled.cssClassName`
+  flex: 1;
   font-family: Titillium Web;
   font-weight: 400;
   font-size: 16px;
@@ -115,6 +116,7 @@ const descriptionTextStyle = styled.cssClassName`
 `;
 
 const description2TextStyle = styled.cssClassName`
+  flex: 1;
   font-family: Titillium Web;
   font-weight: 600;
   font-size: 16px;
@@ -468,50 +470,44 @@ export const ProjectDetailsPage = () => {
                 (sprints up to 400 metres, long jump, triple jump)
               </div>
               <div style={{ marginTop: '36px', display: 'flex' }}>
-                <div style={{ padding: '4px 24px', border: '1px solid #FFFFFF' }}>Etherscan</div>
+                <div style={{ padding: '4px 24px', border: '1px solid #FFFFFF', cursor: 'pointer' }}>Etherscan</div>
 
-                <img style={{ marginLeft: '24px' }} src={process.env.PUBLIC_URL + '/web_icon.svg'} />
-                <img style={{ marginLeft: '16px' }} src={process.env.PUBLIC_URL + '/twitter_icon.svg'} />
-                <img style={{ marginLeft: '16px' }} src={process.env.PUBLIC_URL + '/telegram_icon.svg'} />
+                <img style={{ marginLeft: '24px', cursor: 'pointer' }} src={process.env.PUBLIC_URL + '/web_icon.svg'} />
+                <img
+                  style={{ marginLeft: '16px', cursor: 'pointer' }}
+                  src={process.env.PUBLIC_URL + '/twitter_icon.svg'}
+                />
+                <img
+                  style={{ marginLeft: '16px', cursor: 'pointer' }}
+                  src={process.env.PUBLIC_URL + '/telegram_icon.svg'}
+                />
               </div>
             </div>
           </div>
           <div style={{ flex: 0.5 }}>
             <div className={projectContainerRightStyle}>
               <div style={descriptionParentStyle}>
-                <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                  Starts
-                </div>
+                <div className={descriptionTextStyle}>Starts</div>
                 <div className={contentTextStyle}>May 20, 2021 4:00 PM</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                  Ends
-                </div>
+                <div className={descriptionTextStyle}>Ends</div>
                 <div className={contentTextStyle}>June 20, 2021 4:00 PM</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                  Allocation
-                </div>
+                <div className={descriptionTextStyle}>Allocation</div>
                 <div className={contentTextStyle}>10,000,000</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                  Access
-                </div>
+                <div className={descriptionTextStyle}>Access</div>
                 <div className={contentTextStyle}>Whitelist</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                  Token price
-                </div>
+                <div className={descriptionTextStyle}>Token price</div>
                 <div className={contentTextStyle}>0.022ETH</div>
               </div>
               <div style={descriptionParentStyle}>
-                <div style={{ flex: 1 }} className={description2TextStyle}>
-                  Your allocation
-                </div>
+                <div className={description2TextStyle}>Your allocation</div>
                 <div className={content2TextStyle}>{'0.02 ETH > 349857 TKN'}</div>
               </div>
 
@@ -605,33 +601,23 @@ export const ProjectDetailsPage = () => {
               <div style={projectDetailsSubtitleStyle}>PROJECT</div>
               <div style={{ marginTop: '36px' }}>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Token distribution
-                  </div>
+                  <div className={descriptionTextStyle}>Token distribution</div>
                   <div className={content3TextStyle}>June 21, 2021 4:00 PM</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Min. Allocation
-                  </div>
+                  <div className={descriptionTextStyle}>Min. Allocation</div>
                   <div className={content3TextStyle}>0</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Max. Allocation
-                  </div>
+                  <div className={descriptionTextStyle}>Max. Allocation</div>
                   <div className={content3TextStyle}>0.02 ETH</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Min. swap level
-                  </div>
+                  <div className={descriptionTextStyle}>Min. swap level</div>
                   <div className={content3TextStyle}>2 ETH</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Whitelist status
-                  </div>
+                  <div className={descriptionTextStyle}>Whitelist status</div>
                   <div className={content3TextStyle}>Whitelisted</div>
                 </div>
               </div>
@@ -645,33 +631,23 @@ export const ProjectDetailsPage = () => {
               <div style={projectDetailsSubtitleStyle}>TOKEN</div>
               <div style={{ marginTop: '36px' }}>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Name
-                  </div>
+                  <div className={descriptionTextStyle}>Name</div>
                   <div className={content3TextStyle}>takename</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Symbol
-                  </div>
+                  <div className={descriptionTextStyle}>Symbol</div>
                   <div className={content3TextStyle}>TKN</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Decimals
-                  </div>
+                  <div className={descriptionTextStyle}>Decimals</div>
                   <div className={content3TextStyle}>24</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0', borderBottom: '1px solid #B8B8B8' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Address
-                  </div>
+                  <div className={descriptionTextStyle}>Address</div>
                   <div className={content3TextStyle}>0x19273h348fo837ffo38974fh</div>
                 </div>
                 <div style={{ display: 'flex', padding: '12px 0' }}>
-                  <div style={{ flex: 1 }} className={descriptionTextStyle}>
-                    Total supply
-                  </div>
+                  <div className={descriptionTextStyle}>Total supply</div>
                   <div className={content3TextStyle}>10,000,000</div>
                 </div>
               </div>
