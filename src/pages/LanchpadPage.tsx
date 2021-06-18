@@ -261,21 +261,21 @@ export const LaunchpadPage = () => {
           <div className={launchpadTextClassName}>LAUNCHPAD</div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={launchpadDetailsItemStyle}>
-              <div className={boldTextStyle} style={cs({ flex: 1, color: '#D2307A' })}>
+              <div className={boldTextStyle} style={{ flex: 1, color: '#D2307A' }}>
                 Projects launched
               </div>
-              <div className={boldTextStyle} style={cs({ color: '#D2307A' })}>
+              <div className={boldTextStyle} style={{ color: '#D2307A' }}>
                 {launchpadDetails?.data.projectsLaunched}
               </div>
             </div>
             <div style={launchpadDetailsItemStyle}>
-              <div className={normalTextStyle} style={cs({ flex: 1 })}>
+              <div className={normalTextStyle} style={{ flex: 1 }}>
                 Funds raised
               </div>
               <div className={boldTextStyle}>{launchpadDetails?.data.fundsRaised} USDT</div>
             </div>
             <div style={launchpadDetailsItemStyle}>
-              <div className={normalTextStyle} style={cs({ flex: 1 })}>
+              <div className={normalTextStyle} style={{ flex: 1 }}>
                 Users participated
               </div>
               <div className={boldTextStyle}>{launchpadDetails?.data.usersParticipated}</div>
@@ -318,7 +318,7 @@ export const LaunchpadPage = () => {
             All
           </div>
         </div>
-        <div className={searchParentClassName} style={cs(searchTextVisible ? { width: '300px' } : {})}>
+        <div className={searchParentClassName} style={searchTextVisible ? { width: '300px' } : {}}>
           {!searchTextVisible && (
             <img
               style={searchIconStyle}

@@ -6,6 +6,7 @@ export type ProjectsApiType = {
 
 export type ProjectType = {
   id: number;
+  iconUrl: string;
   title: string;
   description: string;
   status: ProjectStatus;

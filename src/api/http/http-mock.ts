@@ -4,12 +4,14 @@ import { ProjectType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 
 const projectStatuses: ProjectStatus[] = ['upcoming', 'ended', 'featured', 'joined'];
+const iconUrls: string[] = ['project_image.svg', 'horse_image.png'];
 
 const allProjects: ProjectType[] = [];
 
 for (let i = 0; i < 80; i++) {
   allProjects.push({
     id: i,
+    iconUrl: iconUrls[Math.floor(Math.random() * iconUrls.length)],
     title: 'Project name ' + i,
     description:
       'For athletes, high altitude produces two contradictory effects on performance. For explosive events (sprints up to 400 metres, long jump, triple jump)',

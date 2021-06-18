@@ -197,7 +197,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
       <div style={projectCardHeaderContainer}>
         <div style={{ flex: 1 }}>
           <div style={projectCardHeaderIconContainer}>
-            <img style={projectCardHeaderIconStyle} src={process.env.PUBLIC_URL + '/project_image.svg'} />
+            <img style={projectCardHeaderIconStyle} src={project.iconUrl} />
           </div>
         </div>
         <div style={projectCardStatusTextStyle}>{project.status}</div>
