@@ -6,6 +6,8 @@ import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
 import { cs, styled } from '../utils/css';
+import getCardDirection from '../utils/get-card-direction';
+import useWindowDimensions from '../utils/use-window-dimensions';
 
 const mainImageContainerClassName = styled.cssClassName`
   position: absolute;
@@ -222,6 +224,8 @@ export const LaunchpadPage = () => {
   const { data: projects, isLoading: projectsLoading } = useProjects(shownProjects);
   const { data: launchpadDetails, isLoading: launchpadDetailsLoading } = useLaunchpadDetails();
 
+  const { width } = useWindowDimensions();
+
   const methods = useForm({
     defaultValues: {
       search: '',
@@ -347,7 +351,7 @@ export const LaunchpadPage = () => {
       <div className={projectsCardsContainerParentClassName}>
         <div className={projectsCardsContainerClassName}>
           {projects?.data.map((project, index) => {
-            return <ProjectCard key={index} project={project} direction={index % 2 === 0 ? 'right' : 'left'} />;
+            return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
           })}
         </div>
       </div>

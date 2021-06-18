@@ -9,6 +9,8 @@ import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectType } from '../types/ProjectType';
 import { styled } from '../utils/css';
+import getCardDirection from '../utils/get-card-direction';
+import useWindowDimensions from '../utils/use-window-dimensions';
 
 const pageIntroContainerClassName = styled.cssClassName`
   display: block;
@@ -256,6 +258,8 @@ const textFieldContainerStyle = styled.cssStyle`
 export const HomePage = () => {
   const navigation = useHistory();
 
+  const { width } = useWindowDimensions();
+
   const { data: topFeaturedProjects, isLoading: topFeaturedProjectsLoading } = useTopFeaturedProjects();
 
   const methods = useForm({
@@ -305,7 +309,7 @@ export const HomePage = () => {
         <div className={featuredProjectsTitleStyle}>Featured projects</div>
         <div className={featuredProjectsCardsContainerClassName}>
           {topFeaturedProjects?.data.map((project: ProjectType, index: number) => {
-            return <ProjectCard key={index} project={project} direction={index % 2 === 0 ? 'right' : 'left'} />;
+            return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
           })}
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
