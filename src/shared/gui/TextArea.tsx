@@ -27,6 +27,7 @@ const inputStyle = styled.cssStyle`
   flex: 1;
   background-color: transparent;
   outline: 0;
+  border-width: 1px;
   border-color: #b8b8b8;
   color: #b8b8b8;
   padding-left: 8px;
@@ -37,6 +38,7 @@ const inputStyle = styled.cssStyle`
   font-size: 16px;
   line-height: 24px;
   border-style: solid;
+  resize: none;
 `;
 
 type IProps = {
@@ -44,10 +46,9 @@ type IProps = {
   placeholder?: string;
   disabled?: boolean;
   style?: any;
-  type: 'bordered' | 'underlined';
 };
 
-export const TextField = ({ name, placeholder, disabled, style, type }: IProps) => {
+export const TextArea = ({ name, placeholder, disabled, style }: IProps) => {
   const { control } = useFormContext();
 
   return (
@@ -57,9 +58,9 @@ export const TextField = ({ name, placeholder, disabled, style, type }: IProps) 
         control={control}
         render={({ onChange, value }) => {
           return (
-            <input
+            <textarea
               className={inputClassName}
-              style={cs(inputStyle, style, type === 'bordered' ? { borderWidth: '1px' } : { borderWidth: '0 0 1px' })}
+              style={cs(inputStyle, style)}
               value={value}
               placeholder={placeholder}
               disabled={disabled}

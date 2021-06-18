@@ -312,7 +312,12 @@ export const LaunchpadPage = () => {
             <div style={{ position: 'relative' }}>
               <FormProvider {...methods}>
                 <form>
-                  <TextField name="search" placeholder="Search here" style={{ paddingRight: '32px' }} />
+                  <TextField
+                    name="search"
+                    placeholder="Search here"
+                    style={{ paddingRight: '32px' }}
+                    type={'underlined'}
+                  />
                   <img
                     style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0 }}
                     src={process.env.PUBLIC_URL + '/search_icon.svg'}

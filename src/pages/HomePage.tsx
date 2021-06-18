@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { useTopFeaturedProjects } from '../api/api/api';
 import { MainButton } from '../shared/gui/MainButton';
+import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectType } from '../types/ProjectType';
@@ -333,10 +334,10 @@ export const HomePage = () => {
           <FormProvider {...methods}>
             <form>
               <div style={textFieldContainerStyle}>
-                <TextField name="email" placeholder="E-mail" />
+                <TextField name="email" placeholder="E-mail" type={'bordered'} />
               </div>
               <div style={textFieldContainerStyle}>
-                <TextField name="message" placeholder="Message" />
+                <TextArea name="message" placeholder="Message" style={{ height: '134px' }} />
               </div>
               <MainButton title="Send" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
             </form>
