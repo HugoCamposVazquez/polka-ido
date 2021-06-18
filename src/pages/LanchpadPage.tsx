@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
+import { useLaunchpadDetails, useProjects } from '../api/api/api';
+import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
 import { cs, styled } from '../utils/css';
@@ -83,6 +86,15 @@ const topLeftBottomRightNotch = styled.cssStyle`
   );
 `;
 
+const selectedTabStyle = styled.cssStyle`
+  border-bottom: 4px solid #d2307a;
+`;
+
+const launchpadDetailsItemStyle = styled.cssStyle`
+  display: flex;
+  margin-top: 12px;
+`;
+
 const launchpadParentClassName = styled.cssClassName`
   min-width: 300px;
   max-width: min-content;
@@ -160,7 +172,7 @@ const projectsCardsContainerParentClassName = styled.cssClassName`
   }
 `;
 
-const searchIconClassName = styled.cssClassName`
+const searchParentClassName = styled.cssClassName`
   display: grid;
 
   @media (max-width: 830px) {
@@ -185,6 +197,33 @@ const projectsCardsContainerClassName = styled.cssClassName`
 
 export const LaunchpadPage = () => {
   const [shownProjects, setShownProjects] = useState<ProjectStatus | undefined>('upcoming');
+  const [searchTextVisible, setSearchTextVisible] = useState<boolean>(false);
+
+  const { data: projects, isLoading: projectsLoading } = useProjects(shownProjects);
+  const { data: launchpadDetails, isLoading: launchpadDetailsLoading } = useLaunchpadDetails();
+
+  const methods = useForm({
+    defaultValues: {
+      search: '',
+    },
+    //resolver: yupResolver(loginValidationSchema),
+  });
+
+  const onSearch = async ({ search }: any) => {
+    try {
+      console.log('search', search);
+      // const { token } = await generalHTTP.login(email, message);
+      // localStorage.setItem('token', token);
+      // window.location.reload();
+    } catch (e) {
+      console.log(e);
+      // show notification or error message
+    }
+  };
+
+  if (projectsLoading || launchpadDetailsLoading) {
+    return null;
+  }
 
   return (
     <div>
@@ -201,25 +240,25 @@ export const LaunchpadPage = () => {
         <div className={launchpadParentClassName}>
           <div className={launchpadTextClassName}>LAUNCHPAD</div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', marginTop: '12px' }}>
+            <div style={launchpadDetailsItemStyle}>
               <div className={boldTextStyle} style={cs({ flex: 1, color: '#D2307A' })}>
                 Projects launched
               </div>
               <div className={boldTextStyle} style={cs({ color: '#D2307A' })}>
-                12
+                {launchpadDetails?.data.projectsLaunched}
               </div>
             </div>
-            <div style={{ display: 'flex', marginTop: '12px' }}>
+            <div style={launchpadDetailsItemStyle}>
               <div className={normalTextStyle} style={cs({ flex: 1 })}>
                 Funds raised
               </div>
-              <div className={boldTextStyle}>238753 USDT</div>
+              <div className={boldTextStyle}>{launchpadDetails?.data.fundsRaised} USDT</div>
             </div>
-            <div style={{ display: 'flex', marginTop: '12px' }}>
+            <div style={launchpadDetailsItemStyle}>
               <div className={normalTextStyle} style={cs({ flex: 1 })}>
                 Users participated
               </div>
-              <div className={boldTextStyle}>3494</div>
+              <div className={boldTextStyle}>{launchpadDetails?.data.usersParticipated}</div>
             </div>
           </div>
         </div>
@@ -228,7 +267,7 @@ export const LaunchpadPage = () => {
         <div style={{ flex: 1, display: 'flex' }}>
           <div
             className={projectsCardsHeaderItemClassName}
-            style={shownProjects === 'upcoming' ? { borderBottom: '4px solid #D2307A' } : {}}
+            style={shownProjects === 'upcoming' ? selectedTabStyle : {}}
             onClick={() => {
               setShownProjects('upcoming');
             }}>
@@ -236,7 +275,7 @@ export const LaunchpadPage = () => {
           </div>
           <div
             className={projectsCardsHeaderItemClassName}
-            style={shownProjects === 'featured' ? { borderBottom: '4px solid #D2307A' } : {}}
+            style={shownProjects === 'featured' ? selectedTabStyle : {}}
             onClick={() => {
               setShownProjects('featured');
             }}>
@@ -244,7 +283,7 @@ export const LaunchpadPage = () => {
           </div>
           <div
             className={projectsCardsHeaderItemClassName}
-            style={shownProjects === 'joined' ? { borderBottom: '4px solid #D2307A' } : {}}
+            style={shownProjects === 'joined' ? selectedTabStyle : {}}
             onClick={() => {
               setShownProjects('joined');
             }}>
@@ -252,35 +291,44 @@ export const LaunchpadPage = () => {
           </div>
           <div
             className={projectsCardsHeaderItemClassName}
-            style={shownProjects === undefined ? { borderBottom: '4px solid #D2307A' } : {}}
+            style={shownProjects === undefined ? selectedTabStyle : {}}
             onClick={() => {
               setShownProjects(undefined);
             }}>
             All
           </div>
         </div>
-        <div className={searchIconClassName}>
-          <img src={process.env.PUBLIC_URL + '/search_icon.svg'} />
+        <div className={searchParentClassName} style={searchTextVisible ? { width: '400px' } : {}}>
+          {!searchTextVisible && (
+            <img
+              style={{ cursor: 'pointer' }}
+              src={process.env.PUBLIC_URL + '/search_icon.svg'}
+              onClick={() => {
+                setSearchTextVisible(true);
+              }}
+            />
+          )}
+          {searchTextVisible && (
+            <div style={{ position: 'relative' }}>
+              <FormProvider {...methods}>
+                <form>
+                  <TextField name="search" placeholder="Search here" style={{ paddingRight: '32px' }} />
+                  <img
+                    style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0 }}
+                    src={process.env.PUBLIC_URL + '/search_icon.svg'}
+                    onClick={methods.handleSubmit(onSearch)}
+                  />
+                </form>
+              </FormProvider>
+            </div>
+          )}
         </div>
       </div>
       <div className={projectsCardsContainerParentClassName}>
         <div className={projectsCardsContainerClassName}>
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'right'} />
+          {projects?.data.map((project, index) => {
+            return <ProjectCard key={index} project={project} direction={index % 2 === 0 ? 'right' : 'left'} />;
+          })}
         </div>
       </div>
     </div>

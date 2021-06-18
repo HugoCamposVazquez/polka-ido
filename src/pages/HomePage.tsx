@@ -2,9 +2,11 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import { useTopFeaturedProjects } from '../api/api/api';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
+import { ProjectType } from '../types/ProjectType';
 import { styled } from '../utils/css';
 
 const pageIntroContainerClassName = styled.cssClassName`
@@ -246,8 +248,14 @@ const viewAllProjectsStyle = styled.cssStyle`
   cursor: pointer;
 `;
 
+const textFieldContainerStyle = styled.cssStyle`
+  margin: 36px 0;
+`;
+
 export const HomePage = () => {
   const navigation = useHistory();
+
+  const { data: topFeaturedProjects, isLoading: topFeaturedProjectsLoading } = useTopFeaturedProjects();
 
   const methods = useForm({
     defaultValues: {
@@ -259,7 +267,7 @@ export const HomePage = () => {
 
   const onSubmit = async ({ email, message }: any) => {
     try {
-      console.log('test');
+      console.log('test', email, message);
       // const { token } = await generalHTTP.login(email, message);
       // localStorage.setItem('token', token);
       // window.location.reload();
@@ -268,6 +276,12 @@ export const HomePage = () => {
       // show notification or error message
     }
   };
+
+  if (topFeaturedProjectsLoading) {
+    return null;
+  }
+
+  console.log(topFeaturedProjects);
 
   return (
     <div>
@@ -289,10 +303,9 @@ export const HomePage = () => {
       <div className={featuredProjectsContainerClassName}>
         <div className={featuredProjectsTitleStyle}>Featured projects</div>
         <div className={featuredProjectsCardsContainerClassName}>
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
-          <ProjectCard direction={'right'} />
-          <ProjectCard direction={'left'} />
+          {topFeaturedProjects?.data.map((project: ProjectType, index: number) => {
+            return <ProjectCard key={index} project={project} direction={index % 2 === 0 ? 'right' : 'left'} />;
+          })}
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
           <div
@@ -319,8 +332,12 @@ export const HomePage = () => {
           <div className={tellUsAboutYourProjectTextClassName}>Tell us about your project</div>
           <FormProvider {...methods}>
             <form>
-              <TextField name="email" placeholder="E-mail" />
-              <TextField name="message" placeholder="Message" />
+              <div style={textFieldContainerStyle}>
+                <TextField name="email" placeholder="E-mail" />
+              </div>
+              <div style={textFieldContainerStyle}>
+                <TextField name="message" placeholder="Message" />
+              </div>
               <MainButton title="Send" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
             </form>
           </FormProvider>

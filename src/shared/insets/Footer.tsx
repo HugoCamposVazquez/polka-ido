@@ -89,7 +89,9 @@ const footerCopyrightParentClassName = styled.cssClassName`
   }
 `;
 
-export const Footer = withRouter((props) => {
+export const Footer = withRouter(() => {
+  const a = '';
+
   return (
     <div className={footerContainerClassName}>
       <div className={footerCopyrightParentClassName}>

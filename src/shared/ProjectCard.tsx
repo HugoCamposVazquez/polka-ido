@@ -2,6 +2,7 @@ import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { ProjectType } from '../types/ProjectType';
 import { cs, styled } from '../utils/css';
 
 const projectCardContainer = styled.cssStyle`
@@ -97,6 +98,7 @@ const projectCardStatusTextStyle = styled.cssStyle`
   font-size: 0.88rem;
   color: #27f0dc;
   line-height: 1.23rem;
+  text-transform: capitalize;
 `;
 
 const projectNameContainerStyle = styled.cssStyle`
@@ -180,16 +182,17 @@ const detailsValueStyle = styled.cssStyle`
 
 type IProps = {
   direction: 'left' | 'right';
+  project: ProjectType;
 };
 
-export const ProjectCard = ({ direction }: IProps) => {
+export const ProjectCard = ({ direction, project }: IProps) => {
   const navigation = useHistory();
 
   return (
     <div
       style={cs(projectCardContainer, direction === 'left' ? topLeftBottomRightNotch : topRightBottomLeftNotch)}
       onClick={() => {
-        navigation.push('/project/1');
+        navigation.push(`/project/${project.id}`);
       }}>
       <div style={projectCardHeaderContainer}>
         <div style={{ flex: 1 }}>
@@ -197,28 +200,24 @@ export const ProjectCard = ({ direction }: IProps) => {
             <img style={projectCardHeaderIconStyle} src={process.env.PUBLIC_URL + '/project_image.svg'} />
           </div>
         </div>
-        <div style={projectCardStatusTextStyle}>Upcoming</div>
+        <div style={projectCardStatusTextStyle}>{project.status}</div>
       </div>
       <div style={projectNameContainerStyle}>
-        <div style={projectNameStyle}>Project name</div>
+        <div style={projectNameStyle}>{project.title}</div>
       </div>
 
       <div className={projectDescriptionContainerStyle}>
-        <div style={projectDescriptionStyle}>
-          For athletes, high altitude produces two contradictory effects on performance. For explosive events (sprints
-          up to 400 metres, long jump, triple jump) For athletes, high altitude produces two contradictory effects on
-          performance. For explosive events (sprints up to 400 metres, long jump, triple jump)
-        </div>
+        <div style={projectDescriptionStyle}>{project.description}</div>
       </div>
       <div style={raiseAmountStyle}>Raise amount</div>
       <div></div>
       <div style={progressTextContainerStyle}>
-        <div style={progressTextPrefixStyle}>3487</div>
-        <div style={progressTextSufixStyle}>/100000 USDT</div>
+        <div style={progressTextPrefixStyle}>{project.raiseAmountCurrent}</div>
+        <div style={progressTextSufixStyle}>/{project.raiseAmountTotal} USDT</div>
       </div>
       <div style={{ margin: '0.38rem 1rem' }}>
         <ProgressBar
-          completed={(3487 / 100000) * 100}
+          completed={(project.raiseAmountCurrent / project.raiseAmountTotal) * 100}
           isLabelVisible={false}
           height={'0.38rem'}
           bgColor={'#d2307a'}
@@ -243,15 +242,15 @@ export const ProjectCard = ({ direction }: IProps) => {
         <div style={{ display: 'flex' }}>
           <div>
             <div style={detailsTitleStyle}>Per token</div>
-            <div style={detailsValueStyle}>0.012 USDT</div>
+            <div style={detailsValueStyle}>{project.perToken.toFixed(2)} USDT</div>
           </div>
           <div>
-            <div style={detailsTitleStyle}>Starts</div>
-            <div style={detailsValueStyle}>24/06/21</div>
+            <div style={detailsTitleStyle}>{project.status !== 'ended' ? 'Starts' : 'Ended'}</div>
+            <div style={detailsValueStyle}>{project.status !== 'ended' ? project.startDate : project.endDate}</div>
           </div>
           <div>
             <div style={detailsTitleStyle}>Access</div>
-            <div style={detailsValueStyle}>Whitelist</div>
+            <div style={detailsValueStyle}>{project.access}</div>
           </div>
         </div>
       </div>

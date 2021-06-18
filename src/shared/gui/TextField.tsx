@@ -1,11 +1,10 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { styled } from '../../utils/css';
+import { cs, styled } from '../../utils/css';
 
 const inputParentStyle = styled.cssStyle`
   display: flex;
-  margin: 36px 0;
 `;
 
 const inputClassName = styled.cssClassName`
@@ -42,10 +41,11 @@ type IProps = {
   name: string;
   placeholder?: string;
   disabled?: boolean;
+  style?: any;
 };
 
-export const TextField = ({ name, placeholder, disabled }: IProps) => {
-  const { control, errors } = useFormContext();
+export const TextField = ({ name, placeholder, disabled, style }: IProps) => {
+  const { control } = useFormContext();
 
   return (
     <div style={inputParentStyle}>
@@ -56,7 +56,7 @@ export const TextField = ({ name, placeholder, disabled }: IProps) => {
           return (
             <input
               className={inputClassName}
-              style={inputStyle}
+              style={cs(inputStyle, style)}
               value={value}
               placeholder={placeholder}
               disabled={disabled}
