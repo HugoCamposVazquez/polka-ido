@@ -3,10 +3,8 @@ function getFactor(width: number) {
     return 0;
   } else if (width > 830 && width <= 1435) {
     return 2;
-  } else if (width > 1435 && width <= 2400) {
-    return 4;
   } else {
-    return 6;
+    return 4;
   }
 }
 
