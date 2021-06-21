@@ -205,8 +205,12 @@ const searchParentClassName = styled.cssClassName`
 const projectsCardsContainerClassName = styled.cssClassName`
   display: grid;
 
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1.25rem;
+
+  @media (max-width: 2400px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 
   @media (max-width: 1435px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));

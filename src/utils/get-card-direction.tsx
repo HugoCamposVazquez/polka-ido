@@ -1,25 +1,19 @@
-export default function getCardDirection(width: number, index: number): 'right' | 'left' {
-  let startsDirection: 'left' | 'right' = 'right';
-
-  const factor = width > 830 && width < 1436 ? 2 : 4;
-
-  const times = Math.floor(index / factor);
-
-  for (let i = 0; i < times; i++) {
-    if (startsDirection === 'left') {
-      startsDirection = 'right';
-    } else {
-      startsDirection = 'left';
-    }
-  }
-
-  let direction: 'right' | 'left';
-
-  if (startsDirection === 'right') {
-    direction = index % 2 === 0 ? 'right' : 'left';
+function getFactor(width: number) {
+  if (width <= 830) {
+    return 0;
+  } else if (width > 830 && width <= 1435) {
+    return 2;
+  } else if (width > 1435 && width <= 2400) {
+    return 4;
   } else {
-    direction = index % 2 === 0 ? 'left' : 'right';
+    return 6;
   }
+}
 
-  return direction;
+export default function getCardDirection(width: number, index: number): 'right' | 'left' {
+  const factor = getFactor(width);
+  const times = factor !== 0 ? Math.floor(index / factor) : 0;
+  const oddOrEven = times % 2 === 0 ? 0 : 1;
+
+  return index % 2 === oddOrEven ? 'right' : 'left';
 }
