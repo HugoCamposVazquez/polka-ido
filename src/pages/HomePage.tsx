@@ -198,8 +198,8 @@ const customObjectClassName = styled.cssClassName`
 `;
 
 const tellUsAboutYourProjectParentClassName = styled.cssClassName`
-  min-width: 200px;
-  max-width: 400px;
+  min-width: 350px;
+  max-width: 40%;
   position: relative;
   flex: 1;
   display: flex;
@@ -218,7 +218,11 @@ const tellUsAboutYourProjectTextClassName = styled.cssClassName`
   font-size: 2.25rem;
   line-height: 3.4rem;
   font-family: Titillium Web;
-  width: 80%;
+  width: 60%;
+
+  @media (max-width: 1430px) {
+    width: 75%;
+  }
 
   @media (max-width: 830px) {
     width: 100%;
