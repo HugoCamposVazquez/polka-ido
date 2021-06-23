@@ -4,7 +4,7 @@ import { ProjectStatus } from '../../types/enums/ProjectStatus';
 import { LaunchpadApiType } from '../../types/LaunchpadType';
 import { ProjectsApiType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
-import { projectsMockHTTP } from '../http/http-mock';
+import { projectsMockHTTP } from '../http/httpMock';
 export const projectCacheKeys = {
   topFeaturedProjects: 'topFeaturedProjects',
   projects: 'projects',

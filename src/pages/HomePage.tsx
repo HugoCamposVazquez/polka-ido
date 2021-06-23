@@ -8,9 +8,9 @@ import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectType } from '../types/ProjectType';
+import getCardDirection from '../utils/cardDirectionUtil';
 import { styled } from '../utils/css';
-import getCardDirection from '../utils/get-card-direction';
-import useWindowDimensions from '../utils/use-window-dimensions';
+import useWindowDimensions from '../utils/windowDimensionsUtil';
 
 const pageIntroContainerClassName = styled.cssClassName`
   display: block;

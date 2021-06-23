@@ -5,9 +5,9 @@ import { useLaunchpadDetails, useProjects } from '../api/api/api';
 import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
-import { cs, styled } from '../utils/css';
-import getCardDirection from '../utils/get-card-direction';
-import useWindowDimensions from '../utils/use-window-dimensions';
+import getCardDirection from '../utils/cardDirectionUtil';
+import { styled } from '../utils/css';
+import useWindowDimensions from '../utils/windowDimensionsUtil';
 
 const mainImageContainerClassName = styled.cssClassName`
   position: absolute;

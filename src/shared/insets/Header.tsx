@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import { cs, styled } from '../../utils/css';
-import useWindowDimensions from '../../utils/use-window-dimensions';
+import useWindowDimensions from '../../utils/windowDimensionsUtil';
 import { MainButton } from '../gui/MainButton';
 
 export const headerHeight = 7.5;
