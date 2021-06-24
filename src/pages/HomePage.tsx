@@ -290,8 +290,6 @@ export const HomePage = () => {
     return null;
   }
 
-  console.log(topFeaturedProjects);
-
   return (
     <div>
       <div className={pageIntroContainerClassName}>
