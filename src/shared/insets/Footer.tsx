@@ -47,7 +47,7 @@ const footerContainerClassName = styled.cssClassName`
   margin-left: 7.5rem;
   margin-right: 7.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     flex-direction: column;
     align-items: center;
     margin-bottom: 3.13rem;
@@ -62,7 +62,7 @@ const footerLinksParentContainerClassName = styled.cssClassName`
 
 const footerLinksContainerClassName = styled.cssClassName`
   display: flex;
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     flex-direction: column;
     align-items: center;
   }
@@ -73,7 +73,7 @@ const linksGroupsClassName = styled.cssClassName`
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-right: 0;
 
     align-items: center;
@@ -83,7 +83,7 @@ const linksGroupsClassName = styled.cssClassName`
 const footerCopyrightParentClassName = styled.cssClassName`
   display: block;
   flex: 0.8;
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     display: flex;
     flex-direction: column;
     align-items: center;

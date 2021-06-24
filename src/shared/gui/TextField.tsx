@@ -54,7 +54,7 @@ export const TextField = ({ name, placeholder, disabled, style, type, autoFocus 
   let borderWidth = '';
 
   if (type === 'bordered') {
-    borderWidth = '1px';
+    borderWidth = '0.06rem';
   } else if (type === 'underlined') {
     borderWidth = '0 0 0.06rem';
   } else {

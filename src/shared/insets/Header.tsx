@@ -40,7 +40,7 @@ const headerContentStyle = styled.cssClassName`
   align-items: center;
   flex: 1;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
@@ -117,13 +117,13 @@ const menuItemsContainerClassName = styled.cssClassName`
   display: flex;
   align-items: center;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     display: none;
   }
 `;
 
 const menuIconClassName = styled.cssClassName`
-  @media (min-width: 830px) {
+  @media (min-width: 51.875rem) {
     display: none;
   }
 `;

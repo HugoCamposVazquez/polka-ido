@@ -15,7 +15,7 @@ import useWindowDimensions from '../utils/windowDimensionsUtil';
 
 const pageIntroContainerClassName = styled.cssClassName`
   display: block;
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     display: flex;
     flex-direction: column-reverse;
   }
@@ -28,7 +28,7 @@ const mainImageContainerClassName = styled.cssClassName`
   top: 0;
   right: 0;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     position: relative;
     height: auto;
     width: auto;
@@ -41,7 +41,7 @@ const mainImageStyle = styled.cssClassName`
   height: 100%;
   width: 100%;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     position: relative;
   }
 `;
@@ -62,7 +62,7 @@ const titleContainerParentStyle = styled.cssClassName`
   display: flex;
   padding: 0 7.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     padding: 0 1.5rem;
   }
 `;
@@ -73,7 +73,7 @@ const titleContainerClassName = styled.cssClassName`
   flex-direction: column;
   justify-content: center;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     flex: 1;
   }
 `;
@@ -85,7 +85,7 @@ const titleStyle = styled.cssClassName`
   font-family: Odibee Sans;
   margin-top: 13.75rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 2.63rem;
 
     line-height: 2.9rem;
@@ -99,7 +99,7 @@ const subTitleStyle = styled.cssClassName`
   margin-top: 0.94rem;
   font-family: Titillium Web;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.88rem;
     line-height: 1.23rem;
   }
@@ -112,7 +112,7 @@ const featuredProjectsTitleStyle = styled.cssClassName`
   font-family: Titillium Web;
   margin-bottom: 0.63rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 1.63rem;
     line-height: 2.37rem;
   }
@@ -124,7 +124,7 @@ const featuredProjectsContainerClassName = styled.cssClassName`
   position: relative;
   padding: 0 7.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-top: 2.2rem;
     margin-bottom: 5rem;
     padding: 0 1.5rem;
@@ -136,11 +136,11 @@ const featuredProjectsCardsContainerClassName = styled.cssClassName`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.25rem;
 
-  @media (max-width: 1435px) {
+  @media (max-width: 89.6875rem) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;
@@ -152,7 +152,7 @@ const mainImage2ContainerClassName = styled.cssClassName`
   top: 1.25rem;
   right: 1.25rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     position: relative;
     height: auto;
     width: auto;
@@ -169,7 +169,7 @@ const mainImage2Style = styled.cssClassName`
   height: 100%;
   width: 100%;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     position: relative;
   }
 `;
@@ -181,7 +181,7 @@ const bottomImageContainerClassName = styled.cssClassName`
   position: relative;
   padding: 0 7.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     height: auto;
     padding: 0;
     display: flex;
@@ -207,7 +207,7 @@ const tellUsAboutYourProjectParentClassName = styled.cssClassName`
   flex-direction: column;
   justify-content: center;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     padding: 0 1.5rem;
     max-width: initial;
     margin-bottom: 2.5rem;
@@ -221,11 +221,11 @@ const tellUsAboutYourProjectTextClassName = styled.cssClassName`
   font-family: Titillium Web;
   width: 60%;
 
-  @media (max-width: 1430px) {
+  @media (max-width: 89.375rem) {
     width: 75%;
   }
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     width: 100%;
     font-size: 1.63rem;
     line-height: 2.47rem;

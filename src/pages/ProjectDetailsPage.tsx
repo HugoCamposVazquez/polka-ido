@@ -13,7 +13,7 @@ const imageParentContainerClassName = styled.cssClassName`
   margin-right: 7.5rem;
   margin-top: 11.25rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 0rem;
     margin-right: 0rem;
   }
@@ -26,7 +26,7 @@ const customTopRightObjectClassName = styled.cssClassName`
   top: 0;
   right: 0;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     display: none;
   }
 `;
@@ -39,7 +39,7 @@ const customBottomLeftObjectClassName = styled.cssClassName`
   bottom: 0;
   left: 0;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     display: none;
   }
 `;
@@ -65,7 +65,7 @@ const imageContainerClassName = styled.cssClassName`
   left: 1.25rem;
   bottom: 1.25rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     top: 0rem;
     right: 0rem;
     left: 0rem;
@@ -92,7 +92,7 @@ const projectNameTextStyle = styled.cssClassName`
   font-size: 4rem;
   margin-top: 0.75rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 2.25rem;
   }
 `;
@@ -111,7 +111,7 @@ const descriptionTextStyle = styled.cssClassName`
   font-size: 1rem;
   color: ${sideColor};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.75rem;
   }
 `;
@@ -123,7 +123,7 @@ const description2TextStyle = styled.cssClassName`
   font-size: 1rem;
   color: ${sideColor5};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.75rem;
   }
 `;
@@ -134,7 +134,7 @@ const contentTextStyle = styled.cssClassName`
   font-size: 1.25rem;
   color: ${sideColor3};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.88rem;
   }
 `;
@@ -145,7 +145,7 @@ const content2TextStyle = styled.cssClassName`
   font-size: 1.25rem;
   color: ${sideColor5};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.88rem;
   }
 `;
@@ -156,7 +156,7 @@ const content3TextStyle = styled.cssClassName`
   font-size: 1rem;
   color: ${sideColor3};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.88rem;
   }
 `;
@@ -167,11 +167,11 @@ const projectContainerStyle = styled.cssClassName`
   z-index: 1000;
   display: flex;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 75rem) {
     flex-direction: column;
   }
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin: 0rem;
   }
 `;
@@ -198,7 +198,7 @@ const valueDescTextStyle = styled.cssClassName`
   font-size: 2.25rem;
   color: ${sideColor3};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 1.63rem;
   }
 `;
@@ -210,7 +210,7 @@ const projectImageBackgroundStyle = styled.cssClassName`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     height: 5rem;
     width: 5rem;
   }
@@ -224,7 +224,7 @@ const projectStatusBackgroundStyle = styled.cssClassName`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     height: 1.56rem;
     width: 6.13rem;
   }
@@ -238,7 +238,7 @@ const projectDetailsBtnsParentStyle = styled.cssClassName`
   display: flex;
   justify-content: flex-end;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
   }
@@ -250,7 +250,7 @@ const allocationsTitleStyle = styled.cssClassName`
   font-size: 1.25rem;
   color: ${sideColor5};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.88rem;
   }
 `;
@@ -261,7 +261,7 @@ const allocationsItemNormalStyle = styled.cssClassName`
   font-size: 1rem;
   color: ${sideColor};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.75rem;
   }
 `;
@@ -272,7 +272,7 @@ const allocationsItemBoldStyle = styled.cssClassName`
   font-size: 1rem;
   color: ${sideColor5};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.75rem;
   }
 `;
@@ -283,7 +283,7 @@ const allocationsTotalTextStyle = styled.cssClassName`
   font-size: 1.5rem;
   color: ${sideColor};
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 0.88rem;
   }
 `;
@@ -292,7 +292,7 @@ const subtitleStyle = styled.cssClassName`
   font-weight: 600;
   font-size: 2.25rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 1.63rem;
   }
 `;
@@ -327,11 +327,11 @@ const projectContainerRightStyle = styled.cssClassName`
   margin-top: 1.75rem;
   margin-right: 2.25rem;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 75rem) {
     margin-left: 2.25rem;
   }
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
   }
@@ -346,7 +346,7 @@ const shortDescriptionTextClassName = styled.cssClassName`
   font-size: 1rem;
   color: ${sideColor};
 
-  @media (max-width: 1200px) {
+  @media (max-width: 75rem) {
     max-width: initial;
   }
 `;
@@ -356,7 +356,7 @@ const projectDetailsContainerClassName = styled.cssClassName`
   margin: 0 -1.5rem;
   margin-top: 2.25rem;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 75rem) {
     flex-direction: column;
   }
 `;
@@ -364,7 +364,7 @@ const projectDetailsContainerClassName = styled.cssClassName`
 const projectDetailsTokenClassName = styled.cssClassName`
   margin-top: 0rem !important;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 75rem) {
     margin-top: 2.25rem !important;
   }
 `;
@@ -375,7 +375,7 @@ const projectImageContainerClassName = styled.cssClassName`
   margin-right: 2.25rem;
   display: flex;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-top: 1.5rem;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
@@ -387,7 +387,7 @@ const shortDescriptionContainerClassName = styled.cssClassName`
   margin-left: 2.25rem;
   margin-right: 2.25rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     margin-top: 2.25rem;
@@ -398,7 +398,7 @@ const projectIconClassName = styled.cssClassName`
   height: 4.5rem;
   width: 4.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     height: 3rem;
     width: 3rem;
   }
@@ -408,7 +408,7 @@ const allocationsContainerClassName = styled.cssClassName`
   margin: 7.5rem;
   max-width: 43.75rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     margin-top: 4.5rem;
@@ -419,7 +419,7 @@ const allocationsContainerClassName = styled.cssClassName`
 const projectDetailsRootContainerClassName = styled.cssClassName`
   margin: 7.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     margin-top: 4.5rem;
@@ -431,7 +431,7 @@ const aboutTheProjectContainerClassName = styled.cssClassName`
   margin: 7.5rem;
   margin-bottom: 0rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     margin-top: 4.5rem;

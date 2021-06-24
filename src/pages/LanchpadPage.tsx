@@ -17,7 +17,7 @@ const mainImageContainerClassName = styled.cssClassName`
   top: 1.25rem;
   right: 1.25rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     position: relative;
     height: auto;
     width: auto;
@@ -34,7 +34,7 @@ const mainImageStyle = styled.cssClassName`
   height: 100%;
   width: 100%;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     position: relative;
   }
 `;
@@ -47,7 +47,7 @@ const imageContainerClassName = styled.cssClassName`
   padding: 0 7.5rem;
   margin-top: 11.25rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     height: auto;
     padding: 0;
     display: flex;
@@ -125,7 +125,7 @@ const launchpadParentClassName = styled.cssClassName`
   flex-direction: column;
   justify-content: center;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     padding: 0 1.5rem;
     margin-bottom: 2.5rem;
     max-width: initial;
@@ -138,7 +138,7 @@ const launchpadTextClassName = styled.cssClassName`
   line-height: 4.5rem;
   font-family: Odibee Sans;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     font-size: 2.63rem;
     line-height: 2.9rem;
   }
@@ -164,7 +164,7 @@ const projectsCardsHeaderClassName = styled.cssClassName`
   border-bottom: 0.06rem solid ${sideColor2};
   margin-top: 2.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     padding: 0 1.5rem;
     margin-top: 2.5rem;
   }
@@ -178,7 +178,7 @@ const projectsCardsHeaderItemClassName = styled.cssClassName`
   padding-right: 0.31rem;
   cursor: pointer;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-right: 1.5rem;
   }
 `;
@@ -188,7 +188,7 @@ const projectsCardsContainerParentClassName = styled.cssClassName`
   margin-left: 7.5rem;
   margin-right: 7.5rem;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
   }
@@ -198,7 +198,7 @@ const searchParentClassName = styled.cssClassName`
   display: flex;
   align-items: center;
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     display: none;
   }
 `;
@@ -209,11 +209,11 @@ const projectsCardsContainerClassName = styled.cssClassName`
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.25rem;
 
-  @media (max-width: 1435px) {
+  @media (max-width: 89.6875rem) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  @media (max-width: 830px) {
+  @media (max-width: 51.875rem) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;
