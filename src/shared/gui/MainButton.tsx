@@ -1,33 +1,34 @@
 import React from 'react';
 
+import { sideColor3, sideColor5 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 const fillButtonStyle = styled.cssStyle`
-  height: 48px;
-  width: 196px;
+  height: 3rem;
+  width: 12.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #d2307a;
-  font-size: 16px;
+  background-color: ${sideColor3};
+  font-size: 1rem;
   font-family: Titillium Web;
   font-weight: 700;
-  border: 1px solid #d2307a;
-  color: white;
+  border: 0.06rem solid ${sideColor3};
+  color: ${sideColor5};
   cursor: pointer;
 `;
 
 const borderedButtonStyle = styled.cssStyle`
-  border: 1px solid #d2307a;
-  height: 48px;
-  width: 196px;
-  margin-right: 12px;
+  border: 0.06rem solid ${sideColor3};
+  height: 3rem;
+  width: 12.25rem;
+  margin-right: 0.75rem;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  color: #d2307a;
-  font-size: 16px;
+  color: ${sideColor3};
+  font-size: 1rem;
   font-family: Titillium Web;
   font-weight: 700;
   cursor: pointer;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { sideColor } from '../../utils/colorsUtil';
 import { cs, styled } from '../../utils/css';
 
 const inputParentStyle = styled.cssStyle`
@@ -12,29 +13,29 @@ const inputClassName = styled.cssClassName`
   flex: 1;
   background-color: transparent;
   outline: 0;
-  border-color: #b8b8b8;
-  color: #b8b8b8;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-bottom: 4px;
-  padding-top: 4px;
+  border-color: ${sideColor};
+  color: ${sideColor};
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
   font-family: Titillium Web;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 1.5rem;
   border-style: solid;
 
   ::-webkit-input-placeholder {
     /* Edge */
-    color: #b8b8b8;
+    color: ${sideColor};
   }
 
   :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: #b8b8b8;
+    color: ${sideColor};
   }
 
   ::placeholder {
-    color: #b8b8b8;
+    color: ${sideColor};
   }
 `;
 
@@ -55,9 +56,9 @@ export const TextField = ({ name, placeholder, disabled, style, type, autoFocus 
   if (type === 'bordered') {
     borderWidth = '1px';
   } else if (type === 'underlined') {
-    borderWidth = '0 0 1px';
+    borderWidth = '0 0 0.06rem';
   } else {
-    borderWidth = '0px';
+    borderWidth = '0rem';
   }
 
   return (

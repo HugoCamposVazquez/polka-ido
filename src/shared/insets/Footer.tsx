@@ -1,57 +1,58 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
+import { sideColor3, sideColor5, sideColor6 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 const ryuTextStyle = styled.cssStyle`
   font-family: Odibee Sans;
-  color: white;
+  color: ${sideColor5};
   font-weight: 400;
-  text-size: 24px;
-  line-height: 27px;
+  text-size: 1.5rem;
+  line-height: 1.69rem;
 `;
 
 const ryu2021TextStyle = styled.cssStyle`
   font-family: Titillium Web;
-  color: #7a7a7a;
+  color: ${sideColor6};
   font-weight: 400;
-  text-size: 16px;
-  line-height: 24.34px;
+  text-size: 1rem;
+  line-height: 1.52rem;
 `;
 
 const linkTitleTextStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-style: bold;
-  color: #d2307a;
+  color: ${sideColor3};
   font-weight: 700;
-  text-size: 20px;
-  line-height: 30px;
-  margin-bottom: 8px;
+  text-size: 1.25rem;
+  line-height: 1.88rem;
+  margin-bottom: 0.5rem;
 `;
 
 const linkTextStyle = styled.cssStyle`
   font-family: Titillium Web;
-  color: white;
+  color: ${sideColor5};
   font-weight: 400;
-  text-size: 20px;
-  line-height: 30.42px;
-  margin: 2px 0;
+  text-size: 1.25rem;
+  line-height: 1.9rem;
+  margin: 0.13rem 0;
   text-decoration: none;
 `;
 
 const footerContainerClassName = styled.cssClassName`
   display: flex;
-  margin-bottom: 40px;
-  margin-top: 126px;
-  margin-left: 120px;
-  margin-right: 120px;
+  margin-bottom: 2.5rem;
+  margin-top: 7.88rem;
+  margin-left: 7.5rem;
+  margin-right: 7.5rem;
 
   @media (max-width: 830px) {
     flex-direction: column;
     align-items: center;
-    margin-bottom: 50px;
-    margin-left: 24px;
-    margin-right: 24px;
+    margin-bottom: 3.13rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
   }
 `;
 
@@ -68,7 +69,7 @@ const footerLinksContainerClassName = styled.cssClassName`
 `;
 
 const linksGroupsClassName = styled.cssClassName`
-  margin-right: 95px;
+  margin-right: 5.94rem;
   display: flex;
   flex-direction: column;
 
@@ -76,7 +77,7 @@ const linksGroupsClassName = styled.cssClassName`
     margin-right: 0;
 
     align-items: center;
-    margin-top: 40px;
+    margin-top: 2.5rem;
   }
 `;
 const footerCopyrightParentClassName = styled.cssClassName`

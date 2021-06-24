@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { sideColor11 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 export class ErrorBoundary extends React.Component<React.ComponentClass, { hasError: boolean }> {
@@ -18,17 +19,17 @@ export class ErrorBoundary extends React.Component<React.ComponentClass, { hasEr
 
   public render() {
     const errorPageContainerStyle = styled.cssStyle`
-      padding: 15px;
+      padding: 0.94rem;
     `;
 
     const reloadLinkStyle = styled.cssStyle`
       text-decoration: underline;
-      color: dodgerblue;
+      color: ${sideColor11};
       font-weight: bold;
     `;
 
     const additionalInfoStyle = styled.cssStyle`
-      margin-top: 12px;
+      margin-top: 0.75rem;
     `;
 
     if (this.state.hasError) {

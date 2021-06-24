@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
+import { sideColor, sideColor2, sideColor5 } from '../../utils/colorsUtil';
 import { cs, styled } from '../../utils/css';
 import useWindowDimensions from '../../utils/windowDimensionsUtil';
 import { MainButton } from '../gui/MainButton';
@@ -28,27 +29,27 @@ const headerContainerStyle = styled.cssStyle`
   z-index: 2000;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #292929;
+  border-bottom: 0.06rem solid ${sideColor2};
 `;
 
 const headerContentStyle = styled.cssClassName`
   position: relative;
-  padding-left: 120px;
-  padding-right: 120px;
+  padding-left: 7.5rem;
+  padding-right: 7.5rem;
   display: flex;
   align-items: center;
   flex: 1;
 
   @media (max-width: 830px) {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 `;
 
 const ryuTextStyle = styled.cssStyle`
   font-weight: 400;
   line-height: 0;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-family: Odibee Sans;
   flex: 1;
   cursor: pointer;
@@ -64,23 +65,23 @@ const mobileMenuContainerStyle = styled.cssStyle`
 
 const menuItemNotSelectedStyle = styled.cssClassName`
   font-weight: 400;
-  font-size: 20px;
-  line-height: 30.42px;
+  font-size: 1.25rem;
+  line-height: 1.9rem;
   font-family: Titillium Web;
-  margin-right: 22px;
+  margin-right: 1.38rem;
 
   a {
-    color: #b8b8b8;
+    color: ${sideColor};
     text-decoration: none;
   }
 
   :before {
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 0.38rem;
+    height: 0.38rem;
     border-radius: 50%;
-    margin-right: 8px;
-    margin-bottom: 2px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.13rem;
     display: inline-block;
     background-color: transparent;
     vertical-align: middle;
@@ -89,25 +90,25 @@ const menuItemNotSelectedStyle = styled.cssClassName`
 
 const menuItemSelectedStyle = styled.cssClassName`
   font-weight: 700;
-  font-size: 20px;
-  line-height: 30.42px;
+  font-size: 1.25rem;
+  line-height: 1.9rem;
   font-family: Titillium Web;
-  margin-right: 22px;
+  margin-right: 1.38rem;
 
   a {
-    color: white;
+    color: ${sideColor5};
     text-decoration: none;
   }
 
   :before {
     content: '';
-    width: 6px;
-    height: 6px;
+    width: 0.38rem;
+    height: 0.38rem;
     border-radius: 50%;
-    margin-right: 8px;
-    margin-bottom: 2px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.13rem;
     display: inline-block;
-    background-color: white;
+    background-color: ${sideColor5};
     vertical-align: middle;
   }
 `;
@@ -175,7 +176,7 @@ export const Header = withRouter((props) => {
       {menuOpened && width <= mobileViewWidth && (
         <div style={mobileMenuContainerStyle}>
           <div
-            style={{ marginTop: '48px', display: 'flex', alignItems: 'center' }}
+            style={{ marginTop: '3rem', display: 'flex', alignItems: 'center' }}
             className={props.location.pathname === '/home' ? menuItemSelectedStyle : menuItemNotSelectedStyle}>
             <div
               style={mobileMenuItemStyle}
@@ -187,7 +188,7 @@ export const Header = withRouter((props) => {
             </div>
           </div>
           <div
-            style={{ marginTop: '12px', display: 'flex', alignItems: 'center' }}
+            style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center' }}
             className={props.location.pathname === '/launchpad' ? menuItemSelectedStyle : menuItemNotSelectedStyle}>
             <div
               style={mobileMenuItemStyle}
@@ -198,7 +199,7 @@ export const Header = withRouter((props) => {
               Launchpad
             </div>
           </div>
-          <div style={{ marginTop: '48px' }}>
+          <div style={{ marginTop: '3rem' }}>
             <MainButton title={'Connect wallet'} onClick={() => {}} type={'fill'} />
           </div>
         </div>

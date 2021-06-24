@@ -3,10 +3,11 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { ProjectType } from '../types/ProjectType';
+import { sideColor3, sideColor4, sideColor5, sideColor6, sideColor8, sideColor10 } from '../utils/colorsUtil';
 import { cs, styled } from '../utils/css';
 
 const projectCardContainer = styled.cssStyle`
-  background-color: #484848;
+  background-color: ${sideColor8};
   cursor: pointer;
 `;
 
@@ -80,7 +81,7 @@ const projectCardHeaderContainer = styled.cssStyle`
 const projectCardHeaderIconContainer = styled.cssStyle`
   width: 3rem;
   height: 3rem;
-  background-color: black;
+  background-color: ${sideColor4};
   border-radius: 1.5rem;
   display: flex;
   align-items: center;
@@ -96,7 +97,7 @@ const projectCardStatusTextStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 400;
   font-size: 0.88rem;
-  color: #27f0dc;
+  color: ${sideColor10};
   line-height: 1.23rem;
   text-transform: capitalize;
 `;
@@ -118,7 +119,7 @@ const projectDescriptionContainerStyle = styled.cssClassName`
   overflow-y: auto;
 
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 0.38rem;
   }
 
   ::-webkit-scrollbar-track {
@@ -155,11 +156,11 @@ const progressTextContainerStyle = styled.cssStyle`
 `;
 
 const progressTextPrefixStyle = styled.cssStyle`
-  color: #d2307a;
+  color: ${sideColor3};
 `;
 
 const progressTextSufixStyle = styled.cssStyle`
-  color: white;
+  color: ${sideColor5};
 `;
 
 const detailsTitleStyle = styled.cssStyle`
@@ -173,11 +174,11 @@ const detailsTitleStyle = styled.cssStyle`
 const detailsValueStyle = styled.cssStyle`
   font-family: Titillium Web;
   padding: 0 0 0.25rem 0;
-  color: #d2307a;
+  color: ${sideColor3};
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.52rem;
-  margin-right: 12px;
+  margin-right: 0.75rem;
 `;
 
 type IProps = {
@@ -220,8 +221,8 @@ export const ProjectCard = ({ direction, project }: IProps) => {
           completed={(project.raiseAmountCurrent / project.raiseAmountTotal) * 100}
           isLabelVisible={false}
           height={'0.38rem'}
-          bgColor={'#d2307a'}
-          baseBgColor={'#7A7A7A'}
+          bgColor={sideColor3}
+          baseBgColor={sideColor6}
           borderRadius={'0rem'}
         />
       </div>
@@ -229,12 +230,12 @@ export const ProjectCard = ({ direction, project }: IProps) => {
         style={
           direction === 'left'
             ? cs(
-                { margin: '1rem', backgroundColor: 'black', paddingLeft: '1rem' },
+                { margin: '1rem', backgroundColor: `${sideColor4}`, paddingLeft: '1rem' },
                 { marginLeft: 0, marginRight: '1rem' },
                 bottomRightNotch,
               )
             : cs(
-                { margin: '1rem', backgroundColor: 'black', paddingLeft: '1.5rem' },
+                { margin: '1rem', backgroundColor: `${sideColor4}`, paddingLeft: '1.5rem' },
                 { marginLeft: '1rem', marginRight: 0 },
                 bottomLeftNotch,
               )

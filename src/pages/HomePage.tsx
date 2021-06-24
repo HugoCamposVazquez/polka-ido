@@ -9,6 +9,7 @@ import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectType } from '../types/ProjectType';
 import getCardDirection from '../utils/cardDirectionUtil';
+import { sideColor3, sideColor9 } from '../utils/colorsUtil';
 import { styled } from '../utils/css';
 import useWindowDimensions from '../utils/windowDimensionsUtil';
 
@@ -31,7 +32,7 @@ const mainImageContainerClassName = styled.cssClassName`
     position: relative;
     height: auto;
     width: auto;
-    margin-top: 20px;
+    margin-top: 1.25rem;
   }
 `;
 
@@ -52,8 +53,8 @@ const imageShadowStyle = styled.cssStyle`
   top: 0;
   right: 0;
 
-  background: linear-gradient(180deg, rgba(1, 1, 1, 0) 91.75%, #010101 100%, #010101 100%),
-    linear-gradient(70.6deg, #010101 13.02%, rgba(1, 1, 1, 0) 86.98%);
+  background: linear-gradient(180deg, rgba(1, 1, 1, 0) 91.75%, ${sideColor9} 100%, ${sideColor9} 100%),
+    linear-gradient(70.6deg, ${sideColor9} 13.02%, rgba(1, 1, 1, 0) 86.98%);
 `;
 
 const titleContainerParentStyle = styled.cssClassName`
@@ -62,7 +63,7 @@ const titleContainerParentStyle = styled.cssClassName`
   padding: 0 7.5rem;
 
   @media (max-width: 830px) {
-    padding: 0 24px;
+    padding: 0 1.5rem;
   }
 `;
 
@@ -82,12 +83,12 @@ const titleStyle = styled.cssClassName`
   font-size: 4rem;
   line-height: 4.5rem;
   font-family: Odibee Sans;
-  margin-top: 220px;
+  margin-top: 13.75rem;
 
   @media (max-width: 830px) {
-    font-size: 42px;
+    font-size: 2.63rem;
 
-    line-height: 46.54px;
+    line-height: 2.9rem;
   }
 `;
 
@@ -99,8 +100,8 @@ const subTitleStyle = styled.cssClassName`
   font-family: Titillium Web;
 
   @media (max-width: 830px) {
-    font-size: 14px;
-    line-height: 19.6px;
+    font-size: 0.88rem;
+    line-height: 1.23rem;
   }
 `;
 
@@ -112,21 +113,21 @@ const featuredProjectsTitleStyle = styled.cssClassName`
   margin-bottom: 0.63rem;
 
   @media (max-width: 830px) {
-    font-size: 26px;
-    line-height: 39.55px;
+    font-size: 1.63rem;
+    line-height: 2.37rem;
   }
 `;
 
 const featuredProjectsContainerClassName = styled.cssClassName`
-  margin-top: 220px;
-  margin-bottom: 160px;
+  margin-top: 13.75rem;
+  margin-bottom: 10rem;
   position: relative;
   padding: 0 7.5rem;
 
   @media (max-width: 830px) {
-    margin-top: 36px;
-    margin-bottom: 80px;
-    padding: 0 24px;
+    margin-top: 2.2rem;
+    margin-bottom: 5rem;
+    padding: 0 1.5rem;
   }
 `;
 
@@ -146,10 +147,10 @@ const featuredProjectsCardsContainerClassName = styled.cssClassName`
 
 const mainImage2ContainerClassName = styled.cssClassName`
   position: absolute;
-  height: 526px;
-  width: 792px;
-  top: 20px;
-  right: 20px;
+  height: 32.9rem;
+  width: 49.5rem;
+  top: 1.25rem;
+  right: 1.25rem;
 
   @media (max-width: 830px) {
     position: relative;
@@ -157,9 +158,9 @@ const mainImage2ContainerClassName = styled.cssClassName`
     width: auto;
     top: 0;
     right: 0;
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-top: 1.25rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
   }
 `;
 
@@ -176,9 +177,9 @@ const mainImage2Style = styled.cssClassName`
 const bottomImageContainerClassName = styled.cssClassName`
   display: flex;
   flex-direction: column;
-  height: 546px;
+  height: 34.1rem;
   position: relative;
-  padding: 0 120px;
+  padding: 0 7.5rem;
 
   @media (max-width: 830px) {
     height: auto;
@@ -190,15 +191,15 @@ const bottomImageContainerClassName = styled.cssClassName`
 
 const customObjectClassName = styled.cssClassName`
   position: absolute;
-  height: 120px;
-  width: 120px;
-  background-color: #d2307a;
+  height: 7.5rem;
+  width: 7.5rem;
+  background-color: ${sideColor3};
   top: 0;
   right: 0;
 `;
 
 const tellUsAboutYourProjectParentClassName = styled.cssClassName`
-  min-width: 350px;
+  min-width: 21.9rem;
   max-width: 40%;
   position: relative;
   flex: 1;
@@ -207,9 +208,9 @@ const tellUsAboutYourProjectParentClassName = styled.cssClassName`
   justify-content: center;
 
   @media (max-width: 830px) {
-    padding: 0 24px;
+    padding: 0 1.5rem;
     max-width: initial;
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
   }
 `;
 
@@ -226,8 +227,8 @@ const tellUsAboutYourProjectTextClassName = styled.cssClassName`
 
   @media (max-width: 830px) {
     width: 100%;
-    font-size: 26px;
-    line-height: 39.55px;
+    font-size: 1.63rem;
+    line-height: 2.47rem;
   }
 `;
 
@@ -248,15 +249,15 @@ const topLeftBottomRightNotch = styled.cssStyle`
 
 const viewAllProjectsStyle = styled.cssStyle`
   font-weight: 600;
-  margin-right: 10px;
-  font-size: 15px;
+  margin-right: 0.63rem;
+  font-size: 0.94rem;
   font-family: Titillium Web;
-  color: #d2307a;
+  color: ${sideColor3};
   cursor: pointer;
 `;
 
 const textFieldContainerStyle = styled.cssStyle`
-  margin: 36px 0;
+  margin: 2.25rem 0;
 `;
 
 export const HomePage = () => {
@@ -314,7 +315,7 @@ export const HomePage = () => {
             return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
           })}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
           <div
             style={viewAllProjectsStyle}
             onClick={() => {
@@ -343,7 +344,7 @@ export const HomePage = () => {
                 <TextField name="email" placeholder="E-mail" type={'bordered'} />
               </div>
               <div style={textFieldContainerStyle}>
-                <TextArea name="message" placeholder="Message" style={{ height: '134px' }} />
+                <TextArea name="message" placeholder="Message" style={{ height: '8.38rem' }} />
               </div>
               <MainButton title="Send" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
             </form>
