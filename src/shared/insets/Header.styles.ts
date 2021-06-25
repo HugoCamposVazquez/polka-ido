@@ -1,6 +1,7 @@
 import { sideColor, sideColor2, sideColor5 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
-import { headerHeight } from './Header';
+
+const headerHeight = 7.5;
 
 export const headerContainerParentStyle = styled.cssStyle`
   flex: 1;

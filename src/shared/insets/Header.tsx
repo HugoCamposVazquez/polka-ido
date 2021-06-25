@@ -6,8 +6,7 @@ import { useWindowDimensions } from '../../utils/windowDimensionsUtil';
 import { MainButton } from '../gui/MainButton';
 import * as styles from './Header.styles';
 
-export const headerHeight = 7.5;
-export const mobileViewWidth = 830;
+const mobileViewWidth = 830;
 
 export const Header = withRouter((props) => {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
