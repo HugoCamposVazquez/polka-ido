@@ -11,7 +11,7 @@ const getElementsPerRow = (width: number) => {
 export const getCardDirection = (width: number, index: number): 'right' | 'left' => {
   const elementsPerRow = getElementsPerRow(width);
   const times = Math.floor(index / elementsPerRow);
-  const everOrOddRow = times % 2 === 0 ? 0 : 1;
+  const everOrOddRow = times % 2;
 
   return (elementsPerRow !== 1 ? index % 2 === everOrOddRow : everOrOddRow) ? 'right' : 'left';
 };

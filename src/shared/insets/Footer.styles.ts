@@ -17,7 +17,7 @@ export const ryu2021TextStyle = styled.cssStyle`
   line-height: 1.52rem;
 `;
 
-export const linkTitleTextStyle = styled.cssStyle`
+export const linkTitleTextStyle = styled.cssClassName`
   font-family: Titillium Web;
   font-weight: bold;
   color: ${sideColor3};
@@ -25,9 +25,13 @@ export const linkTitleTextStyle = styled.cssStyle`
   font-size: 1.25rem;
   line-height: 1.88rem;
   margin-bottom: 0.5rem;
+
+  @media (max-width: 51.875rem) {
+    font-size: 0.875rem;
+  }
 `;
 
-export const linkTextStyle = styled.cssStyle`
+export const linkTextStyle = styled.cssClassName`
   font-family: Titillium Web;
   color: ${sideColor5};
   font-weight: 400;
@@ -35,6 +39,10 @@ export const linkTextStyle = styled.cssStyle`
   line-height: 1.9rem;
   margin: 0.13rem 0;
   text-decoration: none;
+
+  @media (max-width: 51.875rem) {
+    font-size: 0.875rem;
+  }
 `;
 
 export const footerContainerClassName = styled.cssClassName`
@@ -55,10 +63,12 @@ export const footerContainerClassName = styled.cssClassName`
 
 export const footerLinksParentContainerClassName = styled.cssClassName`
   display: flex;
+  flex: 1;
 `;
 
 export const footerLinksContainerClassName = styled.cssClassName`
   display: flex;
+  flex: none;
   @media (max-width: 51.875rem) {
     flex-direction: column;
     align-items: center;
@@ -67,6 +77,7 @@ export const footerLinksContainerClassName = styled.cssClassName`
 
 export const linksGroupsClassName = styled.cssClassName`
   margin-right: 5.94rem;
+  min-width: fit-content;
   display: flex;
   flex-direction: column;
 
@@ -79,7 +90,7 @@ export const linksGroupsClassName = styled.cssClassName`
 `;
 export const footerCopyrightParentClassName = styled.cssClassName`
   display: block;
-  flex: 0.8;
+  flex: 1;
   @media (max-width: 51.875rem) {
     display: flex;
     flex-direction: column;
