@@ -9,6 +9,7 @@ import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { sideColor3 } from '../utils/colorsUtil';
+import { cs } from '../utils/css';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
 
@@ -120,7 +121,7 @@ export const LaunchpadPage = () => {
         <div className={styles.searchParentClassName} style={searchTextVisible ? { width: '18.8rem' } : {}}>
           {!searchTextVisible && (
             <img
-              style={styles.searchIconStyle}
+              style={cs(styles.searchIconStyle, { marginBottom: '0.06rem' })}
               src={searchIcon}
               onClick={() => {
                 setSearchTextVisible(true);
