@@ -1,6 +1,11 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
 
+import horseImage from '../assets/horse_image.png';
+import projectCardBackground from '../assets/project_card_background.png';
+import telegramIcon from '../assets/telegram_icon.svg';
+import twitterIcon from '../assets/twitter_icon.svg';
+import webIcon from '../assets/web_icon.svg';
 import { MainButton } from '../shared/gui/MainButton';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
@@ -13,14 +18,14 @@ export const ProjectDetailsPage = () => {
         <div className={styles.customTopRightObjectClassName} style={styles.topLeftBottomRightNotch} />
         <div className={styles.customBottomLeftObjectClassName} style={styles.topLeftBottomRightNotch} />
         <div className={styles.imageContainerClassName}>
-          <img className={styles.imageStyle} src={process.env.PUBLIC_URL + '/project_card_background.png'} />
+          <img className={styles.imageStyle} src={projectCardBackground} />
         </div>
 
         <div className={styles.projectContainerStyle}>
           <div style={{ flex: 0.5 }}>
             <div className={styles.projectImageContainerClassName}>
               <div style={styles.topRightBottomLeftNotch} className={styles.projectImageBackgroundStyle}>
-                <img className={styles.projectIconClassName} src={process.env.PUBLIC_URL + '/horse_image.png'} />
+                <img className={styles.projectIconClassName} src={horseImage} />
               </div>
               <div style={{ marginLeft: '1.5rem' }}>
                 <div className={styles.projectStatusBackgroundStyle}>
@@ -38,18 +43,9 @@ export const ProjectDetailsPage = () => {
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
                 <div style={styles.etherScanBtnStyle}>Etherscan</div>
 
-                <img
-                  style={{ marginLeft: '1.5rem', cursor: 'pointer' }}
-                  src={process.env.PUBLIC_URL + '/web_icon.svg'}
-                />
-                <img
-                  style={{ marginLeft: '1rem', cursor: 'pointer' }}
-                  src={process.env.PUBLIC_URL + '/twitter_icon.svg'}
-                />
-                <img
-                  style={{ marginLeft: '1rem', cursor: 'pointer' }}
-                  src={process.env.PUBLIC_URL + '/telegram_icon.svg'}
-                />
+                <img style={{ marginLeft: '1.5rem', cursor: 'pointer' }} src={webIcon} />
+                <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={twitterIcon} />
+                <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={telegramIcon} />
               </div>
             </div>
           </div>

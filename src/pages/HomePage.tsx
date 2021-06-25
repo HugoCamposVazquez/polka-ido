@@ -3,6 +3,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import { useTopFeaturedProjects } from '../api/api/api';
+import arrowLeft from '../assets/arrow_left.svg';
+import ryu from '../assets/ryu.png';
+import ryu2 from '../assets/ryu2.png';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
@@ -47,8 +50,8 @@ export const HomePage = () => {
     <div>
       <div className={styles.pageIntroContainerClassName}>
         <div className={styles.mainImageContainerClassName}>
-          <img className={styles.mainImageStyle} src={process.env.PUBLIC_URL + '/ryu.png'} />
-          <div style={styles.imageShadowStyle}></div>
+          <img className={styles.mainImageStyle} src={ryu} />
+          <div style={styles.imageShadowStyle} />
         </div>
         <div className={styles.titleContainerParentStyle}>
           <div className={styles.titleContainerClassName}>
@@ -75,7 +78,7 @@ export const HomePage = () => {
             }}>
             View all projects
           </div>
-          <img src={process.env.PUBLIC_URL + '/arrow_left.svg'} />
+          <img src={arrowLeft} />
         </div>
       </div>
       <div className={styles.bottomImageContainerClassName}>
@@ -83,7 +86,7 @@ export const HomePage = () => {
           <div className={styles.customObjectClassName} style={styles.topLeftBottomRightNotch} />
 
           <div className={styles.mainImage2ContainerClassName}>
-            <img className={styles.mainImage2Style} src={process.env.PUBLIC_URL + '/ryu2.png'} />
+            <img className={styles.mainImage2Style} src={ryu2} />
             <div style={styles.imageShadowStyle} />
           </div>
         </div>

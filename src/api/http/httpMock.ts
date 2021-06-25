@@ -1,10 +1,12 @@
+import horseImage from '../../assets/horse_image.png';
+import projectImage from '../../assets/project_image.svg';
 import { ProjectStatus } from '../../types/enums/ProjectStatus';
 import { LaunchpadType } from '../../types/LaunchpadType';
 import { ProjectType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 
 const projectStatuses: ProjectStatus[] = ['upcoming', 'ended', 'featured', 'joined'];
-const iconUrls: string[] = ['project_image.svg', 'horse_image.png'];
+const iconUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];
 

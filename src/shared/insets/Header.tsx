@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
+import closeIcon from '../../assets/close_icon.svg';
+import menuIcon from '../../assets/menu_icon.svg';
 import { cs } from '../../utils/css';
 import { useWindowDimensions } from '../../utils/windowDimensionsUtil';
 import { MainButton } from '../gui/MainButton';
@@ -51,7 +53,7 @@ export const Header = withRouter((props) => {
           </div>
           <div className={styles.menuIconClassName}>
             <img
-              src={menuOpened ? process.env.PUBLIC_URL + '/close_icon.svg' : process.env.PUBLIC_URL + '/menu_icon.svg'}
+              src={menuOpened ? closeIcon : menuIcon}
               onClick={() => {
                 setMenuOpened(!menuOpened);
               }}

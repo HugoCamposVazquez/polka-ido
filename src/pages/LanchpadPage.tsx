@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useLaunchpadDetails, useProjects } from '../api/api/api';
+import ryu3 from '../assets/ryu3.png';
+import searchIcon from '../assets/search_icon.svg';
 import { TextField } from '../shared/gui/TextField';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
@@ -49,7 +51,7 @@ export const LaunchpadPage = () => {
           <div className={styles.customObjectClassName} style={styles.topLeftBottomRightNotch} />
 
           <div className={styles.mainImageContainerClassName}>
-            <img className={styles.mainImageStyle} src={process.env.PUBLIC_URL + '/ryu3.png'} />
+            <img className={styles.mainImageStyle} src={ryu3} />
             <div style={styles.imageShadowStyle} />
           </div>
         </div>
@@ -119,7 +121,7 @@ export const LaunchpadPage = () => {
           {!searchTextVisible && (
             <img
               style={styles.searchIconStyle}
-              src={process.env.PUBLIC_URL + '/search_icon.svg'}
+              src={searchIcon}
               onClick={() => {
                 setSearchTextVisible(true);
               }}
@@ -130,11 +132,7 @@ export const LaunchpadPage = () => {
               <FormProvider {...methods}>
                 <form style={styles.searchFormStyle}>
                   <TextField name="search" placeholder="Search here" type={'none'} autoFocus={true} />
-                  <img
-                    style={styles.searchIconStyle}
-                    src={process.env.PUBLIC_URL + '/search_icon.svg'}
-                    onClick={methods.handleSubmit(onSearch)}
-                  />
+                  <img style={styles.searchIconStyle} src={searchIcon} onClick={methods.handleSubmit(onSearch)} />
                 </form>
               </FormProvider>
             </div>
