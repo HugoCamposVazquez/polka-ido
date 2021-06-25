@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { sideColor11 } from '../../utils/colorsUtil';
-import { styled } from '../../utils/css';
+import * as styles from './ErrorBoundary.styles';
 
 export class ErrorBoundary extends React.Component<React.ComponentClass, { hasError: boolean }> {
   public constructor(props: any) {
@@ -18,31 +17,17 @@ export class ErrorBoundary extends React.Component<React.ComponentClass, { hasEr
   }
 
   public render() {
-    const errorPageContainerStyle = styled.cssStyle`
-      padding: 0.94rem;
-    `;
-
-    const reloadLinkStyle = styled.cssStyle`
-      text-decoration: underline;
-      color: ${sideColor11};
-      font-weight: bold;
-    `;
-
-    const additionalInfoStyle = styled.cssStyle`
-      margin-top: 0.75rem;
-    `;
-
     if (this.state.hasError) {
       return (
-        <div style={errorPageContainerStyle}>
+        <div style={styles.errorPageContainerStyle}>
           <div>
             <div>Sorry, something went wrong. Please try to reload:</div>
             <div>
-              <a style={reloadLinkStyle} href="/">
+              <a style={styles.reloadLinkStyle} href="/">
                 Reload
               </a>
             </div>
-            <div style={additionalInfoStyle}>If the issue persists, please notify an administrator.</div>
+            <div style={styles.additionalInfoStyle}>If the issue persists, please notify an administrator.</div>
           </div>
         </div>
       );

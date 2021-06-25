@@ -1,43 +1,8 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { sideColor } from '../../utils/colorsUtil';
-import { cs, styled } from '../../utils/css';
-
-const inputParentStyle = styled.cssStyle`
-  display: flex;
-  flex: 1;
-`;
-
-const inputClassName = styled.cssClassName`
-  flex: 1;
-  background-color: transparent;
-  outline: 0;
-  border-color: ${sideColor};
-  color: ${sideColor};
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  font-family: Titillium Web;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  border-style: solid;
-
-  ::-webkit-input-placeholder {
-    /* Edge */
-    color: ${sideColor};
-  }
-
-  :-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
-    color: ${sideColor};
-  }
-
-  ::placeholder {
-    color: ${sideColor};
-  }
-`;
+import { cs } from '../../utils/css';
+import * as styles from './TextField.styles';
 
 type IProps = {
   name: string;
@@ -62,14 +27,14 @@ export const TextField = ({ name, placeholder, disabled, style, type, autoFocus 
   }
 
   return (
-    <div style={inputParentStyle}>
+    <div style={styles.inputParentStyle}>
       <Controller
         name={name}
         control={control}
         render={({ onChange, value }) => {
           return (
             <input
-              className={inputClassName}
+              className={styles.inputClassName}
               style={cs(style, { borderWidth: borderWidth })}
               value={value}
               placeholder={placeholder}
