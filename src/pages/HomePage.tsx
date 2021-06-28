@@ -15,6 +15,8 @@ import { getCardDirection } from '../utils/cardDirectionUtil';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './HomePage.styles';
 
+const topFeaturedMockProjectsNum = 4;
+
 export const HomePage = () => {
   const navigation = useHistory();
 
@@ -42,10 +44,6 @@ export const HomePage = () => {
     }
   };
 
-  if (topFeaturedProjectsLoading) {
-    return null;
-  }
-
   return (
     <div>
       <div className={styles.pageIntroContainerClassName}>
@@ -66,9 +64,14 @@ export const HomePage = () => {
       <div className={styles.featuredProjectsContainerClassName}>
         <div className={styles.featuredProjectsTitleStyle}>Featured projects</div>
         <div className={styles.featuredProjectsCardsContainerClassName}>
-          {topFeaturedProjects?.data.map((project: ProjectType, index: number) => {
-            return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
-          })}
+          {!topFeaturedProjectsLoading &&
+            topFeaturedProjects?.data.map((project: ProjectType, index: number) => {
+              return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
+            })}
+          {topFeaturedProjectsLoading &&
+            [...Array(topFeaturedMockProjectsNum)].map((el, index) => (
+              <ProjectCard key={index} direction={getCardDirection(width, index)} />
+            ))}
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
           <div

@@ -197,6 +197,7 @@ export const tellUsAboutYourProjectParentClassName = styled.cssClassName`
 
   @media (max-width: 51.875rem) {
     padding: 0 1.5rem;
+    min-width: initial;
     max-width: initial;
     margin-bottom: 2.5rem;
   }
