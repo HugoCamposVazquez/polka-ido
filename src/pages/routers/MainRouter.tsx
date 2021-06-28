@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { Footer } from '../../shared/insets/Footer';
 import { Header } from '../../shared/insets/Header';
 import { styled } from '../../utils/css';
 import { HomePage } from '../HomePage';
@@ -24,7 +23,6 @@ export const MainRouter = (): any => {
         <Route exact path="/project/:id" component={ProjectDetailsPage} />
         <Redirect from="/" to="/home" />
       </Switch>
-      <Footer />
     </div>
   );
 };

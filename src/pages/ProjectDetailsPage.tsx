@@ -7,6 +7,7 @@ import telegramIcon from '../assets/telegram_icon.svg';
 import twitterIcon from '../assets/twitter_icon.svg';
 import webIcon from '../assets/web_icon.svg';
 import { MainButton } from '../shared/gui/MainButton';
+import { Footer } from '../shared/insets/Footer';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import * as styles from './ProjectDetailsPage.styles';
@@ -238,6 +239,7 @@ export const ProjectDetailsPage = () => {
           would need to be consistently replaced with ventilation rate if the precise usage were to be followed.
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

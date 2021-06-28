@@ -10,6 +10,8 @@ const iconUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];
 
+const mockTimeMs = 1500;
+
 for (let i = 0; i < 80; i++) {
   allProjects.push({
     id: i,
@@ -29,42 +31,56 @@ for (let i = 0; i < 80; i++) {
 
 export const projectsMockHTTP: SourceType = {
   getTopFeaturedProjects: async () => {
-    const projects: ProjectType[] = [];
+    return new Promise((resolve) => {
+      const projects: ProjectType[] = [];
 
-    for (let i = 0; i < allProjects.length; i++) {
-      const project: ProjectType = allProjects[i];
+      for (let i = 0; i < allProjects.length; i++) {
+        const project: ProjectType = allProjects[i];
 
-      if (project.status === 'featured') {
-        projects.push(project);
+        if (project.status === 'featured') {
+          projects.push(project);
+        }
+
+        if (projects.length == 4) {
+          break;
+        }
       }
 
-      if (projects.length == 4) {
-        break;
-      }
-    }
-
-    return { data: projects };
+      setTimeout(() => {
+        resolve({ data: projects });
+      }, mockTimeMs);
+    });
   },
   getProjects: async (projectStatus: ProjectStatus | undefined) => {
-    if (projectStatus === undefined) {
-      return { data: allProjects };
-    }
-
-    const projects: ProjectType[] = [];
-
-    for (let i = 0; i < allProjects.length; i++) {
-      const project: ProjectType = allProjects[i];
-
-      if (project.status === projectStatus) {
-        projects.push(project);
+    return new Promise((resolve) => {
+      if (projectStatus === undefined) {
+        setTimeout(() => {
+          resolve({ data: allProjects });
+        }, mockTimeMs);
       }
-    }
 
-    return { data: projects };
+      const projects: ProjectType[] = [];
+
+      for (let i = 0; i < allProjects.length; i++) {
+        const project: ProjectType = allProjects[i];
+
+        if (project.status === projectStatus) {
+          projects.push(project);
+        }
+      }
+
+      setTimeout(() => {
+        resolve({ data: projects });
+      }, 2 * mockTimeMs);
+    });
   },
   getLaunchpadDetails: async () => {
-    const launchpadDetails: LaunchpadType = { projectsLaunched: 12, fundsRaised: 224234, usersParticipated: 4444 };
+    return new Promise((resolve) => {
+      const launchpadDetails: LaunchpadType = { projectsLaunched: 12, fundsRaised: 224234, usersParticipated: 4382 };
 
-    return { data: launchpadDetails };
+      setTimeout(() => {
+        resolve({ data: launchpadDetails });
+      }, mockTimeMs);
+    });
   },
 };

@@ -5,6 +5,8 @@ import { useLaunchpadDetails, useProjects } from '../api/api/api';
 import ryu3 from '../assets/ryu3.png';
 import searchIcon from '../assets/search_icon.svg';
 import { TextField } from '../shared/gui/TextField';
+import { Footer } from '../shared/insets/Footer';
+import { LoadingData } from '../shared/LoadingData';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
 import { getCardDirection } from '../utils/cardDirectionUtil';
@@ -12,6 +14,8 @@ import { sideColor3 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
+
+const mockProjectsNum = 40;
 
 export const LaunchpadPage = () => {
   const [shownProjects, setShownProjects] = useState<ProjectStatus | undefined>('upcoming');
@@ -41,8 +45,8 @@ export const LaunchpadPage = () => {
     }
   };
 
-  if (projectsLoading || launchpadDetailsLoading) {
-    return null;
+  if (launchpadDetailsLoading) {
+    return <LoadingData />;
   }
 
   return (
@@ -142,11 +146,17 @@ export const LaunchpadPage = () => {
       </div>
       <div className={styles.projectsCardsContainerParentClassName}>
         <div className={styles.projectsCardsContainerClassName}>
-          {projects?.data.map((project, index) => {
-            return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
-          })}
+          {!projectsLoading &&
+            projects?.data.map((project, index) => {
+              return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
+            })}
+          {projectsLoading &&
+            [...Array(mockProjectsNum)].map((el, index) => (
+              <ProjectCard key={index} direction={getCardDirection(width, index)} />
+            ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

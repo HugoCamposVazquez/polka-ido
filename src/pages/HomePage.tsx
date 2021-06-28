@@ -9,6 +9,7 @@ import ryu2 from '../assets/ryu2.png';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
+import { Footer } from '../shared/insets/Footer';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectType } from '../types/ProjectType';
 import { getCardDirection } from '../utils/cardDirectionUtil';
@@ -109,6 +110,7 @@ export const HomePage = () => {
           </FormProvider>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
