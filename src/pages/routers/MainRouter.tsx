@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Header } from '../../shared/insets/Header';
 import { styled } from '../../utils/css';
 import { HomePage } from '../HomePage';
+import { JoinProjectPage } from '../JoinProjectPage';
 import { LaunchpadPage } from '../LanchpadPage';
 import { ProjectDetailsPage } from '../ProjectDetailsPage';
 
@@ -21,6 +22,7 @@ export const MainRouter = (): any => {
         <Route exact path="/home" component={HomePage} />
         <Route exact path="/launchpad" component={LaunchpadPage} />
         <Route exact path="/project/:id" component={ProjectDetailsPage} />
+        <Route exact path="/project/:id/join" component={JoinProjectPage} />
         <Redirect from="/" to="/home" />
       </Switch>
     </div>

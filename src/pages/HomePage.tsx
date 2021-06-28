@@ -100,10 +100,10 @@ export const HomePage = () => {
           <FormProvider {...methods}>
             <form>
               <div style={styles.textFieldContainerStyle}>
-                <TextField name="email" placeholder="E-mail" type={'bordered'} />
+                <TextField name="email" placeholder="E-mail" mode={'light'} type={'bordered'} />
               </div>
               <div style={styles.textFieldContainerStyle}>
-                <TextArea name="message" placeholder="Message" style={{ height: '8.38rem' }} />
+                <TextArea name="message" placeholder="Message" mode={'light'} style={{ height: '8.38rem' }} />
               </div>
               <MainButton title="Send" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
             </form>

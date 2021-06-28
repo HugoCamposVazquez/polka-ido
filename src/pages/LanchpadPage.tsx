@@ -136,7 +136,7 @@ export const LaunchpadPage = () => {
             <div style={styles.searchFormContainerStyle}>
               <FormProvider {...methods}>
                 <form style={styles.searchFormStyle}>
-                  <TextField name="search" placeholder="Search here" type={'none'} autoFocus={true} />
+                  <TextField name="search" placeholder="Search here" type={'none'} mode={'light'} autoFocus={true} />
                   <img style={styles.searchIconStyle} src={searchIcon} onClick={methods.handleSubmit(onSearch)} />
                 </form>
               </FormProvider>

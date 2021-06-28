@@ -1,6 +1,7 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { sideColor, sideColor6 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import * as styles from './TextField.styles';
 
@@ -11,9 +12,10 @@ type IProps = {
   style?: any;
   type: 'bordered' | 'underlined' | 'none';
   autoFocus?: boolean;
+  mode: 'light' | 'dark';
 };
 
-export const TextField = ({ name, placeholder, disabled, style, type, autoFocus }: IProps) => {
+export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, style }: IProps) => {
   const { control } = useFormContext();
 
   let borderWidth = '';
@@ -34,7 +36,7 @@ export const TextField = ({ name, placeholder, disabled, style, type, autoFocus 
         render={({ onChange, value }) => {
           return (
             <input
-              className={styles.inputClassName}
+              className={styles.inputClassName(mode === 'light' ? sideColor : sideColor6)}
               style={cs(style, { borderWidth: borderWidth })}
               value={value}
               placeholder={placeholder}

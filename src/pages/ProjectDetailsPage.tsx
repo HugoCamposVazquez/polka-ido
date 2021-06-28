@@ -1,5 +1,6 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import horseImage from '../assets/horse_image.png';
 import projectCardBackground from '../assets/project_card_background.png';
@@ -8,11 +9,14 @@ import twitterIcon from '../assets/twitter_icon.svg';
 import webIcon from '../assets/web_icon.svg';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/Footer';
+import { openClaimTokensModal } from '../shared/modals/modals';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import * as styles from './ProjectDetailsPage.styles';
 
 export const ProjectDetailsPage = () => {
+  const navigation = useHistory();
+
   return (
     <div>
       <div className={styles.imageParentContainerClassName}>
@@ -94,8 +98,20 @@ export const ProjectDetailsPage = () => {
             </div>
 
             <div className={styles.projectDetailsBtnsParentStyle}>
-              <MainButton title="CLAIM TOKENS" type={'bordered'} onClick={() => {}} />
-              <MainButton title="JOIN" type={'fill'} onClick={() => {}} />
+              <MainButton
+                title="CLAIM TOKENS"
+                type={'bordered'}
+                onClick={() => {
+                  openClaimTokensModal('test');
+                }}
+              />
+              <MainButton
+                title="JOIN"
+                type={'fill'}
+                onClick={() => {
+                  navigation.push(`/project/1/join`);
+                }}
+              />
             </div>
           </div>
         </div>

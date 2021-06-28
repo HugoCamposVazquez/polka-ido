@@ -4,7 +4,7 @@ import { styled } from '../utils/css';
 export const loadingDataContainerStyle = styled.cssStyle`
   width: 100%;
   height: 100%;
-  background-color: sideColor4;
+  background-color: ${sideColor4};
   display: flex;
   align-items: center;
   justify-content: center;
