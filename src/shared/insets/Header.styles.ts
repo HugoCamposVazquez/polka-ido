@@ -62,7 +62,7 @@ export const menuItemNotSelectedStyle = styled.cssClassName`
   font-size: 1.25rem;
   line-height: 1.9rem;
   font-family: Titillium Web;
-  margin-right: 1.38rem;
+  margin-right: 2rem;
 
   a {
     color: ${sideColor};
@@ -87,7 +87,7 @@ export const menuItemSelectedStyle = styled.cssClassName`
   font-size: 1.25rem;
   line-height: 1.9rem;
   font-family: Titillium Web;
-  margin-right: 1.38rem;
+  margin-right: 2rem;
 
   a {
     color: ${sideColor5};
@@ -117,6 +117,7 @@ export const menuItemsContainerClassName = styled.cssClassName`
 `;
 
 export const menuIconClassName = styled.cssClassName`
+  cursor: pointer;
   @media (min-width: 51.875rem) {
     display: none;
   }

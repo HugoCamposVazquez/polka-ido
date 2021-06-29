@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { ClaimTokensModal } from './ClaimTokensModal';
+import { WalletModal } from './WalletModal';
 
 const stackOfModalDivs: HTMLDivElement[] = [];
 
@@ -38,6 +39,14 @@ export const openClaimTokensModal = (message: string) => {
   attachDiv();
   ReactDOM.render(
     <ClaimTokensModal closeModal={detachDiv} message={message} />,
+    stackOfModalDivs[stackOfModalDivs.length - 1],
+  );
+};
+
+export const openWalletModal = (changeWallet: any) => {
+  attachDiv();
+  ReactDOM.render(
+    <WalletModal closeModal={detachDiv} changeWallet={changeWallet} />,
     stackOfModalDivs[stackOfModalDivs.length - 1],
   );
 };
