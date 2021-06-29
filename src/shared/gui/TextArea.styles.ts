@@ -7,9 +7,9 @@ export const inputParentStyle = styled.cssStyle`
 
 export const inputClassName = (color: string) => styled.cssClassName`
   flex: 1;
+  width: 100%;
   background-color: transparent;
   outline: 0;
-  border-width: 0.06rem;
   border-color: ${color};
   color: ${color};
   padding: 0.25rem 0.5rem;
@@ -17,6 +17,7 @@ export const inputClassName = (color: string) => styled.cssClassName`
   font-size: 1rem;
   line-height: 2.5rem;
   border-style: solid;
+  border-width: 0.06rem;
   resize: none;
 
   ::-webkit-input-placeholder {

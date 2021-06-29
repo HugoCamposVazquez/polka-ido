@@ -8,6 +8,7 @@ export const inputParentStyle = styled.cssStyle`
 
 export const inputClassName = (color: string) => styled.cssClassName`
   flex: 1;
+  width: 100%;
   background-color: transparent;
   outline: 0;
   border-color: ${color};

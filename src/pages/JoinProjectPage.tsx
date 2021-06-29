@@ -2,13 +2,13 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import arrowDown from '../assets/arrow_down.svg';
 import backToProject from '../assets/back_to_project.svg';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/Footer';
 import { sideColor, sideColor3, sideColor4, sideColor5, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs, styled } from '../utils/css';
-import * as styles from './LaunchpadPage.styles';
 
 export const cardStyle = styled.cssClassName`
   padding: 24px;
@@ -67,7 +67,6 @@ const projectTitleStyle = styled.cssStyle`
   font-size: 48px;
   font-weight: 400;
   line-height: 53.18px;
-  margin-top: 180px;
   display: flex;
   justify-content: center;
 `;
@@ -89,6 +88,21 @@ const maxAllocTextStyle = styled.cssStyle`
   line-height: 24.34px;
   text-align: center;
   margin-top: 8px;
+`;
+
+const backToProjectContainerStyle = styled.cssClassName`
+  position: absolute;
+  margin: 0px 120px;
+  top: 50%;
+  transform: translate(0, -50%);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  @media (max-width: 51.875rem) {
+    position: relative;
+    margin: 0px 24px;
+  }
 `;
 
 export const JoinProjectPage = () => {
@@ -115,24 +129,16 @@ export const JoinProjectPage = () => {
 
   return (
     <div>
-      <div style={{ position: 'relative' }}>
-        <div style={projectTitleStyle}>My project 1</div>
+      <div style={{ position: 'relative', marginTop: '180px' }}>
         <div
-          style={{
-            position: 'absolute',
-            left: '120px',
-            top: '50%',
-            transform: 'translate(0,-50%)',
-            display: 'flex',
-            alignItems: 'center',
-            cursor: 'pointer',
-          }}
+          className={backToProjectContainerStyle}
           onClick={() => {
             navigation.push(`/project/1`);
           }}>
           <img src={backToProject} />
           <div style={backToProjectsTextStyle}>Back to project</div>
         </div>
+        <div style={projectTitleStyle}>My project 1</div>
       </div>
       <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '60px' }}>
         <div style={topLeftBottomRightNotch} className={cardStyle}>
@@ -167,7 +173,10 @@ export const JoinProjectPage = () => {
                     <div style={suffixTextStyle}>ETH</div>
                   </div>
                 </div>
-                <div style={cs(boxContainerStyle, { marginTop: '30px' })}>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '12px 0px' }}>
+                  <img src={arrowDown} />
+                </div>
+                <div style={cs(boxContainerStyle)}>
                   <div style={{ display: 'flex' }}>
                     <div style={cs(subtitleTextStyle, { flex: 1 })}>To</div>
                     <div style={subtitleTextStyle}>Remaining: 239485.32</div>
