@@ -14,26 +14,26 @@ export const Footer = withRouter(() => {
         <div className={styles.footerLinksContainerClassName}>
           <div className={styles.linksGroupsClassName}>
             <div className={styles.linkTitleTextStyle}>Social media</div>
-            <a target="_blank" href="#" className={styles.linkTextStyle}>
+            <a target="_blank" href="https://www.twitter.com" className={styles.linkTextStyle} rel="noreferrer">
               Twitter
             </a>
-            <a target="_blank" href="#" className={styles.linkTextStyle}>
+            <a target="_blank" href="https://www.medium.com" className={styles.linkTextStyle} rel="noreferrer">
               Medium
             </a>
-            <a target="_blank" href="#" className={styles.linkTextStyle}>
+            <a target="_blank" href="https://www.telegram.com" className={styles.linkTextStyle} rel="noreferrer">
               Telegram
             </a>
           </div>
           <div className={styles.linksGroupsClassName}>
             <div className={styles.linkTitleTextStyle}>Company</div>
-            <a target="_blank" href="#" className={styles.linkTextStyle}>
+            <a href="/about" className={styles.linkTextStyle}>
               About us
             </a>
           </div>
           <div>
             <div className={styles.linksGroupsClassName}>
               <div className={styles.linkTitleTextStyle}>Support</div>
-              <a target="_blank" href="#" className={styles.linkTextStyle}>
+              <a target="_blank" href="mailto:someone@ryu.com" className={styles.linkTextStyle} rel="noreferrer">
                 Contact us
               </a>
             </div>
