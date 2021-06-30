@@ -8,7 +8,7 @@ import telegramIcon from '../assets/telegram_icon.svg';
 import twitterIcon from '../assets/twitter_icon.svg';
 import webIcon from '../assets/web_icon.svg';
 import { MainButton } from '../shared/gui/MainButton';
-import { Footer } from '../shared/insets/Footer';
+import { Footer } from '../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../shared/modals/modals';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';

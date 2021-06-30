@@ -42,6 +42,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-signature-canvas": "^1.0.1",
     "@types/yup": "^0.29.8",
+    "antd": "^4.16.6",
     "array-move": "^3.0.1",
     "axios": "^0.21.1",
     "emotion": "^10.0.27",

@@ -5,7 +5,7 @@ import { LaunchpadType } from '../../types/LaunchpadType';
 import { ProjectType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 
-const projectStatuses: ProjectStatus[] = ['upcoming', 'ended', 'featured', 'joined'];
+const projectStatuses: ProjectStatus[] = ['upcoming', 'ended'];
 const iconUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];
@@ -26,6 +26,8 @@ for (let i = 0; i < 80; i++) {
     startDate: '24/06/21',
     endDate: '22/08/22',
     access: 'Whitelist',
+    featured: Math.random() > 0.5,
+    joined: Math.random() > 0.5,
   });
 }
 
@@ -37,7 +39,7 @@ export const projectsMockHTTP: SourceType = {
       for (let i = 0; i < allProjects.length; i++) {
         const project: ProjectType = allProjects[i];
 
-        if (project.status === 'featured') {
+        if (project.featured) {
           projects.push(project);
         }
 
@@ -51,27 +53,38 @@ export const projectsMockHTTP: SourceType = {
       }, mockTimeMs);
     });
   },
-  getProjects: async (projectStatus: ProjectStatus | undefined) => {
+  getProjects: async (fetchFilter: 'upcoming' | 'joined' | 'featured' | undefined) => {
     return new Promise((resolve) => {
-      if (projectStatus === undefined) {
+      if (fetchFilter === undefined) {
         setTimeout(() => {
           resolve({ data: allProjects });
         }, mockTimeMs);
-      }
+      } else {
+        const projects: ProjectType[] = [];
 
-      const projects: ProjectType[] = [];
+        for (let i = 0; i < allProjects.length; i++) {
+          const project: ProjectType = allProjects[i];
 
-      for (let i = 0; i < allProjects.length; i++) {
-        const project: ProjectType = allProjects[i];
+          if (fetchFilter === 'joined' && project.joined) {
+            projects.push(project);
+            continue;
+          }
 
-        if (project.status === projectStatus) {
-          projects.push(project);
+          if (fetchFilter === 'featured' && project.featured) {
+            projects.push(project);
+            continue;
+          }
+
+          if (fetchFilter === 'upcoming' && project.status === 'upcoming') {
+            projects.push(project);
+            continue;
+          }
         }
-      }
 
-      setTimeout(() => {
-        resolve({ data: projects });
-      }, 2 * mockTimeMs);
+        setTimeout(() => {
+          resolve({ data: projects });
+        }, 2 * mockTimeMs);
+      }
     });
   },
   getLaunchpadDetails: async () => {

@@ -1,1 +1,1 @@
-export type ProjectStatus = 'upcoming' | 'featured' | 'joined' | 'ended';
+export type ProjectStatus = 'upcoming' | 'ended';

@@ -1,5 +1,5 @@
-import { sideColor, sideColor2, sideColor5 } from '../../utils/colorsUtil';
-import { styled } from '../../utils/css';
+import { sideColor, sideColor2, sideColor5 } from '../../../utils/colorsUtil';
+import { styled } from '../../../utils/css';
 
 const headerHeight = 7.5;
 

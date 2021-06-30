@@ -6,7 +6,7 @@ import arrowDown from '../assets/arrow_down.svg';
 import backToProject from '../assets/back_to_project.svg';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextField } from '../shared/gui/TextField';
-import { Footer } from '../shared/insets/Footer';
+import { Footer } from '../shared/insets/user/Footer';
 import { sideColor, sideColor3, sideColor4, sideColor5, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs, styled } from '../utils/css';
 

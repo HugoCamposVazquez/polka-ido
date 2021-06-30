@@ -16,4 +16,6 @@ export type ProjectType = {
   startDate: string;
   endDate: string;
   access: string;
+  featured: boolean;
+  joined: boolean;
 };

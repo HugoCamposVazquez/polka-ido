@@ -10,7 +10,7 @@ import ryu4 from '../assets/ryu4.png';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
-import { Footer } from '../shared/insets/Footer';
+import { Footer } from '../shared/insets/user/Footer';
 import { PersonCard } from '../shared/PersonCard';
 import { ProjectCard } from '../shared/ProjectCard';
 import { getCardDirection } from '../utils/cardDirectionUtil';

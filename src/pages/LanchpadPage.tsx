@@ -5,7 +5,7 @@ import { useLaunchpadDetails, useProjects } from '../api/api/api';
 import ryu3 from '../assets/ryu3.png';
 import searchIcon from '../assets/search_icon.svg';
 import { TextField } from '../shared/gui/TextField';
-import { Footer } from '../shared/insets/Footer';
+import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
@@ -18,7 +18,7 @@ import * as styles from './LaunchpadPage.styles';
 const mockProjectsNum = 40;
 
 export const LaunchpadPage = () => {
-  const [shownProjects, setShownProjects] = useState<ProjectStatus | undefined>('upcoming');
+  const [shownProjects, setShownProjects] = useState<'upcoming' | 'joined' | 'featured' | undefined>('upcoming');
   const [searchTextVisible, setSearchTextVisible] = useState<boolean>(false);
 
   const { data: projects, isLoading: projectsLoading } = useProjects(shownProjects);

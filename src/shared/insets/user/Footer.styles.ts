@@ -1,5 +1,5 @@
-import { sideColor3, sideColor5, sideColor6 } from '../../utils/colorsUtil';
-import { styled } from '../../utils/css';
+import { sideColor3, sideColor5, sideColor6 } from '../../../utils/colorsUtil';
+import { styled } from '../../../utils/css';
 
 export const ryuTextStyle = styled.cssStyle`
   font-family: Odibee Sans;

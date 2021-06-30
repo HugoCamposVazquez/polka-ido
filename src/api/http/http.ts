@@ -12,9 +12,9 @@ export const projectsHTTP: SourceType = {
 
     return response.data;
   },
-  getProjects: async (projectStatus: ProjectStatus | undefined) => {
+  getProjects: async (fetchFilter: 'upcoming' | 'joined' | 'featured' | undefined) => {
     const response = await axiosAnonymous.get<any, AxiosResponse<ProjectsApiType>>(
-      projectStatus !== undefined ? `/projects/${projectStatus}` : '/projects',
+      fetchFilter !== undefined ? `/projects/${fetchFilter}` : '/projects',
     );
 
     return response.data;

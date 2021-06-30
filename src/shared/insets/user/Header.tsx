@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
-import closeIcon from '../../assets/close_icon.svg';
-import menuIcon from '../../assets/menu_icon.svg';
-import { sideColor3, sideColor4, sideColor5, sideColor6 } from '../../utils/colorsUtil';
-import { cs } from '../../utils/css';
-import { useWindowDimensions } from '../../utils/windowDimensionsUtil';
-import { MainButton } from '../gui/MainButton';
-import { openWalletModal } from '../modals/modals';
+import closeIcon from '../../../assets/close_icon.svg';
+import menuIcon from '../../../assets/menu_icon.svg';
+import { sideColor3, sideColor4, sideColor5, sideColor6 } from '../../../utils/colorsUtil';
+import { cs } from '../../../utils/css';
+import { useWindowDimensions } from '../../../utils/windowDimensionsUtil';
+import { MainButton } from '../../gui/MainButton';
+import { openWalletModal } from '../../modals/modals';
 import * as styles from './Header.styles';
 
 const mobileViewWidth = 830;
