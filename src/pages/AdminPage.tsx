@@ -192,8 +192,14 @@ const getAllColumns = () => {
     {
       title: '',
       width: '80px',
-      renderRepresentation: (cellProps: any) => (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>{<img src={binImage} />}</div>
+      renderRepresentation: () => (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', height: '100%' }}
+          onClick={() => {
+            console.log('deleted!');
+          }}>
+          {<img src={binImage} />}
+        </div>
       ),
     },
   ];
@@ -249,7 +255,7 @@ export const AdminPage = () => {
             className={tableClassName}
             onRow={(record, rowIndex) => {
               return {
-                onClick: () => {
+                onDoubleClick: () => {
                   console.log(record, rowIndex);
                   navigation.push('/admin/project/1');
                 }, // click row
