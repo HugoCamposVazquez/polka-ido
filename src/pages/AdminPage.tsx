@@ -225,41 +225,39 @@ export const AdminPage = () => {
 
   const { data: projects, isLoading: projectsLoading } = useProjects(undefined);
 
+  if (projectsLoading) {
+    return <Spin style={spinnerStyle} size="large" />;
+  }
+
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {projectsLoading && <Spin style={spinnerStyle} size="large" />}
-      {!projectsLoading && (
-        <div>
-          <div style={{ margin: '100px 147px 0', fontStyle: 'Titillium Web', fontWeight: 700, fontSize: '24px' }}>
-            All projects
-          </div>
-          <div className={addProjectStyle}>Add project</div>
-
-          <div style={tableContainerParentStyle}>
-            <div style={tableContainerStyle}>
-              <Table
-                rowKey={'id'}
-                dataSource={projects?.data}
-                tableLayout={'fixed'}
-                scroll={{ x: 'min-content' }}
-                sticky
-                pagination={pagination}
-                components={components}
-                columns={mappedColumns}
-                className={tableClassName}
-                onRow={(record, rowIndex) => {
-                  return {
-                    onClick: () => {
-                      console.log(record, rowIndex);
-                      navigation.push('/admin/project/1');
-                    }, // click row
-                  };
-                }}
-              />
-            </div>
-          </div>
+      <div style={{ margin: '100px 147px 0', fontStyle: 'Titillium Web', fontWeight: 700, fontSize: '24px' }}>
+        All projects
+      </div>
+      <div className={addProjectStyle}>Add project</div>
+      <div style={tableContainerParentStyle}>
+        <div style={tableContainerStyle}>
+          <Table
+            rowKey={'id'}
+            dataSource={projects?.data}
+            tableLayout={'fixed'}
+            scroll={{ x: 'min-content' }}
+            sticky
+            pagination={pagination}
+            components={components}
+            columns={mappedColumns}
+            className={tableClassName}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: () => {
+                  console.log(record, rowIndex);
+                  navigation.push('/admin/project/1');
+                }, // click row
+              };
+            }}
+          />
         </div>
-      )}
+      </div>
     </div>
   );
 };
