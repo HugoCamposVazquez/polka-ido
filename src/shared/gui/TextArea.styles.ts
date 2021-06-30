@@ -15,7 +15,7 @@ export const inputClassName = (color: string) => styled.cssClassName`
   padding: 0.25rem 0.5rem;
   font-family: Titillium Web;
   font-size: 1rem;
-  line-height: 2.5rem;
+  line-height: 1.5rem;
   border-style: solid;
   border-width: 0.06rem;
   resize: none;
