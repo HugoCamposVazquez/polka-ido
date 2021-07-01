@@ -7,6 +7,8 @@ import { styled } from '../../utils/css';
 
 type IProps = {
   name: string;
+  style?: any;
+  disabled?: boolean;
 };
 
 const checkboxStyle = styled.cssClassName`
@@ -15,7 +17,7 @@ const checkboxStyle = styled.cssClassName`
   }
 `;
 
-export const CheckboxField = ({ name }: IProps) => {
+export const CheckboxField = ({ name, disabled, style }: IProps) => {
   const { control } = useFormContext();
 
   return (
@@ -23,7 +25,13 @@ export const CheckboxField = ({ name }: IProps) => {
       name={name}
       control={control}
       render={({ value, onChange }) => (
-        <Checkbox className={checkboxStyle} checked={value} onChange={(e) => onChange(e.target.checked)} />
+        <Checkbox
+          className={checkboxStyle}
+          style={style}
+          disabled={disabled}
+          checked={value}
+          onChange={(e) => onChange(e.target.checked)}
+        />
       )}
     />
   );

@@ -7,9 +7,10 @@ import horseImage from '../assets/horse_image.png';
 import removeIcon from '../assets/remove_icon.svg';
 import { CheckboxField } from '../shared/gui/CheckboxField';
 import { MainButton } from '../shared/gui/MainButton';
+import { RadioGroup } from '../shared/gui/RadioGroup';
 import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
-import { sideColor, sideColor2 } from '../utils/colorsUtil';
+import { sideColor, sideColor2, sideColor3, sideColor12 } from '../utils/colorsUtil';
 import { cs, styled } from '../utils/css';
 
 export const titleSectionStyle = styled.cssStyle`
@@ -33,8 +34,8 @@ export const AdminProjectPage = () => {
 
   const methods = useForm({
     defaultValues: {
-      email: '',
-      message: '',
+      status: 'upcoming',
+      access: 'whitelist',
     },
     //resolver: yupResolver(loginValidationSchema),
   });
@@ -61,11 +62,29 @@ export const AdminProjectPage = () => {
               <div style={{ flex: 0.6, display: 'flex', marginRight: '12px' }}>
                 <div style={{ flex: 0.45, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                   <div style={fieldSectionStyle}>Status</div>
-                  <div style={{ backgroundColor: 'red', flex: 1 }}></div>
+                  <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                    <RadioGroup
+                      name={'status'}
+                      color={sideColor12}
+                      options={[
+                        { value: 'upcoming', label: 'Upcoming' },
+                        { value: 'ended', label: 'Ended' },
+                      ]}
+                    />
+                  </div>
                 </div>
                 <div style={{ flex: 0.45, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                   <div style={fieldSectionStyle}>Access</div>
-                  <div style={{ backgroundColor: 'yellow', flex: 1 }}></div>
+                  <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                    <RadioGroup
+                      name={'access'}
+                      color={sideColor3}
+                      options={[
+                        { value: 'whitelist', label: 'Whitelist' },
+                        { value: 'private', label: 'Private' },
+                      ]}
+                    />
+                  </div>
                 </div>
                 <div style={{ flex: 0.1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <div style={fieldSectionStyle}>Featured</div>
