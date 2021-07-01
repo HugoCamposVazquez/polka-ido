@@ -46,7 +46,7 @@ const boxContainerStyle = styled.cssStyle`
 const subtitleTextStyle = styled.cssStyle`
   padding: 4px 8px 0px 8px;
   font-family: Titillium Web;
-  color: ${sideColor6};
+  color: ${sideColor};
   font-size: 16px;
   font-weight: 400;
   line-height: 24.34px;
@@ -155,8 +155,9 @@ export const JoinProjectPage = () => {
                       name={'fromValue'}
                       type={'none'}
                       placeholder={'0.02'}
-                      mode={'light'}
+                      mode={'dark'}
                       style={{ fontSize: '20px' }}
+                      autoFocus={true}
                     />
                     <div
                       style={{
@@ -186,7 +187,7 @@ export const JoinProjectPage = () => {
                       name={'toValue'}
                       type={'none'}
                       placeholder={'349857'}
-                      mode={'light'}
+                      mode={'dark'}
                       style={{ fontSize: '20px' }}
                     />
                     <div style={suffixTextStyle}>TKN</div>
