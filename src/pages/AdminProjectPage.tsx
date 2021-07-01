@@ -57,25 +57,28 @@ export const AdminProjectPage = () => {
                 <div style={fieldSectionStyle}>Project name</div>
                 <TextField name={'projectName'} type={'bordered'} mode={'light'} placeholder={'My project 1'} />
               </div>
-              <div style={{ flex: 0.25, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
-                <div style={fieldSectionStyle}>Status</div>
-                <div style={{ backgroundColor: 'red', flex: 1 }}></div>
-              </div>
-              <div style={{ flex: 0.25, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
-                <div style={fieldSectionStyle}>Access</div>
-                <div style={{ backgroundColor: 'yellow', flex: 1 }}></div>
-              </div>
-              <div style={{ flex: 0.1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={fieldSectionStyle}>Featured</div>
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginLeft: '16px',
-                  }}>
-                  <CheckboxField name={'featured'} label={''} />
+
+              <div style={{ flex: 0.6, display: 'flex', marginRight: '12px' }}>
+                <div style={{ flex: 0.4, display: 'flex', flexDirection: 'column', marginRight: '48px' }}>
+                  <div style={fieldSectionStyle}>Status</div>
+                  <div style={{ backgroundColor: 'red', flex: 1 }}></div>
+                </div>
+                <div style={{ flex: 0.4, display: 'flex', flexDirection: 'column', marginRight: '48px' }}>
+                  <div style={fieldSectionStyle}>Access</div>
+                  <div style={{ backgroundColor: 'yellow', flex: 1 }}></div>
+                </div>
+                <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <div style={fieldSectionStyle}>Featured</div>
+                  <div
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginLeft: '16px',
+                    }}>
+                    <CheckboxField name={'featured'} label={''} />
+                  </div>
                 </div>
               </div>
             </div>
