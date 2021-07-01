@@ -40,6 +40,18 @@ export const AdminProjectPage = () => {
     //resolver: yupResolver(loginValidationSchema),
   });
 
+  const onSubmit = async ({ test }: any) => {
+    try {
+      console.log('test');
+      // const { token } = await generalHTTP.login(email, message);
+      // localStorage.setItem('token', token);
+      // window.location.reload();
+    } catch (e) {
+      console.log(e);
+      // show notification or error message
+    }
+  };
+
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ margin: '100px 120px 0', display: 'flex' }}>
@@ -242,13 +254,27 @@ export const AdminProjectPage = () => {
 
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 1 }}>
+                <div style={fieldSectionStyle}>Short description</div>
+                <TextArea name={'starts'} mode={'light'} style={{ height: '100px' }} />
+              </div>
+            </div>
+
+            <div style={{ marginTop: '24px', display: 'flex' }}>
+              <div style={{ flex: 1 }}>
                 <div style={fieldSectionStyle}>Description</div>
-                <TextArea name={'starts'} mode={'light'} style={{ height: '200px' }} />
+                <TextArea name={'starts'} mode={'light'} style={{ height: '250px' }} />
               </div>
             </div>
 
             <div style={{ marginTop: '36px', display: 'flex' }}>
-              <MainButton title={'SAVE'} onClick={() => {}} type={'fill'} style={{ marginRight: '24px' }} />
+              <MainButton
+                title={'SAVE'}
+                onClick={() => {
+                  methods.handleSubmit(onSubmit);
+                }}
+                type={'fill'}
+                style={{ marginRight: '24px' }}
+              />
               <MainButton
                 title={'BACK'}
                 onClick={() => {
