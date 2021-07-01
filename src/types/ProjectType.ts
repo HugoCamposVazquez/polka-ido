@@ -1,3 +1,4 @@
+import { ProjectAccess } from './enums/ProjectAccess';
 import { ProjectStatus } from './enums/ProjectStatus';
 
 export type ProjectsApiType = {
@@ -5,17 +6,32 @@ export type ProjectsApiType = {
 };
 
 export type ProjectType = {
-  id: number;
-  iconUrl: string;
+  id?: number;
   title: string;
-  description: string;
   status: ProjectStatus;
-  raiseAmountCurrent: number;
-  raiseAmountTotal: number;
-  perToken: number;
-  startDate: string;
-  endDate: string;
-  access: string;
+  access: ProjectAccess;
   featured: boolean;
-  joined: boolean;
+  starts: string;
+  ends: string;
+  raiseAmountTotal: number;
+  tokenPrice: number;
+  tokenValue: number;
+  iconUrl: string;
+  etherScanLink: string;
+  webLink: string;
+  twitterLink: string;
+  telegramLink: string;
+  distributionDate: string;
+  minAllocation: number;
+  maxAllocation: number;
+  minSwapLevel: number;
+  whitelistStatus: string;
+  tokenName: string;
+  symbol: string;
+  decimals: number;
+  totalSupply: number;
+  shortDescription: string;
+  description: string;
+  raiseAmountCurrent?: number;
+  joined?: boolean;
 };

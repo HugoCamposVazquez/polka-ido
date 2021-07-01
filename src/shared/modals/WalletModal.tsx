@@ -3,7 +3,7 @@ import React from 'react';
 import closeIcon from '../../assets/close_icon.svg';
 import copyAddress from '../../assets/copy_address.svg';
 import viewInExplorer from '../../assets/view_in_explorer.svg';
-import { sideColor, sideColor3, sideColor5, sideColor8 } from '../../utils/colorsUtil';
+import { sideColor, sideColor3, sideColor4, sideColor5, sideColor8 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 interface IProps {
@@ -84,7 +84,7 @@ export const WalletModal = ({ closeModal, changeWallet }: IProps) => {
         </div>
         <div style={{ border: '1px solid #ccc', marginTop: '10px' }}>
           <div style={{ display: 'flex', margin: '24px 24px 0', alignItems: 'center' }}>
-            <div style={{ flex: 1, fontFamily: 'Titillium Web', fontWeight: 400, fontSize: '16px' }}>
+            <div style={{ flex: 1, fontFamily: 'Titillium Web', fontWeight: 400, fontSize: '16px', color: sideColor }}>
               Connected with MetaMask
             </div>
             <div
@@ -107,8 +107,11 @@ export const WalletModal = ({ closeModal, changeWallet }: IProps) => {
           <div
             style={{
               margin: '0 24px',
-
+              fontFamily: 'Titillium Web',
+              fontWeight: 700,
+              fontSize: '20px',
               marginTop: '12px',
+              color: sideColor5,
             }}>
             0xcF2C...c706
           </div>
@@ -116,13 +119,27 @@ export const WalletModal = ({ closeModal, changeWallet }: IProps) => {
           <div style={{ display: 'flex', margin: '24px 24px 30px 24px' }}>
             <div style={{ display: 'flex', cursor: 'pointer' }}>
               <img src={copyAddress} />
-              <div style={{ marginLeft: '13px', fontFamily: 'Titillium Web', fontWeight: 400, fontSize: '16px' }}>
+              <div
+                style={{
+                  marginLeft: '13px',
+                  fontFamily: 'Titillium Web',
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  color: sideColor,
+                }}>
                 Copy Address
               </div>
             </div>
             <div style={{ display: 'flex', marginLeft: '26px', cursor: 'pointer' }}>
               <img src={viewInExplorer} />
-              <div style={{ marginLeft: '13px', fontFamily: 'Titillium Web', fontWeight: 400, fontSize: '16px' }}>
+              <div
+                style={{
+                  marginLeft: '13px',
+                  fontFamily: 'Titillium Web',
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  color: sideColor,
+                }}>
                 View in Explorer
               </div>
             </div>

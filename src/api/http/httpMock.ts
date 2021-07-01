@@ -1,11 +1,13 @@
 import horseImage from '../../assets/horse_image.png';
 import projectImage from '../../assets/project_image.svg';
+import { ProjectAccess } from '../../types/enums/ProjectAccess';
 import { ProjectStatus } from '../../types/enums/ProjectStatus';
 import { LaunchpadType } from '../../types/LaunchpadType';
 import { ProjectType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 
 const projectStatuses: ProjectStatus[] = ['upcoming', 'ended'];
+const projectAccesses: ProjectAccess[] = ['whitelist', 'private'];
 const iconUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];
@@ -15,18 +17,33 @@ const mockTimeMs = 1500;
 for (let i = 0; i < 80; i++) {
   allProjects.push({
     id: i,
-    iconUrl: iconUrls[Math.floor(Math.random() * iconUrls.length)],
     title: 'Project name ' + i,
+    status: projectStatuses[Math.floor(Math.random() * projectStatuses.length)],
+    access: projectAccesses[Math.floor(Math.random() * projectAccesses.length)],
+    featured: Math.random() > 0.5,
+    starts: '24/06/21',
+    ends: '22/08/22',
+    raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000),
+    tokenPrice: 0.02,
+    tokenValue: 20,
+    iconUrl: iconUrls[Math.floor(Math.random() * iconUrls.length)],
+    etherScanLink: 'string',
+    webLink: 'string',
+    twitterLink: 'string',
+    telegramLink: 'string',
+    distributionDate: '22/08/22',
+    minAllocation: 0.02,
+    maxAllocation: 0.2,
+    minSwapLevel: 0.01,
+    whitelistStatus: 'Whitelisted',
+    tokenName: 'token name',
+    symbol: 'ETH',
+    decimals: 16,
+    totalSupply: 100000,
+    shortDescription: 'string',
     description:
       'For athletes, high altitude produces two contradictory effects on performance. For explosive events (sprints up to 400 metres, long jump, triple jump)',
-    status: projectStatuses[Math.floor(Math.random() * projectStatuses.length)],
-    raiseAmountCurrent: Math.floor(Math.random() * 100000),
-    raiseAmountTotal: 100000,
-    perToken: Math.random(),
-    startDate: '24/06/21',
-    endDate: '22/08/22',
-    access: 'Whitelist',
-    featured: Math.random() > 0.5,
+    raiseAmountCurrent: Math.floor(Math.random() * 90000),
     joined: Math.random() > 0.5,
   });
 }

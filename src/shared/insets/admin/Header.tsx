@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 import { sideColor3, sideColor5 } from '../../../utils/colorsUtil';
 import { styled } from '../../../utils/css';
@@ -45,6 +45,8 @@ const headerContainerParentStyle = styled.cssStyle`
 `;
 
 export const Header = withRouter((props) => {
+  const navigation = useHistory();
+
   return (
     <div style={headerContainerParentStyle}>
       <div style={headerContainerStyle}>
@@ -54,8 +56,7 @@ export const Header = withRouter((props) => {
             onClick={() => {
               // eslint-disable-next-line no-undef
               window.scrollTo(0, 0);
-              // eslint-disable-next-line no-undef
-              window.location.reload();
+              navigation.push('/admin');
             }}>
             RYU
           </div>

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import ryuLogoAnimation from '../assets/ryu_logo_animation.gif';
 import { sideColor4 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import * as projectCardStyles from './ProjectCard.styles';

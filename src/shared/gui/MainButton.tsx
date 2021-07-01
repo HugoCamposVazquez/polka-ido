@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import React from 'react';
 
 import { cs } from '../../utils/css';
@@ -11,8 +12,8 @@ type IProps = {
 
 export const MainButton = ({ title, onClick, type, style }: IProps) => {
   return (
-    <button onClick={onClick} style={cs(type === 'fill' ? styles.fillButtonStyle : styles.borderedButtonStyle, style)}>
+    <Button onClick={onClick} style={cs(type === 'fill' ? styles.fillButtonStyle : styles.borderedButtonStyle, style)}>
       {title}
-    </button>
+    </Button>
   );
 };

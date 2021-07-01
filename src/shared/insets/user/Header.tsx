@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useHistory, withRouter } from 'react-router-dom';
 
 import closeIcon from '../../../assets/close_icon.svg';
 import menuIcon from '../../../assets/menu_icon.svg';
@@ -13,6 +13,7 @@ import * as styles from './Header.styles';
 const mobileViewWidth = 830;
 
 export const Header = withRouter((props) => {
+  const navigation = useHistory();
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
   const { width } = useWindowDimensions();
@@ -32,8 +33,7 @@ export const Header = withRouter((props) => {
             onClick={() => {
               // eslint-disable-next-line no-undef
               window.scrollTo(0, 0);
-              // eslint-disable-next-line no-undef
-              window.location.reload();
+              navigation.push('/home');
             }}>
             RYU
           </div>

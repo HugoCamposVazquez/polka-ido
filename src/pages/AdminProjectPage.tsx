@@ -3,13 +3,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import binImage from '../assets/bin_image.svg';
-import horseImage from '../assets/horse_image.png';
-import removeIcon from '../assets/remove_icon.svg';
 import { CheckboxField } from '../shared/gui/CheckboxField';
+import { ImagePicker } from '../shared/gui/ImagePicker';
 import { MainButton } from '../shared/gui/MainButton';
 import { RadioGroup } from '../shared/gui/RadioGroup';
 import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
+import { ProjectType } from '../types/ProjectType';
 import { sideColor, sideColor2, sideColor3, sideColor12 } from '../utils/colorsUtil';
 import { cs, styled } from '../utils/css';
 
@@ -29,23 +29,27 @@ export const fieldSectionStyle = styled.cssStyle`
   color: ${sideColor};
 `;
 
-export const AdminProjectPage = () => {
+export const AdminProjectPage = (props: any) => {
   const navigation = useHistory();
+
+  const defaultValues = props.location.state.defaultValues;
 
   const methods = useForm({
     defaultValues: {
-      status: 'upcoming',
-      access: 'whitelist',
+      ...defaultValues,
+      status: defaultValues?.status ? defaultValues?.status : 'upcoming',
+      access: defaultValues?.access ? defaultValues?.access : 'whitelist',
     },
     //resolver: yupResolver(loginValidationSchema),
   });
 
-  const onSubmit = async ({ test }: any) => {
+  const onSubmit = async (project: ProjectType) => {
     try {
-      console.log('test');
       // const { token } = await generalHTTP.login(email, message);
       // localStorage.setItem('token', token);
       // window.location.reload();
+
+      console.log(project);
     } catch (e) {
       console.log(e);
       // show notification or error message
@@ -56,10 +60,12 @@ export const AdminProjectPage = () => {
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ margin: '100px 120px 0', display: 'flex' }}>
         <div style={{ fontStyle: 'Titillium Web', fontWeight: 700, fontSize: '24px', flex: 1 }}>My project 1</div>
-        <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-          <div style={{ minWidth: 'fit-content', marginRight: '6px', color: sideColor }}>Delete project</div>
-          <img src={binImage} />
-        </div>
+        {defaultValues.id !== undefined && (
+          <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+            <div style={{ minWidth: 'fit-content', marginRight: '6px', color: sideColor }}>Delete project</div>
+            <img src={binImage} />
+          </div>
+        )}
       </div>
       <FormProvider {...methods}>
         <form>
@@ -68,7 +74,7 @@ export const AdminProjectPage = () => {
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 0.4, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Project name</div>
-                <TextField name={'projectName'} type={'bordered'} mode={'light'} placeholder={'My project 1'} />
+                <TextField name={'title'} type={'bordered'} mode={'dark'} placeholder={'My project 1'} />
               </div>
 
               <div style={{ flex: 0.6, display: 'flex', marginRight: '12px' }}>
@@ -117,84 +123,56 @@ export const AdminProjectPage = () => {
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Starts</div>
-                <TextField name={'starts'} type={'bordered'} mode={'light'} placeholder={'4/4/18'} />
+                <TextField name={'starts'} type={'bordered'} mode={'dark'} placeholder={'4/4/18'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Ends</div>
-                <TextField name={'ends'} type={'bordered'} mode={'light'} placeholder={'3/4/19'} />
+                <TextField name={'ends'} type={'bordered'} mode={'dark'} placeholder={'3/4/19'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Raise amount</div>
-                <TextField name={'raiseAmount'} type={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+                <TextField name={'raiseAmountTotal'} type={'bordered'} mode={'dark'} placeholder={'10,000,000'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Token price (ETH)</div>
-                <TextField name={'tokenPrice'} type={'bordered'} mode={'light'} placeholder={'0,022'} />
+                <TextField name={'tokenPrice'} type={'bordered'} mode={'dark'} placeholder={'0,022'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column' }}>
                 <div style={fieldSectionStyle}>Token value (USDT)</div>
-                <TextField name={'tokenValue'} type={'bordered'} mode={'light'} placeholder={'0.00002'} />
+                <TextField name={'tokenValue'} type={'bordered'} mode={'dark'} placeholder={'0.00002'} />
               </div>
             </div>
 
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Project icon</div>
-                <div style={{ display: 'flex', marginLeft: '16px' }}>
-                  <div style={{ position: 'relative' }}>
-                    <img
-                      style={{
-                        height: '48px',
-                        width: '48px',
-                        marginRight: '6px',
-                        marginTop: '6px',
-                        objectFit: 'cover',
-                      }}
-                      src={horseImage}
-                    />
-                    <img style={{ position: 'absolute', top: 0, right: 0 }} src={removeIcon} />
-                  </div>
-                </div>
-                <MainButton
-                  title={'Upload image'}
-                  onClick={() => {}}
-                  type={'bordered'}
-                  style={{
-                    marginTop: '24px',
-                    marginLeft: '16px',
-                    color: sideColor,
-                    borderColor: sideColor,
-                    fontSize: '12px',
-                    width: '102px',
-                    height: '34px',
-                  }}
-                />
+                <ImagePicker name={'iconUrl'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Etherscan</div>
                 <div>
-                  <TextField name={'ends'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'etherScanLink'} type={'bordered'} mode={'dark'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Web</div>
                 <div>
-                  <TextField name={'raiseAmount'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'webLink'} type={'bordered'} mode={'dark'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Twitter</div>
                 <div>
-                  <TextField name={'tokenPrice'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'twitterLink'} type={'bordered'} mode={'dark'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column' }}>
                 <div style={fieldSectionStyle}>Telegram</div>
                 <div>
-                  <TextField name={'tokenValue'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'telegramLink'} type={'bordered'} mode={'dark'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
@@ -206,23 +184,23 @@ export const AdminProjectPage = () => {
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Distribution date</div>
-                <TextField name={'starts'} type={'bordered'} mode={'light'} placeholder={'4/4/18'} />
+                <TextField name={'distributionDate'} type={'bordered'} mode={'dark'} placeholder={'4/4/18'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Min. allocation (ETH)</div>
-                <TextField name={'ends'} type={'bordered'} mode={'light'} placeholder={'0'} />
+                <TextField name={'minAllocation'} type={'bordered'} mode={'dark'} placeholder={'0'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Max. allocation (ETH)</div>
-                <TextField name={'raiseAmount'} type={'bordered'} mode={'light'} placeholder={'0.02'} />
+                <TextField name={'maxAllocation'} type={'bordered'} mode={'dark'} placeholder={'0.02'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Min. swap level</div>
-                <TextField name={'tokenPrice'} type={'bordered'} mode={'light'} placeholder={'0.002'} />
+                <TextField name={'minSwapLevel'} type={'bordered'} mode={'dark'} placeholder={'0.002'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column' }}>
                 <div style={fieldSectionStyle}>Whitelist status</div>
-                <TextField name={'tokenValue'} type={'bordered'} mode={'light'} placeholder={'Whitelisted'} />
+                <TextField name={'whitelistStatus'} type={'bordered'} mode={'dark'} placeholder={'Whitelisted'} />
               </div>
             </div>
 
@@ -232,19 +210,19 @@ export const AdminProjectPage = () => {
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Name</div>
-                <TextField name={'starts'} type={'bordered'} mode={'light'} placeholder={'tokename'} />
+                <TextField name={'tokenName'} type={'bordered'} mode={'dark'} placeholder={'tokename'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Symbol</div>
-                <TextField name={'ends'} type={'bordered'} mode={'light'} placeholder={'TKN'} />
+                <TextField name={'symbol'} type={'bordered'} mode={'dark'} placeholder={'TKN'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Decimals</div>
-                <TextField name={'raiseAmount'} type={'bordered'} mode={'light'} placeholder={'16'} />
+                <TextField name={'decimals'} type={'bordered'} mode={'dark'} placeholder={'16'} />
               </div>
               <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                 <div style={fieldSectionStyle}>Total supply</div>
-                <TextField name={'tokenPrice'} type={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+                <TextField name={'totalSupply'} type={'bordered'} mode={'dark'} placeholder={'10,000,000'} />
               </div>
               <div style={{ flex: 0.2 }} />
             </div>
@@ -255,23 +233,21 @@ export const AdminProjectPage = () => {
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 1 }}>
                 <div style={fieldSectionStyle}>Short description</div>
-                <TextArea name={'starts'} mode={'light'} style={{ height: '100px' }} />
+                <TextArea name={'shortDescription'} mode={'dark'} style={{ height: '100px' }} />
               </div>
             </div>
 
             <div style={{ marginTop: '24px', display: 'flex' }}>
               <div style={{ flex: 1 }}>
                 <div style={fieldSectionStyle}>Description</div>
-                <TextArea name={'starts'} mode={'light'} style={{ height: '250px' }} />
+                <TextArea name={'description'} mode={'dark'} style={{ height: '250px' }} />
               </div>
             </div>
 
             <div style={{ marginTop: '36px', display: 'flex' }}>
               <MainButton
-                title={'SAVE'}
-                onClick={() => {
-                  methods.handleSubmit(onSubmit);
-                }}
+                title={defaultValues.id !== undefined ? 'UPDATE' : 'CREATE'}
+                onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
                 style={{ marginRight: '24px' }}
               />

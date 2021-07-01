@@ -151,15 +151,15 @@ const getAllColumns = () => {
     },
     {
       title: 'Starts',
-      dataIndex: 'startDate',
+      dataIndex: 'starts',
       width: '150px',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.startDate}</div>,
+      renderRepresentation: (cellProps: any) => <div>{cellProps.record.starts}</div>,
     },
     {
       title: 'Ends',
-      dataIndex: 'endDate',
+      dataIndex: 'ends',
       width: '150px',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.endDate}</div>,
+      renderRepresentation: (cellProps: any) => <div>{cellProps.record.ends}</div>,
     },
     {
       title: 'Raise amount',
@@ -175,9 +175,9 @@ const getAllColumns = () => {
     },
     {
       title: 'Token price',
-      dataIndex: 'perToken',
+      dataIndex: 'tokenPrice',
       width: '150px',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.perToken}</div>,
+      renderRepresentation: (cellProps: any) => <div>{cellProps.record.tokenPrice}</div>,
     },
     {
       title: 'Featured',
@@ -240,7 +240,15 @@ export const AdminPage = () => {
       <div style={{ margin: '100px 147px 0', fontStyle: 'Titillium Web', fontWeight: 700, fontSize: '24px' }}>
         All projects
       </div>
-      <div className={addProjectStyle}>Add project</div>
+      <div
+        className={addProjectStyle}
+        onClick={() => {
+          navigation.push('/admin/project', {
+            defaultValues: {},
+          });
+        }}>
+        Add project
+      </div>
       <div style={tableContainerParentStyle}>
         <div style={tableContainerStyle}>
           <Table
@@ -257,7 +265,9 @@ export const AdminPage = () => {
               return {
                 onDoubleClick: () => {
                   console.log(record, rowIndex);
-                  navigation.push('/admin/project/1');
+                  navigation.push('/admin/project', {
+                    defaultValues: record,
+                  });
                 }, // click row
               };
             }}

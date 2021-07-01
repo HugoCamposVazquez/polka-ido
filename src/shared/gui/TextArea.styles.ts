@@ -5,7 +5,7 @@ export const inputParentStyle = styled.cssStyle`
   flex: 1;
 `;
 
-export const inputClassName = (color: string) => styled.cssClassName`
+export const inputClassName = (color: string, placeholderColor: string) => styled.cssClassName`
   flex: 1;
   width: 100%;
   background-color: transparent;
@@ -22,15 +22,15 @@ export const inputClassName = (color: string) => styled.cssClassName`
 
   ::-webkit-input-placeholder {
     /* Edge */
-    color: ${color};
+    color: ${placeholderColor};
   }
 
   :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: ${color};
+    color: ${placeholderColor};
   }
 
   ::placeholder {
-    color: ${color};
+    color: ${placeholderColor};
   }
 `;

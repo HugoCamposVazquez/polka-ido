@@ -50,7 +50,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
           </div>
           <div style={{ margin: '0.38rem 1rem' }}>
             <ProgressBar
-              completed={(project.raiseAmountCurrent / project.raiseAmountTotal) * 100}
+              completed={project.raiseAmountCurrent ? (project.raiseAmountCurrent / project.raiseAmountTotal) * 100 : 0}
               isLabelVisible={false}
               height={'0.38rem'}
               bgColor={sideColor3}
@@ -75,13 +75,11 @@ export const ProjectCard = ({ direction, project }: IProps) => {
             <div style={{ display: 'flex' }}>
               <div>
                 <div style={styles.detailsTitleStyle}>Per token</div>
-                <div style={styles.detailsValueStyle}>{project.perToken.toFixed(2)} USDT</div>
+                <div style={styles.detailsValueStyle}>{project.tokenPrice.toFixed(2)} USDT</div>
               </div>
               <div>
                 <div style={styles.detailsTitleStyle}>{project.status !== 'ended' ? 'Starts' : 'Ended'}</div>
-                <div style={styles.detailsValueStyle}>
-                  {project.status !== 'ended' ? project.startDate : project.endDate}
-                </div>
+                <div style={styles.detailsValueStyle}>{project.status !== 'ended' ? project.starts : project.ends}</div>
               </div>
               <div>
                 <div style={styles.detailsTitleStyle}>Access</div>
