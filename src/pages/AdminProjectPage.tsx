@@ -59,15 +59,15 @@ export const AdminProjectPage = () => {
               </div>
 
               <div style={{ flex: 0.6, display: 'flex', marginRight: '12px' }}>
-                <div style={{ flex: 0.4, display: 'flex', flexDirection: 'column', marginRight: '48px' }}>
+                <div style={{ flex: 0.45, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                   <div style={fieldSectionStyle}>Status</div>
                   <div style={{ backgroundColor: 'red', flex: 1 }}></div>
                 </div>
-                <div style={{ flex: 0.4, display: 'flex', flexDirection: 'column', marginRight: '48px' }}>
+                <div style={{ flex: 0.45, display: 'flex', flexDirection: 'column', marginRight: '24px' }}>
                   <div style={fieldSectionStyle}>Access</div>
                   <div style={{ backgroundColor: 'yellow', flex: 1 }}></div>
                 </div>
-                <div style={{ flex: 0.2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ flex: 0.1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <div style={fieldSectionStyle}>Featured</div>
                   <div
                     style={{
@@ -77,7 +77,7 @@ export const AdminProjectPage = () => {
                       justifyContent: 'center',
                       marginLeft: '16px',
                     }}>
-                    <CheckboxField name={'featured'} label={''} />
+                    <CheckboxField name={'featured'} />
                   </div>
                 </div>
               </div>
