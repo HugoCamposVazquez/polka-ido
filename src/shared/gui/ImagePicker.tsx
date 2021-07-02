@@ -10,6 +10,9 @@ type IProps = {
   name: string;
 };
 
+const mockedLink =
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png';
+
 export const ImagePicker = ({ name }: IProps) => {
   const { control, watch, reset } = useFormContext();
 
@@ -38,9 +41,7 @@ export const ImagePicker = ({ name }: IProps) => {
               <MainButton
                 title={'Upload image'}
                 onClick={() => {
-                  onChange(
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/75rem-Image_created_with_a_mobile_phone.png',
-                  );
+                  onChange(mockedLink);
                 }}
                 type={'bordered'}
                 style={cs(styles.uploadImageButtonStyle, watch(name) ? { marginTop: '1.5rem' } : { marginTop: '0rem' })}

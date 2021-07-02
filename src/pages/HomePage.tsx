@@ -105,7 +105,7 @@ export const HomePage = () => {
               <div style={styles.textFieldContainerStyle}>
                 <TextArea name="message" placeholder="Message" mode={'dark'} style={{ height: '8.38rem' }} />
               </div>
-              <MainButton title="Send" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
+              <MainButton title="SEND" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
             </form>
           </FormProvider>
         </div>

@@ -54,7 +54,7 @@ export const Header = withRouter((props) => {
             </div>
             {!walletConnected && (
               <MainButton
-                title={'Connect wallet'}
+                title={'CONNECT WALLET'}
                 type={'fill'}
                 onClick={() => {
                   setWalletConnected(true);
@@ -144,7 +144,7 @@ export const Header = withRouter((props) => {
           <div style={{ marginTop: '3rem' }}>
             {!walletConnected && (
               <MainButton
-                title={'Connect wallet'}
+                title={'CONNECT WALLET'}
                 onClick={() => {
                   setWalletConnected(true);
                 }}

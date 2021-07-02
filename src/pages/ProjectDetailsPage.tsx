@@ -213,7 +213,7 @@ export const ProjectDetailsPage = () => {
           <div
             style={cs(
               { flex: 0.5, margin: '0 1.5rem', backgroundColor: `${sideColor8}` },
-              styles.topRightBottomLeftNotch,
+              styles.topLeftBottomRightNotch,
             )}
             className={styles.projectDetailsTokenClassName}>
             <div style={{ padding: '1.5rem' }}>
