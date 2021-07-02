@@ -18,7 +18,7 @@ export const projectsHTTP: SourceType = {
 
     return response.data;
   },
-  getProject: async (id: number) => {
+  getProject: async (id: string) => {
     const response = await axiosAnonymous.get<any, AxiosResponse<ProjectApiType>>(`/project/${id}`);
 
     return response.data;

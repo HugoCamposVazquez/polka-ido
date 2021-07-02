@@ -27,16 +27,20 @@ export const AdminProjectPage = () => {
 
   const { data: project, isLoading: projectLoading } = useProject(id);
 
-  console.log('project', project);
-
   const methods = useForm();
 
   useEffect(() => {
-    methods.reset({
-      ...project?.data,
-      status: project?.data?.status ? project?.data?.status : 'upcoming',
-      access: project?.data?.access ? project?.data?.access : 'whitelist',
-    });
+    if (!projectLoading) {
+      if (project?.data === undefined) {
+        navigation.push('/admin');
+      } else {
+        methods.reset({
+          ...project?.data,
+          status: project?.data?.status ? project?.data?.status : 'upcoming',
+          access: project?.data?.access ? project?.data?.access : 'whitelist',
+        });
+      }
+    }
   }, [project]);
 
   const onSubmit = async (project: ProjectType) => {

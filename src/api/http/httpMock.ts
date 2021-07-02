@@ -104,7 +104,7 @@ export const projectsMockHTTP: SourceType = {
       }
     });
   },
-  getProject: async (id: number) => {
+  getProject: async (id: string) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         let resultProject: ProjectType | undefined;
@@ -112,7 +112,7 @@ export const projectsMockHTTP: SourceType = {
         for (let i = 0; i < allProjects.length; i++) {
           const project: ProjectType = allProjects[i];
 
-          if (project.id === id) {
+          if (String(project.id) === id) {
             resultProject = project;
             break;
           }

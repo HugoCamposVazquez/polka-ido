@@ -25,7 +25,7 @@ export const useProjects = (fetchFilter: 'upcoming' | 'joined' | 'featured' | un
 
 export const useProject = (id: string | undefined) => {
   if (id !== undefined) {
-    return useQuery<ProjectApiType, any>([projectCacheKeys.project, id], () => source.getProject(Number(id)));
+    return useQuery<ProjectApiType, any>([projectCacheKeys.project, id], () => source.getProject(id));
   } else {
     return { data: { data: undefined }, isLoading: false };
   }
