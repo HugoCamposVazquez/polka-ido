@@ -4,7 +4,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { Header } from '../../shared/insets/user/Header';
 import { styled } from '../../utils/css';
 import { AboutUsPage } from '../AboutUsPage';
-import { AdminPage } from '../AdminPage';
 import { HomePage } from '../HomePage';
 import { JoinProjectPage } from '../JoinProjectPage';
 import { LaunchpadPage } from '../LanchpadPage';

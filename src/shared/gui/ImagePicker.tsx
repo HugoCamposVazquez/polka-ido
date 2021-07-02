@@ -2,8 +2,8 @@ import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import removeIcon from '../../assets/remove_icon.svg';
-import { sideColor } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
+import * as styles from './ImagePicker.styles';
 import { MainButton } from './MainButton';
 
 type IProps = {
@@ -22,20 +22,11 @@ export const ImagePicker = ({ name }: IProps) => {
           return (
             <div>
               {watch(name) && (
-                <div style={{ display: 'flex', marginLeft: '16px' }}>
-                  <div style={{ position: 'relative' }}>
+                <div style={styles.imageContainerStyle}>
+                  <div style={styles.imageParentStyle}>
+                    <img style={styles.imageStyle} src={value} />
                     <img
-                      style={{
-                        height: '48px',
-                        width: '48px',
-                        marginRight: '6px',
-                        marginTop: '6px',
-                        objectFit: 'cover',
-                      }}
-                      src={value}
-                    />
-                    <img
-                      style={{ position: 'absolute', top: 0, right: 0, cursor: 'pointer' }}
+                      style={styles.removeIconStyle}
                       src={removeIcon}
                       onClick={() => {
                         onChange(reset([name]));
@@ -52,17 +43,7 @@ export const ImagePicker = ({ name }: IProps) => {
                   );
                 }}
                 type={'bordered'}
-                style={cs(
-                  {
-                    marginLeft: '16px',
-                    color: sideColor,
-                    borderColor: sideColor,
-                    fontSize: '12px',
-                    width: '102px',
-                    height: '34px',
-                  },
-                  watch(name) ? { marginTop: '24px' } : { marginTop: '0px' },
-                )}
+                style={cs(styles.uploadImageButtonStyle, watch(name) ? { marginTop: '24px' } : { marginTop: '0px' })}
               />
             </div>
           );
