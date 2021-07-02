@@ -21,6 +21,7 @@ export const AdminRouter = (): any => {
       <Switch>
         <Route exact path="/admin" component={AdminPage} />
         <Route exact path="/admin/project" component={AdminProjectPage} />
+        <Route exact path="/admin/project/:id" component={AdminProjectPage} />
         <Redirect from="/" to="/admin" />
       </Switch>
     </div>

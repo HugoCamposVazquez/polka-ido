@@ -51,9 +51,7 @@ export const AdminPage = () => {
       <div
         className={styles.addProjectStyle}
         onClick={() => {
-          navigation.push('/admin/project', {
-            defaultValues: {},
-          });
+          navigation.push('/admin/project');
         }}>
         Add project
       </div>
@@ -72,9 +70,7 @@ export const AdminPage = () => {
             onRow={(record) => {
               return {
                 onDoubleClick: () => {
-                  navigation.push('/admin/project', {
-                    defaultValues: record,
-                  });
+                  navigation.push(`/admin/project/${record.id}`);
                 },
               };
             }}

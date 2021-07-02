@@ -1,8 +1,7 @@
 import { AxiosResponse } from 'axios';
 
-import { ProjectStatus } from '../../types/enums/ProjectStatus';
 import { LaunchpadApiType } from '../../types/LaunchpadType';
-import { ProjectsApiType } from '../../types/ProjectType';
+import { ProjectApiType, ProjectsApiType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 import { axiosAnonymous } from '../axios';
 
@@ -16,6 +15,11 @@ export const projectsHTTP: SourceType = {
     const response = await axiosAnonymous.get<any, AxiosResponse<ProjectsApiType>>(
       fetchFilter !== undefined ? `/projects/${fetchFilter}` : '/projects',
     );
+
+    return response.data;
+  },
+  getProject: async (id: number) => {
+    const response = await axiosAnonymous.get<any, AxiosResponse<ProjectApiType>>(`/project/${id}`);
 
     return response.data;
   },

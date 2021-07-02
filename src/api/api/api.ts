@@ -1,13 +1,13 @@
 import { useQuery } from 'react-query';
 
-import { ProjectStatus } from '../../types/enums/ProjectStatus';
 import { LaunchpadApiType } from '../../types/LaunchpadType';
-import { ProjectsApiType } from '../../types/ProjectType';
+import { ProjectApiType, ProjectsApiType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 import { projectsMockHTTP } from '../http/httpMock';
 export const projectCacheKeys = {
   topFeaturedProjects: 'topFeaturedProjects',
   projects: 'projects',
+  project: 'project',
   launchpadDetails: 'launchpadDetails',
 };
 
@@ -21,6 +21,14 @@ export const useProjects = (fetchFilter: 'upcoming' | 'joined' | 'featured' | un
   return useQuery<ProjectsApiType, any>([projectCacheKeys.projects, fetchFilter], () =>
     source.getProjects(fetchFilter),
   );
+};
+
+export const useProject = (id: string | undefined) => {
+  if (id !== undefined) {
+    return useQuery<ProjectApiType, any>([projectCacheKeys.project, id], () => source.getProject(Number(id)));
+  } else {
+    return { data: { data: undefined }, isLoading: false };
+  }
 };
 
 export const useLaunchpadDetails = () => {

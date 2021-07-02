@@ -104,6 +104,24 @@ export const projectsMockHTTP: SourceType = {
       }
     });
   },
+  getProject: async (id: number) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let resultProject: ProjectType | undefined;
+
+        for (let i = 0; i < allProjects.length; i++) {
+          const project: ProjectType = allProjects[i];
+
+          if (project.id === id) {
+            resultProject = project;
+            break;
+          }
+        }
+
+        resolve({ data: resultProject });
+      }, mockTimeMs);
+    });
+  },
   getLaunchpadDetails: async () => {
     return new Promise((resolve) => {
       const launchpadDetails: LaunchpadType = { projectsLaunched: 12, fundsRaised: 224234, usersParticipated: 4382 };

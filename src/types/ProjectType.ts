@@ -5,6 +5,10 @@ export type ProjectsApiType = {
   data: ProjectType[];
 };
 
+export type ProjectApiType = {
+  data: ProjectType;
+};
+
 export type ProjectType = {
   id?: number;
   title: string;

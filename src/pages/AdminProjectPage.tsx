@@ -1,7 +1,9 @@
-import React from 'react';
+import { Spin } from 'antd';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
+import { useProject } from '../api/api/api';
 import binImage from '../assets/bin_image.svg';
 import { CheckboxField } from '../shared/gui/CheckboxField';
 import { ImagePicker } from '../shared/gui/ImagePicker';
@@ -14,19 +16,28 @@ import { sideColor3, sideColor12 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import * as styles from './AdminProjectPage.styles';
 
-export const AdminProjectPage = (props: any) => {
+type IProps = {
+  id: string | undefined;
+};
+
+export const AdminProjectPage = () => {
   const navigation = useHistory();
 
-  const defaultValues = props.location.state.defaultValues;
+  const { id } = useParams<IProps>();
 
-  const methods = useForm({
-    defaultValues: {
-      ...defaultValues,
-      status: defaultValues?.status ? defaultValues?.status : 'upcoming',
-      access: defaultValues?.access ? defaultValues?.access : 'whitelist',
-    },
-    //resolver: yupResolver(loginValidationSchema),
-  });
+  const { data: project, isLoading: projectLoading } = useProject(id);
+
+  console.log('project', project);
+
+  const methods = useForm();
+
+  useEffect(() => {
+    methods.reset({
+      ...project?.data,
+      status: project?.data?.status ? project?.data?.status : 'upcoming',
+      access: project?.data?.access ? project?.data?.access : 'whitelist',
+    });
+  }, [project]);
 
   const onSubmit = async (project: ProjectType) => {
     try {
@@ -41,11 +52,15 @@ export const AdminProjectPage = (props: any) => {
     }
   };
 
+  if (projectLoading) {
+    return <Spin style={styles.spinnerStyle} size="large" />;
+  }
+
   return (
     <div style={styles.adminProjectPageContainerStyle}>
       <div style={styles.titleContainerStyle}>
-        <div style={styles.titleStyle}>My project 1</div>
-        {defaultValues.id !== undefined && (
+        <div style={styles.titleStyle}>{id !== undefined ? 'Edit project' : 'New project'}</div>
+        {id !== undefined && (
           <div style={styles.deleteProjectParentStyle}>
             <div style={styles.deleteProjectTextStyle}>Delete project</div>
             <img src={binImage} />
@@ -234,7 +249,7 @@ export const AdminProjectPage = (props: any) => {
 
             <div style={styles.sectionContainerStyle}>
               <MainButton
-                title={defaultValues.id !== undefined ? 'UPDATE' : 'CREATE'}
+                title={id !== undefined ? 'UPDATE' : 'CREATE'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
                 style={{ marginRight: '1.5rem' }}

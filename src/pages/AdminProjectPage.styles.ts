@@ -51,6 +51,14 @@ export const sectionContainerStyle = styled.cssStyle`
   display: flex;
 `;
 
+export const spinnerStyle = styled.cssStyle`
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;
+
 export const fieldTitleWithMarginStyle = styled.cssStyle`
   display: flex;
   flex-direction: column;
