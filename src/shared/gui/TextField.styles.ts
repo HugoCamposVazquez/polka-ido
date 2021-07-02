@@ -10,7 +10,7 @@ export const inputClassName = (color: string, placeholderColor: string) => style
   width: 100%;
   background-color: transparent;
   outline: 0;
-  border-color: ${color};
+  border-color: ${placeholderColor};
   color: ${color};
   padding: 0.25rem 0.5rem;
   font-family: Titillium Web;

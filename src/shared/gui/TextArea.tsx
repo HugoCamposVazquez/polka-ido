@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { sideColor, sideColor6, sideColor13 } from '../../utils/colorsUtil';
+import { sideColor, sideColor6, sideColor8, sideColor13 } from '../../utils/colorsUtil';
 import * as styles from './TextArea.styles';
 
 type IProps = {
@@ -25,7 +25,7 @@ export const TextArea = ({ name, placeholder, disabled, autoFocus, mode, style }
           return (
             <textarea
               className={styles.inputClassName(
-                mode === 'light' ? sideColor13 : sideColor,
+                mode === 'light' ? sideColor8 : sideColor13,
                 mode === 'light' ? sideColor : sideColor6,
               )}
               style={style}

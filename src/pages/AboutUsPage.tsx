@@ -12,7 +12,6 @@ import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { PersonCard } from '../shared/PersonCard';
-import { ProjectCard } from '../shared/ProjectCard';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as homePageStyles from './HomePage.styles';
@@ -95,10 +94,10 @@ export const AboutUsPage = () => {
           <FormProvider {...methods}>
             <form>
               <div style={homePageStyles.textFieldContainerStyle}>
-                <TextField name="email" placeholder="E-mail" mode={'light'} type={'bordered'} />
+                <TextField name="email" placeholder="E-mail" mode={'dark'} type={'bordered'} />
               </div>
               <div style={homePageStyles.textFieldContainerStyle}>
-                <TextArea name="message" placeholder="Message" mode={'light'} style={{ height: '8.38rem' }} />
+                <TextArea name="message" placeholder="Message" mode={'dark'} style={{ height: '8.38rem' }} />
               </div>
               <MainButton title="Send" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
             </form>

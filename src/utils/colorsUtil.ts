@@ -10,4 +10,4 @@ export const sideColor9 = '#010101';
 export const sideColor10 = '#27f0dc';
 export const sideColor11 = '#2679ff';
 export const sideColor12 = '#27F0DC';
-export const sideColor13 = '#f8f7f7';
+export const sideColor13 = '#e0d9d9';
