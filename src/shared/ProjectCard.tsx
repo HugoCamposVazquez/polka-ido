@@ -90,8 +90,8 @@ export const ProjectCard = ({ direction, project }: IProps) => {
         </div>
       )}
       {!project && (
-        <div style={{ height: '417.47px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ margin: '124px 55px' }}>
+        <div style={{ height: '26.091875rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ margin: '7.75rem 3.4375rem' }}>
             <img style={{ width: '100%', height: '100%' }} src={ryuLogoAnimation} />
           </div>
         </div>

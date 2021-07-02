@@ -9,7 +9,7 @@ export const getAllColumns = () => {
     {
       title: 'Project',
       dataIndex: 'title',
-      width: '300px',
+      width: '18.75rem',
       renderRepresentation: (cellProps: any) => (
         // <NameRepresentation
         //     {...cellProps}
@@ -19,7 +19,7 @@ export const getAllColumns = () => {
         // />
         <div style={{ display: 'flex' }}>
           <img
-            style={{ height: '24px', width: '24px', objectFit: 'cover', marginRight: '12px' }}
+            style={{ height: '1.5rem', width: '1.5rem', objectFit: 'cover', marginRight: '0.75rem' }}
             src={cellProps.record.iconUrl}
           />
           <div>{cellProps.record.title}</div>
@@ -29,43 +29,43 @@ export const getAllColumns = () => {
     {
       title: 'Status',
       dataIndex: 'status',
-      width: '150px',
+      width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.status}</div>,
     },
     {
       title: 'Starts',
       dataIndex: 'starts',
-      width: '150px',
+      width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.starts}</div>,
     },
     {
       title: 'Ends',
       dataIndex: 'ends',
-      width: '150px',
+      width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.ends}</div>,
     },
     {
       title: 'Raise amount',
       dataIndex: 'raiseAmountTotal',
-      width: '150px',
+      width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.raiseAmountTotal}</div>,
     },
     {
       title: 'Access',
       dataIndex: 'access',
-      width: '150px',
+      width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.access}</div>,
     },
     {
       title: 'Token price',
       dataIndex: 'tokenPrice',
-      width: '150px',
+      width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.tokenPrice}</div>,
     },
     {
       title: 'Featured',
       dataIndex: 'featured',
-      width: '100px',
+      width: '6.25rem',
       renderRepresentation: (cellProps: any) => (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {cellProps.record.featured ? <img src={startFill} /> : <img src={starEmpty} />}
@@ -74,7 +74,7 @@ export const getAllColumns = () => {
     },
     {
       title: '',
-      width: '80px',
+      width: '5rem',
       renderRepresentation: () => (
         <div
           style={{ display: 'flex', justifyContent: 'center', height: '100%' }}

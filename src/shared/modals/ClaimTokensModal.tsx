@@ -53,11 +53,11 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
                   type={'none'}
                   placeholder={'Address'}
                   mode={'dark'}
-                  style={{ fontSize: '20px' }}
+                  style={{ fontSize: '1.25rem' }}
                 />
               </div>
 
-              <div style={{ marginTop: '24px' }}>
+              <div style={{ marginTop: '1.5rem' }}>
                 <MainButton
                   title={'Claim'}
                   onClick={methods.handleSubmit(onSubmit)}

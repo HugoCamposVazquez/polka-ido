@@ -2,7 +2,7 @@ import { styled } from '../../utils/css';
 
 export const radioLabelStyle = styled.cssClassName`
   font-family: Titillium Web;
-  font-size: 16px;
+  font-size: 1rem;
 `;
 
 export const radioStyle = (color: string) => styled.cssClassName`

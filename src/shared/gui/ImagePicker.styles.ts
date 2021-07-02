@@ -2,10 +2,10 @@ import { sideColor } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 export const imageStyle = styled.cssStyle`
-  height: 48px;
-  width: 48px;
-  margin-right: 6px;
-  margin-top: 6px;
+  height: 3rem;
+  width: 3rem;
+  margin-right: 0.375rem;
+  margin-top: 0.375rem;
   object-fit: cover;
 `;
 
@@ -14,7 +14,7 @@ export const imageParentStyle = styled.cssStyle`
 `;
 export const imageContainerStyle = styled.cssStyle`
   display: flex;
-  margin-left: 16px;
+  margin-left: 1rem;
 `;
 export const removeIconStyle = styled.cssStyle`
   position: absolute;
@@ -24,10 +24,10 @@ export const removeIconStyle = styled.cssStyle`
 `;
 
 export const uploadImageButtonStyle = styled.cssStyle`
-  margin-left: 16px;
+  margin-left: 1rem;
   color: ${sideColor};
   border-color: ${sideColor};
-  font-size: 12px;
-  width: 102px;
-  height: 34px;
+  font-size: 0.75rem;
+  width: 6.375rem;
+  height: 2.125rem;
 `;

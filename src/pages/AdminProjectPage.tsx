@@ -63,7 +63,7 @@ export const AdminProjectPage = (props: any) => {
               </div>
 
               <div style={styles.radioContainerStyle}>
-                <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.45 })}>
+                <div style={cs(styles.fieldTitleWithMarginStyle)}>
                   <div style={styles.fieldSectionStyle}>Status</div>
                   <div style={styles.radioParentStyle}>
                     <RadioGroup
@@ -76,7 +76,7 @@ export const AdminProjectPage = (props: any) => {
                     />
                   </div>
                 </div>
-                <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.45 })}>
+                <div style={cs(styles.fieldTitleWithMarginStyle)}>
                   <div style={styles.fieldSectionStyle}>Access</div>
                   <div style={styles.radioParentStyle}>
                     <RadioGroup
@@ -157,7 +157,7 @@ export const AdminProjectPage = (props: any) => {
             </div>
 
             <div style={styles.lineStyle} />
-            <div style={cs(styles.titleSectionStyle, { marginTop: '24px' })}>Project details</div>
+            <div style={cs(styles.titleSectionStyle, { marginTop: '1.5rem' })}>Project details</div>
 
             <div style={styles.sectionContainerStyle}>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
@@ -183,7 +183,7 @@ export const AdminProjectPage = (props: any) => {
             </div>
 
             <div style={styles.lineStyle} />
-            <div style={cs(styles.titleSectionStyle, { marginTop: '24px' })}>Token details</div>
+            <div style={cs(styles.titleSectionStyle, { marginTop: '1.5rem' })}>Token details</div>
 
             <div style={styles.sectionContainerStyle}>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
@@ -206,7 +206,7 @@ export const AdminProjectPage = (props: any) => {
             </div>
 
             <div style={styles.lineStyle} />
-            <div style={cs(styles.titleSectionStyle, { marginTop: '24px' })}>Project description</div>
+            <div style={cs(styles.titleSectionStyle, { marginTop: '1.5rem' })}>Project description</div>
 
             <div style={styles.sectionContainerStyle}>
               <div style={{ flex: 1 }}>
@@ -215,7 +215,7 @@ export const AdminProjectPage = (props: any) => {
                   name={'shortDescription'}
                   mode={'light'}
                   placeholder={'Short description text here'}
-                  style={{ height: '100px' }}
+                  style={{ height: '6.25rem' }}
                 />
               </div>
             </div>
@@ -227,7 +227,7 @@ export const AdminProjectPage = (props: any) => {
                   name={'description'}
                   mode={'light'}
                   placeholder={'Description text here'}
-                  style={{ height: '250px' }}
+                  style={{ height: '15.625rem' }}
                 />
               </div>
             </div>
@@ -237,7 +237,7 @@ export const AdminProjectPage = (props: any) => {
                 title={defaultValues.id !== undefined ? 'UPDATE' : 'CREATE'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
-                style={{ marginRight: '24px' }}
+                style={{ marginRight: '1.5rem' }}
               />
               <MainButton
                 title={'BACK'}

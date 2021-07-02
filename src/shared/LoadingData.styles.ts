@@ -11,8 +11,8 @@ export const loadingDataContainerStyle = styled.cssStyle`
 `;
 
 export const loadingDataStyle = styled.cssClassName`
-  width: 512px;
-  height: 512px;
+  width: 32rem;
+  height: 32rem;
 
   @media (max-width: 51.875rem) {
     width: 100%;

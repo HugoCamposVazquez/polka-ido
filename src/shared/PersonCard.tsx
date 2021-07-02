@@ -17,7 +17,7 @@ export const PersonCard = ({ direction, name, image }: IProps) => {
         projectCardStyles.projectCardContainer,
         direction === 'left' ? projectCardStyles.topLeftBottomRightNotch : projectCardStyles.topRightBottomLeftNotch,
       )}>
-      <div style={{ height: '417.47px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ height: '26.091875rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ position: 'relative', height: '100%', width: '100%' }}>
           <img
             style={{
@@ -48,9 +48,9 @@ export const PersonCard = ({ direction, name, image }: IProps) => {
                 style={{
                   fontFamily: 'Titillium Web',
                   fontWeight: 700,
-                  fontSize: '20px',
-                  lineHeight: '30.42px',
-                  padding: '12px 0',
+                  fontSize: '1.25rem',
+                  lineHeight: '1.90125rem',
+                  padding: '0.75rem 0',
                 }}>
                 {name}
               </div>

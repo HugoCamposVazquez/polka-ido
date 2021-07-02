@@ -3,7 +3,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 
 import * as styles from './Header.styles';
 
-export const Header = withRouter((props) => {
+export const Header = withRouter(() => {
   const navigation = useHistory();
 
   return (

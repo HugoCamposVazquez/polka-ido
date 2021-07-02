@@ -39,11 +39,11 @@ export const ImagePicker = ({ name }: IProps) => {
                 title={'Upload image'}
                 onClick={() => {
                   onChange(
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/75rem-Image_created_with_a_mobile_phone.png',
                   );
                 }}
                 type={'bordered'}
-                style={cs(styles.uploadImageButtonStyle, watch(name) ? { marginTop: '24px' } : { marginTop: '0px' })}
+                style={cs(styles.uploadImageButtonStyle, watch(name) ? { marginTop: '1.5rem' } : { marginTop: '0rem' })}
               />
             </div>
           );

@@ -61,7 +61,7 @@ export const JoinProjectPage = () => {
                       type={'none'}
                       placeholder={'0.02'}
                       mode={'dark'}
-                      style={{ fontSize: '20px' }}
+                      style={{ fontSize: '1.25rem' }}
                       autoFocus={true}
                     />
                     <div style={styles.maxBtnStyle}>Max</div>
@@ -82,7 +82,7 @@ export const JoinProjectPage = () => {
                       type={'none'}
                       placeholder={'349857'}
                       mode={'dark'}
-                      style={{ fontSize: '20px' }}
+                      style={{ fontSize: '1.25rem' }}
                     />
                     <div style={styles.suffixTextStyle}>TKN</div>
                   </div>
@@ -90,7 +90,7 @@ export const JoinProjectPage = () => {
 
                 <div style={styles.maxAllocTextStyle}>Max. allocation is 0.02 ETH</div>
 
-                <div style={{ marginTop: '24px' }}>
+                <div style={{ marginTop: '1.5rem' }}>
                   <MainButton
                     title={'JOIN PROJECT'}
                     onClick={methods.handleSubmit(onSubmit)}

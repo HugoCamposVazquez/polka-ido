@@ -79,7 +79,7 @@ export const AboutUsPage = () => {
         </div>
       </div>
 
-      <div className={homePageStyles.bottomImageContainerClassName} style={{ marginTop: '160px' }}>
+      <div className={homePageStyles.bottomImageContainerClassName} style={{ marginTop: '10rem' }}>
         <div style={{ position: 'relative' }}>
           <div className={homePageStyles.customObjectClassName} style={homePageStyles.topLeftBottomRightNotch} />
 

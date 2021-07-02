@@ -19,9 +19,9 @@ export const tableClassName = styled.cssClassName`
   }
 
   .ant-table {
-    height: calc(100vh - 271px);
+    height: calc(100vh - 16.9375rem);
     overflow-y: auto;
-    border: 1px solid ${sideColor};
+    border: 0.0625rem solid ${sideColor};
   }
 
   .ant-pagination {
@@ -35,8 +35,8 @@ export const tableClassName = styled.cssClassName`
   }
 
   .ant-pagination-item {
-    border: 1px solid ${sideColor3} !important;
-    margin: 0px 2px !important;
+    border: 0.0625rem solid ${sideColor3} !important;
+    margin: 0rem 0.125rem !important;
   }
 
   .ant-pagination-item-active {
@@ -58,7 +58,7 @@ export const tableClassName = styled.cssClassName`
   .ant-table-thead
     > tr
     > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
-    width: 0px;
+    width: 0rem;
   }
 `;
 
@@ -69,10 +69,10 @@ export const adminPageContainerStyle = styled.cssStyle`
 `;
 
 export const allProjectsTextStyle = styled.cssStyle`
-  margin: 100px 147px 0;
+  margin: 6.25rem 9.1875rem 0;
   font-family: Titillium Web;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 1.5rem;
 `;
 
 export const spinnerStyle = styled.cssStyle`
@@ -85,10 +85,10 @@ export const spinnerStyle = styled.cssStyle`
 
 export const addProjectStyle = styled.cssClassName`
   display: flex;
-  margin: 22px 147px 0;
+  margin: 1.375rem 9.1875rem 0;
   font-family: Titillium Web;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 1rem;
   color: ${sideColor3};
   cursor: pointer;
 
@@ -97,19 +97,19 @@ export const addProjectStyle = styled.cssClassName`
     display: inline-block;
     background-color: transparent;
     vertical-align: middle;
-    margin-right: 4px;
+    margin-right: 0.25rem;
   }
 `;
 
 export const tableContainerParentStyle = styled.cssStyle`
   display: flex;
   background-color: transparent;
-  //height: calc(100vh - 206px);
+  //height: calc(100vh - 12.875rem);
   flex: 1;
-  margin-top: 22px;
-  margin-left: 120px;
-  margin-right: 120px;
-  margin-bottom: 24px;
+  margin-top: 1.375rem;
+  margin-left: 7.5rem;
+  margin-right: 7.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const tableContainerStyle = styled.cssStyle`

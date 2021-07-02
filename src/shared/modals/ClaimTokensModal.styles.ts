@@ -10,14 +10,14 @@ export const modalContainerStyle = styled.cssStyle`
 `;
 
 export const modalStyle = styled.cssClassName`
-  padding: 24px;
+  padding: 1.5rem;
   background-color: ${sideColor8};
-  margin: 0px;
+  margin: 0rem;
   width: 65%;
-  max-width: 550px;
+  max-width: 34.375rem;
 
   @media (max-width: 51.875rem) {
-    margin: 0px 24px;
+    margin: 0rem 1.5rem;
     width: 100%;
   }
 `;
@@ -40,46 +40,46 @@ export const topRightBottomLeftNotch = styled.cssStyle`
 export const claimTokenTextStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 700;
-  font-size: 24px;
-  line-height: 36.5px;
+  font-size: 1.5rem;
+  line-height: 2.28125rem;
   flex: 1;
   color: ${sideColor5};
 `;
 export const tknValueTextStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 700;
-  font-size: 20px;
-  line-height: 30.42px;
+  font-size: 1.25rem;
+  line-height: 1.90125rem;
   color: ${sideColor3};
-  margin-top: 8px;
+  margin-top: 0.5rem;
 `;
 export const enterAddressTextStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 24.34px;
+  font-size: 1rem;
+  line-height: 1.52125rem;
   color: ${sideColor};
-  margin-top: 18px;
+  margin-top: 1.125rem;
 `;
 
 export const addressInputContainerStyle = styled.cssStyle`
-  border: 1px solid ${sideColor6};
-  padding: 4px 8px;
-  margin-top: 30px;
+  border: 0.0625rem solid ${sideColor6};
+  padding: 0.25rem 0.5rem;
+  margin-top: 1.875rem;
 `;
 
 export const recipientTextStyle = styled.cssStyle`
-  padding: 4px 8px 0px 8px;
+  padding: 0.25rem 0.5rem 0rem 0.5rem;
   font-family: Titillium Web;
   color: ${sideColor};
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 24.34px;
+  line-height: 1.52125rem;
 `;
 
 export const closeIconParentStyle = styled.cssStyle`
-  height: 16px;
-  width: 16px;
+  height: 1rem;
+  width: 1rem;
   display: flex;
 `;
 

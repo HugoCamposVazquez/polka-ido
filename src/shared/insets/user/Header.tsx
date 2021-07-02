@@ -3,7 +3,7 @@ import { Link, useHistory, withRouter } from 'react-router-dom';
 
 import closeIcon from '../../../assets/close_icon.svg';
 import menuIcon from '../../../assets/menu_icon.svg';
-import { sideColor3, sideColor4, sideColor5, sideColor6 } from '../../../utils/colorsUtil';
+import { sideColor3, sideColor4, sideColor5 } from '../../../utils/colorsUtil';
 import { cs } from '../../../utils/css';
 import { useWindowDimensions } from '../../../utils/windowDimensionsUtil';
 import { MainButton } from '../../gui/MainButton';
@@ -59,21 +59,21 @@ export const Header = withRouter((props) => {
                 onClick={() => {
                   setWalletConnected(true);
                 }}
-                style={{ marginLeft: '6px' }}
+                style={{ marginLeft: '0.375rem' }}
               />
             )}
             {walletConnected && (
               <div
-                style={{ backgroundColor: sideColor5, display: 'flex', marginLeft: '23px', cursor: 'pointer' }}
+                style={{ backgroundColor: sideColor5, display: 'flex', marginLeft: '1.4375rem', cursor: 'pointer' }}
                 onClick={() => {
                   openWalletModal(setWalletConnected);
                 }}>
                 <div
                   style={{
                     color: sideColor4,
-                    padding: '7px 8px',
+                    padding: '0.4375rem 0.5rem',
                     fontWeight: 700,
-                    fontSize: '12px',
+                    fontSize: '0.75rem',
                     fontFamily: 'Titillium Web',
                   }}>
                   0.004233 ETH
@@ -81,17 +81,17 @@ export const Header = withRouter((props) => {
                 <div
                   style={{
                     backgroundColor: sideColor3,
-                    margin: '4px',
+                    margin: '0.25rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    maxWidth: '84px',
+                    maxWidth: '5.25rem',
                   }}>
                   <div
                     style={{
-                      padding: '3px 8px',
+                      padding: '0.1875rem 0.5rem',
                       fontFamily: 'Titillium Web',
-                      fontSize: '12px',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
                     }}>
                     0xF2C...x706
@@ -161,9 +161,9 @@ export const Header = withRouter((props) => {
                 <div
                   style={{
                     color: sideColor4,
-                    padding: '7px 8px',
+                    padding: '0.4375rem 0.5rem',
                     fontWeight: 700,
-                    fontSize: '12px',
+                    fontSize: '0.75rem',
                     fontFamily: 'Titillium Web',
                   }}>
                   0.004233 ETH
@@ -171,17 +171,17 @@ export const Header = withRouter((props) => {
                 <div
                   style={{
                     backgroundColor: sideColor3,
-                    margin: '4px',
+                    margin: '0.25rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    maxWidth: '84px',
+                    maxWidth: '5.25rem',
                   }}>
                   <div
                     style={{
-                      padding: '3px 8px',
+                      padding: '0.1875rem 0.5rem',
                       fontFamily: 'Titillium Web',
-                      fontSize: '12px',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
                     }}>
                     0xF2C...x706

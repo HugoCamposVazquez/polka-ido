@@ -4,16 +4,16 @@ import { styled } from '../utils/css';
 export const titleSectionStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: ${sideColor2};
 `;
 
 export const fieldSectionStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 600;
-  font-size: 16px;
-  margin-left: 16px;
-  margin-bottom: 12px;
+  font-size: 1rem;
+  margin-left: 1rem;
+  margin-bottom: 0.75rem;
   color: ${sideColor};
 `;
 
@@ -23,19 +23,19 @@ export const adminProjectPageContainerStyle = styled.cssStyle`
   flex-direction: column;
 `;
 export const titleContainerStyle = styled.cssStyle`
-  margin: 100px 120px 0;
+  margin: 6.25rem 13.875rem 0;
   display: flex;
 `;
 
 export const titleStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 1.5rem;
   flex: 1;
 `;
 export const deleteProjectTextStyle = styled.cssStyle`
   min-width: fit-content;
-  margin-right: 6px;
+  margin-right: 0.375rem;
   color: ${sideColor};
 `;
 export const deleteProjectParentStyle = styled.cssStyle`
@@ -44,17 +44,17 @@ export const deleteProjectParentStyle = styled.cssStyle`
   cursor: pointer;
 `;
 export const formContainerStyle = styled.cssStyle`
-  margin: 38px 120px 120px 120px;
+  margin: 2.375rem 13.875rem 7.5rem 13.875rem;
 `;
 export const sectionContainerStyle = styled.cssStyle`
-  margin-top: 24px;
+  margin-top: 1.5rem;
   display: flex;
 `;
 
 export const fieldTitleWithMarginStyle = styled.cssStyle`
   display: flex;
   flex-direction: column;
-  margin-right: 24px;
+  margin-right: 1.5rem;
 `;
 
 export const fieldTitleNoMarginStyle = styled.cssStyle`
@@ -66,12 +66,12 @@ export const checkBoxParentStyle = styled.cssStyle`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 16px;
+  margin-left: 1rem;
 `;
 export const radioContainerStyle = styled.cssStyle`
   flex: 0.6;
   display: flex;
-  margin-right: 12px;
+  margin-right: 0.75rem;
 `;
 export const radioParentStyle = styled.cssStyle`
   flex: 1;
@@ -79,14 +79,13 @@ export const radioParentStyle = styled.cssStyle`
   align-items: center;
 `;
 export const checkBoxContainerStyle = styled.cssStyle`
-  flex: 0.1;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 export const lineStyle = styled.cssStyle`
-  height: 1px;
+  height: 0.0625rem;
   width: 100%;
   background-color: ${sideColor};
-  margin-top: 36px;
+  margin-top: 2.25rem;
 `;
