@@ -32,7 +32,7 @@ export const AdminProjectPage = () => {
   useEffect(() => {
     if (!projectLoading) {
       if (project?.data === undefined) {
-        navigation.push('/admin');
+        // navigation.push('/admin');
       } else {
         methods.reset({
           ...project?.data,
