@@ -1,4 +1,5 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
+import { format } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -79,7 +80,9 @@ export const ProjectCard = ({ direction, project }: IProps) => {
               </div>
               <div>
                 <div style={styles.detailsTitleStyle}>{project.status !== 'ended' ? 'Starts' : 'Ended'}</div>
-                <div style={styles.detailsValueStyle}>{project.status !== 'ended' ? project.starts : project.ends}</div>
+                <div style={styles.detailsValueStyle}>
+                  {project.status !== 'ended' ? format(project.starts, 'dd/MM/yy') : format(project.ends, 'dd/MM/yy')}
+                </div>
               </div>
               <div>
                 <div style={styles.detailsTitleStyle}>Access</div>

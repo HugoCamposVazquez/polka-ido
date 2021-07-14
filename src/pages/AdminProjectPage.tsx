@@ -6,6 +6,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useProject } from '../api/api/api';
 import binImage from '../assets/bin_image.svg';
 import { CheckboxField } from '../shared/gui/CheckboxField';
+import { DateField } from '../shared/gui/DateField';
 import { ImagePicker } from '../shared/gui/ImagePicker';
 import { MainButton } from '../shared/gui/MainButton';
 import { RadioGroup } from '../shared/gui/RadioGroup';
@@ -43,12 +44,12 @@ export const AdminProjectPage = () => {
       } else {
         methods.reset({
           ...project?.data,
-          status: project?.data?.status ? project?.data?.status : 'upcoming',
-          access: project?.data?.access ? project?.data?.access : 'whitelist',
+          status: project?.data?.status,
+          access: project?.data?.access,
         });
       }
     }
-  }, [project]);
+  }, [projectLoading]);
 
   const onSubmit = async (project: ProjectType) => {
     try {
@@ -127,11 +128,11 @@ export const AdminProjectPage = () => {
             <div style={styles.sectionContainerStyle}>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Starts</div>
-                <TextField name={'starts'} type={'bordered'} mode={'light'} placeholder={'4/4/18'} />
+                <DateField name={'starts'} mode={'light'} placeholder={'4/4/18'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Ends</div>
-                <TextField name={'ends'} type={'bordered'} mode={'light'} placeholder={'3/4/19'} />
+                <DateField name={'ends'} mode={'light'} placeholder={'4/4/18'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Raise amount</div>
@@ -188,7 +189,7 @@ export const AdminProjectPage = () => {
             <div style={styles.sectionContainerStyle}>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Distribution date</div>
-                <TextField name={'distributionDate'} type={'bordered'} mode={'light'} placeholder={'4/4/18'} />
+                <DateField name={'distributionDate'} mode={'light'} placeholder={'4/4/18'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Min. allocation (ETH)</div>
