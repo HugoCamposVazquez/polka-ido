@@ -32,7 +32,14 @@ export const AdminProjectPage = () => {
   useEffect(() => {
     if (!projectLoading) {
       if (project?.data === undefined) {
-        navigation.push('/admin');
+        if (id !== undefined) {
+          navigation.push('/admin');
+        } else {
+          methods.reset({
+            status: 'upcoming',
+            access: 'whitelist',
+          });
+        }
       } else {
         methods.reset({
           ...project?.data,
