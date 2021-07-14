@@ -14,7 +14,7 @@ const mockedLink =
   'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png';
 
 export const ImagePicker = ({ name }: IProps) => {
-  const { control, watch, reset } = useFormContext();
+  const { control, watch, setValue } = useFormContext();
 
   return (
     <div>
@@ -32,7 +32,9 @@ export const ImagePicker = ({ name }: IProps) => {
                       style={styles.removeIconStyle}
                       src={removeIcon}
                       onClick={() => {
-                        onChange(reset([name]));
+                        onChange(() => {
+                          setValue(name, null);
+                        });
                       }}
                     />
                   </div>

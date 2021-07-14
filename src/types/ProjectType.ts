@@ -15,8 +15,8 @@ export type ProjectType = {
   status: ProjectStatus;
   access: ProjectAccess;
   featured: boolean;
-  starts: string;
-  ends: string;
+  starts: Date;
+  ends: Date;
   raiseAmountTotal: number;
   tokenPrice: number;
   tokenValue: number;
@@ -25,7 +25,7 @@ export type ProjectType = {
   webLink: string;
   twitterLink: string;
   telegramLink: string;
-  distributionDate: string;
+  distributionDate: Date;
   minAllocation: number;
   maxAllocation: number;
   minSwapLevel: number;

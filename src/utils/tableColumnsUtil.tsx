@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React from 'react';
 
 import binImage from '../assets/bin_image.svg';
@@ -36,13 +37,13 @@ export const getAllColumns = () => {
       title: 'Starts',
       dataIndex: 'starts',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.starts}</div>,
+      renderRepresentation: (cellProps: any) => <div>{format(cellProps.record.starts, 'dd/MM/yy')}</div>,
     },
     {
       title: 'Ends',
       dataIndex: 'ends',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.ends}</div>,
+      renderRepresentation: (cellProps: any) => <div>{format(cellProps.record.ends, 'dd/MM/yy')}</div>,
     },
     {
       title: 'Raise amount',
