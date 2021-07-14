@@ -8,7 +8,6 @@ import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
 import { ProjectCard } from '../shared/ProjectCard';
-import { ProjectStatus } from '../types/enums/ProjectStatus';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { sideColor3 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
