@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import removeIcon from '../../assets/remove_icon.svg';
@@ -10,14 +10,12 @@ type IProps = {
   name: string;
 };
 
-const mockedLink =
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png';
-
 export const ImagePicker = ({ name }: IProps) => {
-  const { control, watch, setValue } = useFormContext();
+  const { control, watch, setValue, getValues } = useFormContext();
+  const uploadInputRef = useRef();
 
   return (
-    <div>
+    <div className={styles.containerStyle}>
       <Controller
         name={name}
         control={control}
@@ -42,11 +40,24 @@ export const ImagePicker = ({ name }: IProps) => {
               )}
               <MainButton
                 title={'Upload image'}
-                onClick={() => {
-                  onChange(mockedLink);
-                }}
                 type={'bordered'}
                 style={cs(styles.uploadImageButtonStyle, watch(name) ? { marginTop: '1.5rem' } : { marginTop: '0rem' })}
+                onClick={() => {
+                  (uploadInputRef!.current! as any).click();
+                }}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                multiple={false}
+                className="input-field-hidden"
+                ref={uploadInputRef as any}
+                onChange={async (e) => {
+                  // @ts-ignore
+                  const files = [...e.target.files];
+                  setValue(name, URL.createObjectURL(files[0]));
+                  getValues();
+                }}
               />
             </div>
           );

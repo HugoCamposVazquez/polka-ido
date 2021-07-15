@@ -31,3 +31,9 @@ export const uploadImageButtonStyle = styled.cssStyle`
   width: 6.375rem;
   height: 2.125rem;
 `;
+
+export const containerStyle = styled.cssClassName`
+  .input-field-hidden {
+    display: none;
+  }
+`;

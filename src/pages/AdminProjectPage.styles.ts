@@ -1,4 +1,4 @@
-import { sideColor, sideColor2 } from '../utils/colorsUtil';
+import { sideColor, sideColor2, sideColor6 } from '../utils/colorsUtil';
 import { styled } from '../utils/css';
 
 export const titleSectionStyle = styled.cssStyle`
@@ -14,7 +14,7 @@ export const fieldSectionStyle = styled.cssStyle`
   font-size: 1rem;
   margin-left: 1rem;
   margin-bottom: 0.75rem;
-  color: ${sideColor};
+  color: ${sideColor6};
 `;
 
 export const adminProjectPageContainerStyle = styled.cssStyle`
