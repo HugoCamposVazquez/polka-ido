@@ -4,6 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '@fontsource/odibee-sans';
 import '@fontsource/titillium-web';
 
+import { Web3Provider } from '@ethersproject/providers';
+import { Web3ReactProvider } from '@web3-react/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -13,11 +15,18 @@ import * as serviceWorker from './serviceWorker';
 import { ErrorBoundary } from './shared/wrappers/ErrorBoundary';
 import { ScrollToTop } from './utils/scrollToTopUtil';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getLibrary(provider: any): Web3Provider {
+  return new Web3Provider(provider);
+}
+
 ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ScrollToTop>
-        <MainRouter />
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <MainRouter />
+        </Web3ReactProvider>
       </ScrollToTop>
     </BrowserRouter>
   </ErrorBoundary>,

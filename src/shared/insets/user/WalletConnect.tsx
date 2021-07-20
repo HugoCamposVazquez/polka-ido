@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import React from 'react';
 
+import { injected } from '../../../hooks/web3/connectors';
+import { onLogin } from '../../../hooks/web3/useEagerConnect';
 import { cs } from '../../../utils/css';
 import { MainButton } from '../../gui/MainButton';
 import { openWalletModal } from '../../modals/modals';
@@ -10,25 +13,34 @@ interface WalletConnectProps {
 }
 
 export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
-  const [walletConnected, setWalletConnected] = useState<boolean>(false);
+  const { account, activate } = useWeb3React();
+
+  const onWalletChange = () => {
+    alert('Not sure yet what this should do');
+  };
+
+  const onConnect = async () => {
+    await activate(injected);
+    onLogin();
+  };
+
+  console.log('account: ', account);
 
   return (
     <>
-      {!walletConnected && (
+      {!account && (
         <MainButton
           title={'CONNECT WALLET'}
           type={'fill'}
-          onClick={() => {
-            setWalletConnected(true);
-          }}
+          onClick={onConnect}
           style={isMobile ? {} : { marginLeft: '0.375rem' }}
         />
       )}
-      {walletConnected && (
+      {account && (
         <div
           style={cs(styles.connectWalletContainerStyle, isMobile ? { marginLeft: 0 } : {})}
           onClick={() => {
-            openWalletModal(setWalletConnected);
+            openWalletModal(onWalletChange);
           }}>
           <div style={styles.balanceStyle}>0.004233 ETH</div>
           <div style={styles.addressContainerStyle}>
