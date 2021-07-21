@@ -9,14 +9,6 @@ export const tknValueTextStyle = styled.cssStyle`
   color: ${sideColor3};
   margin-top: 0.5rem;
 `;
-export const enterAddressTextStyle = styled.cssStyle`
-  font-family: Titillium Web;
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.52125rem;
-  color: ${sideColor};
-  margin-top: 1.125rem;
-`;
 
 export const addressInputContainerStyle = styled.cssStyle`
   border: 0.0625rem solid ${sideColor6};

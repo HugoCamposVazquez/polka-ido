@@ -1,4 +1,4 @@
-import { sideColor5, sideColor8 } from '../../utils/colorsUtil';
+import { sideColor, sideColor5, sideColor8 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 export const modalContainerStyle = styled.cssStyle`
@@ -61,4 +61,13 @@ export const titleTextStyle = styled.cssStyle`
   line-height: 2.28125rem;
   flex: 1;
   color: ${sideColor5};
+`;
+
+export const modalTextStyle = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.52125rem;
+  color: ${sideColor};
+  margin-top: 1.125rem;
 `;

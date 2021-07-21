@@ -5,6 +5,7 @@ import { MainButton } from '../gui/MainButton';
 import { TextField } from '../gui/TextField';
 import * as styles from './ClaimTokensModal.styles';
 import { Modal } from './Modal';
+import { modalTextStyle } from './Modal.styles';
 
 interface IProps {
   closeModal: () => void;
@@ -35,7 +36,7 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
   return (
     <Modal title="CLAIM TOKEN" closeModal={closeModal}>
       <div style={styles.tknValueTextStyle}>349857 TKN</div>
-      <div style={styles.enterAddressTextStyle}>Enter an address to trigger a claim.</div>
+      <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>
           <div>
