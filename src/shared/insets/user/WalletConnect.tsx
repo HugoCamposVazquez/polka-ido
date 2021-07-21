@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import React from 'react';
 
 import { injected } from '../../../hooks/web3/connectors';
@@ -13,18 +13,23 @@ interface WalletConnectProps {
 }
 
 export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
-  const { account, activate } = useWeb3React();
+  const { account, activate, chainId } = useWeb3React();
 
   const onWalletChange = () => {
     alert('Not sure yet what this should do');
   };
 
   const onConnect = async () => {
-    await activate(injected);
+    await activate(injected, (error) => {
+      if (error instanceof UnsupportedChainIdError) {
+        alert('Unsupported chain!');
+      }
+    });
     onLogin();
   };
 
   console.log('account: ', account);
+  console.log('chainId: ', chainId);
 
   return (
     <>
