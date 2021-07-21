@@ -5,7 +5,7 @@ import { injected } from '../../../hooks/web3/connectors';
 import { onLogin } from '../../../hooks/web3/useEagerConnect';
 import { cs } from '../../../utils/css';
 import { MainButton } from '../../gui/MainButton';
-import { openWalletModal } from '../../modals/modals';
+import { openUnsupportedNetworkModal, openWalletModal } from '../../modals/modals';
 import * as styles from './WalletConnect.styles';
 
 interface WalletConnectProps {
@@ -13,7 +13,7 @@ interface WalletConnectProps {
 }
 
 export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
-  const { account, activate, chainId } = useWeb3React();
+  const { account, activate } = useWeb3React();
 
   const onWalletChange = () => {
     alert('Not sure yet what this should do');
@@ -22,14 +22,11 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
   const onConnect = async () => {
     await activate(injected, (error) => {
       if (error instanceof UnsupportedChainIdError) {
-        alert('Unsupported chain!');
+        openUnsupportedNetworkModal();
       }
     });
     onLogin();
   };
-
-  console.log('account: ', account);
-  console.log('chainId: ', chainId);
 
   return (
     <>

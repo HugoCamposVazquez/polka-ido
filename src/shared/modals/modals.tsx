@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { ClaimTokensModal } from './ClaimTokensModal';
+import { UnsupportedNetwork } from './UnsupportedNetwork';
 import { WalletModal } from './WalletModal';
 
 const stackOfModalDivs: HTMLDivElement[] = [];
@@ -49,4 +50,9 @@ export const openWalletModal = (changeWallet: any) => {
     <WalletModal closeModal={detachDiv} changeWallet={changeWallet} />,
     stackOfModalDivs[stackOfModalDivs.length - 1],
   );
+};
+
+export const openUnsupportedNetworkModal = () => {
+  attachDiv();
+  ReactDOM.render(<UnsupportedNetwork closeModal={detachDiv} />, stackOfModalDivs[stackOfModalDivs.length - 1]);
 };

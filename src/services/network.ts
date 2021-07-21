@@ -2,7 +2,7 @@ import { ethers, providers } from 'ethers';
 
 import { MOONBEAM_ALPHA_CHAIN_ID } from '../hooks/web3/connectors';
 
-export async function createSwitchToNetwork(
+export async function switchToNetwork(
   provider: providers.ExternalProvider, // window.ethereum?
 ): Promise<unknown | null> {
   if (!provider.request) {
