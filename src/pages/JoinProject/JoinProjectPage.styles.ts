@@ -125,3 +125,9 @@ export const fieldContainerStyle = styled.cssStyle`
   display: flex;
   align-items: center;
 `;
+export const walletConnectContainer = styled.cssStyle`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;

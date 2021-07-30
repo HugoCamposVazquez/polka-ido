@@ -1,4 +1,4 @@
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -39,15 +39,22 @@ export const JoinProjectPage = () => {
       </div>
       <div style={styles.formContainerStyle}>
         <div style={styles.topLeftBottomRightNotch} className={styles.cardStyle}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={styles.subtitleTextStyle}>
-              Please connect your Polkadot.js wallet first. Choose the account that you wish to receive the project
-              tokens.
-            </div>
+          <div style={styles.walletConnectContainer}>
             {!isConnectedWallet && (
-              <MainButton title="CONNECT WALLET" type={'bordered'} onClick={onPolkadotJsConnect} />
+              <>
+                <div style={styles.subtitleTextStyle}>
+                  Please connect your Polkadot.js wallet first. Choose the account that you wish to receive the project
+                  tokens.
+                </div>
+                <MainButton title="CONNECT WALLET" type={'bordered'} onClick={onPolkadotJsConnect} />
+              </>
             )}
-            {isConnectedWallet && <AccountsDropdown options={accounts} initialAccount={accounts[0]} />}
+            {isConnectedWallet && (
+              <>
+                <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
+                <AccountsDropdown options={accounts} initialAccount={accounts[0]} />
+              </>
+            )}
           </div>
 
           <JoinProjectForm />
