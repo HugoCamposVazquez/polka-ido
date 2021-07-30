@@ -1,0 +1,21 @@
+.ant-dropdown .ant-dropdown-arrow {
+    border-top-color: rgb(122, 122, 122);
+    border-left-color: rgb(122, 122, 122);
+}
+
+.ant-dropdown-menu {
+    background-color: #484848;
+    border: 0.0625rem solid rgb(122, 122, 122);
+}
+
+.ant-dropdown-menu-item:hover {
+    background-color: #d2307a;
+}
+
+.ant-dropdown-menu-item:hover .ant-dropdown-menu-title-content {
+    color: white;
+}
+
+.ant-dropdown-menu-title-content {
+    color: #b8b8b8;
+}
