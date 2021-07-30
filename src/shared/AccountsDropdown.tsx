@@ -11,17 +11,22 @@ import { MainButton } from './gui/MainButton';
 
 interface IProps {
   options: InjectedAccountWithMeta[];
+  initialAccount: InjectedAccountWithMeta;
 }
 
-export const AccountsDropdown = ({ options }: IProps) => {
+export const AccountsDropdown = ({ options, initialAccount }: IProps) => {
+  const [selectedAccount, setSelectedAccount] = React.useState<InjectedAccountWithMeta>(initialAccount);
   const onOptionSelect = (item: MenuInfo) => {
-    console.log('clicked: ', item.key);
+    const account = options.find((option) => option.address === item.key);
+    if (account) {
+      setSelectedAccount(account);
+    }
   };
 
   const menu = (
     <Menu onClick={onOptionSelect}>
       {options.map((option) => (
-        <Menu.Item key={option.meta.name}>
+        <Menu.Item key={option.address}>
           <div style={styles.accountOptionsContainerStyle}>
             <img src={userIcon} style={styles.iconStyle} />
             <div>
@@ -36,7 +41,7 @@ export const AccountsDropdown = ({ options }: IProps) => {
 
   return (
     <Dropdown overlay={menu} placement="bottomCenter" arrow trigger={['click']}>
-      <MainButton type="bordered" title="Selected account" onClick={() => {}} />
+      <MainButton type="bordered" title={selectedAccount?.meta.name || 'Select account'} onClick={() => {}} />
     </Dropdown>
   );
 };

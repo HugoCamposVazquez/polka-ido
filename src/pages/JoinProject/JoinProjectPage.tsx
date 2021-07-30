@@ -47,7 +47,7 @@ export const JoinProjectPage = () => {
             {!isConnectedWallet && (
               <MainButton title="CONNECT WALLET" type={'bordered'} onClick={onPolkadotJsConnect} />
             )}
-            {isConnectedWallet && <AccountsDropdown options={accounts} />}
+            {isConnectedWallet && <AccountsDropdown options={accounts} initialAccount={accounts[0]} />}
           </div>
 
           <JoinProjectForm />
