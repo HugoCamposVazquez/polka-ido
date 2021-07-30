@@ -27,11 +27,7 @@ export const JoinProjectPage = () => {
   return (
     <>
       <div style={styles.titleContainerStyle}>
-        <div
-          className={styles.backToProjectContainerStyle}
-          onClick={() => {
-            navigation.push(`/project/1`);
-          }}>
+        <div className={styles.backToProjectContainerStyle} onClick={() => navigation.goBack()}>
           <img src={backToProject} />
           <div style={styles.backToProjectsTextStyle}>Back to project</div>
         </div>

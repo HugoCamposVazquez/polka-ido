@@ -1,6 +1,6 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import horseImage from '../assets/horse_image.png';
 import projectCardBackground from '../assets/project_card_background.png';
@@ -16,6 +16,7 @@ import * as styles from './ProjectDetailsPage.styles';
 
 export const ProjectDetailsPage = () => {
   const navigation = useHistory();
+  const { id } = useParams<{ id: string }>();
 
   return (
     <div>
@@ -105,13 +106,7 @@ export const ProjectDetailsPage = () => {
                   openClaimTokensModal('test');
                 }}
               />
-              <MainButton
-                title="JOIN"
-                type={'fill'}
-                onClick={() => {
-                  navigation.push(`/project/1/join`);
-                }}
-              />
+              <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
             </div>
           </div>
         </div>
