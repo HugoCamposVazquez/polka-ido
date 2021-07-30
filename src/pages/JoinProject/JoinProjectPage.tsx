@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import backToProject from '../../assets/back_to_project.svg';
+import { AccountsDropdown } from '../../shared/AccountsDropdown';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
 import { JoinProjectForm } from './JoinProjectForm';
@@ -46,12 +47,7 @@ export const JoinProjectPage = () => {
             {!isConnectedWallet && (
               <MainButton title="CONNECT WALLET" type={'bordered'} onClick={onPolkadotJsConnect} />
             )}
-            {isConnectedWallet &&
-              accounts.map((account) => (
-                <div>
-                  {account.name} || {account.address}
-                </div>
-              ))}
+            {isConnectedWallet && <AccountsDropdown options={accounts} />}
           </div>
 
           <JoinProjectForm />
