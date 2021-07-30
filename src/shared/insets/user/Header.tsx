@@ -3,6 +3,7 @@ import { Link, useHistory, withRouter } from 'react-router-dom';
 
 import closeIcon from '../../../assets/close_icon.svg';
 import menuIcon from '../../../assets/menu_icon.svg';
+import ryuLogo from '../../../assets/ryu-logo.svg';
 import { cs } from '../../../utils/css';
 import { useWindowDimensions } from '../../../utils/windowDimensionsUtil';
 import * as styles from './Header.styles';
@@ -25,15 +26,15 @@ export const Header = withRouter((props) => {
             : { backgroundColor: 'rgba(1, 1, 1, 0.6)' },
         )}>
         <div className={styles.headerContentStyle}>
-          <div
-            style={styles.ryuTextStyle}
+          <img
+            src={ryuLogo}
+            style={styles.ryuLogoStyle}
             onClick={() => {
               // eslint-disable-next-line no-undef
               window.scrollTo(0, 0);
               navigation.push('/home');
-            }}>
-            RYU
-          </div>
+            }}
+          />
           <div className={styles.menuItemsContainerClassName}>
             <div
               className={
