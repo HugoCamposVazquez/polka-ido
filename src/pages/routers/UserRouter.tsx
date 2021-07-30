@@ -5,7 +5,7 @@ import { Header } from '../../shared/insets/user/Header';
 import { styled } from '../../utils/css';
 import { AboutUsPage } from '../AboutUsPage';
 import { HomePage } from '../HomePage';
-import { JoinProjectPage } from '../JoinProjectPage';
+import { JoinProjectPage } from '../JoinProject/JoinProjectPage';
 import { LaunchpadPage } from '../LanchpadPage';
 import { ProjectDetailsPage } from '../ProjectDetailsPage';
 
