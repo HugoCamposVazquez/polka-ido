@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { useLaunchpadDetails, useProjects } from '../api/api/api';
 import ryu3 from '../assets/ryu3.png';
 import searchIcon from '../assets/search_icon.svg';
+import { usePlatformsStats } from '../hooks/apollo/usePlatforms';
+import { useProjects } from '../hooks/apollo/useProjects';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
@@ -20,8 +21,8 @@ export const LaunchpadPage = () => {
   const [shownProjects, setShownProjects] = useState<'upcoming' | 'joined' | 'featured' | undefined>('upcoming');
   const [searchTextVisible, setSearchTextVisible] = useState<boolean>(false);
 
-  const { data: projects, isLoading: projectsLoading } = useProjects(shownProjects);
-  const { data: launchpadDetails, isLoading: launchpadDetailsLoading } = useLaunchpadDetails();
+  // const { data: projects, isLoading: projectsLoading } = useProjects(shownProjects);
+  // const { data: launchpadDetails, isLoading: launchpadDetailsLoading } = useLaunchpadDetails();
 
   const { width } = useWindowDimensions();
 
@@ -44,7 +45,10 @@ export const LaunchpadPage = () => {
     }
   };
 
-  if (launchpadDetailsLoading) {
+  const { data: platformsData } = usePlatformsStats();
+  const { data: projectsData, loading: projectLoading } = useProjects();
+
+  if (projectLoading) {
     return <LoadingData />;
   }
 
@@ -68,20 +72,20 @@ export const LaunchpadPage = () => {
                 Projects launched
               </div>
               <div className={styles.boldTextStyle} style={{ color: `${sideColor3}` }}>
-                {launchpadDetails?.data.projectsLaunched}
+                {platformsData?.platforms[0].numOfProjects}
               </div>
             </div>
             <div style={styles.launchpadDetailsItemStyle}>
               <div className={styles.normalTextStyle} style={{ flex: 1 }}>
                 Funds raised
               </div>
-              <div className={styles.boldTextStyle}>{launchpadDetails?.data.fundsRaised} USDT</div>
+              <div className={styles.boldTextStyle}>{platformsData?.platforms[0].fundsRaised} USDT</div>
             </div>
             <div style={styles.launchpadDetailsItemStyle}>
               <div className={styles.normalTextStyle} style={{ flex: 1 }}>
                 Users participated
               </div>
-              <div className={styles.boldTextStyle}>{launchpadDetails?.data.usersParticipated}</div>
+              <div className={styles.boldTextStyle}>{platformsData?.platforms[0].numOfUsers}</div>
             </div>
           </div>
         </div>
@@ -145,12 +149,12 @@ export const LaunchpadPage = () => {
       </div>
       <div className={styles.projectsCardsContainerParentClassName}>
         <div className={styles.projectsCardsContainerClassName}>
-          {!projectsLoading &&
-            projects?.data.map((project, index) => {
+          {!projectLoading &&
+            projectsData?.sales.map((project, index) => {
               return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
             })}
-          {projectsLoading &&
-            [...Array(mockProjectsNum)].map((el, index) => (
+          {projectLoading &&
+            projectsData?.sales.map((el, index) => (
               <ProjectCard key={index} direction={getCardDirection(width, index)} />
             ))}
         </div>

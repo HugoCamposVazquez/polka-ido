@@ -15,6 +15,9 @@ import * as serviceWorker from './serviceWorker';
 import { ErrorBoundary } from './shared/wrappers/ErrorBoundary';
 import { ScrollToTop } from './utils/scrollToTopUtil';
 
+import { ApolloProvider } from '@apollo/client';
+import { client } from '../src/services/apollo';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getLibrary(provider: any): Web3Provider {
   return new Web3Provider(provider);
@@ -24,9 +27,11 @@ ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ScrollToTop>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <MainRouter />
-        </Web3ReactProvider>
+        <ApolloProvider client={client}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <MainRouter />
+          </Web3ReactProvider>
+        </ApolloProvider>
       </ScrollToTop>
     </BrowserRouter>
   </ErrorBoundary>,

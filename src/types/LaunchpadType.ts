@@ -7,3 +7,11 @@ export type LaunchpadType = {
   fundsRaised: number;
   usersParticipated: number;
 };
+
+export interface LaunchpadData {
+  platforms: {
+    fundsRaised: string;
+    numOfUsers: number;
+    numOfProjects: number;
+  }[];
+}
