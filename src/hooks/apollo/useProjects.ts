@@ -8,7 +8,7 @@ interface ProjectsHook {
   data: Projects | undefined;
 }
 
-export const useProjects = (itemNum?: number, feat?: boolean): ProjectsHook => {
+export const useProject = (itemNum?: number, feat?: boolean): ProjectsHook => {
   const apolloClient = client;
 
   if (itemNum && feat) {
@@ -33,7 +33,7 @@ export const useProjects = (itemNum?: number, feat?: boolean): ProjectsHook => {
 const FETCH_FEAT_PROJECTS_DATA = (): DocumentNode =>
   gql(
     `
-    query Projects($numOfItems: Int, $featured: Boolean) {
+    query Projects($numOfItems: Int, $featured: Boolean, $id: String) {
       sales(first: $numOfItems, where: { featured: $featured }) {
         id
         salePrice

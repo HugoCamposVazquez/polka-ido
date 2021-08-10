@@ -5,29 +5,22 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ryu3 from '../assets/ryu3.png';
 import searchIcon from '../assets/search_icon.svg';
 import { usePlatformsStats } from '../hooks/apollo/usePlatforms';
-import { useProjects } from '../hooks/apollo/useProjects';
+import { useProject } from '../hooks/apollo/useProjects';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
 import { ProjectCard } from '../shared/ProjectCard';
-import { ProjectData, Projects } from '../types/ProjectType';
+import { ProjectData } from '../types/ProjectType';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { sideColor3 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
 
-const mockProjectsNum = 40;
-
 export const LaunchpadPage = () => {
   const [shownProjects, setShownProjects] = useState<'upcoming' | 'joined' | 'featured' | undefined>('upcoming');
   const [searchTextVisible, setSearchTextVisible] = useState<boolean>(false);
-
   const [projects, setProjects] = useState<ProjectData[]>([]);
-
-  // const { data: projects, isLoading: projectsLoading } = useProjects(shownProjects);
-  // const { data: launchpadDetails, isLoading: launchpadDetailsLoading } = useLaunchpadDetails();
-
   const { width } = useWindowDimensions();
 
   const methods = useForm({
@@ -38,7 +31,7 @@ export const LaunchpadPage = () => {
   });
 
   const { data: platformsData } = usePlatformsStats();
-  const { data: projectsData, loading: projectLoading } = useProjects();
+  const { data: projectsData, loading: projectLoading } = useProject();
 
   useEffect(() => {
     projectsData?.sales.map((project) => {
@@ -53,10 +46,7 @@ export const LaunchpadPage = () => {
 
   const onSearch = async ({ search }: any) => {
     try {
-      console.log('search', search);
-      // const { token } = await generalHTTP.login(email, message);
-      // localStorage.setItem('token', token);
-      // window.location.reload();
+      // Cant Filter by name, missing data at the moment
     } catch (e) {
       console.log(e);
       // show notification or error message

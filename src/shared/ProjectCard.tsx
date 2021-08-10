@@ -7,7 +7,7 @@ import ryuLogoAnimation from '../assets/ryu_logo_animation.gif';
 import { ProjectData } from '../types/ProjectType';
 import { sideColor3, sideColor4, sideColor6 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
-import { fixNums } from '../utils/getFixedNum';
+import { fixNums } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectCard.styles';
 
 type IProps = {

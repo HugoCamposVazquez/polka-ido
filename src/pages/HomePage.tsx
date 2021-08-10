@@ -6,7 +6,7 @@ import { useTopFeaturedProjects } from '../api/api/api';
 import arrowLeft from '../assets/arrow_left.svg';
 import ryu from '../assets/ryu.png';
 import ryu2 from '../assets/ryu2.png';
-import { useProjects } from '../hooks/apollo/useProjects';
+import { useProject } from '../hooks/apollo/useProjects';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
@@ -41,7 +41,7 @@ export const HomePage = () => {
     }
   };
 
-  const { data, loading } = useProjects(4, false);
+  const { data, loading } = useProject(4, false);
 
   return (
     <div>

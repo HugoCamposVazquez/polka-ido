@@ -1,21 +1,40 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
+import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import horseImage from '../assets/horse_image.png';
 import projectCardBackground from '../assets/project_card_background.png';
 import telegramIcon from '../assets/telegram_icon.svg';
 import twitterIcon from '../assets/twitter_icon.svg';
 import webIcon from '../assets/web_icon.svg';
+import { useSingleProject } from '../hooks/apollo/useSingleProject';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../shared/modals/modals';
+import { ProjectData } from '../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
+import { numberWithCommas } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
 export const ProjectDetailsPage = () => {
   const navigation = useHistory();
+  const { id }: { id: string } = useParams();
+
+  const { data, loading } = useSingleProject(id);
+
+  const projectStatus = (): string => {
+    if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {
+      return 'Starts';
+    } else if (
+      data?.sales[0] &&
+      getUnixTime(new Date()) > +data?.sales[0].startDate &&
+      getUnixTime(new Date()) < +data?.sales[0].endDate
+    ) {
+      return 'In Progress';
+    } else return 'Ended';
+  };
 
   return (
     <div>
@@ -30,21 +49,18 @@ export const ProjectDetailsPage = () => {
           <div style={{ flex: 0.5 }}>
             <div className={styles.projectImageContainerClassName}>
               <div style={styles.topRightBottomLeftNotch} className={styles.projectImageBackgroundStyle}>
-                <img className={styles.projectIconClassName} src={horseImage} />
+                <img className={styles.projectIconClassName} src="" /> {/* data dosen't exist yet */}
               </div>
               <div style={{ marginLeft: '1.5rem' }}>
                 <div className={styles.projectStatusBackgroundStyle}>
-                  <div style={styles.projectStatusTextStyle}>Ended</div>
+                  <div style={styles.projectStatusTextStyle}>{projectStatus()}</div>
                 </div>
-                <div className={styles.projectNameTextStyle}>My project 1</div>
+                <div className={styles.projectNameTextStyle}>ProjectName Data</div>
               </div>
             </div>
             <div className={styles.shortDescriptionContainerClassName}>
               <div style={styles.shortDescriptionTextStyle}>Short description</div>
-              <div className={styles.shortDescriptionTextClassName}>
-                For athletes, high altitude produces two contradictory effects on performance. For explosive events
-                (sprints up to 400 metres, long jump, triple jump)
-              </div>
+              <div className={styles.shortDescriptionTextClassName}>description data</div>
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
                 <div style={styles.etherScanBtnStyle}>Etherscan</div>
 
@@ -58,23 +74,31 @@ export const ProjectDetailsPage = () => {
             <div className={styles.projectContainerRightStyle}>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Starts</div>
-                <div className={styles.contentTextStyle}>May 20, 2021 4:00 PM</div>
+                <div className={styles.contentTextStyle}>
+                  {data?.sales[0] && format(fromUnixTime(+data?.sales[0].startDate), 'PPpp')}
+                </div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Ends</div>
-                <div className={styles.contentTextStyle}>June 20, 2021 4:00 PM</div>
+                <div className={styles.contentTextStyle}>
+                  {data?.sales[0] && format(fromUnixTime(+data?.sales[0].endDate), 'PPpp')}
+                </div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>10,000,000</div>
+                <div className={styles.contentTextStyle}>{`${
+                  data?.sales[0] && numberWithCommas(data?.sales[0].maxDepositAmount)
+                } ETH`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Access</div>
-                <div className={styles.contentTextStyle}>Whitelist</div>
+                <div className={styles.contentTextStyle}>
+                  {data?.sales[0] && data?.sales[0].whitelisted ? 'Whitelisted' : 'Private'}
+                </div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Token price</div>
-                <div className={styles.contentTextStyle}>0.022ETH</div>
+                <div className={styles.contentTextStyle}>{`${data?.sales[0] && data?.sales[0].salePrice} ETH`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.description2TextStyle}>Your allocation</div>
@@ -82,10 +106,16 @@ export const ProjectDetailsPage = () => {
               </div>
 
               <div style={{ marginTop: '2.25rem' }}>
-                <div className={styles.valueDescTextStyle}>7273/10000 USDT</div>
+                <div className={styles.valueDescTextStyle}>
+                  {data?.sales[0] && `${data?.sales[0].currentDepositAmount}/${data?.sales[0].maxDepositAmount} USDT`}
+                </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <ProgressBar
-                    completed={(7273 / 10000) * 100}
+                    completed={
+                      (Number(data?.sales[0] && data?.sales[0].currentDepositAmount) /
+                        Number(data?.sales[0] && data?.sales[0].maxDepositAmount)) *
+                      100
+                    }
                     isLabelVisible={false}
                     height={'0.38rem'}
                     bgColor={sideColor3}

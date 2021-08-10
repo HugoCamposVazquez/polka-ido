@@ -17,12 +17,6 @@ export const useTopFeaturedProjects = () => {
   return useQuery<ProjectsApiType, any>([projectCacheKeys.topFeaturedProjects], () => source.getTopFeaturedProjects());
 };
 
-// export const useProjects = (fetchFilter: 'upcoming' | 'joined' | 'featured' | undefined) => {
-//   return useQuery<ProjectsApiType, any>([projectCacheKeys.projects, fetchFilter], () =>
-//     source.getProjects(fetchFilter),
-//   );
-// };
-
 export const useProject = (id: string | undefined) => {
   if (id !== undefined) {
     return useQuery<ProjectApiType, any>([projectCacheKeys.project, id], () => source.getProject(id));
