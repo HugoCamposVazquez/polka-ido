@@ -3,7 +3,6 @@ import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import horseImage from '../assets/horse_image.png';
 import projectCardBackground from '../assets/project_card_background.png';
 import telegramIcon from '../assets/telegram_icon.svg';
 import twitterIcon from '../assets/twitter_icon.svg';
@@ -12,7 +11,6 @@ import { useSingleProject } from '../hooks/apollo/useSingleProject';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../shared/modals/modals';
-import { ProjectData } from '../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import { numberWithCommas } from '../utils/numModifiyngFuncs';

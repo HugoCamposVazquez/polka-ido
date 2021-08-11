@@ -1,5 +1,6 @@
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
-import React from 'react';
+import { ethers } from 'ethers';
+import React, { useEffect, useState } from 'react';
 
 import { injected } from '../../../hooks/web3/connectors';
 import { onLogin } from '../../../hooks/web3/useEagerConnect';
@@ -14,7 +15,7 @@ interface WalletConnectProps {
 
 export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
   const { account, activate } = useWeb3React();
-
+  const [balance, setBalance] = useState('0');
   const onWalletChange = () => {
     alert('Not sure yet what this should do');
   };
@@ -27,6 +28,13 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
     });
     onLogin();
   };
+
+  useEffect(() => {
+    if (account) {
+      const provider = new ethers.providers.JsonRpcProvider({ url: 'https://rpc.testnet.moonbeam.network' });
+      provider.getBalance(account).then(ethers.utils.formatEther).then(setBalance);
+    }
+  }, [account]);
 
   return (
     <>
@@ -44,9 +52,11 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
           onClick={() => {
             openWalletModal(onWalletChange);
           }}>
-          <div style={styles.balanceStyle}>0.004233 ETH</div>
+          <div style={styles.balanceStyle}>{balance} ETH</div>
           <div style={styles.addressContainerStyle}>
-            <div style={styles.addressStyle}>0xF2C...x706</div>
+            <div style={styles.addressStyle}>
+              {account.slice(0, 6)}...{account.slice(-4)}
+            </div>
           </div>
         </div>
       )}
