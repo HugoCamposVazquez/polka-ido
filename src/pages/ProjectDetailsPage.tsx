@@ -10,10 +10,11 @@ import webIcon from '../assets/web_icon.svg';
 import { useSingleProject } from '../hooks/apollo/useSingleProject';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/user/Footer';
+import { LoadingData } from '../shared/LoadingData';
 import { openClaimTokensModal } from '../shared/modals/modals';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
-import { numberWithCommas } from '../utils/numModifiyngFuncs';
+import { numberWithDots } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
 export const ProjectDetailsPage = () => {
@@ -33,6 +34,10 @@ export const ProjectDetailsPage = () => {
       return 'In Progress';
     } else return 'Ended';
   };
+
+  if (loading) {
+    return <LoadingData />;
+  }
 
   return (
     <div>
@@ -85,7 +90,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && numberWithCommas(data?.sales[0].maxDepositAmount)
+                  data?.sales[0] && numberWithDots(data?.sales[0].maxDepositAmount)
                 } ETH`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
@@ -137,7 +142,7 @@ export const ProjectDetailsPage = () => {
                 title="JOIN"
                 type={'fill'}
                 onClick={() => {
-                  navigation.push(`/project/1/join`);
+                  navigation.push(`/project/${id}/join`);
                 }}
               />
             </div>

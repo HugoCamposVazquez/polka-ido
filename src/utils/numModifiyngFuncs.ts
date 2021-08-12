@@ -4,10 +4,10 @@ export const fixNums = (num: number, fixTo: number) => {
   return num.toFixed(fixTo).replace(/\.?0+$/, '');
 };
 
-export const numberWithCommas = (num: string) => {
+export const numberWithDots = (num: string) => {
   num = num.toString();
   const pattern = /(-?\d+)(\d{3})/;
-  while (pattern.test(num)) num = num.replace(pattern, '$1,$2');
+  while (pattern.test(num)) num = num.replace(pattern, '$1.$2');
 
   return num;
 };

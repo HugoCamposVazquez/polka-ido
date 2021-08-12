@@ -1,36 +1,67 @@
-import React from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import SaleContract from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContract.sol/SaleContract.json';
+import { SaleContract as SaleContractTypes } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
+import { useWeb3React } from '@web3-react/core';
+import { BigNumber, ethers } from 'ethers';
+import { __Field } from 'graphql';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import * as yup from 'yup';
 
 import arrowDown from '../assets/arrow_down.svg';
 import backToProject from '../assets/back_to_project.svg';
+import { useSingleProject } from '../hooks/apollo/useSingleProject';
+import { useJoinProject } from '../hooks/useJoinProject';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { cs } from '../utils/css';
+import { numberWithDots } from '../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectPage = () => {
+  const { id }: { id: string } = useParams();
+  const { balance, maxAllocation } = useJoinProject(id);
+  const { data } = useSingleProject(id);
+  const validationSchema = yup.object().shape({
+    fromValue: yup.number().required().max(Number(maxAllocation)),
+    toValue: yup
+      .number()
+      .required()
+      .max(Number(maxAllocation) * Number(data?.sales[0].salePrice)),
+  });
+
   const navigation = useHistory();
   const methods = useForm({
     defaultValues: {
       fromValue: '',
       toValue: '',
     },
-    //resolver: yupResolver(loginValidationSchema),
+    resolver: yupResolver(validationSchema),
   });
+  const { library } = useWeb3React();
 
-  const onSubmit = async ({ fromValue, toValue }: any) => {
+  const onSubmit = ({ fromValue, toValue }: { fromValue: string; toValue: string }): void => {
     try {
-      console.log('test', fromValue, toValue);
-      // const { token } = await generalHTTP.login(email, message);
-      // localStorage.setItem('token', token);
-      // window.location.reload();
+      const signer = library.getSigner();
+      const contract: SaleContractTypes = new ethers.Contract(id, SaleContract.abi, signer) as SaleContractTypes;
+      contract.buyTokens({ value: BigNumber.from(fromValue), gasLimit: 5000000 });
     } catch (e) {
-      console.log(e);
-      // show notification or error message
+      console.error(e.message);
     }
   };
+
+  const setValues0nMaxBtn = () => {
+    if (balance < maxAllocation) {
+      methods.setValue('fromValue', balance);
+      methods.setValue('toValue', Number(balance) * Number(data?.sales[0].salePrice));
+    } else {
+      methods.setValue('fromValue', maxAllocation);
+      methods.setValue('toValue', Number(maxAllocation) * Number(data?.sales[0].salePrice));
+    }
+  };
+  console.log(field);
 
   return (
     <div>
@@ -38,7 +69,7 @@ export const JoinProjectPage = () => {
         <div
           className={styles.backToProjectContainerStyle}
           onClick={() => {
-            navigation.push(`/project/1`);
+            navigation.push(`/project/${id}`);
           }}>
           <img src={backToProject} />
           <div style={styles.backToProjectsTextStyle}>Back to project</div>
@@ -53,18 +84,20 @@ export const JoinProjectPage = () => {
                 <div style={styles.boxContainerStyle}>
                   <div style={{ display: 'flex' }}>
                     <div style={cs(styles.subtitleTextStyle, { flex: 1 })}>From</div>
-                    <div style={styles.subtitleTextStyle}>Balance: 0.34 ETH</div>
+                    <div style={styles.subtitleTextStyle}>Balance: {balance} ETH</div>
                   </div>
                   <div style={styles.fieldContainerStyle}>
                     <TextField
                       name={'fromValue'}
                       type={'none'}
-                      placeholder={'0.02'}
+                      placeholder={maxAllocation}
                       mode={'dark'}
                       style={{ fontSize: '1.25rem' }}
                       autoFocus={true}
                     />
-                    <div style={styles.maxBtnStyle}>Max</div>
+                    <div style={styles.maxBtnStyle} onClick={setValues0nMaxBtn}>
+                      Max
+                    </div>
                     <div style={styles.suffixTextStyle}>ETH</div>
                   </div>
                 </div>
@@ -74,13 +107,20 @@ export const JoinProjectPage = () => {
                 <div style={cs(styles.boxContainerStyle)}>
                   <div style={{ display: 'flex' }}>
                     <div style={cs(styles.subtitleTextStyle, { flex: 1 })}>To</div>
-                    <div style={styles.subtitleTextStyle}>Remaining: 239485.32</div>
+                    <div style={styles.subtitleTextStyle}>
+                      Remaining:{' '}
+                      {numberWithDots(
+                        (
+                          Number(data?.sales[0].maxDepositAmount) - Number(data?.sales[0].currentDepositAmount)
+                        ).toString(),
+                      )}
+                    </div>
                   </div>
                   <div style={styles.fieldContainerStyle}>
                     <TextField
                       name={'toValue'}
                       type={'none'}
-                      placeholder={'349857'}
+                      placeholder={(Number(maxAllocation) * Number(data?.sales[0].salePrice)).toString()}
                       mode={'dark'}
                       style={{ fontSize: '1.25rem' }}
                     />
@@ -88,7 +128,7 @@ export const JoinProjectPage = () => {
                   </div>
                 </div>
 
-                <div style={styles.maxAllocTextStyle}>Max. allocation is 0.02 ETH</div>
+                <div style={styles.maxAllocTextStyle}>Max. allocation is {maxAllocation} ETH</div>
 
                 <div style={{ marginTop: '1.5rem' }}>
                   <MainButton
