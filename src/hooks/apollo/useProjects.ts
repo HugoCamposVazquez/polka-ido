@@ -1,18 +1,18 @@
 import { DocumentNode, gql, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
-import { Projects } from '../../types/ProjectType';
+import { ProjectSales } from '../../types/ProjectType';
 
 interface ProjectsHook {
   loading: boolean;
-  data: Projects | undefined;
+  data: ProjectSales | undefined;
 }
 
 export const useProject = (itemNum?: number, feat?: boolean): ProjectsHook => {
   const apolloClient = client;
 
   if (itemNum && feat) {
-    const { data, loading } = useQuery(FETCH_FEAT_PROJECTS_DATA(), {
+    const { data, loading } = useQuery(FETCH_FEATURED_PROJECTS_DATA, {
       client: apolloClient,
       variables: {
         numOfItems: itemNum,
@@ -22,7 +22,7 @@ export const useProject = (itemNum?: number, feat?: boolean): ProjectsHook => {
 
     return { data, loading };
   } else {
-    const { data, loading } = useQuery(FETCH_PROJECTS_DATA(), {
+    const { data, loading } = useQuery(FETCH_PROJECTS_DATA, {
       client: apolloClient,
     });
 
@@ -30,10 +30,9 @@ export const useProject = (itemNum?: number, feat?: boolean): ProjectsHook => {
   }
 };
 
-const FETCH_FEAT_PROJECTS_DATA = (): DocumentNode =>
-  gql(
-    `
-    query Projects($numOfItems: Int, $featured: Boolean, $id: String) {
+const FETCH_FEATURED_PROJECTS_DATA = gql(
+  `
+    query Projects($numOfItems: Int, $featured: Boolean) {
       sales(first: $numOfItems, where: { featured: $featured }) {
         id
         salePrice
@@ -50,11 +49,10 @@ const FETCH_FEAT_PROJECTS_DATA = (): DocumentNode =>
       }
     }
     `,
-  );
+);
 
-const FETCH_PROJECTS_DATA = (): DocumentNode =>
-  gql(
-    `
+const FETCH_PROJECTS_DATA = gql(
+  `
     query Projects {
       sales {
         id
@@ -72,4 +70,4 @@ const FETCH_PROJECTS_DATA = (): DocumentNode =>
       }
     }
     `,
-  );
+);
