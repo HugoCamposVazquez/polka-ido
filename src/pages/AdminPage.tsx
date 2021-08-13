@@ -2,7 +2,7 @@ import { Spin, Table, TablePaginationConfig } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useProject } from '../hooks/apollo/useProjects';
+import { useProjects } from '../api/api/api';
 // import { useProjects } from '../api/api/api';
 import { EditableCell } from '../shared/EditableCell';
 import { getAllColumns } from '../utils/tableColumnsUtil';
@@ -40,11 +40,11 @@ export const AdminPage = () => {
     };
   });
 
-  const { data: projects, loading: projectsLoading } = useProject();
+  const { data: projects, isLoading: projectsLoading } = useProjects(undefined);
 
-  if (projectsLoading) {
-    return <Spin style={styles.spinnerStyle} size="large" />;
-  }
+  // if (projectsLoading) {
+  //   return <Spin style={styles.spinnerStyle} size="large" />;
+  // }
 
   return (
     <div style={styles.adminPageContainerStyle}>
@@ -60,7 +60,7 @@ export const AdminPage = () => {
         <div style={styles.tableContainerStyle}>
           <Table
             rowKey={'id'}
-            dataSource={projects?.sales}
+            dataSource={projects?.data}
             tableLayout={'fixed'}
             scroll={{ x: 'min-content' }}
             sticky
