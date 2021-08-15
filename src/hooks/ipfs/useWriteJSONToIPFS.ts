@@ -1,21 +1,22 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { getPinataApi, PinataResponse } from '../../services/pinata';
 
 interface IData {
   loading: boolean;
+  writeData: (body: unknown) => void;
   error?: string;
   response?: PinataResponse;
 }
 
 // Uses pinata.cloud pinning
-export const useWriteJSONToIPFS = (body: unknown): IData => {
+export const useWriteJSONToIPFS = (): IData => {
   const [loading, setLoading] = useState(true);
   const [response, setResponse] = useState<PinataResponse | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
 
-  const writeData = async () => {
+  const writeData = useCallback(async (body: unknown) => {
     try {
       const api = getPinataApi();
       const response = await api.post('/pinning/pinJSONToIPFS', body);
@@ -31,15 +32,12 @@ export const useWriteJSONToIPFS = (body: unknown): IData => {
     }
 
     setLoading(false);
-  };
-
-  useEffect(() => {
-    writeData();
   }, []);
 
   return {
     loading,
     response,
     error,
+    writeData,
   };
 };

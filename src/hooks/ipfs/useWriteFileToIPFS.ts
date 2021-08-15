@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { getPinataApi, PinataResponse } from '../../services/pinata';
 
 interface IData {
   loading: boolean;
+  writeData: (body: unknown) => void;
   error?: string;
   response?: PinataResponse;
 }
@@ -15,7 +16,7 @@ export const useWriteFileToIPFS = (body: FormData): IData => {
   const [response, setResponse] = useState<PinataResponse | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
 
-  const writeData = async () => {
+  const writeData = useCallback(async () => {
     try {
       const api = getPinataApi();
       const response = await api.post('/pinning/pinFileToIPFS', body, {
@@ -37,14 +38,11 @@ export const useWriteFileToIPFS = (body: FormData): IData => {
     }
 
     setLoading(false);
-  };
-
-  useEffect(() => {
-    writeData();
   }, []);
 
   return {
     loading,
+    writeData,
     response,
     error,
   };
