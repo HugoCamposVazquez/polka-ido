@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const IPFS_GATEWAY = 'https://ipfs.infura.io/ipfs/';
@@ -18,7 +18,6 @@ export const useReadIPFS = <ReturnData>(hash: string): IData<ReturnData> => {
   const fetchData = async () => {
     try {
       const response = await axios.get(hash);
-      console.log('axios: ', response);
       if (response.data) {
         setData(response.data);
       }
@@ -26,7 +25,7 @@ export const useReadIPFS = <ReturnData>(hash: string): IData<ReturnData> => {
       if (axios.isAxiosError(e)) {
         setError(e.response?.data);
       } else {
-        setError(`An unexpected error ocurred: ${e.message}`);
+        setError(`An unexpected error occurred: ${e.message}`);
       }
     }
 
