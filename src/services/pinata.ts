@@ -9,3 +9,9 @@ axios.defaults.headers.common['pinata_api_key'] = process.env.REACT_APP_PINATA_A
 axios.defaults.headers.common['pinata_secret_api_key'] = process.env.REACT_APP_PINATA_API_SECRET;
 
 export const getPinataApi = () => axios;
+
+export interface PinataResponse {
+  IpfsHash: string;
+  PinSize: string;
+  Timestamp: string;
+}

@@ -10,7 +10,7 @@ interface IData {
 }
 
 // Uses pinata.cloud pinning
-export const useWriteJSONToIPFS = (body: unknown): IData => {
+export const useWriteFileToIPFS = (body: FormData): IData => {
   const [loading, setLoading] = useState(true);
   const [response, setResponse] = useState<PinataResponse | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
@@ -18,7 +18,13 @@ export const useWriteJSONToIPFS = (body: unknown): IData => {
   const writeData = async () => {
     try {
       const api = getPinataApi();
-      const response = await api.post('/pinning/pinJSONToIPFS', body);
+      const response = await api.post('/pinning/pinFileToIPFS', body, {
+        // @ts-ignore
+        maxBodyLength: 'Infinity', //this is needed to prevent axios from erroring out with large files
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (response.data) {
         setResponse(response.data);
       }
