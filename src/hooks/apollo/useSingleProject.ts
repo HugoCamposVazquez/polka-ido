@@ -1,8 +1,4 @@
-import { DocumentNode, gql, useQuery } from '@apollo/client';
-import SaleContract from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContract.sol/SaleContract.json';
-import { SaleContract as SaleContractTypes } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
-import { ethers } from 'ethers';
-import React, { useEffect } from 'react';
+import { gql, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
 import { ProjectSales } from '../../types/ProjectType';
