@@ -10,14 +10,14 @@ interface PlatformsHook {
 
 export const usePlatformsStats = (): PlatformsHook => {
   const apolloClient = client;
-  const { data, loading } = useQuery<LaunchpadData | undefined>(FETCH_ALL_PLATFORMS, {
+  const { data, loading } = useQuery<LaunchpadData | undefined>(FETCH_PLATFORM_STATS, {
     client: apolloClient,
   });
 
   return { data, loading };
 };
 
-const FETCH_ALL_PLATFORMS = gql(
+const FETCH_PLATFORM_STATS = gql(
   `
   query getPlatforms {
       platforms {

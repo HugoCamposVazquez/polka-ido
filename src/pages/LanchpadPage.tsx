@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ryu3 from '../assets/ryu3.png';
 import searchIcon from '../assets/search_icon.svg';
 import { usePlatformsStats } from '../hooks/apollo/usePlatforms';
-import { useProject } from '../hooks/apollo/useProjects';
+import { useProjects } from '../hooks/apollo/useProjects';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
@@ -31,7 +31,7 @@ export const LaunchpadPage = () => {
   });
 
   const { data: platformsData } = usePlatformsStats();
-  const { data: projectsData, loading: projectLoading } = useProject();
+  const { data: projectsData, loading: projectLoading } = useProjects();
 
   const filterUpcoming = useCallback((): void => {
     setShownProjects('upcoming');

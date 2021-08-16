@@ -8,14 +8,14 @@ interface ProjectsHook {
   data: ProjectSales | undefined;
 }
 
-export const useProject = (itemNum?: number, feat?: boolean): ProjectsHook => {
+export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): ProjectsHook => {
   const apolloClient = client;
 
   const { data, loading } = useQuery(FETCH_PROJECTS_DATA, {
     client: apolloClient,
     variables: {
-      numOfItems: itemNum,
-      featured: feat,
+      numberOfItems,
+      loadFeatured,
     },
   });
 
@@ -24,8 +24,8 @@ export const useProject = (itemNum?: number, feat?: boolean): ProjectsHook => {
 
 const FETCH_PROJECTS_DATA = gql(
   `
-    query Projects($numOfItems: Int, $featured: Boolean) {
-      sales(first: $numOfItems,  featured: $featured) {
+    query Projects($numberOfItems: Int, $loadFeatured: Boolean) {
+      sales(first: $numberOfItems,  featured: $loadFeatured) {
         id
         salePrice
         startDate
