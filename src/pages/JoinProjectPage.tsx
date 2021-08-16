@@ -5,8 +5,9 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber, ethers } from 'ethers';
 import { __Field } from 'graphql';
 import React, { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
+import { isMethodSignature } from 'typescript';
 import * as yup from 'yup';
 
 import arrowDown from '../assets/arrow_down.svg';
@@ -45,14 +46,14 @@ export const JoinProjectPage = () => {
   const onSubmit = ({ fromValue, toValue }: { fromValue: string; toValue: string }): void => {
     try {
       const signer = library.getSigner();
-      const contract: SaleContractTypes = new ethers.Contract(id, SaleContract.abi, signer) as SaleContractTypes;
+      const contract = new ethers.Contract(id, SaleContract.abi, signer);
       contract.buyTokens({ value: BigNumber.from(fromValue), gasLimit: 5000000 });
     } catch (e) {
       console.error(e.message);
     }
   };
 
-  const setValues0nMaxBtn = () => {
+  const onClickSetMaxValues = () => {
     if (balance < maxAllocation) {
       methods.setValue('fromValue', balance);
       methods.setValue('toValue', Number(balance) * Number(data?.sales[0].salePrice));
@@ -61,7 +62,16 @@ export const JoinProjectPage = () => {
       methods.setValue('toValue', Number(maxAllocation) * Number(data?.sales[0].salePrice));
     }
   };
-  console.log(field);
+  const swapValues = methods.watch();
+
+  useEffect(() => {
+    if (swapValues.fromValue)
+      methods.setValue('toValue', Number(swapValues.fromValue) * Number(data?.sales[0].salePrice));
+    if (!swapValues.fromValue) {
+      methods.setValue('toValue', '');
+      methods.setValue('fromValue', '');
+    }
+  }, [swapValues.fromValue, swapValues.toValue]);
 
   return (
     <div>
@@ -95,7 +105,7 @@ export const JoinProjectPage = () => {
                       style={{ fontSize: '1.25rem' }}
                       autoFocus={true}
                     />
-                    <div style={styles.maxBtnStyle} onClick={setValues0nMaxBtn}>
+                    <div style={styles.maxBtnStyle} onClick={onClickSetMaxValues}>
                       Max
                     </div>
                     <div style={styles.suffixTextStyle}>ETH</div>

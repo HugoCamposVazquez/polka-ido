@@ -13,7 +13,7 @@ export const useJoinProject = (id: string) => {
     if (account) {
       const provider = new ethers.providers.JsonRpcProvider({ url: 'https://rpc.testnet.moonbeam.network' });
       provider.getBalance(account).then(ethers.utils.formatEther).then(setBalance);
-      const contract: SaleContractTypes = new ethers.Contract(id, SaleContract.abi, provider) as SaleContractTypes;
+      const contract = new ethers.Contract(id, SaleContract.abi, provider);
       contract.maxDepositAmount().then(ethers.utils.formatEther).then(setMaxAllocation);
     }
   }, [account]);
