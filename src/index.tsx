@@ -4,19 +4,18 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '@fontsource/odibee-sans';
 import '@fontsource/titillium-web';
 
+import { ApolloProvider } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
+import { client } from '../src/services/apollo';
 import { MainRouter } from './pages/routers/MainRouter';
 import * as serviceWorker from './serviceWorker';
 import { ErrorBoundary } from './shared/wrappers/ErrorBoundary';
 import { ScrollToTop } from './utils/scrollToTopUtil';
-
-import { ApolloProvider } from '@apollo/client';
-import { client } from '../src/services/apollo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getLibrary(provider: any): Web3Provider {

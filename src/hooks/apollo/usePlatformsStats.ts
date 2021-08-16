@@ -1,4 +1,4 @@
-import { DocumentNode, gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
 import { LaunchpadData } from '../../types/LaunchpadType';

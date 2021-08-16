@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
-import { useTopFeaturedProjects } from '../api/api/api';
 import arrowLeft from '../assets/arrow_left.svg';
 import ryu from '../assets/ryu.png';
 import ryu2 from '../assets/ryu2.png';
