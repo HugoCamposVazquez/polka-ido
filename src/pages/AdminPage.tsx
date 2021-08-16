@@ -1,4 +1,4 @@
-import { Spin, Table, TablePaginationConfig } from 'antd';
+import { Table, TablePaginationConfig } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -41,9 +41,9 @@ export const AdminPage = () => {
 
   const { data: projects, isLoading: projectsLoading } = useProjects(undefined);
 
-  if (projectsLoading) {
-    return <Spin style={styles.spinnerStyle} size="large" />;
-  }
+  // if (projectsLoading) {
+  //   return <Spin style={styles.spinnerStyle} size="large" />;
+  // }
 
   return (
     <div style={styles.adminPageContainerStyle}>

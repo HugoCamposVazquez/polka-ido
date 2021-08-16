@@ -39,3 +39,35 @@ export type ProjectType = {
   raiseAmountCurrent?: number;
   joined?: boolean;
 };
+
+export interface ProjectSales {
+  sales: {
+    id: string;
+    salePrice: string;
+    startDate: string;
+    endDate: string;
+    whitelisted: boolean;
+    featured: boolean;
+    metadataURI: string;
+    maxDepositAmount: string;
+    currentDepositAmount: string;
+    allocations: {
+      id: string;
+    }[];
+  }[];
+}
+
+export interface ProjectData {
+  id: string;
+  salePrice: string;
+  startDate: string;
+  endDate: string;
+  whitelisted: boolean;
+  featured: boolean;
+  metadataURI: string;
+  maxDepositAmount: string;
+  currentDepositAmount: string;
+  allocations: {
+    id: string;
+  }[];
+}
