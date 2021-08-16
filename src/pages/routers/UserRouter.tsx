@@ -6,7 +6,7 @@ import { styled } from '../../utils/css';
 import { AboutUsPage } from '../AboutUsPage';
 import { HomePage } from '../HomePage';
 import { JoinProjectPage } from '../JoinProject/JoinProjectPage';
-import { LaunchpadPage } from '../LanchpadPage';
+import { LaunchpadPage } from '../LaunchpadPage';
 import { ProjectDetailsPage } from '../ProjectDetailsPage';
 
 const userRouterStyle = styled.cssStyle`
