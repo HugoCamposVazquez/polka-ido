@@ -6,7 +6,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --color --ext .ts --ext .tsx src/",
+    "lint:fix": "yarn run lint --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -31,7 +33,7 @@
     "@fontsource/odibee-sans": "^4.5.0",
     "@fontsource/titillium-web": "^4.5.0",
     "@hookform/resolvers": "^1.0.0",
-    "@nodefactoryio/ryu-contracts": "0.3.0",
+    "@polkadot/extension-dapp": "^0.39.1",
     "@ramonak/react-progress-bar": "^3.1.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.1.0",

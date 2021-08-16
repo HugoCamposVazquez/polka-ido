@@ -1,5 +1,5 @@
-import { sideColor, sideColor3, sideColor4, sideColor5, sideColor6, sideColor8 } from '../utils/colorsUtil';
-import { styled } from '../utils/css';
+import { sideColor, sideColor3, sideColor4, sideColor5, sideColor6, sideColor8 } from '../../utils/colorsUtil';
+import { styled } from '../../utils/css';
 
 export const cardStyle = styled.cssClassName`
   padding: 1.5rem;
@@ -124,4 +124,10 @@ export const arrowContainerStyle = styled.cssStyle`
 export const fieldContainerStyle = styled.cssStyle`
   display: flex;
   align-items: center;
+`;
+export const walletConnectContainer = styled.cssStyle`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 `;

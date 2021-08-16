@@ -1,22 +1,16 @@
-import { DocumentNode, gql, useQuery } from '@apollo/client';
-import SaleContract from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContract.sol/SaleContract.json';
-import { SaleContract as SaleContractTypes } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
-import { ethers } from 'ethers';
-import React, { useEffect } from 'react';
+import { gql, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
-import { Projects } from '../../types/ProjectType';
+import { ProjectSales } from '../../types/ProjectType';
 
 interface ProjectsHook {
   loading: boolean;
-  data: Projects | undefined;
+  data: ProjectSales | undefined;
 }
 
 export const useSingleProject = (id: string): ProjectsHook => {
-  const apolloClient = client;
-
-  const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA(), {
-    client: apolloClient,
+  const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
+    client,
     variables: {
       id,
     },
@@ -25,9 +19,8 @@ export const useSingleProject = (id: string): ProjectsHook => {
   return { data, loading };
 };
 
-const FETCH_SINGLE_PROJECT_DATA = (): DocumentNode =>
-  gql(
-    `
+const FETCH_SINGLE_PROJECT_DATA = gql(
+  `
     query Projects($id: String) {
       sales(where: { id: $id }) {
         id
@@ -45,4 +38,4 @@ const FETCH_SINGLE_PROJECT_DATA = (): DocumentNode =>
       }
     }
     `,
-  );
+);
