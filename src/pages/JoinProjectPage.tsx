@@ -130,7 +130,7 @@ export const JoinProjectPage = () => {
                     <TextField
                       name={'toValue'}
                       type={'none'}
-                      placeholder={(Number(maxAllocation) * Number(data?.sales[0].salePrice)).toString()}
+                      placeholder={data && (Number(maxAllocation) * Number(data?.sales[0].salePrice)).toString()}
                       mode={'dark'}
                       style={{ fontSize: '1.25rem' }}
                     />
