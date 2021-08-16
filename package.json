@@ -7,7 +7,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:fix": "eslint --fix"
+    "lint": "eslint --color --ext .ts --ext .tsx src/",
+    "lint:fix": "yarn run lint --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -28,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^3.3.21",
     "@fontsource/odibee-sans": "^4.5.0",
     "@fontsource/titillium-web": "^4.5.0",
     "@hookform/resolvers": "^1.0.0",
@@ -52,6 +54,7 @@
     "date-fns": "^2.22.1",
     "emotion": "^10.0.27",
     "ethers": "^5.4.1",
+    "graphql": "^15.5.1",
     "invariant": "^2.2.4",
     "moment": "^2.29.1",
     "postcss": "^8.3.5",

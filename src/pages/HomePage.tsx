@@ -2,28 +2,23 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
-import { useTopFeaturedProjects } from '../api/api/api';
 import arrowLeft from '../assets/arrow_left.svg';
 import ryu from '../assets/ryu.png';
 import ryu2 from '../assets/ryu2.png';
+import { useProjects } from '../hooks/apollo/useProjects';
 import { MainButton } from '../shared/gui/MainButton';
 import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { ProjectCard } from '../shared/ProjectCard';
-import { ProjectType } from '../types/ProjectType';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './HomePage.styles';
-
-const topFeaturedMockProjectsNum = 4;
 
 export const HomePage = () => {
   const navigation = useHistory();
 
   const { width } = useWindowDimensions();
-
-  const { data: topFeaturedProjects, isLoading: topFeaturedProjectsLoading } = useTopFeaturedProjects();
 
   const methods = useForm({
     defaultValues: {
@@ -45,6 +40,8 @@ export const HomePage = () => {
     }
   };
 
+  const { data, loading } = useProjects(4, false);
+
   return (
     <div>
       <div className={styles.pageIntroContainerClassName}>
@@ -65,13 +62,13 @@ export const HomePage = () => {
       <div className={styles.featuredProjectsContainerClassName}>
         <div className={styles.featuredProjectsTitleStyle}>Featured projects</div>
         <div className={styles.featuredProjectsCardsContainerClassName}>
-          {!topFeaturedProjectsLoading &&
-            topFeaturedProjects?.data.map((project: ProjectType, index: number) => {
-              return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
-            })}
-          {topFeaturedProjectsLoading &&
-            [...Array(topFeaturedMockProjectsNum)].map((el, index) => (
-              <ProjectCard key={index} direction={getCardDirection(width, index)} />
+          {!loading &&
+            data?.sales.map((project, index) => (
+              <ProjectCard key={project.id} project={project} direction={getCardDirection(width, index)} />
+            ))}
+          {loading &&
+            data?.sales.map((el, index: number) => (
+              <ProjectCard key={el.id} project={el} direction={getCardDirection(width, index)} />
             ))}
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>

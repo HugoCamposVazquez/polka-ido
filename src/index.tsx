@@ -4,12 +4,14 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '@fontsource/odibee-sans';
 import '@fontsource/titillium-web';
 
+import { ApolloProvider } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
+import { client } from '../src/services/apollo';
 import { MainRouter } from './pages/routers/MainRouter';
 import * as serviceWorker from './serviceWorker';
 import { ErrorBoundary } from './shared/wrappers/ErrorBoundary';
@@ -24,9 +26,11 @@ ReactDOM.render(
   <ErrorBoundary>
     <BrowserRouter>
       <ScrollToTop>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <MainRouter />
-        </Web3ReactProvider>
+        <ApolloProvider client={client}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <MainRouter />
+          </Web3ReactProvider>
+        </ApolloProvider>
       </ScrollToTop>
     </BrowserRouter>
   </ErrorBoundary>,

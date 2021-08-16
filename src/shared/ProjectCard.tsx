@@ -1,21 +1,36 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
-import { format } from 'date-fns';
+import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import ryuLogoAnimation from '../assets/ryu_logo_animation.gif';
-import { ProjectType } from '../types/ProjectType';
+import { ProjectData } from '../types/ProjectType';
 import { sideColor3, sideColor4, sideColor6 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
+import { fixNums } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectCard.styles';
 
 type IProps = {
   direction: 'left' | 'right';
-  project?: ProjectType;
+  project?: ProjectData;
 };
 
 export const ProjectCard = ({ direction, project }: IProps) => {
   const navigation = useHistory();
+  const projectStartDate = project && format(fromUnixTime(+project.startDate), 'dd/MM/yy');
+  const projectEndDate = project && format(fromUnixTime(+project.endDate), 'dd/MM/yy');
+
+  const getProjectStatus = (upperLeftCorner?: boolean): string => {
+    if (project && getUnixTime(new Date()) < +project.startDate) {
+      if (upperLeftCorner) return 'Upcoming';
+
+      return 'Starts';
+    } else if (project && getUnixTime(new Date()) > +project.startDate && getUnixTime(new Date()) < +project.endDate) {
+      if (upperLeftCorner) return 'in progress';
+
+      return 'Ends';
+    } else return 'Ended';
+  };
 
   return (
     <div
@@ -31,27 +46,32 @@ export const ProjectCard = ({ direction, project }: IProps) => {
           <div style={styles.projectCardHeaderContainer}>
             <div style={{ flex: 1 }}>
               <div style={styles.projectCardHeaderIconContainer}>
-                <img style={styles.projectCardHeaderIconStyle} src={project.iconUrl} />
+                <img style={styles.projectCardHeaderIconStyle} src="" />
+                {/* currently we dont't have data, but we will */}
               </div>
             </div>
-            <div style={styles.projectCardStatusTextStyle}>{project.status}</div>
+            <div style={styles.projectCardStatusTextStyle}>{getProjectStatus(true)}</div>
           </div>
           <div style={styles.projectNameContainerStyle}>
-            <div style={styles.projectNameStyle}>{project.title}</div>
+            <div style={styles.projectNameStyle}>Data Goes Here</div>
+            {/* currently we dont't have data, but we will */}
           </div>
 
           <div className={styles.projectDescriptionContainerStyle}>
-            <div style={styles.projectDescriptionStyle}>{project.description}</div>
+            <div style={styles.projectDescriptionStyle}>Data Goes Here</div>
+            {/* currently we dont't have data, but we will */}
           </div>
           <div style={styles.raiseAmountStyle}>Raise amount</div>
 
           <div style={styles.progressTextContainerStyle}>
-            <div style={styles.progressTextPrefixStyle}>{project.raiseAmountCurrent}</div>
-            <div style={styles.progressTextSufixStyle}>/{project.raiseAmountTotal} USDT</div>
+            <div style={styles.progressTextPrefixStyle}>{project.currentDepositAmount}</div>
+            <div style={styles.progressTextSufixStyle}>/{project.maxDepositAmount} USDT</div>
           </div>
           <div style={{ margin: '0.38rem 1rem' }}>
             <ProgressBar
-              completed={project.raiseAmountCurrent ? (project.raiseAmountCurrent / project.raiseAmountTotal) * 100 : 0}
+              completed={
+                project.currentDepositAmount ? (+project.currentDepositAmount / +project.maxDepositAmount) * 100 : 0
+              }
               isLabelVisible={false}
               height={'0.38rem'}
               bgColor={sideColor3}
@@ -76,17 +96,17 @@ export const ProjectCard = ({ direction, project }: IProps) => {
             <div style={{ display: 'flex' }}>
               <div>
                 <div style={styles.detailsTitleStyle}>Per token</div>
-                <div style={styles.detailsValueStyle}>{project.tokenPrice.toFixed(2)} USDT</div>
+                <div style={styles.detailsValueStyle}>{fixNums(+project.salePrice, 2)} USDT</div>
               </div>
               <div>
-                <div style={styles.detailsTitleStyle}>{project.status !== 'ended' ? 'Starts' : 'Ended'}</div>
+                <div style={styles.detailsTitleStyle}>{getProjectStatus()}</div>
                 <div style={styles.detailsValueStyle}>
-                  {project.status !== 'ended' ? format(project.starts, 'dd/MM/yy') : format(project.ends, 'dd/MM/yy')}
+                  {getUnixTime(new Date()) < +project.startDate ? projectStartDate : projectEndDate}
                 </div>
               </div>
               <div>
                 <div style={styles.detailsTitleStyle}>Access</div>
-                <div style={styles.detailsValueStyle}>{project.access}</div>
+                <div style={styles.detailsValueStyle}>{project.whitelisted ? 'whitelist' : 'private'}</div>
               </div>
             </div>
           </div>
