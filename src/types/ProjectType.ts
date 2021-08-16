@@ -40,7 +40,7 @@ export type ProjectType = {
   joined?: boolean;
 };
 
-export interface Projects {
+export interface ProjectSales {
   sales: {
     id: string;
     salePrice: string;

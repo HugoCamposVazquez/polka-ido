@@ -1,40 +1,31 @@
-import { DocumentNode, gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
-import { Projects } from '../../types/ProjectType';
+import { ProjectSales } from '../../types/ProjectType';
 
 interface ProjectsHook {
   loading: boolean;
-  data: Projects | undefined;
+  data: ProjectSales | undefined;
 }
 
-export const useProject = (itemNum?: number, feat?: boolean): ProjectsHook => {
+export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): ProjectsHook => {
   const apolloClient = client;
 
-  if (itemNum && feat) {
-    const { data, loading } = useQuery(FETCH_FEAT_PROJECTS_DATA(), {
-      client: apolloClient,
-      variables: {
-        numOfItems: itemNum,
-        featured: feat,
-      },
-    });
+  const { data, loading } = useQuery(FETCH_PROJECTS_DATA, {
+    client: apolloClient,
+    variables: {
+      numberOfItems,
+      loadFeatured,
+    },
+  });
 
-    return { data, loading };
-  } else {
-    const { data, loading } = useQuery(FETCH_PROJECTS_DATA(), {
-      client: apolloClient,
-    });
-
-    return { data, loading };
-  }
+  return { data, loading };
 };
 
-const FETCH_FEAT_PROJECTS_DATA = (): DocumentNode =>
-  gql(
-    `
-    query Projects($numOfItems: Int, $featured: Boolean, $id: String) {
-      sales(first: $numOfItems, where: { featured: $featured }) {
+const FETCH_PROJECTS_DATA = gql(
+  `
+    query Projects($numberOfItems: Int, $loadFeatured: Boolean) {
+      sales(first: $numberOfItems,  featured: $loadFeatured) {
         id
         salePrice
         startDate
@@ -50,26 +41,4 @@ const FETCH_FEAT_PROJECTS_DATA = (): DocumentNode =>
       }
     }
     `,
-  );
-
-const FETCH_PROJECTS_DATA = (): DocumentNode =>
-  gql(
-    `
-    query Projects {
-      sales {
-        id
-        salePrice
-        startDate
-        endDate
-        whitelisted
-        featured
-        metadataURI
-        maxDepositAmount
-        currentDepositAmount
-        allocations {
-          id
-        }
-      }
-    }
-    `,
-  );
+);

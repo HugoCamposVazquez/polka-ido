@@ -1,11 +1,11 @@
 import { getUnixTime } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import ryu3 from '../assets/ryu3.png';
 import searchIcon from '../assets/search_icon.svg';
-import { usePlatformsStats } from '../hooks/apollo/usePlatforms';
-import { useProject } from '../hooks/apollo/useProjects';
+import { usePlatformsStats } from '../hooks/apollo/usePlatformsStats';
+import { useProjects } from '../hooks/apollo/useProjects';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
@@ -31,16 +31,18 @@ export const LaunchpadPage = () => {
   });
 
   const { data: platformsData } = usePlatformsStats();
-  const { data: projectsData, loading: projectLoading } = useProject();
+  const { data: projectsData, loading: projectLoading } = useProjects();
 
-  useEffect(() => {
+  const filterUpcoming = useCallback((): void => {
+    setShownProjects('upcoming');
+    let upcomingProjects: ProjectData[] = [];
     projectsData?.sales.map((project) => {
-      setShownProjects('upcoming');
       if (getUnixTime(new Date()) < +project.startDate) {
-        const upcomingProjects = [];
         upcomingProjects.push(project);
-        setProjects(upcomingProjects);
+      } else {
+        upcomingProjects = [];
       }
+      setProjects(upcomingProjects);
     });
   }, [projectsData]);
 
@@ -53,20 +55,7 @@ export const LaunchpadPage = () => {
     }
   };
 
-  const filterUpcoming = (): void => {
-    setShownProjects('upcoming');
-    let upcomingProjects: ProjectData[] = [];
-    projectsData?.sales.map((project) => {
-      if (getUnixTime(new Date()) < +project.startDate) {
-        upcomingProjects.push(project);
-      } else {
-        upcomingProjects = [];
-      }
-      setProjects(upcomingProjects);
-    });
-  };
-
-  const filterFeatured = (): void => {
+  const onClickFilterFeatured = useCallback((): void => {
     setShownProjects('featured');
     let featuredProjects: ProjectData[] = [];
     projectsData?.sales.map((project) => {
@@ -77,14 +66,14 @@ export const LaunchpadPage = () => {
       }
       setProjects(featuredProjects);
     });
-  };
+  }, [projectsData]);
 
-  const filterJoined = (): void => {
+  const onClickFilterJoined = (): void => {
     setShownProjects('joined');
     setProjects([]);
   };
 
-  const filterAll = (): void => {
+  const onClickShowAllProjects = useCallback((): void => {
     setShownProjects(undefined);
     let allProjects: ProjectData[] = [];
     projectsData?.sales.map((project) => {
@@ -95,7 +84,11 @@ export const LaunchpadPage = () => {
       }
       setProjects(allProjects);
     });
-  };
+  }, [projectsData]);
+
+  useEffect(() => {
+    filterUpcoming();
+  }, [projectsData]);
 
   if (projectLoading) {
     return <LoadingData />;
@@ -150,19 +143,19 @@ export const LaunchpadPage = () => {
           <div
             className={styles.projectsCardsHeaderItemClassName}
             style={shownProjects === 'featured' ? styles.selectedTabStyle : {}}
-            onClick={filterFeatured}>
+            onClick={onClickFilterFeatured}>
             Featured
           </div>
           <div
             className={styles.projectsCardsHeaderItemClassName}
             style={shownProjects === 'joined' ? styles.selectedTabStyle : {}}
-            onClick={filterJoined}>
+            onClick={onClickFilterJoined}>
             Joined
           </div>
           <div
             className={styles.projectsCardsHeaderItemClassName}
             style={shownProjects === undefined ? styles.selectedTabStyle : {}}
-            onClick={filterAll}>
+            onClick={onClickShowAllProjects}>
             All
           </div>
         </div>

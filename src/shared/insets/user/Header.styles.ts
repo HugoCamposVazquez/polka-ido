@@ -33,6 +33,7 @@ export const headerContentStyle = styled.cssClassName`
   display: flex;
   align-items: center;
   flex: 1;
+  justify-content: space-between;
 
   @media (max-width: 51.875rem) {
     padding-left: 1.5rem;
@@ -40,13 +41,9 @@ export const headerContentStyle = styled.cssClassName`
   }
 `;
 
-export const ryuTextStyle = styled.cssStyle`
-  font-weight: 400;
-  line-height: 0;
-  font-size: 1.5rem;
-  font-family: Odibee Sans;
-  flex: 1;
+export const ryuLogoStyle = styled.cssStyle`
   cursor: pointer;
+  width: 90px;
 `;
 
 export const mobileMenuContainerStyle = styled.cssStyle`
