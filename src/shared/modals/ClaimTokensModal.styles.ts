@@ -24,3 +24,20 @@ export const recipientTextStyle = styled.cssStyle`
   font-weight: 400;
   line-height: 1.52125rem;
 `;
+
+export const walletConnectContainer = styled.cssStyle`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+`;
+
+export const subtitleTextStyle = styled.cssStyle`
+  padding: 0.25rem 0.5rem 0 0;
+  font-family: Titillium Web;
+  color: ${sideColor};
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.52125rem;
+`;
