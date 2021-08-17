@@ -1,4 +1,4 @@
-import { sideColor, sideColor2, sideColor3, sideColor9 } from '../utils/colorsUtil';
+import { sideColor2, sideColor3, sideColor9 } from '../utils/colorsUtil';
 import { styled } from '../utils/css';
 
 export const mainImageContainerClassName = styled.cssClassName`
@@ -84,24 +84,6 @@ export const selectedTabStyle = styled.cssStyle`
   border-bottom: 0.25rem solid ${sideColor3};
 `;
 
-export const searchFormStyle = styled.cssStyle`
-  display: flex;
-  flex: 1;
-  align-items: center;
-`;
-
-export const searchIconStyle = styled.cssStyle`
-  cursor: pointer;
-  width: 1.5rem;
-  height: 1.5rem;
-`;
-
-export const searchFormContainerStyle = styled.cssStyle`
-  display: flex;
-  flex: 1;
-  border-bottom: 0.06rem solid ${sideColor};
-`;
-
 export const launchpadDetailsItemStyle = styled.cssStyle`
   display: flex;
   margin-top: 0.75rem;
@@ -182,15 +164,6 @@ export const projectsCardsContainerParentClassName = styled.cssClassName`
   @media (max-width: 51.875rem) {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
-  }
-`;
-
-export const searchParentClassName = styled.cssClassName`
-  display: flex;
-  align-items: center;
-
-  @media (max-width: 51.875rem) {
-    display: none;
   }
 `;
 
