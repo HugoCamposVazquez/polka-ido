@@ -2,9 +2,9 @@ import { Spin, Table, TablePaginationConfig } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useProjects } from '../api/api/api';
-import { EditableCell } from '../shared/EditableCell';
-import { getAllColumns } from '../utils/tableColumnsUtil';
+import { useProjects } from '../../api/api/api';
+import { EditableCell } from '../../shared/EditableCell';
+import { getAllColumns } from '../../utils/tableColumnsUtil';
 import * as styles from './AdminPage.styles';
 
 const components = {

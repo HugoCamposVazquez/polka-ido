@@ -3,18 +3,18 @@ import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { useProject } from '../api/api/api';
-import binImage from '../assets/bin_image.svg';
-import { CheckboxField } from '../shared/gui/CheckboxField';
-import { DateField } from '../shared/gui/DateField';
-import { ImagePicker } from '../shared/gui/ImagePicker';
-import { MainButton } from '../shared/gui/MainButton';
-import { RadioGroup } from '../shared/gui/RadioGroup';
-import { TextArea } from '../shared/gui/TextArea';
-import { TextField } from '../shared/gui/TextField';
-import { ProjectType } from '../types/ProjectType';
-import { sideColor3, sideColor12 } from '../utils/colorsUtil';
-import { cs } from '../utils/css';
+import { useProject } from '../../api/api/api';
+import binImage from '../../assets/bin_image.svg';
+import { CheckboxField } from '../../shared/gui/CheckboxField';
+import { DateField } from '../../shared/gui/DateField';
+import { ImagePicker } from '../../shared/gui/ImagePicker';
+import { MainButton } from '../../shared/gui/MainButton';
+import { RadioGroup } from '../../shared/gui/RadioGroup';
+import { TextArea } from '../../shared/gui/TextArea';
+import { TextField } from '../../shared/gui/TextField';
+import { ProjectType } from '../../types/ProjectType';
+import { sideColor3, sideColor12 } from '../../utils/colorsUtil';
+import { cs } from '../../utils/css';
 import * as styles from './AdminProjectPage.styles';
 
 type IProps = {

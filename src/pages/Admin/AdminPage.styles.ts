@@ -1,5 +1,5 @@
-import { sideColor, sideColor3, sideColor5 } from '../utils/colorsUtil';
-import { styled } from '../utils/css';
+import { sideColor, sideColor3, sideColor5 } from '../../utils/colorsUtil';
+import { styled } from '../../utils/css';
 
 export const tableClassName = styled.cssClassName`
   .ant-table-tbody > tr > td * {

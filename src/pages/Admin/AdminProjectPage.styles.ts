@@ -1,5 +1,5 @@
-import { sideColor, sideColor2, sideColor6 } from '../utils/colorsUtil';
-import { styled } from '../utils/css';
+import { sideColor, sideColor2, sideColor6 } from '../../utils/colorsUtil';
+import { styled } from '../../utils/css';
 
 export const titleSectionStyle = styled.cssStyle`
   font-family: Titillium Web;
