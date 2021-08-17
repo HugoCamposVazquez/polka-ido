@@ -2,6 +2,7 @@ import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 
+import { useMoonbeanBalance } from '../../../hooks/useMoonbeamBalance';
 import { injected } from '../../../hooks/web3/connectors';
 import { onLogin } from '../../../hooks/web3/useEagerConnect';
 import { cs } from '../../../utils/css';
@@ -15,7 +16,6 @@ interface WalletConnectProps {
 
 export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
   const { account, activate } = useWeb3React();
-  const [balance, setBalance] = useState('0');
   const onWalletChange = () => {
     alert('Not sure yet what this should do');
   };
@@ -29,12 +29,7 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
     onLogin();
   };
 
-  useEffect(() => {
-    if (account) {
-      const provider = new ethers.providers.JsonRpcProvider({ url: 'https://rpc.testnet.moonbeam.network' });
-      provider.getBalance(account).then(ethers.utils.formatEther).then(setBalance);
-    }
-  }, [account]);
+  const { balance } = useMoonbeanBalance();
 
   return (
     <>
