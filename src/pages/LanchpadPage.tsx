@@ -48,7 +48,7 @@ export const LaunchpadPage = () => {
 
   const onSearch = async ({ search }: any) => {
     try {
-      // Cant Filter by name, missing data at the moment
+      console.log(search);
     } catch (e) {
       console.log(e);
       // show notification or error message

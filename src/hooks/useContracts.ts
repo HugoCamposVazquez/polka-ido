@@ -1,7 +1,7 @@
 import SaleContract from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContract.sol/SaleContract.json';
 import { SaleContract as SaleContractTypes } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { useWeb3React } from '@web3-react/core';
-import { Contract, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 
 export const useGetContract = (id: string) => {

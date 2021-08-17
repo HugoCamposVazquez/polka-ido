@@ -1,9 +1,8 @@
-import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { useGetContract } from '../../hooks/useContracts';
 import { AccountsDropdown } from '../../shared/AccountsDropdown';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../gui/TextField';
@@ -29,9 +28,7 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
   const onSubmit = async ({ address }: any) => {
     try {
       closeModal();
-      // const { token } = await generalHTTP.login(email, message);
-      // localStorage.setItem('token', token);
-      // window.location.reload();
+      console.log(address);
     } catch (e) {
       console.log(e);
     }
