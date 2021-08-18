@@ -130,7 +130,7 @@ export const ProjectDetailsPage = () => {
                 title="CLAIM TOKENS"
                 type={'bordered'}
                 onClick={() => {
-                  openClaimTokensModal('test');
+                  openClaimTokensModal('test', id);
                 }}
               />
               <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />

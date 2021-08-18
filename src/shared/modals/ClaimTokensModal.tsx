@@ -1,6 +1,6 @@
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { AccountsDropdown } from '../../shared/AccountsDropdown';
@@ -13,11 +13,20 @@ import { modalTextStyle } from './Modal.styles';
 interface IProps {
   closeModal: () => void;
   message: string;
+  id: string;
 }
 
-export const ClaimTokensModal = ({ closeModal }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, id }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
+  const [selectedAccountIndex, setSelectedAccountIndex] = useState<number>(0);
+
+  useEffect(() => {
+    if (accounts.length) {
+      methods.control.setValue('address', accounts[selectedAccountIndex].address);
+    }
+  }, [accounts, selectedAccountIndex]);
+
   const methods = useForm({
     defaultValues: {
       address: '',
@@ -28,7 +37,6 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
   const onSubmit = async ({ address }: any) => {
     try {
       closeModal();
-      console.log(address);
     } catch (e) {
       console.log(e);
     }
@@ -58,7 +66,11 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
         {isConnectedWallet && (
           <>
             <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown options={accounts} initialAccount={accounts[0]} />
+            <AccountsDropdown
+              options={accounts}
+              initialAccount={accounts[0]}
+              setSelectedAccountIndex={setSelectedAccountIndex}
+            />
           </>
         )}
       </div>

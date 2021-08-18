@@ -36,10 +36,10 @@ const detachDiv = () => {
   }
 };
 
-export const openClaimTokensModal = (message: string) => {
+export const openClaimTokensModal = (message: string, id: string) => {
   attachDiv();
   ReactDOM.render(
-    <ClaimTokensModal closeModal={detachDiv} message={message} />,
+    <ClaimTokensModal closeModal={detachDiv} message={message} id={id} />,
     stackOfModalDivs[stackOfModalDivs.length - 1],
   );
 };
