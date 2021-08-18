@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import { useWriteFileToIPFS } from '../../hooks/ipfs/useWriteFileToIPFS';
 import { CheckboxField } from '../../shared/gui/CheckboxField';
 import { DateField } from '../../shared/gui/DateField';
 import { ImagePicker } from '../../shared/gui/ImagePicker';
@@ -24,6 +25,8 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const methods = useForm();
   const navigation = useHistory();
 
+  const { writeData, response: imageUploadResponse } = useWriteFileToIPFS();
+
   const onSubmit = async (project: ProjectType) => {
     try {
       console.log('project submitted: ', project);
@@ -32,6 +35,16 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
       // show notification or error message
     }
   };
+
+  console.log('imageUploadResponse: ', imageUploadResponse);
+
+  // Uploads immediately an image to IPFS after it's been selected
+  // TODO for optimization: upload only when form submitted
+  const onImageUpload = useCallback((image: File): void => {
+    const form = new FormData();
+    form.append('image', image);
+    writeData(form);
+  }, []);
 
   useEffect(() => {
     if (!loadingProjectData) {
@@ -125,7 +138,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Project icon</div>
-              <ImagePicker name={'iconUrl'} />
+              <ImagePicker name={'iconUrl'} onUpload={onImageUpload} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Etherscan</div>

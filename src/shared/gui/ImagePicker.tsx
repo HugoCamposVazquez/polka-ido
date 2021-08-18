@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import removeIcon from '../../assets/remove_icon.svg';
@@ -8,11 +8,26 @@ import { MainButton } from './MainButton';
 
 type IProps = {
   name: string;
+  onUpload: (file: File) => void;
+  // onDelete: () => void;
 };
 
-export const ImagePicker = ({ name }: IProps) => {
+export const ImagePicker = ({ name, onUpload }: IProps) => {
   const { control, watch, setValue, getValues } = useFormContext();
   const uploadInputRef = useRef();
+
+  const onImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setValue(name, URL.createObjectURL(e.target.files[0]));
+      getValues();
+      onUpload(e.target.files[0]);
+    }
+  };
+
+  const onImageDelete = () => {
+    // TODO: Implement integration
+    setValue(name, null);
+  };
 
   return (
     <div className={styles.containerStyle}>
@@ -31,7 +46,7 @@ export const ImagePicker = ({ name }: IProps) => {
                       src={removeIcon}
                       onClick={() => {
                         onChange(() => {
-                          setValue(name, null);
+                          onImageDelete();
                         });
                       }}
                     />
@@ -52,12 +67,7 @@ export const ImagePicker = ({ name }: IProps) => {
                 multiple={false}
                 className="input-field-hidden"
                 ref={uploadInputRef as any}
-                onChange={async (e) => {
-                  // @ts-ignore
-                  const files = [...e.target.files];
-                  setValue(name, URL.createObjectURL(files[0]));
-                  getValues();
-                }}
+                onChange={onImageChange}
               />
             </div>
           );

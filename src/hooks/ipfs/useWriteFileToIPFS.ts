@@ -5,18 +5,18 @@ import { getPinataApi, PinataResponse } from '../../services/pinata';
 
 interface IData {
   loading: boolean;
-  writeData: (body: unknown) => void;
+  writeData: (body: FormData) => void;
   error?: string;
   response?: PinataResponse;
 }
 
 // Uses pinata.cloud pinning
-export const useWriteFileToIPFS = (body: FormData): IData => {
+export const useWriteFileToIPFS = (): IData => {
   const [loading, setLoading] = useState(true);
   const [response, setResponse] = useState<PinataResponse | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
 
-  const writeData = useCallback(async () => {
+  const writeData = useCallback(async (body: FormData) => {
     try {
       const api = getPinataApi();
       const response = await api.post('/pinning/pinFileToIPFS', body, {
