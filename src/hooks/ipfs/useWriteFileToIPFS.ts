@@ -1,4 +1,5 @@
 import axios from 'axios';
+import FormData from 'form-data';
 import { useCallback, useState } from 'react';
 
 import { getPinataApi, PinataResponse } from '../../services/pinata';

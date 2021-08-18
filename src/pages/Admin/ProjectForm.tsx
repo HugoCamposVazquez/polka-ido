@@ -1,3 +1,4 @@
+import FormData from 'form-data';
 import React, { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -25,8 +26,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const methods = useForm();
   const navigation = useHistory();
 
-  const { writeData, response: imageUploadResponse } = useWriteFileToIPFS();
-
   const onSubmit = async (project: ProjectType) => {
     try {
       console.log('project submitted: ', project);
@@ -36,13 +35,13 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
     }
   };
 
-  console.log('imageUploadResponse: ', imageUploadResponse);
+  const { writeData, response: imageUploadResponse, error: imageUploadError } = useWriteFileToIPFS();
 
   // Uploads immediately an image to IPFS after it's been selected
-  // TODO for optimization: upload only when form submitted
+  // TODO-optimization: upload only when form submitted
   const onImageUpload = useCallback((image: File): void => {
     const form = new FormData();
-    form.append('image', image);
+    form.append('file', image);
     writeData(form);
   }, []);
 
