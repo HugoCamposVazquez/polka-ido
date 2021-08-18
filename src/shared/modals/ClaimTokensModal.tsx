@@ -1,8 +1,11 @@
+import SaleContract from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContract.sol/SaleContract.json';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { useContract } from '../../hooks/web3/contract/useContract';
+import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { AccountsDropdown } from '../../shared/AccountsDropdown';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../gui/TextField';
@@ -33,6 +36,7 @@ export const ClaimTokensModal = ({ closeModal, id }: IProps) => {
     },
     //resolver: yupResolver(loginValidationSchema),
   });
+  const contract = useSaleContract(id);
 
   const onSubmit = async ({ address }: any) => {
     try {
