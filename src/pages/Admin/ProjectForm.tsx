@@ -35,16 +35,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
     }
   };
 
-  const { writeData, response: imageUploadResponse, error: imageUploadError } = useWriteFileToIPFS();
-
-  // Uploads immediately an image to IPFS after it's been selected
-  // TODO-optimization: upload only when form submitted
-  const onImageUpload = useCallback((image: File): void => {
-    const form = new FormData();
-    form.append('file', image);
-    writeData(form);
-  }, []);
-
   useEffect(() => {
     if (!loadingProjectData) {
       if (project?.data === undefined) {
@@ -137,7 +127,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Project icon</div>
-              <ImagePicker name={'iconUrl'} onUpload={onImageUpload} />
+              <ImagePicker name={'iconUrl'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Etherscan</div>

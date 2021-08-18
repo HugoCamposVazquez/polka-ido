@@ -1,32 +1,46 @@
-import React, { ChangeEvent, useRef } from 'react';
+import FormData from 'form-data';
+import React, { ChangeEvent, useCallback, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import removeIcon from '../../assets/remove_icon.svg';
+import { useWriteFileToIPFS } from '../../hooks/ipfs/useWriteFileToIPFS';
 import { cs } from '../../utils/css';
 import * as styles from './ImagePicker.styles';
 import { MainButton } from './MainButton';
 
 type IProps = {
   name: string;
-  onUpload: (file: File) => void;
-  // onDelete: () => void;
 };
 
-export const ImagePicker = ({ name, onUpload }: IProps) => {
+export const ImagePicker = ({ name }: IProps) => {
   const { control, watch, setValue, getValues } = useFormContext();
   const uploadInputRef = useRef();
 
-  const onImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  // TODO: Handle error
+  const { writeData, response: imageUploadResponse } = useWriteFileToIPFS();
+
+  // Uploads immediately an image to IPFS after it's been selected
+  // Maybe should consider upload only after form is submitted?
+  const onImageChange = useCallback((e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files && e.target.files.length > 0) {
-      setValue(name, URL.createObjectURL(e.target.files[0]));
-      getValues();
-      onUpload(e.target.files[0]);
+      const image = e.target.files[0];
+      const form = new FormData();
+      form.append('file', image);
+      // TODO: Loading display while uploading
+      writeData(form);
     }
-  };
+  }, []);
+
+  React.useEffect(() => {
+    if (imageUploadResponse) {
+      const imgUrl = `${process.env.REACT_APP_IPFS_GATEWAY}${imageUploadResponse.IpfsHash}`;
+      setValue(name, imgUrl);
+    }
+  }, [imageUploadResponse]);
 
   const onImageDelete = () => {
-    // TODO: Implement integration
     setValue(name, null);
+    getValues();
   };
 
   return (
