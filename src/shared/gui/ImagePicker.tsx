@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import FormData from 'form-data';
 import React, { ChangeEvent, useCallback, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -17,7 +18,7 @@ export const ImagePicker = ({ name }: IProps) => {
   const uploadInputRef = useRef();
 
   // TODO: Handle error
-  const { writeData, response: imageUploadResponse } = useWriteFileToIPFS();
+  const { writeData, response: imageUploadResponse, loading } = useWriteFileToIPFS();
 
   // Uploads immediately an image to IPFS after it's been selected
   // Maybe should consider upload only after form is submitted?
@@ -26,7 +27,6 @@ export const ImagePicker = ({ name }: IProps) => {
       const image = e.target.files[0];
       const form = new FormData();
       form.append('file', image);
-      // TODO: Loading display while uploading
       writeData(form);
     }
   }, []);
@@ -43,6 +43,8 @@ export const ImagePicker = ({ name }: IProps) => {
     getValues();
   };
 
+  console.log('loading: ', loading);
+
   return (
     <div className={styles.containerStyle}>
       <Controller
@@ -51,8 +53,9 @@ export const ImagePicker = ({ name }: IProps) => {
         render={({ onChange, value }) => {
           return (
             <div>
-              {watch(name) && (
-                <div style={styles.imageContainerStyle}>
+              <div style={styles.imageContainerStyle}>
+                {loading ? <Spin /> : null}
+                {watch(name) && (
                   <div style={styles.imageParentStyle}>
                     <img style={styles.imageStyle} src={value} />
                     <img
@@ -65,8 +68,9 @@ export const ImagePicker = ({ name }: IProps) => {
                       }}
                     />
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
               <MainButton
                 title={'Upload image'}
                 type={'bordered'}
