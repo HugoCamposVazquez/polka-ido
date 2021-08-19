@@ -1,3 +1,4 @@
+import { Spin } from 'antd';
 import { utils } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -34,7 +35,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   // TODO: Add fields validation
 
   const contract = useSaleFactoryContract();
-  console.log('contract: ', contract);
   // TODO: Watch for error
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
@@ -58,7 +58,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const onSubmit = async (project: ProjectType) => {
     setIsSavingData(true);
     try {
-      console.log('project submitted: ', project);
       // 1. Write metadata to IPFS to get hash (URI)
       const response = await writeDataToIPFS({
         title: project.title,
@@ -70,13 +69,12 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         telegramLink: project.telegramLink,
         imageUrl,
       });
-      console.log('IPFS response: ', response);
       if (!response) {
         return;
       }
-      console.log('Going for contract call...');
+
       // 2. Create new sale smart contract
-      const contractResponse = await contract?.createSaleContract(
+      await contract?.createSaleContract(
         convertDateToUnixtime(project.starts),
         convertDateToUnixtime(project.ends),
         utils.parseEther(project.minUserDeposit),
@@ -99,7 +97,8 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         },
         `${process.env.REACT_APP_IPFS_GATEWAY}${response.IpfsHash}`,
       );
-      console.log('contractResponse: ', contractResponse);
+      // tx.wait(1);
+      // TODO: Redirect to project page after success
       setIsSavingData(false);
     } catch (e) {
       console.log(e);
@@ -259,6 +258,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           </div>
 
           <div style={styles.sectionContainerStyle}>
+            {isSavingData ? <Spin style={{ marginRight: '1.5rem' }} /> : null}
             <MainButton
               title={isEdit ? 'UPDATE' : 'CREATE'}
               onClick={methods.handleSubmit(onSubmit)}
