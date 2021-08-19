@@ -21,7 +21,7 @@ export const ProjectDetailsPage = () => {
   const navigation = useHistory();
   const { id }: { id: string } = useParams();
 
-  const { data, loading } = useSingleProject(id);
+  const { data } = useSingleProject(id);
 
   const projectStatus = (): string => {
     if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {

@@ -35,7 +35,7 @@ export const boxContainerStyle = styled.cssStyle`
 `;
 
 export const subtitleTextStyle = styled.cssStyle`
-  padding: 0.25rem 0.5rem 0rem 0.5rem;
+  padding: 0.5rem 0.5rem 0rem 0.5rem;
   font-family: Titillium Web;
   color: ${sideColor};
   font-size: 1rem;
@@ -124,10 +124,4 @@ export const arrowContainerStyle = styled.cssStyle`
 export const fieldContainerStyle = styled.cssStyle`
   display: flex;
   align-items: center;
-`;
-export const walletConnectContainer = styled.cssStyle`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
 `;
