@@ -6,18 +6,16 @@ import { getPinataApi, PinataResponse } from '../../services/pinata';
 
 interface IData {
   loading: boolean;
-  writeData: (body: FormData) => void;
+  writeData: (body: FormData) => Promise<PinataResponse | null>;
   error?: string;
-  response?: PinataResponse;
 }
 
 // Uses pinata.cloud pinning
 export const useWriteFileToIPFS = (): IData => {
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<PinataResponse | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
 
-  const writeData = useCallback(async (body: FormData) => {
+  const writeData = useCallback(async (body: FormData): Promise<PinataResponse | null> => {
     setLoading(true);
     try {
       const api = getPinataApi();
@@ -29,7 +27,7 @@ export const useWriteFileToIPFS = (): IData => {
         },
       });
       if (response.data) {
-        setResponse(response.data);
+        return response.data;
       }
     } catch (e) {
       if (axios.isAxiosError(e)) {
@@ -40,12 +38,12 @@ export const useWriteFileToIPFS = (): IData => {
     }
 
     setLoading(false);
+    return null;
   }, []);
 
   return {
     loading,
     writeData,
-    response,
     error,
   };
 };
