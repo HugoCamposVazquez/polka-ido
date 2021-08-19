@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { utils } from 'ethers';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import { useWriteJSONToIPFS } from '../../hooks/ipfs/useWriteJSONToIPFS';
+import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
 import { CheckboxField } from '../../shared/gui/CheckboxField';
 import { DateField } from '../../shared/gui/DateField';
 import { ImagePicker } from '../../shared/gui/ImagePicker';
@@ -10,38 +12,31 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { RadioGroup } from '../../shared/gui/RadioGroup';
 import { TextArea } from '../../shared/gui/TextArea';
 import { TextField } from '../../shared/gui/TextField';
-import { ProjectType } from '../../types/ProjectType';
-import { sideColor3, sideColor12 } from '../../utils/colorsUtil';
+import { ProjectApiType, ProjectType } from '../../types/ProjectType';
+import { sideColor3 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
+import { convertDateToUnixtime } from '../../utils/date';
 import * as styles from './AdminProjectPage.styles';
 
 interface IProps {
   isEdit: boolean;
   loadingProjectData: boolean;
-  project: any; // :(
+  project?: ProjectApiType | { data: undefined };
 }
 
 export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => {
   const methods = useForm();
   const navigation = useHistory();
   const [imageUrl, setImageUrl] = useState('');
+  const [isSavingData, setIsSavingData] = useState(false);
+
+  // TODO: Check if user has wallet connected and if it is owner account
+  // TODO: Add fields validation
+
+  const contract = useSaleFactoryContract();
+  console.log('contract: ', contract);
   // TODO: Watch for error
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
-
-  const onSubmit = async (project: ProjectType) => {
-    try {
-      console.log('project submitted: ', project);
-      const response = await writeDataToIPFS({
-        shortDescription: project.shortDescription,
-        description: project.description,
-        imageUrl,
-      });
-      console.log('IPFS response: ', response);
-    } catch (e) {
-      console.log(e);
-      // show notification or error message
-    }
-  };
 
   useEffect(() => {
     if (!loadingProjectData) {
@@ -59,6 +54,59 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
       }
     }
   }, [loadingProjectData, project]);
+
+  const onSubmit = async (project: ProjectType) => {
+    setIsSavingData(true);
+    try {
+      console.log('project submitted: ', project);
+      // 1. Write metadata to IPFS to get hash (URI)
+      const response = await writeDataToIPFS({
+        title: project.title,
+        shortDescription: project.shortDescription,
+        description: project.description,
+        etherscanLink: project.etherScanLink,
+        webLink: project.webLink,
+        twitterLink: project.twitterLink,
+        telegramLink: project.telegramLink,
+        imageUrl,
+      });
+      console.log('IPFS response: ', response);
+      if (!response) {
+        return;
+      }
+      console.log('Going for contract call...');
+      // 2. Create new sale smart contract
+      const contractResponse = await contract?.createSaleContract(
+        convertDateToUnixtime(project.starts),
+        convertDateToUnixtime(project.ends),
+        utils.parseEther(project.minUserDeposit),
+        utils.parseEther(project.maxUserDeposit),
+        project.raiseAmountTotal,
+        utils.parseEther(project.tokenPrice.toString()), // should be token ratio?
+        project.maxUserDeposit, //_totalDepositPerUser should be removed?
+        {
+          tokenID: project.tokenId,
+          decimals: 18,
+        },
+        {
+          whitelist: project.access === 'whitelist',
+          isFeatured: project.featured,
+        },
+        {
+          startTime: convertDateToUnixtime(project.distributionDate),
+          unlockInterval: 300, // unlockInterval should be removed?
+          percentageToMint: 10, // should be replaced by distribution?
+        },
+        `${process.env.REACT_APP_IPFS_GATEWAY}${response.IpfsHash}`,
+      );
+      console.log('contractResponse: ', contractResponse);
+      setIsSavingData(false);
+    } catch (e) {
+      console.log(e);
+      // TODO: show notification or error message
+      setIsSavingData(false);
+    }
+  };
 
   return (
     <FormProvider {...methods}>
@@ -173,7 +221,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Unlock interval (days)</div>
-              <TextField name={'tokenId'} type={'bordered'} mode={'light'} placeholder={'30'} />
+              <TextField name={'unlockInterval'} type={'bordered'} mode={'light'} placeholder={'30'} />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
@@ -216,8 +264,9 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
               style={{ marginRight: '1.5rem' }}
+              disabled={isSavingData}
             />
-            <MainButton title={'BACK'} onClick={() => navigation.goBack()} type={'bordered'} />
+            <MainButton title={'BACK'} onClick={() => navigation.goBack()} type={'bordered'} disabled={isSavingData} />
           </div>
         </div>
       </form>

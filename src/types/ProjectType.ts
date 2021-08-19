@@ -17,8 +17,10 @@ export type ProjectType = {
   featured: boolean;
   starts: Date;
   ends: Date;
-  raiseAmountTotal: number;
-  tokenPrice: number;
+  minUserDeposit: string;
+  maxUserDeposit: string;
+  raiseAmountTotal: number | string;
+  tokenPrice: number | string;
   tokenValue: number;
   iconUrl: string;
   etherScanLink: string;
@@ -26,14 +28,8 @@ export type ProjectType = {
   twitterLink: string;
   telegramLink: string;
   distributionDate: Date;
-  minAllocation: number;
-  maxAllocation: number;
   minSwapLevel: number;
-  whitelistStatus: string;
-  tokenName: string;
-  symbol: string;
-  decimals: number;
-  totalSupply: number;
+  tokenId: number;
   shortDescription: string;
   description: string;
   raiseAmountCurrent?: number;

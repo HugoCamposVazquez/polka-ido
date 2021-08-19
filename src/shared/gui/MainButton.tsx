@@ -8,11 +8,15 @@ type IProps = {
   onClick: () => void;
   type: 'fill' | 'bordered';
   style?: any;
+  disabled?: boolean;
 };
 
-export const MainButton = ({ title, onClick, type, style }: IProps) => {
+export const MainButton = ({ title, onClick, type, style, disabled }: IProps) => {
   return (
-    <Button onClick={onClick} style={cs(type === 'fill' ? styles.fillButtonStyle : styles.borderedButtonStyle, style)}>
+    <Button
+      onClick={onClick}
+      style={cs(type === 'fill' ? styles.fillButtonStyle : styles.borderedButtonStyle, style)}
+      disabled={disabled}>
       {title}
     </Button>
   );
