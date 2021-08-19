@@ -1,6 +1,5 @@
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
-import { ethers } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { useMoonbeanBalance } from '../../../hooks/useMoonbeamBalance';
 import { injected } from '../../../hooks/web3/connectors';

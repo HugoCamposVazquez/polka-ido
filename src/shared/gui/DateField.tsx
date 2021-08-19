@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import { Controller, useFormContext } from 'react-hook-form';
