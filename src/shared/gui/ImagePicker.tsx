@@ -11,39 +11,36 @@ import { MainButton } from './MainButton';
 
 type IProps = {
   name: string;
+  onImageUpload: (imgUrl: string) => void;
 };
 
-export const ImagePicker = ({ name }: IProps) => {
+export const ImagePicker = ({ name, onImageUpload }: IProps) => {
   const { control, watch, setValue, getValues } = useFormContext();
   const uploadInputRef = useRef();
 
   // TODO: Handle error
-  const { writeData, response: imageUploadResponse, loading } = useWriteFileToIPFS();
+  const { writeData, loading } = useWriteFileToIPFS();
 
   // Uploads immediately an image to IPFS after it's been selected
   // Maybe should consider upload only after form is submitted?
-  const onImageChange = useCallback((e: ChangeEvent<HTMLInputElement>): void => {
+  const onImageChange = useCallback(async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
     if (e.target.files && e.target.files.length > 0) {
       const image = e.target.files[0];
       const form = new FormData();
       form.append('file', image);
-      writeData(form);
+      const imageUploadResponse = await writeData(form);
+      if (imageUploadResponse) {
+        const imgUrl = `${process.env.REACT_APP_IPFS_GATEWAY}${imageUploadResponse.IpfsHash}`;
+        onImageUpload(imgUrl);
+        setValue(name, imgUrl);
+      }
     }
   }, []);
-
-  React.useEffect(() => {
-    if (imageUploadResponse) {
-      const imgUrl = `${process.env.REACT_APP_IPFS_GATEWAY}${imageUploadResponse.IpfsHash}`;
-      setValue(name, imgUrl);
-    }
-  }, [imageUploadResponse]);
 
   const onImageDelete = () => {
     setValue(name, null);
     getValues();
   };
-
-  console.log('loading: ', loading);
 
   return (
     <div className={styles.containerStyle}>

@@ -1,9 +1,8 @@
-import FormData from 'form-data';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
-import { useWriteFileToIPFS } from '../../hooks/ipfs/useWriteFileToIPFS';
+import { useWriteJSONToIPFS } from '../../hooks/ipfs/useWriteJSONToIPFS';
 import { CheckboxField } from '../../shared/gui/CheckboxField';
 import { DateField } from '../../shared/gui/DateField';
 import { ImagePicker } from '../../shared/gui/ImagePicker';
@@ -25,10 +24,19 @@ interface IProps {
 export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => {
   const methods = useForm();
   const navigation = useHistory();
+  const [imageUrl, setImageUrl] = useState('');
+  // TODO: Watch for error
+  const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
   const onSubmit = async (project: ProjectType) => {
     try {
       console.log('project submitted: ', project);
+      const response = await writeDataToIPFS({
+        shortDescription: project.shortDescription,
+        description: project.description,
+        imageUrl,
+      });
+      console.log('IPFS response: ', response);
     } catch (e) {
       console.log(e);
       // show notification or error message
@@ -122,7 +130,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Project icon</div>
-              <ImagePicker name={'iconUrl'} />
+              <ImagePicker name={'iconUrl'} onImageUpload={setImageUrl} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Etherscan</div>
