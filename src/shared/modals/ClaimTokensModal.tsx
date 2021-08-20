@@ -1,11 +1,10 @@
-import SaleContract from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContract.sol/SaleContract.json';
+import { BigNumber } from '@ethersproject/bignumber';
+import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { useContract } from '../../hooks/web3/contract/useContract';
-import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { AccountsDropdown } from '../../shared/AccountsDropdown';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../gui/TextField';
@@ -17,9 +16,10 @@ interface IProps {
   closeModal: () => void;
   message: string;
   id: string;
+  contract: SaleContract;
 }
 
-export const ClaimTokensModal = ({ closeModal, id }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, id, contract }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedAccountIndex, setSelectedAccountIndex] = useState<number>(0);
@@ -27,6 +27,10 @@ export const ClaimTokensModal = ({ closeModal, id }: IProps) => {
   useEffect(() => {
     if (accounts.length) {
       methods.control.setValue('address', accounts[selectedAccountIndex].address);
+
+      const selectedAccountAddress = accounts[selectedAccountIndex].address;
+      console.log(selectedAccountAddress);
+      const claimableTokenAmount = contract.getUserTotalTokens(selectedAccountAddress);
     }
   }, [accounts, selectedAccountIndex]);
 
@@ -36,10 +40,10 @@ export const ClaimTokensModal = ({ closeModal, id }: IProps) => {
     },
     //resolver: yupResolver(loginValidationSchema),
   });
-  const contract = useSaleContract(id);
 
   const onSubmit = async ({ address }: any) => {
     try {
+      contract.claimVestedTokens(address, { gasLimit: 1000000 });
       closeModal();
     } catch (e) {
       console.log(e);
@@ -79,7 +83,7 @@ export const ClaimTokensModal = ({ closeModal, id }: IProps) => {
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>349857 TKN</div>
+      <div style={styles.tknValueTextStyle}>TKN</div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>
