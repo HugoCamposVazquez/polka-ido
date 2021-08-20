@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
@@ -19,7 +18,7 @@ interface IProps {
   contract: SaleContract;
 }
 
-export const ClaimTokensModal = ({ closeModal, id, contract }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedAccountIndex, setSelectedAccountIndex] = useState<number>(0);
@@ -29,7 +28,7 @@ export const ClaimTokensModal = ({ closeModal, id, contract }: IProps) => {
       methods.control.setValue('address', accounts[selectedAccountIndex].address);
 
       const selectedAccountAddress = accounts[selectedAccountIndex].address;
-      // Call Contract function with address here
+      contract.getUserClaimableTokens(selectedAccountAddress);
     }
   }, [accounts, selectedAccountIndex]);
 

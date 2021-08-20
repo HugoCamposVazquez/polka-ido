@@ -3,7 +3,7 @@ import './style/dropdown.css';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { Dropdown, Menu } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import userIcon from '../assets/user_icon.svg';
 import * as styles from './AccountsDropdown.styles';
@@ -12,7 +12,7 @@ import { MainButton } from './gui/MainButton';
 interface IProps {
   options: InjectedAccountWithMeta[];
   initialAccount: InjectedAccountWithMeta;
-  setSelectedAccountIndex: any;
+  setSelectedAccountIndex: (index: number) => void;
 }
 
 export const AccountsDropdown = ({ options, initialAccount, setSelectedAccountIndex }: IProps) => {
@@ -25,12 +25,6 @@ export const AccountsDropdown = ({ options, initialAccount, setSelectedAccountIn
       setSelectedAccountIndex(accountIndex);
     }
   };
-
-  useEffect(() => {
-    if (selectedAccount) {
-      setSelectedAccountIndex(setSelectedAccountIndex);
-    }
-  }, [selectedAccount]);
 
   const menu = (
     <Menu onClick={onOptionSelect}>
