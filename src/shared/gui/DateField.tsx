@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -32,7 +31,9 @@ export const DateField = ({ name, placeholder, disabled, autoFocus, mode }: IPro
           autoFocus={autoFocus}
           selected={value}
           placeholderText={placeholder}
-          value={value ? format(value, 'dd/MM/yy') : undefined}
+          value={value}
+          showTimeSelect
+          dateFormat="MMMM d, yyyy h:mm aa"
         />
       )}
     />

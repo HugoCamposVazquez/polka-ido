@@ -20,9 +20,7 @@ export const Header = withRouter(() => {
             }}>
             RYU
           </div>
-          <div style={{ border: '1px solid black' }}>
-            <WalletConnect isMobile={true} />
-          </div>
+          <WalletConnect isMobile={true} />
         </div>
       </div>
     </div>
