@@ -23,12 +23,15 @@ export const JoinProjectForm = () => {
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
 
-  const setTokenValue = (value: string) => {
-    return Number(value) * Number(data?.sales[0].salePrice);
-  };
+  const setTokenValue = React.useCallback(
+    (value: string) => {
+      return Number(value) * Number(data?.sales[0].salePrice);
+    },
+    [data?.sales[0]],
+  );
 
   const validationSchema = yup.object().shape({
-    fromValue: yup.number().required().max(Number(maxAllocation)),
+    fromValue: yup.number().required(),
     toValue: yup.number().required().max(setTokenValue(maxAllocation)),
   });
 
@@ -40,24 +43,24 @@ export const JoinProjectForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async ({ fromValue }: { fromValue: string; toValue: string }): Promise<void> => {
+  const onSubmit = async ({ toValue }: { fromValue: string; toValue: string }): Promise<void> => {
     try {
-      saleContract?.buyTokens({ value: BigNumber.from(fromValue), gasLimit: 10000000 });
+      saleContract?.buyTokens({ value: BigNumber.from(toValue), gasLimit: 10000000 });
     } catch (e) {
       console.error(e.message);
     }
   };
 
-  const getBuyTokens = (amountToSet: BigNumberish) => {
+  const setBuyTokens = (amountToSet: BigNumberish) => {
     methods.setValue('fromValue', amountToSet);
     methods.setValue('toValue', Number(amountToSet) * Number(data?.sales[0].salePrice));
   };
 
   const onClickSetMaxAllocation = () => {
-    if (balance && maxAllocation && balance < maxAllocation) {
-      getBuyTokens(balance);
+    if (Math.min(Number(balance), Number(maxAllocation))) {
+      setBuyTokens(balance as BigNumberish);
     } else {
-      getBuyTokens(maxAllocation);
+      setBuyTokens(maxAllocation);
     }
   };
 

@@ -12,7 +12,7 @@ export const numberWithDots = (num: string) => {
   return num;
 };
 
-export const truncate = (str: string, maxDecimalDigits: number): string => {
+export const formatBalance = (str: string, maxDecimalDigits: number): string => {
   if (str.includes('.')) {
     const parts = str.split('.');
 
