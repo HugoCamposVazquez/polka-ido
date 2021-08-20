@@ -93,20 +93,24 @@ export const LaunchpadPage = () => {
                 Projects launched
               </div>
               <div className={styles.boldTextStyle} style={{ color: `${sideColor3}` }}>
-                {platformsData?.platforms[0].numOfProjects}
+                {platformsData?.platforms[0] ? platformsData?.platforms[0].numOfProjects : '0'}
               </div>
             </div>
             <div style={styles.launchpadDetailsItemStyle}>
               <div className={styles.normalTextStyle} style={{ flex: 1 }}>
                 Funds raised
               </div>
-              <div className={styles.boldTextStyle}>{platformsData?.platforms[0].fundsRaised} USDT</div>
+              <div className={styles.boldTextStyle}>
+                {platformsData?.platforms[0] ? platformsData?.platforms[0].fundsRaised : '0'} USDT
+              </div>
             </div>
             <div style={styles.launchpadDetailsItemStyle}>
               <div className={styles.normalTextStyle} style={{ flex: 1 }}>
                 Users participated
               </div>
-              <div className={styles.boldTextStyle}>{platformsData?.platforms[0].numOfUsers}</div>
+              <div className={styles.boldTextStyle}>
+                {platformsData?.platforms[0] ? platformsData?.platforms[0].numOfUsers : '0'}
+              </div>
             </div>
           </div>
         </div>
