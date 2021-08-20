@@ -2,6 +2,8 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumberish, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 
+import { truncate } from '../utils/numModifiyngFuncs';
+
 export const useMoonbeanBalance = () => {
   const [balance, setBalance] = useState<BigNumberish>();
   const { account } = useWeb3React();
@@ -14,7 +16,8 @@ export const useMoonbeanBalance = () => {
         });
         const balance = await provider.getBalance(account);
         const formatedBalance = ethers.utils.formatEther(balance);
-        setBalance(formatedBalance);
+        const truncatedBalance = truncate(formatedBalance, 3); // max num balance of decimal digits is 3
+        setBalance(truncatedBalance);
       };
       getMoonbeamBalance();
     }

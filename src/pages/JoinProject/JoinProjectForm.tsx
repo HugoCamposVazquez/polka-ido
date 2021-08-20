@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, BigNumberish, ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -19,17 +19,17 @@ export const JoinProjectForm = () => {
   const [maxAllocation, setMaxAllocation] = useState('0');
 
   const { id: address }: { id: string } = useParams();
-  // const { maxAllocation } = useJoinProject(address);
   const { data } = useSingleProject(address);
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
 
+  const setTokenValue = (value: string) => {
+    return Number(value) * Number(data?.sales[0].salePrice);
+  };
+
   const validationSchema = yup.object().shape({
     fromValue: yup.number().required().max(Number(maxAllocation)),
-    toValue: yup
-      .number()
-      .required()
-      .max(Number(maxAllocation) * Number(data?.sales[0].salePrice)),
+    toValue: yup.number().required().max(setTokenValue(maxAllocation)),
   });
 
   const methods = useForm({
@@ -48,20 +48,34 @@ export const JoinProjectForm = () => {
     }
   };
 
+  const getBuyTokens = (amountToSet: BigNumberish) => {
+    methods.setValue('fromValue', amountToSet);
+    methods.setValue('toValue', Number(amountToSet) * Number(data?.sales[0].salePrice));
+  };
+
   const onClickSetMaxAllocation = () => {
     if (balance && maxAllocation && balance < maxAllocation) {
-      methods.setValue('fromValue', balance);
-      methods.setValue('toValue', Number(balance) * Number(data?.sales[0].salePrice));
+      getBuyTokens(balance);
     } else {
-      methods.setValue('fromValue', maxAllocation);
-      methods.setValue('toValue', Number(maxAllocation) * Number(data?.sales[0].salePrice));
+      getBuyTokens(maxAllocation);
     }
   };
+
+  const getRemainingTokens = React.useMemo(() => {
+    const calculatedRemainingTokens = (
+      (Number(data?.sales[0].maxDepositAmount) - Number(data?.sales[0].currentDepositAmount)) /
+      Number(data?.sales[0].salePrice)
+    ).toString();
+    const remainingTokens = numberWithDots(calculatedRemainingTokens);
+
+    return remainingTokens;
+  }, [data?.sales[0]]);
+
+  //Subscribe to input changes
   const swapValues = methods.watch();
 
   useEffect(() => {
-    if (swapValues.fromValue)
-      methods.setValue('toValue', Number(swapValues.fromValue) * Number(data?.sales[0].salePrice));
+    if (swapValues.fromValue) methods.setValue('toValue', setTokenValue(swapValues.fromValue));
     if (!swapValues.fromValue) {
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
@@ -101,10 +115,8 @@ export const JoinProjectForm = () => {
             <div style={{ display: 'flex' }}>
               <div style={cs(styles.subtitleTextStyle, { flex: 1 })}>To</div>
               <div style={styles.subtitleTextStyle}>
-                Remaining:{' '}
-                {numberWithDots(
-                  (Number(data?.sales[0].maxDepositAmount) - Number(data?.sales[0].currentDepositAmount)).toString(),
-                )}
+                Remaining:&nbsp;
+                {data && getRemainingTokens}
               </div>
             </div>
             <div style={styles.fieldContainerStyle}>

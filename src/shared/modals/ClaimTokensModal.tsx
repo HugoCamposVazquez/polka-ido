@@ -30,6 +30,7 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
       closeModal();
       console.log(address);
     } catch (e) {
+      // show notification or error message
       console.log(e);
     }
   };
