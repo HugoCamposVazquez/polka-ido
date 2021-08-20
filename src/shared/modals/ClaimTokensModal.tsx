@@ -29,8 +29,7 @@ export const ClaimTokensModal = ({ closeModal, id, contract }: IProps) => {
       methods.control.setValue('address', accounts[selectedAccountIndex].address);
 
       const selectedAccountAddress = accounts[selectedAccountIndex].address;
-      console.log(selectedAccountAddress);
-      const claimableTokenAmount = contract.getUserTotalTokens(selectedAccountAddress);
+      // Call Contract function with address here
     }
   }, [accounts, selectedAccountIndex]);
 
