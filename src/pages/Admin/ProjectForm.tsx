@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
 import React, { useEffect, useState } from 'react';
@@ -30,6 +31,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const navigation = useHistory();
   const [imageUrl, setImageUrl] = useState('');
   const [isSavingData, setIsSavingData] = useState(false);
+  const { account } = useWeb3React();
 
   // TODO: Check if user has wallet connected and if it is owner account
   // TODO: Add fields validation
@@ -56,7 +58,9 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   }, [loadingProjectData, project]);
 
   const onSubmit = async (project: ProjectType) => {
+    if (!account) return;
     setIsSavingData(true);
+
     try {
       // 1. Write metadata to IPFS to get hash (URI)
       const response = await writeDataToIPFS({
@@ -85,6 +89,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         {
           tokenID: project.tokenId,
           decimals: 18,
+          walletAddress: account,
         },
         {
           whitelist: project.access === 'whitelist',
