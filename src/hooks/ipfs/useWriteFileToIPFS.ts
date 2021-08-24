@@ -27,6 +27,7 @@ export const useWriteFileToIPFS = (): IData => {
         },
       });
       if (response.data) {
+        setLoading(false);
         return response.data;
       }
     } catch (e) {

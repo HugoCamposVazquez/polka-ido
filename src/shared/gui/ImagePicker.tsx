@@ -30,9 +30,8 @@ export const ImagePicker = ({ name, onImageUpload }: IProps) => {
       form.append('file', image);
       const imageUploadResponse = await writeData(form);
       if (imageUploadResponse) {
-        const imgUrl = `ipfs://${imageUploadResponse.IpfsHash}`;
-        onImageUpload(imgUrl);
-        setValue(name, imgUrl);
+        onImageUpload(`ipfs://${imageUploadResponse.IpfsHash}`);
+        setValue(name, `${process.env.REACT_APP_IPFS_GATEWAY}${imageUploadResponse.IpfsHash}`);
       }
     }
   }, []);
