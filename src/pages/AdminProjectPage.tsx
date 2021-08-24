@@ -86,7 +86,7 @@ export const AdminProjectPage = () => {
             <div style={styles.sectionContainerStyle}>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.4 })}>
                 <div style={styles.fieldSectionStyle}>Project name</div>
-                <TextField name={'title'} type={'bordered'} mode={'light'} placeholder={'My project 1'} />
+                <TextField name={'title'} styleType={'bordered'} mode={'light'} placeholder={'My project 1'} />
               </div>
 
               <div style={styles.radioContainerStyle}>
@@ -136,15 +136,15 @@ export const AdminProjectPage = () => {
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Raise amount</div>
-                <TextField name={'raiseAmountTotal'} type={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+                <TextField name={'raiseAmountTotal'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Token price (ETH)</div>
-                <TextField name={'tokenPrice'} type={'bordered'} mode={'light'} placeholder={'0,022'} />
+                <TextField name={'tokenPrice'} styleType={'bordered'} mode={'light'} placeholder={'0,022'} />
               </div>
               <div style={cs(styles.fieldTitleNoMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Token value (USDT)</div>
-                <TextField name={'tokenValue'} type={'bordered'} mode={'light'} placeholder={'0.00002'} />
+                <TextField name={'tokenValue'} styleType={'bordered'} mode={'light'} placeholder={'0.00002'} />
               </div>
             </div>
 
@@ -156,28 +156,28 @@ export const AdminProjectPage = () => {
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Etherscan</div>
                 <div>
-                  <TextField name={'etherScanLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'etherScanLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Web</div>
                 <div>
-                  <TextField name={'webLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'webLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Twitter</div>
                 <div>
-                  <TextField name={'twitterLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'twitterLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
               <div style={cs(styles.fieldTitleNoMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Telegram</div>
                 <div>
-                  <TextField name={'telegramLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                  <TextField name={'telegramLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
                 </div>
                 <div style={{ flex: 1 }} />
               </div>
@@ -193,19 +193,19 @@ export const AdminProjectPage = () => {
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Min. allocation (ETH)</div>
-                <TextField name={'minAllocation'} type={'bordered'} mode={'light'} placeholder={'0'} />
+                <TextField name={'minAllocation'} styleType={'bordered'} mode={'light'} placeholder={'0'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Max. allocation (ETH)</div>
-                <TextField name={'maxAllocation'} type={'bordered'} mode={'light'} placeholder={'0.02'} />
+                <TextField name={'maxAllocation'} styleType={'bordered'} mode={'light'} placeholder={'0.02'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Min. swap level</div>
-                <TextField name={'minSwapLevel'} type={'bordered'} mode={'light'} placeholder={'0.002'} />
+                <TextField name={'minSwapLevel'} styleType={'bordered'} mode={'light'} placeholder={'0.002'} />
               </div>
               <div style={cs(styles.fieldTitleNoMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Whitelist status</div>
-                <TextField name={'whitelistStatus'} type={'bordered'} mode={'light'} placeholder={'Whitelisted'} />
+                <TextField name={'whitelistStatus'} styleType={'bordered'} mode={'light'} placeholder={'Whitelisted'} />
               </div>
             </div>
 
@@ -215,19 +215,19 @@ export const AdminProjectPage = () => {
             <div style={styles.sectionContainerStyle}>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Name</div>
-                <TextField name={'tokenName'} type={'bordered'} mode={'light'} placeholder={'tokename'} />
+                <TextField name={'tokenName'} styleType={'bordered'} mode={'light'} placeholder={'tokename'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Symbol</div>
-                <TextField name={'symbol'} type={'bordered'} mode={'light'} placeholder={'TKN'} />
+                <TextField name={'symbol'} styleType={'bordered'} mode={'light'} placeholder={'TKN'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Decimals</div>
-                <TextField name={'decimals'} type={'bordered'} mode={'light'} placeholder={'16'} />
+                <TextField name={'decimals'} styleType={'bordered'} mode={'light'} placeholder={'16'} />
               </div>
               <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
                 <div style={styles.fieldSectionStyle}>Total supply</div>
-                <TextField name={'totalSupply'} type={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+                <TextField name={'totalSupply'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
               </div>
               <div style={{ flex: 0.2 }} />
             </div>

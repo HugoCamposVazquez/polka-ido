@@ -16,7 +16,7 @@ export const useMoonbeanBalance = () => {
         });
         const balance = await provider.getBalance(account);
         const formatedBalance = ethers.utils.formatEther(balance);
-        const truncatedBalance = formatBalance(formatedBalance, 3); // max num balance of decimal digits is 3
+        const truncatedBalance = formatBalance(formatedBalance, 7); // max num balance of decimal digits is 3
         setBalance(truncatedBalance);
       };
       getMoonbeamBalance();

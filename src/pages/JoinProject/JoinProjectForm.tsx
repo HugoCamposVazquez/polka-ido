@@ -12,7 +12,7 @@ import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
-import { numberWithDots } from '../../utils/numModifiyngFuncs';
+import { numberWithDots, scientificToDecimal } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
@@ -23,16 +23,16 @@ export const JoinProjectForm = () => {
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
 
-  const setTokenValue = React.useCallback(
+  const calculateValue = React.useCallback(
     (value: string) => {
-      return Number(value) * Number(data?.sales[0].salePrice);
+      return scientificToDecimal(Number(value) * Number(data?.sales[0].salePrice));
     },
     [data?.sales[0]],
   );
 
   const validationSchema = yup.object().shape({
     fromValue: yup.number().required(),
-    toValue: yup.number().required().max(setTokenValue(maxAllocation)),
+    toValue: yup.number().required().max(calculateValue(maxAllocation)),
   });
 
   const methods = useForm({
@@ -45,7 +45,9 @@ export const JoinProjectForm = () => {
 
   const onSubmit = async ({ toValue }: { fromValue: string; toValue: string }): Promise<void> => {
     try {
-      saleContract?.buyTokens({ value: BigNumber.from(toValue), gasLimit: 10000000 });
+      saleContract?.buyTokens({ value: ethers.utils.parseEther(scientificToDecimal(toValue)), gasLimit: 10000000 });
+      methods.setValue('toValue', '');
+      methods.setValue('fromValue', '');
     } catch (e) {
       console.error(e.message);
     }
@@ -53,15 +55,12 @@ export const JoinProjectForm = () => {
 
   const setBuyTokens = (amountToSet: BigNumberish) => {
     methods.setValue('fromValue', amountToSet);
-    methods.setValue('toValue', Number(amountToSet) * Number(data?.sales[0].salePrice));
+    calculateValue(amountToSet.toString());
   };
 
   const onClickSetMaxAllocation = () => {
-    if (Math.min(Number(balance), Number(maxAllocation))) {
-      setBuyTokens(balance as BigNumberish);
-    } else {
-      setBuyTokens(maxAllocation);
-    }
+    const minNum = scientificToDecimal(Math.min(Number(balance), Number(maxAllocation)));
+    setBuyTokens(minNum.toString());
   };
 
   const getRemainingTokens = React.useMemo(() => {
@@ -78,14 +77,14 @@ export const JoinProjectForm = () => {
   const swapValues = methods.watch();
 
   useEffect(() => {
-    if (swapValues.fromValue) methods.setValue('toValue', setTokenValue(swapValues.fromValue));
+    if (swapValues.fromValue) methods.setValue('toValue', calculateValue(swapValues.fromValue));
     if (!swapValues.fromValue) {
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
     }
 
     saleContract?.maxDepositAmount().then(ethers.utils.formatEther).then(setMaxAllocation);
-  }, [swapValues.fromValue, swapValues.toValue, saleContract]);
+  }, [swapValues.fromValue, saleContract]);
 
   return (
     <FormProvider {...methods}>
@@ -99,11 +98,12 @@ export const JoinProjectForm = () => {
             <div style={styles.fieldContainerStyle}>
               <TextField
                 name={'fromValue'}
-                type={'none'}
+                styleType={'none'}
                 placeholder={maxAllocation && maxAllocation}
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
                 autoFocus={true}
+                type="number"
               />
               <div style={styles.maxBtnStyle} onClick={onClickSetMaxAllocation}>
                 Max
@@ -125,16 +125,19 @@ export const JoinProjectForm = () => {
             <div style={styles.fieldContainerStyle}>
               <TextField
                 name={'toValue'}
-                type={'none'}
-                placeholder={data && (Number(maxAllocation) * Number(data?.sales[0].salePrice)).toString()}
+                styleType={'none'}
+                placeholder={
+                  data && scientificToDecimal((Number(maxAllocation) * Number(data?.sales[0].salePrice)).toString())
+                }
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
+                type="number"
               />
               <div style={styles.suffixTextStyle}>TKN</div>
             </div>
           </div>
 
-          <div style={styles.maxAllocTextStyle}>Max. allocation is {maxAllocation} ETH</div>
+          <div style={styles.maxAllocTextStyle}>Max. allocation is {scientificToDecimal(maxAllocation)} ETH</div>
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton

@@ -10,19 +10,20 @@ type IProps = {
   placeholder?: string;
   disabled?: boolean;
   style?: any;
-  type: 'bordered' | 'underlined' | 'none';
+  styleType: 'bordered' | 'underlined' | 'none';
   autoFocus?: boolean;
   mode: 'light' | 'dark';
+  type?: string;
 };
 
-export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, style }: IProps) => {
+export const TextField = ({ name, placeholder, disabled, styleType, autoFocus, mode, style, type }: IProps) => {
   const { control } = useFormContext();
 
   let borderWidth = '';
 
-  if (type === 'bordered') {
+  if (styleType === 'bordered') {
     borderWidth = '0.06rem';
-  } else if (type === 'underlined') {
+  } else if (styleType === 'underlined') {
     borderWidth = '0 0 0.06rem';
   } else {
     borderWidth = '0rem';
@@ -46,6 +47,7 @@ export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, 
               disabled={disabled}
               onChange={onChange}
               autoFocus={autoFocus}
+              type={type || 'text'}
             />
           );
         }}

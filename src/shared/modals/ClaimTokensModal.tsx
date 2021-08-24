@@ -73,7 +73,7 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
               <div style={styles.recipientTextStyle}>Recipient</div>
               <TextField
                 name={'address'}
-                type={'none'}
+                styleType={'none'}
                 placeholder={'Address'}
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
