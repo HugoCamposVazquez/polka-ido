@@ -95,7 +95,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           unlockInterval: 300, // unlockInterval should be removed?
           percentageToMint: 10, // should be replaced by distribution?
         },
-        `${process.env.REACT_APP_IPFS_GATEWAY}${response.IpfsHash}`,
+        `ipfs://${response.IpfsHash}`,
       );
       // tx.wait(1);
       // TODO: Redirect to project page after success
