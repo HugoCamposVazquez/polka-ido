@@ -33,7 +33,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const [isSavingData, setIsSavingData] = useState(false);
   const { account } = useWeb3React();
 
-  // TODO: Check if user has wallet connected and if it is owner account
   // TODO: Add fields validation
 
   const contract = useSaleFactoryContract();
@@ -78,7 +77,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
       }
 
       // 2. Create new sale smart contract
-      await contract?.createSaleContract(
+      const tx = await contract?.createSaleContract(
         convertDateToUnixtime(project.starts),
         convertDateToUnixtime(project.ends),
         utils.parseEther(project.minUserDeposit),
@@ -102,8 +101,10 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         },
         `ipfs://${response.IpfsHash}`,
       );
-      // tx.wait(1);
-      // TODO: Redirect to project page after success
+      if (tx) {
+        tx.wait(1);
+        navigation.push('/admin/project');
+      }
       setIsSavingData(false);
     } catch (e) {
       console.log(e);
