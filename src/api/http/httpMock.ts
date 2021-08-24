@@ -8,7 +8,7 @@ import { SourceType } from '../../types/SourceType';
 
 const projectStatuses: ProjectStatus[] = ['upcoming', 'ended'];
 const projectAccesses: ProjectAccess[] = ['whitelist', 'private'];
-const iconUrls: any[] = [projectImage, horseImage];
+const imageUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];
 
@@ -26,7 +26,7 @@ for (let i = 0; i < 80; i++) {
     raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000),
     tokenPrice: 0.02,
     tokenValue: 20,
-    iconUrl: iconUrls[Math.floor(Math.random() * iconUrls.length)],
+    imageUrl: imageUrls[Math.floor(Math.random() * imageUrls.length)],
     etherScanLink: 'string',
     webLink: 'string',
     twitterLink: 'string',

@@ -9,9 +9,19 @@ export type ProjectApiType = {
   data: ProjectType;
 };
 
-export type ProjectType = {
-  id?: number;
+export type ProjectMetadata = {
   title: string;
+  etherScanLink: string;
+  webLink: string;
+  twitterLink: string;
+  telegramLink: string;
+  shortDescription: string;
+  description: string;
+  imageUrl: string;
+};
+
+export type ProjectType = ProjectMetadata & {
+  id?: number;
   status: ProjectStatus;
   access: ProjectAccess;
   featured: boolean;
@@ -22,16 +32,9 @@ export type ProjectType = {
   raiseAmountTotal: number | string;
   tokenPrice: number | string;
   tokenValue: number;
-  iconUrl: string;
-  etherScanLink: string;
-  webLink: string;
-  twitterLink: string;
-  telegramLink: string;
   distributionDate: Date;
   minSwapLevel: number;
   tokenId: number;
-  shortDescription: string;
-  description: string;
   raiseAmountCurrent?: number;
   joined?: boolean;
 };
