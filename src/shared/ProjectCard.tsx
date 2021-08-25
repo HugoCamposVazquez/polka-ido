@@ -72,12 +72,13 @@ export const ProjectCard = ({ direction, project }: IProps) => {
           </div>
           <div style={styles.projectCardStatusTextStyle}>{getProjectStatus(true)}</div>
         </div>
-        <div style={styles.projectNameContainerStyle}>
-          <div style={styles.projectNameStyle}>{metadata?.title}</div>
-        </div>
-
-        <div className={styles.projectDescriptionContainerStyle}>
-          <div style={styles.projectDescriptionStyle}>{metadata?.shortDescription}</div>
+        <div style={{ height: '6rem' }}>
+          <div style={styles.projectNameContainerStyle}>
+            <div style={styles.projectNameStyle}>{metadata?.title}</div>
+          </div>
+          <div className={styles.projectDescriptionContainerStyle}>
+            <div style={styles.projectDescriptionStyle}>{metadata?.shortDescription}</div>
+          </div>
         </div>
         <div style={styles.raiseAmountStyle}>Raise amount</div>
 

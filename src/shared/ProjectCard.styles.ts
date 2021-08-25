@@ -146,6 +146,7 @@ export const progressTextContainerStyle = styled.cssStyle`
   font-weight: 400;
   font-size: 1.25rem;
   line-height: 1.39rem;
+  height: 2.78rem;
   margin: 0.25rem 1rem 0;
   display: flex;
 `;
