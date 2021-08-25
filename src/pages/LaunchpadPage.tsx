@@ -7,7 +7,6 @@ import { useProjects } from '../hooks/apollo/useProjects';
 import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
 import { ProjectCard } from '../shared/ProjectCard';
-import { ProjectCardLoading } from '../shared/ProjectCardLoading';
 import { ProjectData } from '../types/ProjectType';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { sideColor3 } from '../utils/colorsUtil';
@@ -145,10 +144,6 @@ export const LaunchpadPage = () => {
           {projects.map((project: ProjectData, index: number) => {
             return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
           })}
-          {projectLoading &&
-            projects.map((el: ProjectData, index: number) => (
-              <ProjectCardLoading key={index} direction={getCardDirection(width, index)} />
-            ))}
         </div>
       </div>
       <Footer />
