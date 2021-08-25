@@ -66,7 +66,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         title: project.title,
         shortDescription: project.shortDescription,
         description: project.description,
-        etherscanLink: project.etherScanLink,
+        etherscanLink: project.etherscanLink,
         webLink: project.webLink,
         twitterLink: project.twitterLink,
         telegramLink: project.telegramLink,
@@ -188,7 +188,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Etherscan</div>
               <div>
-                <TextField name={'etherScanLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                <TextField name={'etherscanLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
               </div>
               <div style={{ flex: 1 }} />
             </div>

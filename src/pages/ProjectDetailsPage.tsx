@@ -1,6 +1,6 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import projectCardBackground from '../assets/project_card_background.png';
@@ -8,11 +8,15 @@ import telegramIcon from '../assets/telegram_icon.svg';
 import twitterIcon from '../assets/twitter_icon.svg';
 import webIcon from '../assets/web_icon.svg';
 import { useSingleProject } from '../hooks/apollo/useSingleProject';
+import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../shared/modals/modals';
+import { ExternalLink } from '../shared/wrappers/ExternalLink';
+import { ProjectMetadata } from '../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
+import { getIPFSResolvedLink } from '../utils/data';
 import { numberWithCommas } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
@@ -21,10 +25,11 @@ export const ProjectDetailsPage = () => {
   const { id }: { id: string } = useParams();
 
   const { data } = useSingleProject(id);
+  const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
 
-  const projectStatus = (): string => {
+  const projectStatus = useMemo((): string => {
     if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {
-      return 'Starts';
+      return 'Upcoming';
     } else if (
       data?.sales[0] &&
       getUnixTime(new Date()) > +data?.sales[0].startDate &&
@@ -32,7 +37,7 @@ export const ProjectDetailsPage = () => {
     ) {
       return 'In Progress';
     } else return 'Ended';
-  };
+  }, [data?.sales]);
 
   return (
     <div>
@@ -47,24 +52,41 @@ export const ProjectDetailsPage = () => {
           <div style={{ flex: 0.5 }}>
             <div className={styles.projectImageContainerClassName}>
               <div style={styles.topRightBottomLeftNotch} className={styles.projectImageBackgroundStyle}>
-                <img className={styles.projectIconClassName} src="" /> {/* data dosen't exist yet */}
+                <img className={styles.projectIconClassName} src={getIPFSResolvedLink(metadata?.imageUrl || '')} />
               </div>
               <div style={{ marginLeft: '1.5rem' }}>
                 <div className={styles.projectStatusBackgroundStyle}>
-                  <div style={styles.projectStatusTextStyle}>{projectStatus()}</div>
+                  <div style={styles.projectStatusTextStyle}>{projectStatus}</div>
                 </div>
-                <div className={styles.projectNameTextStyle}>ProjectName Data</div>
+                <div className={styles.projectNameTextStyle}>{metadata?.title}</div>
               </div>
             </div>
             <div className={styles.shortDescriptionContainerClassName}>
               <div style={styles.shortDescriptionTextStyle}>Short description</div>
-              <div className={styles.shortDescriptionTextClassName}>description data</div>
+              <div className={styles.shortDescriptionTextClassName}>{metadata?.shortDescription}</div>
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
-                <div style={styles.etherScanBtnStyle}>Etherscan</div>
+                {metadata?.etherscanLink && (
+                  <ExternalLink href={metadata?.etherscanLink}>
+                    <div style={styles.etherScanBtnStyle}>Etherscan</div>
+                  </ExternalLink>
+                )}
 
-                <img style={{ marginLeft: '1.5rem', cursor: 'pointer' }} src={webIcon} />
-                <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={twitterIcon} />
-                <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={telegramIcon} />
+                {metadata?.webLink && (
+                  <ExternalLink href={metadata?.webLink}>
+                    <img style={{ marginLeft: '1.5rem', cursor: 'pointer' }} src={webIcon} />
+                  </ExternalLink>
+                )}
+
+                {metadata?.twitterLink && (
+                  <ExternalLink href={metadata?.twitterLink}>
+                    <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={twitterIcon} />
+                  </ExternalLink>
+                )}
+                {metadata?.telegramLink && (
+                  <ExternalLink href={metadata?.telegramLink}>
+                    <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={telegramIcon} />
+                  </ExternalLink>
+                )}
               </div>
             </div>
           </div>
