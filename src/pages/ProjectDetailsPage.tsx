@@ -1,5 +1,6 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
+import { BigNumber, ethers } from 'ethers';
 import React, { useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ import { ProjectMetadata } from '../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import { getIPFSResolvedLink } from '../utils/data';
-import { numberWithCommas } from '../utils/numModifiyngFuncs';
+import { formatWei, numberWithCommas } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
 export const ProjectDetailsPage = () => {
@@ -38,6 +39,23 @@ export const ProjectDetailsPage = () => {
       return 'In Progress';
     } else return 'Ended';
   }, [data?.sales]);
+
+  const filledAllocationPercentage = useMemo((): string => {
+    if (data?.sales[0]) {
+      // TODO: should be totalDeposit instead of maxDepositAmount but not on subgraph
+      const { currentDepositAmount, maxDepositAmount } = data.sales[0];
+      const percentage = BigNumber.from(currentDepositAmount).mul(100).div(BigNumber.from(maxDepositAmount));
+      return percentage.toString();
+    }
+    return '0';
+  }, [data?.sales[0]]);
+
+  const tokenPrice = useMemo((): string => {
+    if (data?.sales[0]) {
+      return numberWithCommas(BigNumber.from(data.sales[0].salePrice).div(ethers.utils.parseEther('1.0')).toString());
+    }
+    return '0';
+  }, [data?.sales[0]]);
 
   return (
     <div>
@@ -105,37 +123,40 @@ export const ProjectDetailsPage = () => {
                 </div>
               </div>
               <div style={styles.descriptionParentStyle}>
-                <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && numberWithCommas(data?.sales[0].maxDepositAmount)
-                } ETH`}</div>
-              </div>
-              <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Access</div>
                 <div className={styles.contentTextStyle}>
                   {data?.sales[0] && data?.sales[0].whitelisted ? 'Whitelisted' : 'Private'}
                 </div>
               </div>
               <div style={styles.descriptionParentStyle}>
-                <div className={styles.descriptionTextStyle}>Token price</div>
-                <div className={styles.contentTextStyle}>{`${data?.sales[0] && data?.sales[0].salePrice} ETH`}</div>
+                <div className={styles.descriptionTextStyle}>Allocation</div>
+                <div className={styles.contentTextStyle}>TODO</div>
+              </div>
+              <div style={styles.descriptionParentStyle}>
+                <div className={styles.descriptionTextStyle}>Min. deposit</div>
+                <div className={styles.contentTextStyle}>TODO</div>
+              </div>
+              <div style={styles.descriptionParentStyle}>
+                <div className={styles.descriptionTextStyle}>Max. deposit</div>
+                <div className={styles.contentTextStyle}>{`${
+                  data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
+                } ETH`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.description2TextStyle}>Your allocation</div>
-                <div className={styles.content2TextStyle}>{'0.02 ETH > 349857 TKN'}</div>
+                <div className={styles.content2TextStyle}>TODO</div>
               </div>
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
-                  {data?.sales[0] && `${data?.sales[0].currentDepositAmount}/${data?.sales[0].maxDepositAmount} USDT`}
+                  {data?.sales[0] &&
+                    `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
+                      data?.sales[0].maxDepositAmount,
+                    )} USD`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <ProgressBar
-                    completed={
-                      (Number(data?.sales[0] && data?.sales[0].currentDepositAmount) /
-                        Number(data?.sales[0] && data?.sales[0].maxDepositAmount)) *
-                      100
-                    }
+                    completed={filledAllocationPercentage}
                     isLabelVisible={false}
                     height={'0.38rem'}
                     bgColor={sideColor3}
@@ -143,7 +164,7 @@ export const ProjectDetailsPage = () => {
                     borderRadius={'0rem'}
                   />
                 </div>
-                <div style={styles.smallTextStyle}>1 TKN = 0.0002 USDT</div>
+                <div style={styles.smallTextStyle}>1 TKN = {tokenPrice} ETH</div>
               </div>
             </div>
 
@@ -228,27 +249,15 @@ export const ProjectDetailsPage = () => {
               styles.topRightBottomLeftNotch,
             )}>
             <div style={{ padding: '1.5rem' }}>
-              <div style={styles.projectDetailsSubtitleStyle}>PROJECT</div>
+              <div style={styles.projectDetailsSubtitleStyle}>RELEASE SCHEDULE</div>
               <div style={{ marginTop: '2.25rem' }}>
                 <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Token distribution</div>
-                  <div className={styles.content3TextStyle}>June 21, 2021 4:00 PM</div>
+                  <div className={styles.descriptionTextStyle}>Vesting duration</div>
+                  <div className={styles.content3TextStyle}>TODO</div>
                 </div>
                 <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Min. Allocation</div>
-                  <div className={styles.content3TextStyle}>0</div>
-                </div>
-                <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Max. Allocation</div>
-                  <div className={styles.content3TextStyle}>0.02 ETH</div>
-                </div>
-                <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Min. swap level</div>
-                  <div className={styles.content3TextStyle}>2 ETH</div>
-                </div>
-                <div style={{ display: 'flex', padding: '0.75rem 0' }}>
-                  <div className={styles.descriptionTextStyle}>Whitelist status</div>
-                  <div className={styles.content3TextStyle}>Whitelisted</div>
+                  <div className={styles.descriptionTextStyle}>Vesting start time</div>
+                  <div className={styles.content3TextStyle}>TODO</div>
                 </div>
               </div>
             </div>
@@ -272,12 +281,8 @@ export const ProjectDetailsPage = () => {
                   <div className={styles.content3TextStyle}>TKN</div>
                 </div>
                 <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Decimals</div>
-                  <div className={styles.content3TextStyle}>24</div>
-                </div>
-                <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Address</div>
-                  <div className={styles.content3TextStyle}>0x19273h348fo837ffo38974fh</div>
+                  <div className={styles.descriptionTextStyle}>Statemint ID</div>
+                  <div className={styles.content3TextStyle}>12390</div>
                 </div>
                 <div style={{ display: 'flex', padding: '0.75rem 0' }}>
                   <div className={styles.descriptionTextStyle}>Total supply</div>
@@ -290,14 +295,7 @@ export const ProjectDetailsPage = () => {
       </div>
       <div className={styles.aboutTheProjectContainerClassName}>
         <div className={styles.subtitleStyle}>About the project</div>
-        <div style={styles.aboutTextStyle}>
-          Physiological respiration involves the mechanisms that ensure that the composition of the functional residual
-          capacity is kept constant, and equilibrates with the gases dissolved in the pulmonary capillary blood, and
-          thus throughout the body. Thus, in precise usage, the words breathing and ventilation are hyponyms, not
-          synonyms, of respiration; but this prescription is not consistently followed, even by most health care
-          providers, because the term respiratory rate (RR) is a well-established term in health care, even though it
-          would need to be consistently replaced with ventilation rate if the precise usage were to be followed.
-        </div>
+        <div style={styles.aboutTextStyle}>{metadata?.description}</div>
       </div>
       <Footer />
     </div>
