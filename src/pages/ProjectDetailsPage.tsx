@@ -1,6 +1,5 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
-import { BigNumber, ethers } from 'ethers';
 import React, { useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -17,8 +16,8 @@ import { ExternalLink } from '../shared/wrappers/ExternalLink';
 import { ProjectMetadata } from '../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
-import { getIPFSResolvedLink } from '../utils/data';
-import { formatWei, numberWithCommas } from '../utils/numModifiyngFuncs';
+import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../utils/data';
+import { formatWei } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
 export const ProjectDetailsPage = () => {
@@ -44,15 +43,14 @@ export const ProjectDetailsPage = () => {
     if (data?.sales[0]) {
       // TODO: should be totalDeposit instead of maxDepositAmount but not on subgraph
       const { currentDepositAmount, maxDepositAmount } = data.sales[0];
-      const percentage = BigNumber.from(currentDepositAmount).mul(100).div(BigNumber.from(maxDepositAmount));
-      return percentage.toString();
+      return getPercentage(currentDepositAmount, maxDepositAmount);
     }
     return '0';
   }, [data?.sales[0]]);
 
   const tokenPrice = useMemo((): string => {
     if (data?.sales[0]) {
-      return numberWithCommas(BigNumber.from(data.sales[0].salePrice).div(ethers.utils.parseEther('1.0')).toString());
+      return getTokenPrice(data.sales[0].salePrice);
     }
     return '0';
   }, [data?.sales[0]]);
@@ -70,7 +68,10 @@ export const ProjectDetailsPage = () => {
           <div style={{ flex: 0.5 }}>
             <div className={styles.projectImageContainerClassName}>
               <div style={styles.topRightBottomLeftNotch} className={styles.projectImageBackgroundStyle}>
-                <img className={styles.projectIconClassName} src={getIPFSResolvedLink(metadata?.imageUrl || '')} />
+                <img
+                  className={styles.projectIconClassName}
+                  src={metadata ? getIPFSResolvedLink(metadata?.imageUrl) : ''}
+                />
               </div>
               <div style={{ marginLeft: '1.5rem' }}>
                 <div className={styles.projectStatusBackgroundStyle}>

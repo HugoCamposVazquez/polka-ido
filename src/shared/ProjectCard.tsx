@@ -1,13 +1,14 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
 import { ProjectData, ProjectMetadata } from '../types/ProjectType';
 import { sideColor3, sideColor4, sideColor6 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
-import { fixNums } from '../utils/numModifiyngFuncs';
+import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../utils/data';
+import { fixNums, formatWei } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectCard.styles';
 
 type IProps = {
@@ -40,6 +41,16 @@ export const ProjectCard = ({ direction, project }: IProps) => {
     [project],
   );
 
+  const filledAllocationPercentage = useMemo((): string => {
+    // TODO: should be totalDeposit instead of maxDepositAmount but not on subgraph
+    const { currentDepositAmount, maxDepositAmount } = project;
+    return getPercentage(currentDepositAmount, maxDepositAmount);
+  }, [project]);
+
+  const tokenPrice = useMemo((): string => {
+    return getTokenPrice(project.salePrice);
+  }, [project]);
+
   return (
     <div
       style={cs(
@@ -53,32 +64,30 @@ export const ProjectCard = ({ direction, project }: IProps) => {
         <div style={styles.projectCardHeaderContainer}>
           <div style={{ flex: 1 }}>
             <div style={styles.projectCardHeaderIconContainer}>
-              <img style={styles.projectCardHeaderIconStyle} src="" />
-              {/* currently we dont't have data, but we will */}
+              <img
+                style={styles.projectCardHeaderIconStyle}
+                src={metadata ? getIPFSResolvedLink(metadata?.imageUrl) : ''}
+              />
             </div>
           </div>
           <div style={styles.projectCardStatusTextStyle}>{getProjectStatus(true)}</div>
         </div>
         <div style={styles.projectNameContainerStyle}>
-          <div style={styles.projectNameStyle}>Data Goes Here</div>
-          {/* currently we dont't have data, but we will */}
+          <div style={styles.projectNameStyle}>{metadata?.title}</div>
         </div>
 
         <div className={styles.projectDescriptionContainerStyle}>
-          <div style={styles.projectDescriptionStyle}>Data Goes Here</div>
-          {/* currently we dont't have data, but we will */}
+          <div style={styles.projectDescriptionStyle}>{metadata?.shortDescription}</div>
         </div>
         <div style={styles.raiseAmountStyle}>Raise amount</div>
 
         <div style={styles.progressTextContainerStyle}>
-          <div style={styles.progressTextPrefixStyle}>{project.currentDepositAmount}</div>
-          <div style={styles.progressTextSufixStyle}>/{project.maxDepositAmount} USDT</div>
+          <div style={styles.progressTextPrefixStyle}>{formatWei(project.currentDepositAmount)}</div>
+          <div style={styles.progressTextSufixStyle}>/{formatWei(project.maxDepositAmount)} USD</div>
         </div>
         <div style={{ margin: '0.38rem 1rem' }}>
           <ProgressBar
-            completed={
-              project.currentDepositAmount ? (+project.currentDepositAmount / +project.maxDepositAmount) * 100 : 0
-            }
+            completed={filledAllocationPercentage}
             isLabelVisible={false}
             height={'0.38rem'}
             bgColor={sideColor3}
@@ -103,7 +112,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
           <div style={{ display: 'flex' }}>
             <div>
               <div style={styles.detailsTitleStyle}>Per token</div>
-              <div style={styles.detailsValueStyle}>{fixNums(+project.salePrice, 2)} USDT</div>
+              <div style={styles.detailsValueStyle}>{tokenPrice} USD</div>
             </div>
             <div>
               <div style={styles.detailsTitleStyle}>{getProjectStatus()}</div>
@@ -113,7 +122,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
             </div>
             <div>
               <div style={styles.detailsTitleStyle}>Access</div>
-              <div style={styles.detailsValueStyle}>{project.whitelisted ? 'whitelist' : 'private'}</div>
+              <div style={styles.detailsValueStyle}>{project.whitelisted ? 'whitelist' : 'public'}</div>
             </div>
           </div>
         </div>
