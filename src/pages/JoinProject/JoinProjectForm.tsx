@@ -16,12 +16,13 @@ import { numberWithDots, scientificToDecimal } from '../../utils/numModifiyngFun
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
-  const [maxAllocation, setMaxAllocation] = useState('0');
-
   const { id: address }: { id: string } = useParams();
   const { data } = useSingleProject(address);
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
+  const maxAllocation =
+    data?.sales[0].maxDepositAmount &&
+    ethers.utils.formatEther(scientificToDecimal(data?.sales[0].maxDepositAmount.toString()).toString());
 
   const calculateValue = React.useCallback(
     (value: string) => {
@@ -32,7 +33,10 @@ export const JoinProjectForm = () => {
 
   const validationSchema = yup.object().shape({
     fromValue: yup.number().required(),
-    toValue: yup.number().required().max(calculateValue(maxAllocation)),
+    toValue: yup
+      .number()
+      .required()
+      .max(calculateValue(maxAllocation as string)),
   });
 
   const methods = useForm({
@@ -65,7 +69,7 @@ export const JoinProjectForm = () => {
 
   const getRemainingTokens = React.useMemo(() => {
     const calculatedRemainingTokens = (
-      (Number(data?.sales[0].maxDepositAmount) - Number(data?.sales[0].currentDepositAmount)) /
+      (Number(maxAllocation) - Number(data?.sales[0].currentDepositAmount)) /
       Number(data?.sales[0].salePrice)
     ).toString();
     const remainingTokens = numberWithDots(calculatedRemainingTokens);
@@ -82,9 +86,7 @@ export const JoinProjectForm = () => {
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
     }
-
-    saleContract?.maxDepositAmount().then(ethers.utils.formatEther).then(setMaxAllocation);
-  }, [swapValues.fromValue, saleContract]);
+  }, [swapValues.fromValue, swapValues.toValue, saleContract]);
 
   return (
     <FormProvider {...methods}>
@@ -137,7 +139,7 @@ export const JoinProjectForm = () => {
             </div>
           </div>
 
-          <div style={styles.maxAllocTextStyle}>Max. allocation is {scientificToDecimal(maxAllocation)} ETH</div>
+          <div style={styles.maxAllocTextStyle}>Max. allocation is {maxAllocation} ETH</div>
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
