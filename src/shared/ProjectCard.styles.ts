@@ -159,6 +159,28 @@ export const progressTextSufixStyle = styled.cssStyle`
   color: ${sideColor5};
 `;
 
+export const statsNotchStyle = styled.cssStyle`
+  margin: 1rem;
+  background-color: ${sideColor4};
+`;
+
+export const statsNotchLeftStyle = styled.cssStyle`
+  margin-left: 0;
+  margin-right: 1rem;
+  padding-left: 1rem;
+`;
+
+export const statsNotchRightStyle = styled.cssStyle`
+  margin-left: 1rem;
+  margin-right: 0;
+  padding-left: 1.5rem;
+`;
+
+export const statsContainerStyle = styled.cssStyle`
+  display: flex;
+  justify-content: space-around;
+`;
+
 export const detailsTitleStyle = styled.cssStyle`
   font-family: Titillium Web;
   padding: 0.25rem 0 0 0;

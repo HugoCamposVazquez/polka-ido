@@ -5,10 +5,10 @@ import { useHistory } from 'react-router-dom';
 
 import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
 import { ProjectData, ProjectMetadata } from '../types/ProjectType';
-import { sideColor3, sideColor4, sideColor6 } from '../utils/colorsUtil';
+import { sideColor3, sideColor6 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../utils/data';
-import { fixNums, formatWei } from '../utils/numModifiyngFuncs';
+import { formatWei } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectCard.styles';
 
 type IProps = {
@@ -99,18 +99,10 @@ export const ProjectCard = ({ direction, project }: IProps) => {
         <div
           style={
             direction === 'left'
-              ? cs(
-                  { margin: '1rem', backgroundColor: `${sideColor4}`, paddingLeft: '1rem' },
-                  { marginLeft: 0, marginRight: '1rem' },
-                  styles.bottomRightNotch,
-                )
-              : cs(
-                  { margin: '1rem', backgroundColor: `${sideColor4}`, paddingLeft: '1.5rem' },
-                  { marginLeft: '1rem', marginRight: 0 },
-                  styles.bottomLeftNotch,
-                )
+              ? cs(styles.statsNotchStyle, styles.statsNotchLeftStyle, styles.bottomRightNotch)
+              : cs(styles.statsNotchStyle, styles.statsNotchRightStyle, styles.bottomLeftNotch)
           }>
-          <div style={{ display: 'flex' }}>
+          <div style={styles.statsContainerStyle}>
             <div>
               <div style={styles.detailsTitleStyle}>Per token</div>
               <div style={styles.detailsValueStyle}>{tokenPrice} USD</div>
