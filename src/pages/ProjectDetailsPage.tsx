@@ -1,4 +1,6 @@
+import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import ProgressBar from '@ramonak/react-progress-bar/dist';
+import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -9,6 +11,7 @@ import twitterIcon from '../assets/twitter_icon.svg';
 import webIcon from '../assets/web_icon.svg';
 import { useSingleProject } from '../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
+import { useSaleContract } from '../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../shared/modals/modals';
@@ -23,6 +26,8 @@ import * as styles from './ProjectDetailsPage.styles';
 export const ProjectDetailsPage = () => {
   const navigation = useHistory();
   const { id }: { id: string } = useParams();
+  const saleContract = useSaleContract(id);
+  const { account } = useWeb3React();
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
@@ -174,7 +179,7 @@ export const ProjectDetailsPage = () => {
                 title="CLAIM TOKENS"
                 type={'bordered'}
                 onClick={() => {
-                  openClaimTokensModal('test');
+                  if (account && saleContract) openClaimTokensModal(id, saleContract, account);
                 }}
               />
               <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
