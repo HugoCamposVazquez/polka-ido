@@ -1956,10 +1956,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@nodefactoryio/ryu-contracts@0.3.0":
-  version "0.3.0"
-  resolved "https://npm.pkg.github.com/download/@nodefactoryio/ryu-contracts/0.3.0/ce4a10f9e724c61564783ef67e359ba6702f420e5e03de01b44982f2eb70d65b#c93807caafd328a09037096f7fbb863bd28d71a9"
-  integrity sha512-9r1N8hJltLApABNM7Y/0cuTdQXyUFuDXWj2auyb4KHnSO3VxymQEs/YJVoXef+sWgFznxRw+LO4Xmg1ipXYx6g==
+"@nodefactoryio/ryu-contracts@0.4.0":
+  version "0.4.0"
+  resolved "https://npm.pkg.github.com/download/@nodefactoryio/ryu-contracts/0.4.0/7ec990aa2c650df18d912e405243149d093ab789528ffdfd01df633319a3dd34#7322cb60298edada62685c8f1275b1e296a8ab1a"
+  integrity sha512-VvBPgRPn64/UEbmtLSBjAMKzfZ39KTJ/iCvfkavKBEtfcvaxIaWK9maeLSxItZVg/BYP9mGkYQQwNACyLQmjMA==
   dependencies:
     "@openzeppelin/contracts" "^4.1.0"
 
@@ -1993,9 +1993,9 @@
     rimraf "^3.0.2"
 
 "@openzeppelin/contracts@^4.1.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.2.0.tgz#260d921d99356e48013d9d760caaa6cea35dc642"
-  integrity sha512-LD4NnkKpHHSMo5z9MvFsG4g1xxZUDqV3A3Futu3nvyfs4wPwXxqOgMaxOoa2PeyGL2VNeSlbxT54enbQzGcgJQ==
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.3.0.tgz#345236d4ec73ef381ab4907c6ef66fd55e5dedad"
+  integrity sha512-+uBDl/TrmR0Kch6mq3tuxMex/fK7huR6+fQMae+zJk1K5T+dp0pFl12Hbc+1L6oYMXoyDSBJ8zqhRIntrREDFA==
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   version "0.4.3"

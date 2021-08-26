@@ -1,4 +1,4 @@
-import { abi } from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContractFactory.sol/SaleContractFactory.json';
+import { abi } from '@nodefactoryio/ryu-contracts/artifacts/contracts/SaleContract.sol/SaleContract.json';
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 
 import { useContract } from './useContract';

@@ -1,6 +1,8 @@
+import { BigNumber } from '@ethersproject/bignumber';
+import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { AccountsDropdown } from '../../shared/AccountsDropdown';
@@ -12,12 +14,32 @@ import { modalTextStyle } from './Modal.styles';
 
 interface IProps {
   closeModal: () => void;
-  message: string;
+  id: string;
+  contract: SaleContract;
+  userEthAddress: string;
 }
 
-export const ClaimTokensModal = ({ closeModal }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
+  const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
+  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<BigNumber | string>();
+
+  useEffect(() => {
+    const getClaimableTokens = async () => {
+      try {
+        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress as string);
+        setAmountOfClaimableTokens(claimableBalance);
+      } catch (error) {
+        setAmountOfClaimableTokens('0');
+      }
+    };
+    getClaimableTokens();
+
+    if (accounts.length) methods.setValue('address', accounts[0].address);
+    if (selectedDotAcc) methods.setValue('address', selectedDotAcc.address);
+  }, [accounts, selectedDotAcc, userEthAddress]);
+
   const methods = useForm({
     defaultValues: {
       address: '',
@@ -25,10 +47,10 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
     //resolver: yupResolver(loginValidationSchema),
   });
 
-  const onSubmit = async ({ address }: any) => {
+  const onSubmit = async ({ address }: { address: string }) => {
     try {
+      await contract.claimVestedTokens(address, { gasLimit: 1000000 });
       closeModal();
-      console.log(address);
     } catch (e) {
       console.log(e);
     }
@@ -58,12 +80,12 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
         {isConnectedWallet && (
           <>
             <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown options={accounts} initialAccount={accounts[0]} />
+            <AccountsDropdown options={accounts} initialAccount={accounts[0]} setSelectedDotAcc={setSelectedDotAcc} />
           </>
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>349857 TKN</div>
+      <div style={styles.tknValueTextStyle}>{amountOfClaimableTokens} TKN</div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>
@@ -81,6 +103,7 @@ export const ClaimTokensModal = ({ closeModal }: IProps) => {
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
+                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
                 title={'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
