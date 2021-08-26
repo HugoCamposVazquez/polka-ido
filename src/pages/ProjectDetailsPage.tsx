@@ -135,7 +135,7 @@ export const ProjectDetailsPage = () => {
                 title="CLAIM TOKENS"
                 type={'bordered'}
                 onClick={() => {
-                  openClaimTokensModal(id, saleContract as SaleContract, account as string);
+                  if (account && saleContract) openClaimTokensModal(id, saleContract, account);
                 }}
               />
               <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
