@@ -103,15 +103,11 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabed={!accounts.length || amountOfClaimableTokens === '0'}
+                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
                 title={'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
-                style={
-                  !accounts.length || amountOfClaimableTokens === '0'
-                    ? { width: '100%', backgroundColor: 'rgb(122, 122, 122)', borderColor: 'rgb(122, 122, 122)' }
-                    : { width: '100%' }
-                }
+                style={{ width: '100%' }}
               />
             </div>
           </div>

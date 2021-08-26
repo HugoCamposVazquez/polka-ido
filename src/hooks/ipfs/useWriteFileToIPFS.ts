@@ -1,22 +1,22 @@
 import axios from 'axios';
+import FormData from 'form-data';
 import { useCallback, useState } from 'react';
 
 import { getPinataApi, PinataResponse } from '../../services/pinata';
 
 interface IData {
   loading: boolean;
-  writeData: (body: unknown) => void;
+  writeData: (body: FormData) => Promise<PinataResponse | null>;
   error?: string;
-  response?: PinataResponse;
 }
 
 // Uses pinata.cloud pinning
-export const useWriteFileToIPFS = (body: FormData): IData => {
-  const [loading, setLoading] = useState(true);
-  const [response, setResponse] = useState<PinataResponse | undefined>(undefined);
+export const useWriteFileToIPFS = (): IData => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
-  const writeData = useCallback(async () => {
+  const writeData = useCallback(async (body: FormData): Promise<PinataResponse | null> => {
+    setLoading(true);
     try {
       const api = getPinataApi();
       const response = await api.post('/pinning/pinFileToIPFS', body, {
@@ -27,7 +27,7 @@ export const useWriteFileToIPFS = (body: FormData): IData => {
         },
       });
       if (response.data) {
-        setResponse(response.data);
+        return response.data;
       }
     } catch (e) {
       if (axios.isAxiosError(e)) {
@@ -38,12 +38,12 @@ export const useWriteFileToIPFS = (body: FormData): IData => {
     }
 
     setLoading(false);
+    return null;
   }, []);
 
   return {
     loading,
     writeData,
-    response,
     error,
   };
 };
