@@ -1,8 +1,7 @@
-import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import projectCardBackground from '../assets/project_card_background.png';
@@ -59,6 +58,12 @@ export const ProjectDetailsPage = () => {
     }
     return '0';
   }, [data?.sales[0]]);
+
+  const onClaimClick = useCallback((): void => {
+    if (account && saleContract) {
+      openClaimTokensModal(id, saleContract, account);
+    }
+  }, [id, saleContract, account]);
 
   return (
     <div>
@@ -175,13 +180,7 @@ export const ProjectDetailsPage = () => {
             </div>
 
             <div className={styles.projectDetailsBtnsParentStyle}>
-              <MainButton
-                title="CLAIM TOKENS"
-                type={'bordered'}
-                onClick={() => {
-                  if (account && saleContract) openClaimTokensModal(id, saleContract, account);
-                }}
-              />
+              <MainButton title="CLAIM TOKENS" type={'bordered'} onClick={onClaimClick} />
               <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
             </div>
           </div>
