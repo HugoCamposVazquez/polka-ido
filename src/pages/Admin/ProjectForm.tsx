@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
 import React, { useEffect, useState } from 'react';
@@ -30,8 +31,8 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const navigation = useHistory();
   const [imageUrl, setImageUrl] = useState('');
   const [isSavingData, setIsSavingData] = useState(false);
+  const { account } = useWeb3React();
 
-  // TODO: Check if user has wallet connected and if it is owner account
   // TODO: Add fields validation
 
   const contract = useSaleFactoryContract();
@@ -56,14 +57,16 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   }, [loadingProjectData, project]);
 
   const onSubmit = async (project: ProjectType) => {
+    if (!account) return;
     setIsSavingData(true);
+
     try {
       // 1. Write metadata to IPFS to get hash (URI)
       const response = await writeDataToIPFS({
         title: project.title,
         shortDescription: project.shortDescription,
         description: project.description,
-        etherscanLink: project.etherScanLink,
+        etherscanLink: project.etherscanLink,
         webLink: project.webLink,
         twitterLink: project.twitterLink,
         telegramLink: project.telegramLink,
@@ -74,7 +77,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
       }
 
       // 2. Create new sale smart contract
-      await contract?.createSaleContract(
+      const tx = await contract?.createSaleContract(
         convertDateToUnixtime(project.starts),
         convertDateToUnixtime(project.ends),
         utils.parseEther(project.minUserDeposit),
@@ -85,6 +88,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         {
           tokenID: project.tokenId,
           decimals: 18,
+          walletAddress: account,
         },
         {
           whitelist: project.access === 'whitelist',
@@ -95,10 +99,12 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           unlockInterval: 300, // unlockInterval should be removed?
           percentageToMint: 10, // should be replaced by distribution?
         },
-        `${process.env.REACT_APP_IPFS_GATEWAY}${response.IpfsHash}`,
+        `ipfs://${response.IpfsHash}`,
       );
-      // tx.wait(1);
-      // TODO: Redirect to project page after success
+      if (tx) {
+        tx.wait(1);
+        navigation.push('/admin/project');
+      }
       setIsSavingData(false);
     } catch (e) {
       console.log(e);
@@ -182,7 +188,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Etherscan</div>
               <div>
-                <TextField name={'etherScanLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                <TextField name={'etherscanLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
               </div>
               <div style={{ flex: 1 }} />
             </div>

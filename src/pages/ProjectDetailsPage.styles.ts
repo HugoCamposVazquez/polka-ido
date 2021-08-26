@@ -309,6 +309,7 @@ export const etherScanBtnStyle = styled.cssStyle`
   padding: 0.25rem 1.5rem;
   border: 0.06rem solid ${sideColor5};
   cursor: pointer;
+  color: white;
 `;
 
 export const aboutTextStyle = styled.cssStyle`

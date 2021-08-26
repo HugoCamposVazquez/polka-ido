@@ -21,7 +21,7 @@ export const getAllColumns = () => {
         <div style={{ display: 'flex' }}>
           <img
             style={{ height: '1.5rem', width: '1.5rem', objectFit: 'cover', marginRight: '0.75rem' }}
-            src={cellProps.record.iconUrl}
+            src={cellProps.record.imageUrl}
           />
           <div>{cellProps.record.title}</div>
         </div>

@@ -148,10 +148,6 @@ export const LaunchpadPage = () => {
           {projects.map((project: ProjectData, index: number) => {
             return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
           })}
-          {projectLoading &&
-            projects.map((el: ProjectData, index: number) => (
-              <ProjectCard key={index} direction={getCardDirection(width, index)} />
-            ))}
         </div>
       </div>
       <Footer />
