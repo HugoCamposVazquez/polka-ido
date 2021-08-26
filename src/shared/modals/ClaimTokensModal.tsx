@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
@@ -13,24 +14,31 @@ import { modalTextStyle } from './Modal.styles';
 
 interface IProps {
   closeModal: () => void;
-  message: string;
   id: string;
   contract: SaleContract;
+  userEthAddress: string;
 }
 
-export const ClaimTokensModal = ({ closeModal, contract }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
-  const [selectedAccountIndex, setSelectedAccountIndex] = useState<number>(0);
+  const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
+  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<BigNumber | string>();
 
   useEffect(() => {
-    if (accounts.length) {
-      methods.control.setValue('address', accounts[selectedAccountIndex].address);
+    const getClaimableTokens = async () => {
+      try {
+        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress as string);
+        setAmountOfClaimableTokens(claimableBalance);
+      } catch (error) {
+        setAmountOfClaimableTokens('0');
+      }
+    };
+    getClaimableTokens();
 
-      const selectedAccountAddress = accounts[selectedAccountIndex].address;
-      contract.getUserClaimableTokens(selectedAccountAddress);
-    }
-  }, [accounts, selectedAccountIndex]);
+    if (accounts.length) methods.setValue('address', accounts[0].address);
+    if (selectedDotAcc) methods.setValue('address', selectedDotAcc.address);
+  }, [accounts, selectedDotAcc, userEthAddress]);
 
   const methods = useForm({
     defaultValues: {
@@ -39,9 +47,9 @@ export const ClaimTokensModal = ({ closeModal, contract }: IProps) => {
     //resolver: yupResolver(loginValidationSchema),
   });
 
-  const onSubmit = async ({ address }: any) => {
+  const onSubmit = async ({ address }: { address: string }) => {
     try {
-      contract.claimVestedTokens(address, { gasLimit: 1000000 });
+      await contract.claimVestedTokens(address, { gasLimit: 1000000 });
       closeModal();
     } catch (e) {
       console.log(e);
@@ -72,16 +80,12 @@ export const ClaimTokensModal = ({ closeModal, contract }: IProps) => {
         {isConnectedWallet && (
           <>
             <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown
-              options={accounts}
-              initialAccount={accounts[0]}
-              setSelectedAccountIndex={setSelectedAccountIndex}
-            />
+            <AccountsDropdown options={accounts} initialAccount={accounts[0]} setSelectedDotAcc={setSelectedDotAcc} />
           </>
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>TKN</div>
+      <div style={styles.tknValueTextStyle}>{amountOfClaimableTokens} TKN</div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>
@@ -99,10 +103,15 @@ export const ClaimTokensModal = ({ closeModal, contract }: IProps) => {
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
+                disabed={!accounts.length || amountOfClaimableTokens === '0'}
                 title={'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
-                style={{ width: '100%' }}
+                style={
+                  !accounts.length || amountOfClaimableTokens === '0'
+                    ? { width: '100%', backgroundColor: 'rgb(122, 122, 122)', borderColor: 'rgb(122, 122, 122)' }
+                    : { width: '100%' }
+                }
               />
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import ProgressBar from '@ramonak/react-progress-bar/dist';
+import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -22,6 +23,7 @@ export const ProjectDetailsPage = () => {
   const navigation = useHistory();
   const { id }: { id: string } = useParams();
   const saleContract = useSaleContract(id);
+  const { account } = useWeb3React();
 
   const { data } = useSingleProject(id);
 
@@ -133,7 +135,7 @@ export const ProjectDetailsPage = () => {
                 title="CLAIM TOKENS"
                 type={'bordered'}
                 onClick={() => {
-                  openClaimTokensModal('test', id, saleContract as SaleContract);
+                  openClaimTokensModal(id, saleContract as SaleContract, account as string);
                 }}
               />
               <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
