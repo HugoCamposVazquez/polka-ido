@@ -7,7 +7,7 @@ import { AboutUsPage } from '../AboutUsPage';
 import { HomePage } from '../HomePage';
 import { JoinProjectPage } from '../JoinProject/JoinProjectPage';
 import { LaunchpadPage } from '../LaunchpadPage';
-import { ProjectDetailsPage } from '../ProjectDetailsPage';
+import { ProjectDetailsPage } from '../ProjectDetails/ProjectDetailsPage';
 
 const userRouterStyle = styled.cssStyle`
   display: flex;
