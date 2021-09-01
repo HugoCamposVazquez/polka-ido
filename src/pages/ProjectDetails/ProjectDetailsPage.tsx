@@ -14,6 +14,7 @@ import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../../shared/modals/modals';
+import { ProjectDetailsSectionLoading } from '../../shared/ProjectDetailsSectionLoading';
 import { ExternalLink } from '../../shared/wrappers/ExternalLink';
 import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
@@ -269,7 +270,11 @@ export const ProjectDetailsPage = () => {
             </div>
           </div>
 
-          <TokenDetails />
+          {data?.sales[0].token.id ? (
+            <TokenDetails assetId={data?.sales[0].token.id} />
+          ) : (
+            <ProjectDetailsSectionLoading />
+          )}
         </div>
       </div>
       <div className={styles.aboutTheProjectContainerClassName}>

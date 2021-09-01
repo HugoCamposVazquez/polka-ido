@@ -5,8 +5,12 @@ import { sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import * as styles from './ProjectDetailsPage.styles';
 
-export const TokenDetails = () => {
-  const { data, loading, error } = useStatemintToken('301');
+interface IProps {
+  assetId: string;
+}
+
+export const TokenDetails = ({ assetId }: IProps) => {
+  const { data } = useStatemintToken(assetId);
 
   return (
     <div
@@ -17,15 +21,15 @@ export const TokenDetails = () => {
         <div style={{ marginTop: '2.25rem' }}>
           <div style={styles.projectDetailsItemStyle}>
             <div className={styles.descriptionTextStyle}>Name</div>
-            <div className={styles.content3TextStyle}>takename</div>
+            <div className={styles.content3TextStyle}>{data?.name}</div>
           </div>
           <div style={styles.projectDetailsItemStyle}>
             <div className={styles.descriptionTextStyle}>Symbol</div>
-            <div className={styles.content3TextStyle}>TKN</div>
+            <div className={styles.content3TextStyle}>{data?.symbol}</div>
           </div>
           <div style={styles.projectDetailsItemStyle}>
             <div className={styles.descriptionTextStyle}>Statemint ID</div>
-            <div className={styles.content3TextStyle}>12390</div>
+            <div className={styles.content3TextStyle}>{assetId}</div>
           </div>
           <div style={{ display: 'flex', padding: '0.75rem 0' }}>
             <div className={styles.descriptionTextStyle}>Total supply</div>
