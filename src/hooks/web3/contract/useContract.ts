@@ -6,6 +6,8 @@ export const NETWORKS: { [chainId: number]: string } = {
   1287: 'moonbaseAlpha',
 };
 
+export const DEFAULT_NETWORK_ID = 1287;
+
 export const useContract = (address: string | undefined, ABI: any): Contract | null => {
   const { library, account } = useWeb3React();
 

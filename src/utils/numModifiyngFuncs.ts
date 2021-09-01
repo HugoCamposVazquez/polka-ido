@@ -1,3 +1,5 @@
+import { BigNumber, ethers } from 'ethers';
+
 export const fixNums = (num: number, fixTo: number) => {
   if (!fixTo) return num.toFixed(fixTo); // don't go wrong if no decimal
 
@@ -54,4 +56,13 @@ export const scientificToDecimal = (num: any) => {
   }
 
   return nsign < 0 ? '-' + num : num;
+};
+export const formatWei = (numberInWei: string | BigNumber): string => {
+  const eth = ethers.utils.formatEther(numberInWei);
+  const formattedNumber = numberWithDots(eth);
+  if (Number(formattedNumber) === 0) {
+    return '0';
+  }
+
+  return formattedNumber;
 };

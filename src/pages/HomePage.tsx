@@ -11,6 +11,7 @@ import { TextArea } from '../shared/gui/TextArea';
 import { TextField } from '../shared/gui/TextField';
 import { Footer } from '../shared/insets/user/Footer';
 import { ProjectCard } from '../shared/ProjectCard';
+import { ProjectCardLoading } from '../shared/ProjectCardLoading';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './HomePage.styles';
@@ -67,8 +68,8 @@ export const HomePage = () => {
               <ProjectCard key={project.id} project={project} direction={getCardDirection(width, index)} />
             ))}
           {loading &&
-            data?.sales.map((el, index: number) => (
-              <ProjectCard key={el.id} project={el} direction={getCardDirection(width, index)} />
+            [0].map((_, index: number) => (
+              <ProjectCardLoading key={index} direction={getCardDirection(width, index)} />
             ))}
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>

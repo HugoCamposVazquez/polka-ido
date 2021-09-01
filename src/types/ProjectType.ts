@@ -9,33 +9,32 @@ export type ProjectApiType = {
   data: ProjectType;
 };
 
-export type ProjectType = {
-  id?: number;
+export type ProjectMetadata = {
   title: string;
+  etherscanLink: string;
+  webLink: string;
+  twitterLink: string;
+  telegramLink: string;
+  shortDescription: string;
+  description: string;
+  imageUrl: string;
+};
+
+export type ProjectType = ProjectMetadata & {
+  id?: number;
   status: ProjectStatus;
   access: ProjectAccess;
   featured: boolean;
   starts: Date;
   ends: Date;
-  raiseAmountTotal: number;
-  tokenPrice: number;
+  minUserDeposit: string;
+  maxUserDeposit: string;
+  raiseAmountTotal: number | string;
+  tokenPrice: number | string;
   tokenValue: number;
-  iconUrl: string;
-  etherScanLink: string;
-  webLink: string;
-  twitterLink: string;
-  telegramLink: string;
   distributionDate: Date;
-  minAllocation: number;
-  maxAllocation: number;
   minSwapLevel: number;
-  whitelistStatus: string;
-  tokenName: string;
-  symbol: string;
-  decimals: number;
-  totalSupply: number;
-  shortDescription: string;
-  description: string;
+  tokenId: number;
   raiseAmountCurrent?: number;
   joined?: boolean;
 };

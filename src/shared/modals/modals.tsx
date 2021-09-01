@@ -1,3 +1,4 @@
+import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -36,10 +37,10 @@ const detachDiv = () => {
   }
 };
 
-export const openClaimTokensModal = (message: string) => {
+export const openClaimTokensModal = (id: string, contract: SaleContract, userEthAddress: string) => {
   attachDiv();
   ReactDOM.render(
-    <ClaimTokensModal closeModal={detachDiv} message={message} />,
+    <ClaimTokensModal closeModal={detachDiv} id={id} contract={contract} userEthAddress={userEthAddress} />,
     stackOfModalDivs[stackOfModalDivs.length - 1],
   );
 };

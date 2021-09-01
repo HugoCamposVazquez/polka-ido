@@ -3,8 +3,8 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Header } from '../../shared/insets/admin/Header';
 import { styled } from '../../utils/css';
-import { AdminPage } from '../AdminPage';
-import { AdminProjectPage } from '../AdminProjectPage';
+import { AdminPage } from '../Admin/AdminPage';
+import { AdminProjectPage } from '../Admin/AdminProjectPage';
 
 const adminRouterStyle = styled.cssStyle`
   display: flex;

@@ -146,6 +146,7 @@ export const progressTextContainerStyle = styled.cssStyle`
   font-weight: 400;
   font-size: 1.25rem;
   line-height: 1.39rem;
+  height: 2.78rem;
   margin: 0.25rem 1rem 0;
   display: flex;
 `;
@@ -156,6 +157,28 @@ export const progressTextPrefixStyle = styled.cssStyle`
 
 export const progressTextSufixStyle = styled.cssStyle`
   color: ${sideColor5};
+`;
+
+export const statsNotchStyle = styled.cssStyle`
+  margin: 1rem;
+  background-color: ${sideColor4};
+`;
+
+export const statsNotchLeftStyle = styled.cssStyle`
+  margin-left: 0;
+  margin-right: 1rem;
+  padding-left: 1rem;
+`;
+
+export const statsNotchRightStyle = styled.cssStyle`
+  margin-left: 1rem;
+  margin-right: 0;
+  padding-left: 1.5rem;
+`;
+
+export const statsContainerStyle = styled.cssStyle`
+  display: flex;
+  justify-content: space-around;
 `;
 
 export const detailsTitleStyle = styled.cssStyle`

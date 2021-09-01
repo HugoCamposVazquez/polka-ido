@@ -8,7 +8,7 @@ import { SourceType } from '../../types/SourceType';
 
 const projectStatuses: ProjectStatus[] = ['upcoming', 'ended'];
 const projectAccesses: ProjectAccess[] = ['whitelist', 'private'];
-const iconUrls: any[] = [projectImage, horseImage];
+const imageUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];
 
@@ -26,20 +26,16 @@ for (let i = 0; i < 80; i++) {
     raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000),
     tokenPrice: 0.02,
     tokenValue: 20,
-    iconUrl: iconUrls[Math.floor(Math.random() * iconUrls.length)],
-    etherScanLink: 'string',
+    imageUrl: imageUrls[Math.floor(Math.random() * imageUrls.length)],
+    etherscanLink: 'string',
     webLink: 'string',
     twitterLink: 'string',
     telegramLink: 'string',
     distributionDate: new Date(2014, 1, 11),
-    minAllocation: 0.02,
-    maxAllocation: 0.2,
+    minUserDeposit: '150',
+    maxUserDeposit: '20000',
     minSwapLevel: 0.01,
-    whitelistStatus: 'Whitelisted',
-    tokenName: 'token name',
-    symbol: 'ETH',
-    decimals: 16,
-    totalSupply: 100000,
+    tokenId: 123,
     shortDescription: 'string',
     description:
       'For athletes, high altitude produces two contradictory effects on performance. For explosive events (sprints up to 400 metres, long jump, triple jump)',

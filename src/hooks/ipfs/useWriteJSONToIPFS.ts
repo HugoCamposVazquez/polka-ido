@@ -5,23 +5,21 @@ import { getPinataApi, PinataResponse } from '../../services/pinata';
 
 interface IData {
   loading: boolean;
-  writeData: (body: unknown) => void;
+  writeData: (body: unknown) => Promise<PinataResponse | null>;
   error?: string;
-  response?: PinataResponse;
 }
 
 // Uses pinata.cloud pinning
 export const useWriteJSONToIPFS = (): IData => {
   const [loading, setLoading] = useState(true);
-  const [response, setResponse] = useState<PinataResponse | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
 
-  const writeData = useCallback(async (body: unknown) => {
+  const writeData = useCallback(async (body: unknown): Promise<PinataResponse | null> => {
     try {
       const api = getPinataApi();
       const response = await api.post('/pinning/pinJSONToIPFS', body);
       if (response.data) {
-        setResponse(response.data);
+        return response.data;
       }
     } catch (e) {
       if (axios.isAxiosError(e)) {
@@ -30,13 +28,12 @@ export const useWriteJSONToIPFS = (): IData => {
         setError(`An unexpected error occurred: ${e.message}`);
       }
     }
-
     setLoading(false);
+    return null;
   }, []);
 
   return {
     loading,
-    response,
     error,
     writeData,
   };

@@ -4,20 +4,21 @@ import { SaleContractFactory } from '@nodefactoryio/ryu-contracts/typechain/Sale
 import { useWeb3React } from '@web3-react/core';
 
 import { DeploymentJson } from '../../../types/Deployment';
-import { NETWORKS, useContract } from './useContract';
+import { DEFAULT_NETWORK_ID, NETWORKS, useContract } from './useContract';
 
 export const useSaleFactoryContract = (): SaleContractFactory | null => {
   const { chainId } = useWeb3React();
 
-  if (chainId && chainId in deploymentsJSON) {
-    const address = getSaleFactoryContractAdddress(chainId);
-
+  try {
+    const address = getSaleFactoryContractAddress(chainId || DEFAULT_NETWORK_ID);
     return useContract(address, abi) as SaleContractFactory;
+  } catch (e) {
+    console.error(`Error while trying to connect to contract: ${e.message}`);
+    return null;
   }
-
-  return null;
 };
 
-const getSaleFactoryContractAdddress = (chainId: number): string => {
-  return (deploymentsJSON as unknown as DeploymentJson)[chainId][NETWORKS[chainId]].contracts['SwapKiwi'].address;
+const getSaleFactoryContractAddress = (chainId: number): string => {
+  return (deploymentsJSON as unknown as DeploymentJson)[chainId][NETWORKS[chainId]].contracts['SaleContractFactory']
+    .address;
 };
