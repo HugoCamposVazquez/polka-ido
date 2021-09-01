@@ -6,7 +6,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import { useWriteJSONToIPFS } from '../../hooks/ipfs/useWriteJSONToIPFS';
+import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
+import { getStatemintApi } from '../../services/polkadot';
 import { CheckboxField } from '../../shared/gui/CheckboxField';
 import { DateField } from '../../shared/gui/DateField';
 import { ImagePicker } from '../../shared/gui/ImagePicker';
@@ -60,6 +62,15 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
     if (!account) return;
     setIsSavingData(true);
 
+    const api = await getStatemintApi();
+    const blockHash = await api.rpc.chain.getBlockHash();
+    const tokenMetadata = (
+      await api.query.assets.metadata.at(blockHash, project.tokenId)
+    ).toJSON() as unknown as TokenMetadata;
+    if (!tokenMetadata.name) {
+      // TODO: Display error that token asset doesn't exist yet
+    }
+
     try {
       // 1. Write metadata to IPFS to get hash (URI)
       const response = await writeDataToIPFS({
@@ -87,7 +98,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         project.maxUserDeposit, //_totalDepositPerUser should be removed?
         {
           tokenID: project.tokenId,
-          decimals: 18,
+          decimals: tokenMetadata.decimals,
           walletAddress: account,
         },
         {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getStatemintApi } from '../../services/polkadot';
 import { IData } from '../ipfs/useReadIPFS';
 
-interface TokenMetadata {
+export interface TokenMetadata {
   symbol: string;
   name: string;
   decimals: string;
@@ -29,7 +29,7 @@ export const useStatemintToken = (assetId: string): IData<StatemintToken> => {
       const api = await getStatemintApi();
       const blockHash = await api.rpc.chain.getBlockHash();
       const asset = (await api.query.assets.asset.at(blockHash, assetId)).toJSON() as unknown as Asset;
-      const metadata = (await api.query.assets.metadata.at(blockHash, assetId)).toJSON() as unknown as StatemintToken;
+      const metadata = (await api.query.assets.metadata.at(blockHash, assetId)).toJSON() as unknown as TokenMetadata;
       setData({
         ...metadata,
         ...asset,
