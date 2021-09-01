@@ -14,6 +14,7 @@ type IProps = {
   autoFocus?: boolean;
   mode: 'light' | 'dark';
   type?: string;
+  imposeMinMax?: any;
 };
 
 export const TextField = ({ name, placeholder, disabled, styleType, autoFocus, mode, style, type }: IProps) => {

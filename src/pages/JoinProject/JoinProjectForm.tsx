@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, BigNumberish, ethers } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -21,22 +21,11 @@ export const JoinProjectForm = () => {
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
   const maxAllocation =
-    data?.sales[0].maxDepositAmount &&
-    ethers.utils.formatEther(scientificToDecimal(data?.sales[0].maxDepositAmount.toString()).toString());
-
-  const calculateValue = React.useCallback(
-    (value: string) => {
-      return scientificToDecimal(Number(value) * Number(data?.sales[0].salePrice));
-    },
-    [data?.sales[0]],
-  );
+    data?.sales[0].maxDepositAmount && ethers.utils.formatEther(data?.sales[0].maxDepositAmount).toString();
 
   const validationSchema = yup.object().shape({
-    fromValue: yup.number().required(),
-    toValue: yup
-      .number()
-      .required()
-      .max(calculateValue(maxAllocation as string)),
+    fromValue: yup.number().required().max(Number(maxAllocation)),
+    toValue: yup.number().required(),
   });
 
   const methods = useForm({
@@ -44,14 +33,31 @@ export const JoinProjectForm = () => {
       fromValue: '',
       toValue: '',
     },
+    mode: 'onChange',
     resolver: yupResolver(validationSchema),
   });
 
+  const isValidInput = (inputValue: string) => {
+    try {
+      ethers.utils.parseEther(inputValue);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   const onSubmit = async ({ toValue }: { fromValue: string; toValue: string }): Promise<void> => {
     try {
-      saleContract?.buyTokens({ value: ethers.utils.parseEther(scientificToDecimal(toValue)), gasLimit: 10000000 });
-      methods.setValue('toValue', '');
-      methods.setValue('fromValue', '');
+      const validValue = isValidInput(scientificToDecimal(toValue));
+      if (validValue) {
+        saleContract?.buyTokens({
+          value: ethers.utils.parseEther(scientificToDecimal(toValue)),
+          gasLimit: 10000000,
+        });
+        methods.setValue('toValue', '');
+        methods.setValue('fromValue', '');
+      }
     } catch (e) {
       console.error(e.message);
     }
@@ -63,30 +69,72 @@ export const JoinProjectForm = () => {
   };
 
   const onClickSetMaxAllocation = () => {
-    const minNum = scientificToDecimal(Math.min(Number(balance), Number(maxAllocation)));
+    const minNum = Math.min(Number(balance), Number(maxAllocation));
     setBuyTokens(minNum.toString());
   };
 
+  //Subscribe to input changes
+  const swapValues = methods.watch();
+  const calculateValue = React.useCallback(
+    (value: string) => {
+      const validValue = isValidInput(value);
+      if (data && validValue) {
+        return ethers.utils
+          .formatEther(BigNumber.from(ethers.utils.parseEther(value)).mul(data?.sales[0].salePrice).toString())
+          .replace(/\.0+$/, ''); // replace zeros
+      } else {
+        return '0';
+      }
+    },
+    [data?.sales[0], swapValues.toValue],
+  );
+
   const getRemainingTokens = React.useMemo(() => {
-    const calculatedRemainingTokens = (
-      (Number(maxAllocation) - Number(data?.sales[0].currentDepositAmount)) /
-      Number(data?.sales[0].salePrice)
-    ).toString();
-    const remainingTokens = numberWithDots(calculatedRemainingTokens);
+    const calculatedRemainingTokens =
+      maxAllocation &&
+      data &&
+      ethers.utils
+        .parseEther(maxAllocation)
+        .sub(ethers.utils.parseEther(data?.sales[0].currentDepositAmount))
+        .div(ethers.utils.parseEther(data?.sales[0].salePrice))
+        .toString();
+    const remainingTokens = calculatedRemainingTokens && numberWithDots(calculatedRemainingTokens);
 
     return remainingTokens;
   }, [data?.sales[0]]);
 
-  //Subscribe to input changes
-  const swapValues = methods.watch();
+  useEffect(() => {
+    if (data) {
+      if (swapValues.fromValue && swapValues.toValue !== calculateValue(swapValues.fromValue))
+        methods.setValue('toValue', calculateValue(swapValues.fromValue));
+      if (!swapValues.fromValue) {
+        methods.setValue('toValue', '');
+        methods.setValue('fromValue', '');
+      }
+    }
+  }, [swapValues.fromValue]);
 
   useEffect(() => {
-    if (swapValues.fromValue) methods.setValue('toValue', calculateValue(swapValues.fromValue));
-    if (!swapValues.fromValue) {
-      methods.setValue('toValue', '');
-      methods.setValue('fromValue', '');
+    const calcTknToEth =
+      isValidInput(swapValues.toValue) &&
+      swapValues.toValue &&
+      data &&
+      ethers.utils
+        .formatEther(ethers.utils.parseEther(swapValues.toValue).div(data?.sales[0].salePrice))
+        .toString()
+        .replace(/\.0+$/, ''); // remove trailing zeros
+
+    if (data) {
+      if (swapValues.toValue && swapValues.fromValue !== calcTknToEth) {
+        methods.setValue('fromValue', calcTknToEth);
+      }
+
+      if (!swapValues.toValue) {
+        methods.setValue('toValue', '');
+        methods.setValue('fromValue', '');
+      }
     }
-  }, [swapValues.fromValue, swapValues.toValue, saleContract]);
+  }, [swapValues.toValue]);
 
   return (
     <FormProvider {...methods}>
@@ -129,7 +177,11 @@ export const JoinProjectForm = () => {
                 name={'toValue'}
                 styleType={'none'}
                 placeholder={
-                  data && scientificToDecimal((Number(maxAllocation) * Number(data?.sales[0].salePrice)).toString())
+                  data &&
+                  maxAllocation &&
+                  ethers.utils.formatEther(
+                    BigNumber.from(ethers.utils.parseEther(maxAllocation)).mul(data?.sales[0].salePrice).toString(),
+                  )
                 }
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
