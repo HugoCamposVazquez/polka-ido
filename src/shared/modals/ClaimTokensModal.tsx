@@ -23,15 +23,15 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
-  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<BigNumber | string>();
+  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<Number>();
 
   useEffect(() => {
     const getClaimableTokens = async () => {
       try {
         const claimableBalance = await contract.getUserClaimableTokens(userEthAddress as string);
-        setAmountOfClaimableTokens(claimableBalance);
+        setAmountOfClaimableTokens(Number(claimableBalance));
       } catch (error) {
-        setAmountOfClaimableTokens('0');
+        setAmountOfClaimableTokens(0);
       }
     };
     getClaimableTokens();
@@ -103,7 +103,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
+                disabled={!!(!accounts.length || amountOfClaimableTokens === 0)}
                 title={'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
