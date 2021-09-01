@@ -19,36 +19,47 @@ interface Asset {
 
 type StatemintToken = TokenMetadata & Asset;
 
-export const useStatemintToken = (assetId: string): IData<StatemintToken> => {
+interface ReturnData extends IData<StatemintToken> {
+  fetchTokenData: (tokenId: string) => Promise<StatemintToken | null>;
+}
+
+export const useStatemintToken = (assetId?: string): ReturnData => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<StatemintToken | undefined>(undefined);
   const [error, setError] = useState<string | undefined>();
 
-  const fetchData = async (): Promise<void> => {
+  const fetchTokenData = async (id: string): Promise<StatemintToken | null> => {
     try {
       const api = await getStatemintApi();
       const blockHash = await api.rpc.chain.getBlockHash();
-      const asset = (await api.query.assets.asset.at(blockHash, assetId)).toJSON() as unknown as Asset;
-      const metadata = (await api.query.assets.metadata.at(blockHash, assetId)).toJSON() as unknown as StatemintToken;
-      setData({
+      const asset = (await api.query.assets.asset.at(blockHash, id)).toJSON() as unknown as Asset;
+      const metadata = (await api.query.assets.metadata.at(blockHash, id)).toJSON() as unknown as StatemintToken;
+      const data = {
         ...metadata,
         ...asset,
         symbol: hexToString(metadata.symbol),
         name: hexToString(metadata.name),
-      });
+      };
+      setData(data);
+      setLoading(false);
+      return data;
     } catch (e) {
+      setLoading(false);
       setError(e.message);
+      return null;
     }
-    setLoading(false);
   };
 
   useEffect(() => {
-    fetchData();
+    if (assetId) {
+      fetchTokenData(assetId);
+    }
   }, []);
 
   return {
     loading,
     data,
     error,
+    fetchTokenData,
   };
 };

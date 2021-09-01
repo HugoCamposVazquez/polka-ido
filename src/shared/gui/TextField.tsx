@@ -15,7 +15,7 @@ type IProps = {
   mode: 'light' | 'dark';
 };
 
-export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, style }: IProps) => {
+export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, style, ...props }: IProps) => {
   const { control } = useFormContext();
 
   let borderWidth = '';
@@ -46,6 +46,7 @@ export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, 
               disabled={disabled}
               onChange={onChange}
               autoFocus={autoFocus}
+              {...props}
             />
           );
         }}
