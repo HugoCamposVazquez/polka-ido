@@ -30,7 +30,7 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
   };
 
   const { balance } = useMoonbeanBalance();
-  const formattedBalance = useMemo(() => formatWei(balance), []);
+  const formattedBalance = useMemo(() => formatWei(balance), [balance]);
 
   return (
     <>
