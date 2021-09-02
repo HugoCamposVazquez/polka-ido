@@ -56,8 +56,9 @@ export const JoinProjectForm = () => {
   const onClickSetMaxAllocation = () => {
     const maxPossible = balance.gt(maxAllocation) ? maxAllocation : balance;
     const formattedMaxPossible = formatWei(maxPossible);
-    const toValue = calculateToValue(formattedMaxPossible);
     methods.setValue('fromValue', formattedMaxPossible);
+    const toValue = calculateToValue(formattedMaxPossible);
+    methods.setValue('toValue', toValue);
   };
 
   const swapValues = methods.watch();
