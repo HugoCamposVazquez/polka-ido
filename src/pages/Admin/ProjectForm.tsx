@@ -254,7 +254,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Token decimals</div>
-              <TextField name={'decimals'} type={'bordered'} mode={'light'} placeholder={'18'} />
+              <TextField name={'decimals'} styleType={'bordered'} mode={'light'} placeholder={'18'} />
             </div>
           </div>
 

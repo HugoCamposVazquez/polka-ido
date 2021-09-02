@@ -7,8 +7,8 @@ import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
-import { useMoonbeanBalance } from '../../hooks/useMoonbeamBalance';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
+import { useMoonbeanBalance } from '../../hooks/web3/useMoonbeamBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';

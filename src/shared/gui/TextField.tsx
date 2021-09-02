@@ -17,7 +17,17 @@ type IProps = {
   imposeMinMax?: any;
 };
 
-export const TextField = ({ name, placeholder, disabled, styleType, autoFocus, mode, style, type, ...props }: IProps) => {
+export const TextField = ({
+  name,
+  placeholder,
+  disabled,
+  styleType,
+  autoFocus,
+  mode,
+  style,
+  type,
+  ...props
+}: IProps) => {
   const { control } = useFormContext();
 
   let borderWidth = '';
@@ -30,7 +40,7 @@ export const TextField = ({ name, placeholder, disabled, styleType, autoFocus, m
     borderWidth = '0rem';
   }
 
-  let additionalProps = {...props};
+  let additionalProps: any = { ...props };
   if (type === 'numerical') {
     additionalProps = {
       type: 'text',
