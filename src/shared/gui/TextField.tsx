@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { sideColor, sideColor6, sideColor8, sideColor13 } from '../../utils/colorsUtil';

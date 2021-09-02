@@ -5,7 +5,6 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import { useProject } from '../api/api/api';
 import binImage from '../assets/bin_image.svg';
-import { ProjectType } from '../types/ProjectType';
 import * as styles from './Admin/AdminProjectPage.styles';
 import { ProjectForm } from './Admin/ProjectForm';
 
@@ -42,19 +41,6 @@ export const AdminProjectPage = () => {
       }
     }
   }, [projectLoading]);
-
-  const onSubmit = async (project: ProjectType) => {
-    try {
-      // const { token } = await generalHTTP.login(email, message);
-      // localStorage.setItem('token', token);
-      // window.location.reload();
-
-      console.log(project);
-    } catch (e) {
-      console.log(e);
-      // show notification or error message
-    }
-  };
 
   if (projectLoading) {
     return <Spin style={styles.spinnerStyle} size="large" />;
