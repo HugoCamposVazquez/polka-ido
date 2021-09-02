@@ -11,7 +11,7 @@ export const numberWithDots = (num: string) => {
   const pattern = /(-?\d+)(\d{3})/;
   while (pattern.test(num)) num = num.replace(pattern, '$1.$2');
 
-  return num;
+  return num; //
 };
 
 export const formatBalance = (str: string, maxDecimalDigits: number): string => {
@@ -24,45 +24,9 @@ export const formatBalance = (str: string, maxDecimalDigits: number): string => 
   return str;
 };
 
-export const scientificToDecimal = (num: any) => {
-  const nsign = Math.sign(num);
-  //remove the sign
-  num = Math.abs(num);
-  //if the number is in scientific notation remove it
-  if (/\d+\.?\d*e[+-]*\d+/i.test(num)) {
-    const zero = '0',
-      parts = String(num).toLowerCase().split('e'); //split into coeff and exponent
-    const e = Number(parts.pop()); //store the exponential part
-    let l = Math.abs(e); //get the number of zeros
-    const sign = e / l,
-      coeff_array = parts[0].split('.');
-    if (sign === -1) {
-      l = l - coeff_array[0].length;
-      if (l < 0) {
-        num =
-          coeff_array[0].slice(0, l) + '.' + coeff_array[0].slice(l) + (coeff_array.length === 2 ? coeff_array[1] : '');
-      } else {
-        num = zero + '.' + new Array(l + 1).join(zero) + coeff_array.join('');
-      }
-    } else {
-      const dec = coeff_array[1];
-      if (dec) l = l - dec.length;
-      if (l < 0) {
-        num = coeff_array[0] + dec.slice(0, l) + '.' + dec.slice(l);
-      } else {
-        num = coeff_array.join('') + new Array(l + 1).join(zero);
-      }
-    }
-  }
-
-  return nsign < 0 ? '-' + num : num;
-};
 export const formatWei = (numberInWei: string | BigNumber): string => {
   const eth = ethers.utils.formatEther(numberInWei);
-  const formattedNumber = numberWithDots(eth);
-  if (Number(formattedNumber) === 0) {
-    return '0';
-  }
+  const formattedNumber = eth.replace(/\.0+$/, ''); // replace zeros;;
 
   return formattedNumber;
 };
