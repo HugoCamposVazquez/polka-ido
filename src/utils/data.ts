@@ -1,6 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 
-import { numberWithCommas } from './numModifiyngFuncs';
+import { numberWithDots } from './numModifiyngFuncs';
 
 export const getIPFSResolvedLink = (uri: string): string => {
   let hash = uri;
@@ -17,5 +17,5 @@ export const getPercentage = (fraction: string, total: string): string => {
 };
 
 export const getTokenPrice = (salePrice: string): string => {
-  return numberWithCommas(BigNumber.from(salePrice).div(ethers.utils.parseEther('1.0')).toString());
+  return numberWithDots(BigNumber.from(salePrice).div(ethers.utils.parseEther('1.0')).toString());
 };

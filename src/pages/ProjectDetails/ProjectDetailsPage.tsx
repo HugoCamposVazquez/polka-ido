@@ -20,6 +20,7 @@ import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
+import { numberWithDots } from '../../utils/numModifiyngFuncs';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 import { TokenDetails } from './TokenDetails';
@@ -134,6 +135,12 @@ export const ProjectDetailsPage = () => {
                 <div className={styles.contentTextStyle}>
                   {data?.sales[0] && format(fromUnixTime(+data?.sales[0].endDate), 'PPpp')}
                 </div>
+              </div>
+              <div style={styles.descriptionParentStyle}>
+                <div className={styles.descriptionTextStyle}>Allocation</div>
+                <div className={styles.contentTextStyle}>{`${
+                  data?.sales[0] && numberWithDots(data?.sales[0].maxDepositAmount)
+                } ETH`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Access</div>

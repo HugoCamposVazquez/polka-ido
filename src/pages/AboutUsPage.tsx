@@ -94,7 +94,7 @@ export const AboutUsPage = () => {
           <FormProvider {...methods}>
             <form>
               <div style={homePageStyles.textFieldContainerStyle}>
-                <TextField name="email" placeholder="E-mail" mode={'dark'} type={'bordered'} />
+                <TextField name="email" placeholder="E-mail" mode={'dark'} styleType={'bordered'} />
               </div>
               <div style={homePageStyles.textFieldContainerStyle}>
                 <TextArea name="message" placeholder="Message" mode={'dark'} style={{ height: '8.38rem' }} />
