@@ -10,6 +10,7 @@ import twitterIcon from '../assets/twitter_icon.svg';
 import webIcon from '../assets/web_icon.svg';
 import { useSingleProject } from '../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
+import { useGetAllocations } from '../hooks/web3/contract/useGetAllocation';
 import { useSaleContract } from '../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/user/Footer';
@@ -30,6 +31,8 @@ export const ProjectDetailsPage = () => {
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
+
+  const totalDeposit = useGetAllocations(id);
 
   const projectStatus = useMemo((): string => {
     if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {
@@ -155,7 +158,7 @@ export const ProjectDetailsPage = () => {
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.description2TextStyle}>Your allocation</div>
-                <div className={styles.content2TextStyle}>TODO</div>
+                <div className={styles.content2TextStyle}>{totalDeposit}</div>
               </div>
 
               <div style={{ marginTop: '2.25rem' }}>
