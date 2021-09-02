@@ -1,5 +1,5 @@
-import { sideColor, sideColor3, sideColor4, sideColor5, sideColor6, sideColor7 } from '../utils/colorsUtil';
-import { styled } from '../utils/css';
+import { sideColor, sideColor3, sideColor4, sideColor5, sideColor6, sideColor7 } from '../../utils/colorsUtil';
+import { styled } from '../../utils/css';
 
 export const imageParentContainerClassName = styled.cssClassName`
   display: flex;

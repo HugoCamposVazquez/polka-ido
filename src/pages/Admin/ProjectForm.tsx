@@ -6,6 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import { useWriteJSONToIPFS } from '../../hooks/ipfs/useWriteJSONToIPFS';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
 import { CheckboxField } from '../../shared/gui/CheckboxField';
 import { DateField } from '../../shared/gui/DateField';
@@ -38,6 +39,16 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const contract = useSaleFactoryContract();
   // TODO: Watch for error
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
+
+  const { fetchTokenData } = useStatemintToken();
+  const onTokenIdBlur = async (): Promise<void> => {
+    methods.setValue('decimals', 'Loading...');
+    const tokenId = methods.getValues('tokenId');
+    const tokenData = await fetchTokenData(tokenId);
+    if (tokenData) {
+      methods.setValue('decimals', tokenData.decimals);
+    }
+  };
 
   useEffect(() => {
     if (!loadingProjectData) {
@@ -231,9 +242,20 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Token ID</div>
-              <TextField name={'tokenId'} type={'bordered'} mode={'light'} placeholder={'Statemint token ID'} />
+              <TextField
+                name={'tokenId'}
+                type={'bordered'}
+                mode={'light'}
+                placeholder={'Statemint token ID'}
+                {...methods.register('tokenId')}
+                onBlur={onTokenIdBlur}
+              />
             </div>
-            <div style={{ flex: 0.2 }} />
+
+            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
+              <div style={styles.fieldSectionStyle}>Token decimals</div>
+              <TextField name={'decimals'} type={'bordered'} mode={'light'} placeholder={'18'} />
+            </div>
           </div>
 
           <div style={styles.lineStyle} />
