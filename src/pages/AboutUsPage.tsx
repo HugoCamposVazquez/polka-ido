@@ -15,7 +15,7 @@ import { PersonCard } from '../shared/PersonCard';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as homePageStyles from './HomePage.styles';
-import * as projectDetailsStyles from './ProjectDetailsPage.styles';
+import * as projectDetailsStyles from './ProjectDetails/ProjectDetailsPage.styles';
 
 export const AboutUsPage = () => {
   const { width } = useWindowDimensions();

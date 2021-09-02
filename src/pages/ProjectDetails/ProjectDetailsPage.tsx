@@ -14,6 +14,7 @@ import { useSaleContract } from '../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../shared/gui/MainButton';
 import { Footer } from '../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../shared/modals/modals';
+import { ProjectDetailsSectionLoading } from '../../shared/ProjectDetailsSectionLoading';
 import { ExternalLink } from '../shared/wrappers/ExternalLink';
 import { ProjectMetadata } from '../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../utils/colorsUtil';
@@ -22,6 +23,7 @@ import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../utils/data
 import { numberWithDots } from '../utils/numModifiyngFuncs';
 import { formatWei } from '../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
+import { TokenDetails } from './TokenDetails';
 
 export const ProjectDetailsPage = () => {
   const navigation = useHistory();
@@ -275,34 +277,11 @@ export const ProjectDetailsPage = () => {
             </div>
           </div>
 
-          <div
-            style={cs(
-              { flex: 0.5, margin: '0 1.5rem', backgroundColor: `${sideColor8}` },
-              styles.topLeftBottomRightNotch,
-            )}
-            className={styles.projectDetailsTokenClassName}>
-            <div style={{ padding: '1.5rem' }}>
-              <div style={styles.projectDetailsSubtitleStyle}>TOKEN</div>
-              <div style={{ marginTop: '2.25rem' }}>
-                <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Name</div>
-                  <div className={styles.content3TextStyle}>takename</div>
-                </div>
-                <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Symbol</div>
-                  <div className={styles.content3TextStyle}>TKN</div>
-                </div>
-                <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Statemint ID</div>
-                  <div className={styles.content3TextStyle}>12390</div>
-                </div>
-                <div style={{ display: 'flex', padding: '0.75rem 0' }}>
-                  <div className={styles.descriptionTextStyle}>Total supply</div>
-                  <div className={styles.content3TextStyle}>10,000,000</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {data?.sales[0].token.id ? (
+            <TokenDetails assetId={data?.sales[0].token.id} />
+          ) : (
+            <ProjectDetailsSectionLoading />
+          )}
         </div>
       </div>
       <div className={styles.aboutTheProjectContainerClassName}>

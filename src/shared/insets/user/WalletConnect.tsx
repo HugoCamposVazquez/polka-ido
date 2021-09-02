@@ -1,9 +1,9 @@
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import React, { useMemo } from 'react';
 
-import { useMoonbeanBalance } from '../../../hooks/useMoonbeamBalance';
 import { injected } from '../../../hooks/web3/connectors';
 import { onLogin } from '../../../hooks/web3/useEagerConnect';
+import { useMoonbeanBalance } from '../../../hooks/web3/useMoonbeamBalance';
 import { cs } from '../../../utils/css';
 import { formatWei } from '../../../utils/numModifiyngFuncs';
 import { MainButton } from '../../gui/MainButton';
