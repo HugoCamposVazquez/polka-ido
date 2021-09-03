@@ -38,7 +38,7 @@ export const LaunchpadPage = () => {
     setShownProjects('featured');
     let featuredProjects: ProjectData[] = [];
     projectsData?.sales.map((project) => {
-      if (!project.featured) {
+      if (project.featured) {
         featuredProjects.push(project);
       } else {
         featuredProjects = [];
@@ -54,13 +54,9 @@ export const LaunchpadPage = () => {
 
   const onClickShowAllProjects = useCallback((): void => {
     setShownProjects(undefined);
-    let allProjects: ProjectData[] = [];
+    const allProjects: ProjectData[] = [];
     projectsData?.sales.map((project) => {
-      if (!project.featured) {
-        allProjects.push(project);
-      } else {
-        allProjects = [];
-      }
+      allProjects.push(project);
       setProjects(allProjects);
     });
   }, [projectsData]);
