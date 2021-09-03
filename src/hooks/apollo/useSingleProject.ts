@@ -32,6 +32,9 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
         metadataURI
         maxDepositAmount
         currentDepositAmount
+        token {
+          id
+        }
         allocations {
           id
         }

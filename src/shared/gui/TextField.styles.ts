@@ -18,6 +18,18 @@ export const inputClassName = (color: string, placeholderColor: string) => style
   line-height: 1.5rem;
   border-style: solid;
 
+  /* Chrome, Safari, Edge, Opera */
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
   ::-webkit-input-placeholder {
     /* Edge */
     color: ${placeholderColor};

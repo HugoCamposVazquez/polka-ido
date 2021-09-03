@@ -6,6 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 import { useWriteJSONToIPFS } from '../../hooks/ipfs/useWriteJSONToIPFS';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
 import { CheckboxField } from '../../shared/gui/CheckboxField';
 import { DateField } from '../../shared/gui/DateField';
@@ -38,6 +39,16 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const contract = useSaleFactoryContract();
   // TODO: Watch for error
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
+
+  const { fetchTokenData } = useStatemintToken();
+  const onTokenIdBlur = async (): Promise<void> => {
+    methods.setValue('decimals', 'Loading...');
+    const tokenId = methods.getValues('tokenId');
+    const tokenData = await fetchTokenData(tokenId);
+    if (tokenData) {
+      methods.setValue('decimals', tokenData.decimals);
+    }
+  };
 
   useEffect(() => {
     if (!loadingProjectData) {
@@ -121,7 +132,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.4 })}>
               <div style={styles.fieldSectionStyle}>Project name</div>
-              <TextField name={'title'} type={'bordered'} mode={'light'} placeholder={'My project 1'} />
+              <TextField name={'title'} styleType={'bordered'} mode={'light'} placeholder={'My project 1'} />
             </div>
 
             <div style={styles.radioContainerStyle}>
@@ -158,22 +169,22 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Raise amount</div>
-              <TextField name={'raiseAmountTotal'} type={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+              <TextField name={'raiseAmountTotal'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
             </div>
           </div>
 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Min. deposit ()</div>
-              <TextField name={'minUserDeposit'} type={'bordered'} mode={'light'} placeholder={'0'} />
+              <TextField name={'minUserDeposit'} styleType={'bordered'} mode={'light'} placeholder={'0'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Max. deposit ()</div>
-              <TextField name={'maxUserDeposit'} type={'bordered'} mode={'light'} placeholder={'0.02'} />
+              <TextField name={'maxUserDeposit'} styleType={'bordered'} mode={'light'} placeholder={'0.02'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Token price</div>
-              <TextField name={'tokenPrice'} type={'bordered'} mode={'light'} placeholder={'0,022'} />
+              <TextField name={'tokenPrice'} styleType={'bordered'} mode={'light'} placeholder={'0,022'} />
             </div>
           </div>
 
@@ -188,28 +199,28 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Etherscan</div>
               <div>
-                <TextField name={'etherscanLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                <TextField name={'etherscanLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
               </div>
               <div style={{ flex: 1 }} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Web</div>
               <div>
-                <TextField name={'webLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                <TextField name={'webLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
               </div>
               <div style={{ flex: 1 }} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Twitter</div>
               <div>
-                <TextField name={'twitterLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                <TextField name={'twitterLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
               </div>
               <div style={{ flex: 1 }} />
             </div>
             <div style={cs(styles.fieldTitleNoMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Telegram</div>
               <div>
-                <TextField name={'telegramLink'} type={'bordered'} mode={'light'} placeholder={'Link'} />
+                <TextField name={'telegramLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
               </div>
               <div style={{ flex: 1 }} />
             </div>
@@ -226,14 +237,25 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Unlock interval (days)</div>
-              <TextField name={'unlockInterval'} type={'bordered'} mode={'light'} placeholder={'30'} />
+              <TextField name={'unlockInterval'} styleType={'bordered'} mode={'light'} placeholder={'30'} />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Token ID</div>
-              <TextField name={'tokenId'} type={'bordered'} mode={'light'} placeholder={'Statemint token ID'} />
+              <TextField
+                name={'tokenId'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'Statemint token ID'}
+                {...methods.register('tokenId')}
+                onBlur={onTokenIdBlur}
+              />
             </div>
-            <div style={{ flex: 0.2 }} />
+
+            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
+              <div style={styles.fieldSectionStyle}>Token decimals</div>
+              <TextField name={'decimals'} styleType={'bordered'} mode={'light'} placeholder={'18'} />
+            </div>
           </div>
 
           <div style={styles.lineStyle} />

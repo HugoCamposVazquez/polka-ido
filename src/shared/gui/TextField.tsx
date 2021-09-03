@@ -10,22 +10,50 @@ type IProps = {
   placeholder?: string;
   disabled?: boolean;
   style?: any;
-  type: 'bordered' | 'underlined' | 'none';
+  styleType: 'bordered' | 'underlined' | 'none';
   autoFocus?: boolean;
   mode: 'light' | 'dark';
+  type?: 'text' | 'number' | 'numerical';
+  imposeMinMax?: any;
 };
 
-export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, style }: IProps) => {
+export const TextField = ({
+  name,
+  placeholder,
+  disabled,
+  styleType,
+  autoFocus,
+  mode,
+  style,
+  type,
+  ...props
+}: IProps) => {
   const { control } = useFormContext();
 
   let borderWidth = '';
 
-  if (type === 'bordered') {
+  if (styleType === 'bordered') {
     borderWidth = '0.06rem';
-  } else if (type === 'underlined') {
+  } else if (styleType === 'underlined') {
     borderWidth = '0 0 0.06rem';
   } else {
     borderWidth = '0rem';
+  }
+
+  let additionalProps: any = { ...props };
+  if (type === 'numerical') {
+    additionalProps = {
+      type: 'text',
+      inputMode: 'decimal',
+      autoComplete: 'off',
+      autoCorrect: 'off',
+      pattern: '^[0-9]*[.,]?[0-9]*$',
+      title: 'Invalid number',
+      placeholder: '0.0',
+      minLength: 1,
+      maxLength: 79,
+      spellCheck: 'false',
+    };
   }
 
   return (
@@ -44,8 +72,16 @@ export const TextField = ({ name, placeholder, disabled, type, autoFocus, mode, 
               value={value}
               placeholder={placeholder}
               disabled={disabled}
-              onChange={onChange}
               autoFocus={autoFocus}
+              type={type || 'text'}
+              {...additionalProps}
+              onChange={(e) => {
+                if (type === 'numerical') {
+                  // replace commas with periods
+                  const formattedValue = e.target.value.replace(/,/g, '.');
+                  onChange(formattedValue);
+                }
+              }}
             />
           );
         }}

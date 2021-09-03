@@ -111,6 +111,7 @@ export const maxBtnStyle = styled.cssStyle`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 export const titleContainerStyle = styled.cssStyle`
   position: relative;

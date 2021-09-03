@@ -6,7 +6,7 @@ import { getIPFSResolvedLink } from '../../utils/data';
 const IPFS_GATEWAY = 'https://ipfs.infura.io/ipfs/';
 axios.defaults.baseURL = IPFS_GATEWAY;
 
-interface IData<ReturnData> {
+export interface IData<ReturnData> {
   loading: boolean;
   error?: string;
   data?: ReturnData;
