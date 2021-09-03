@@ -3,6 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useProjects } from '../../hooks/apollo/useProjects';
+import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { EditableCell } from '../../shared/EditableCell';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
 import * as styles from './AdminPage.styles';
@@ -39,10 +40,10 @@ export const AdminPage = () => {
     };
   });
 
-  // const { data: projects, isLoading: projectsLoading } = useProjects(undefined);
   const { data: projects, loading: projectsLoading } = useProjects();
+  const { data: metaData, loading: IPFSloading } = useReadIPFS(projects?.sales[0].metadataURI);
 
-  if (projectsLoading) {
+  if (projectsLoading && IPFSloading) {
     return <Spin style={styles.spinnerStyle} size="large" />;
   }
 

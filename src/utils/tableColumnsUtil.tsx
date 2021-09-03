@@ -1,4 +1,4 @@
-import { format, fromUnixTime } from 'date-fns';
+import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React from 'react';
 
 import binImage from '../assets/bin_image.svg';
@@ -31,7 +31,18 @@ export const getAllColumns = () => {
       title: 'Status',
       dataIndex: 'status',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.featured && 'Featured'}</div>,
+      renderRepresentation: (cellProps: any) => (
+        <div>
+          <div>{cellProps.record.startDate < fromUnixTime(Date.now()) ? 'Upcoming' : ' '}</div>
+          <div>
+            {cellProps.record.startDate < fromUnixTime(Date.now()) &&
+            fromUnixTime(Date.now()) < cellProps.record.startDate
+              ? 'InProgress'
+              : ' '}
+          </div>
+          <div>{cellProps.record.endDate > fromUnixTime(Date.now()) ? 'Ended' : ' '}</div>
+        </div>
+      ),
     },
     {
       title: 'Starts',
