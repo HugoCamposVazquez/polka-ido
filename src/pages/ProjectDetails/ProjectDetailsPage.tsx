@@ -1,6 +1,7 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
+import { ethers } from 'ethers';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -31,7 +32,7 @@ export const ProjectDetailsPage = () => {
   const saleContract = useSaleContract(id);
   const { account } = useWeb3React();
 
-  const { data } = useSingleProject(id);
+  const { data } = useSingleProject(id, account as string);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
 
   const projectStatus = useMemo((): string => {
@@ -54,6 +55,8 @@ export const ProjectDetailsPage = () => {
     }
     return '0';
   }, [data?.sales[0]]);
+
+  console.log(data);
 
   const tokenPrice = useMemo((): string => {
     if (data?.sales[0]) {
@@ -164,7 +167,15 @@ export const ProjectDetailsPage = () => {
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.description2TextStyle}>Your allocation</div>
-                <div className={styles.content2TextStyle}>TODO</div>
+                <div className={styles.content2TextStyle}>
+                  {data?.sales[0].allocations.length
+                    ? data.sales[0].allocations.map((allocation) => (
+                        <li className={styles.allocationListItem} key={allocation.id}>
+                          {ethers.utils.formatEther(allocation.amount)} ETH
+                        </li>
+                      ))
+                    : 'No Allocations'}
+                </div>
               </div>
 
               <div style={{ marginTop: '2.25rem' }}>

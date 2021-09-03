@@ -55,6 +55,7 @@ export interface ProjectSales {
     };
     allocations: {
       id: string;
+      amount: number;
     }[];
   }[];
 }
