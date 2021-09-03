@@ -36,7 +36,6 @@ export const ProjectDetailsPage = () => {
   const { data } = useSingleProject(id);
   const { data: allocationsData } = useUserAllocations(id, account as string);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
-  console.log(allocationsData);
 
   const projectStatus = useMemo((): string => {
     if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {
@@ -58,8 +57,6 @@ export const ProjectDetailsPage = () => {
     }
     return '0';
   }, [data?.sales[0]]);
-
-  console.log(data);
 
   const tokenPrice = useMemo((): string => {
     if (data?.sales[0]) {
@@ -171,7 +168,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.description2TextStyle}>Your allocation</div>
                 <div className={styles.content2TextStyle}>
-                  {allocationsData?.allocations.length
+                  {allocationsData?.allocations && allocationsData?.allocations.length
                     ? allocationsData.allocations.map((allocation) => (
                         <li className={styles.allocationListItem} key={allocation.id}>
                           {ethers.utils.formatEther(allocation.amount)} ETH
