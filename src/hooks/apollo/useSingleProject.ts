@@ -8,12 +8,11 @@ interface ProjectsHook {
   data: ProjectSales | undefined;
 }
 
-export const useSingleProject = (id: string, userAddress?: string): ProjectsHook => {
+export const useSingleProject = (id: string): ProjectsHook => {
   const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
     client,
     variables: {
       id,
-      userAddress,
     },
   });
 
@@ -22,7 +21,7 @@ export const useSingleProject = (id: string, userAddress?: string): ProjectsHook
 
 const FETCH_SINGLE_PROJECT_DATA = gql(
   `
-    query Projects($id: String, $userAddress: String) {
+    query Projects($id: String) {
       sales(where: { id: $id }) {
         id
         salePrice
@@ -35,10 +34,6 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
         currentDepositAmount
         token {
           id
-        }
-        allocations(where: {id: $userAddress}) {
-          id
-          amount
         }
       }
     }

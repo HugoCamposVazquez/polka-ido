@@ -53,10 +53,13 @@ export interface ProjectSales {
     token: {
       id: string;
     };
-    allocations: {
-      id: string;
-      amount: number;
-    }[];
+  }[];
+}
+
+export interface ProjectAllocations {
+  allocations: {
+    id: string;
+    amount: number;
   }[];
 }
 
@@ -70,7 +73,4 @@ export interface ProjectData {
   metadataURI: string;
   maxDepositAmount: string;
   currentDepositAmount: string;
-  allocations: {
-    id: string;
-  }[];
 }

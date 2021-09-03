@@ -10,6 +10,7 @@ import telegramIcon from '../../assets/telegram_icon.svg';
 import twitterIcon from '../../assets/twitter_icon.svg';
 import webIcon from '../../assets/web_icon.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
+import { useUserAllocations } from '../../hooks/apollo/useUserAllocations';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
@@ -32,8 +33,10 @@ export const ProjectDetailsPage = () => {
   const saleContract = useSaleContract(id);
   const { account } = useWeb3React();
 
-  const { data } = useSingleProject(id, account as string);
+  const { data } = useSingleProject(id);
+  const { data: allocationsData } = useUserAllocations(id, account as string);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
+  console.log(allocationsData);
 
   const projectStatus = useMemo((): string => {
     if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {
@@ -168,8 +171,8 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.description2TextStyle}>Your allocation</div>
                 <div className={styles.content2TextStyle}>
-                  {data?.sales[0].allocations.length
-                    ? data.sales[0].allocations.map((allocation) => (
+                  {allocationsData?.allocations.length
+                    ? allocationsData.allocations.map((allocation) => (
                         <li className={styles.allocationListItem} key={allocation.id}>
                           {ethers.utils.formatEther(allocation.amount)} ETH
                         </li>
