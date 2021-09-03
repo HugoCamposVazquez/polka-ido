@@ -50,6 +50,9 @@ export interface ProjectSales {
     metadataURI: string;
     maxDepositAmount: string;
     currentDepositAmount: string;
+    token: {
+      id: string;
+    };
     allocations: {
       id: string;
     }[];

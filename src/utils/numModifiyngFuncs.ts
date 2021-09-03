@@ -6,19 +6,25 @@ export const fixNums = (num: number, fixTo: number) => {
   return num.toFixed(fixTo).replace(/\.?0+$/, '');
 };
 
-export const numberWithCommas = (num: string) => {
+export const numberWithDots = (num: string) => {
+  num = num.toString();
   const pattern = /(-?\d+)(\d{3})/;
-  while (pattern.test(num)) num = num.replace(pattern, '$1,$2');
+  while (pattern.test(num)) num = num.replace(pattern, '$1.$2');
 
-  return num;
+  return num; //
+};
+
+export const formatBalance = (str: string, maxDecimalDigits: number): string => {
+  if (str.includes('.')) {
+    const parts = str.split('.');
+
+    return parts[0] + '.' + parts[1].slice(0, maxDecimalDigits);
+  }
+
+  return str;
 };
 
 export const formatWei = (numberInWei: string | BigNumber): string => {
   const eth = ethers.utils.formatEther(numberInWei);
-  const formattedNumber = numberWithCommas(eth);
-  if (Number(formattedNumber) === 0) {
-    return '0';
-  }
-
-  return formattedNumber;
+  return eth.replace(/\.0+$/, ''); // replace zeros
 };

@@ -52,6 +52,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
       closeModal();
     } catch (e) {
+      // show notification or error message
       console.log(e);
     }
   };
@@ -94,7 +95,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
               <div style={styles.recipientTextStyle}>Recipient</div>
               <TextField
                 name={'address'}
-                type={'none'}
+                styleType={'none'}
                 placeholder={'Address'}
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}

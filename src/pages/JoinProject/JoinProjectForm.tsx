@@ -1,32 +1,130 @@
-import React from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { BigNumber, ethers } from 'ethers';
+import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
+import { useSingleProject } from '../../hooks/apollo/useSingleProject';
+import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
+import { useMoonbeanBalance } from '../../hooks/web3/useMoonbeamBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
+import { getTokenPrice } from '../../utils/data';
+import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
+  const { id: address }: { id: string } = useParams();
+  const { data } = useSingleProject(address);
+  const { balance } = useMoonbeanBalance();
+  const saleContract = useSaleContract(address);
+  const maxAllocation = BigNumber.from(data?.sales[0].maxDepositAmount || '0');
+  const formattedMaxAllocation = React.useMemo(() => formatWei(maxAllocation), [maxAllocation]);
+
+  const validationSchema = yup.object().shape({
+    fromValue: yup
+      .string()
+      .required('Required input')
+      .max(Number(formattedMaxAllocation))
+      .matches(/^[0-9]*[.,]?[0-9]*$/, 'Invalid format'),
+  });
+
   const methods = useForm({
     defaultValues: {
       fromValue: '',
       toValue: '',
     },
-    //resolver: yupResolver(loginValidationSchema),
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async ({ fromValue, toValue }: any) => {
+  const onSubmit = async ({ fromValue }: { fromValue: string }): Promise<void> => {
     try {
-      console.log('test', fromValue, toValue);
-      // const { token } = await generalHTTP.login(email, message);
-      // localStorage.setItem('token', token);
-      // window.location.reload();
+      await saleContract?.buyTokens({
+        value: ethers.utils.parseEther(fromValue),
+      });
+      methods.setValue('toValue', '');
+      methods.setValue('fromValue', '');
     } catch (e) {
-      console.log(e);
-      // show notification or error message
+      console.error(e.message);
     }
   };
+
+  const onClickSetMaxAllocation = () => {
+    const maxPossible = balance.gt(maxAllocation) ? maxAllocation : balance;
+    const formattedMaxPossible = formatWei(maxPossible);
+    methods.setValue('fromValue', formattedMaxPossible);
+    const toValue = calculateToValue(formattedMaxPossible);
+    methods.setValue('toValue', toValue);
+  };
+
+  const swapValues = methods.watch();
+
+  // Calculates output value (how many token should get)
+  const calculateToValue = React.useCallback(
+    (value: string): string => {
+      try {
+        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data?.sales[0].salePrice || '0')));
+      } catch (e) {
+        console.error(`Error while calculating output value: ${e.message}`);
+      }
+      return '0';
+    },
+    [data?.sales[0]],
+  );
+
+  const calculateFromValue = React.useCallback(
+    (value: string): string => {
+      try {
+        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data?.sales[0].salePrice || '0')));
+      } catch (e) {
+        console.error(`Error while calculating output value: ${e.message}`);
+      }
+      return '0';
+    },
+    [data?.sales[0]],
+  );
+
+  const getRemainingTokens = React.useMemo(() => {
+    const calculatedRemainingTokens =
+      maxAllocation &&
+      data &&
+      maxAllocation
+        .sub(ethers.utils.parseEther(data?.sales[0].currentDepositAmount))
+        .div(ethers.utils.parseEther(data?.sales[0].salePrice))
+        .toString();
+    const remainingTokens = calculatedRemainingTokens && numberWithDots(calculatedRemainingTokens);
+
+    return remainingTokens;
+  }, [data?.sales[0]]);
+
+  // Setting opposite output swapping value on change
+  useEffect(() => {
+    if (data && swapValues.fromValue) {
+      // If not infinite loop, set the other value
+      const nextSwapValue = calculateToValue(swapValues.fromValue);
+      if (swapValues.fromValue && swapValues.toValue !== nextSwapValue) {
+        methods.setValue('toValue', nextSwapValue);
+      }
+    } else if (swapValues.toValue && !swapValues.fromValue) {
+      // Reset field when empty
+      methods.setValue('toValue', '');
+    }
+  }, [swapValues.fromValue, data]);
+
+  useEffect(() => {
+    if (data && swapValues.toValue) {
+      const nextSwapValue = calculateFromValue(swapValues.toValue);
+      if (swapValues.toValue && swapValues.fromValue !== nextSwapValue) {
+        methods.setValue('fromValue', nextSwapValue);
+      }
+    } else if (swapValues.fromValue && !swapValues.toValue) {
+      methods.setValue('fromValue', '');
+    }
+  }, [swapValues.toValue, data]);
 
   return (
     <FormProvider {...methods}>
@@ -35,34 +133,42 @@ export const JoinProjectForm = () => {
           <div style={styles.boxContainerStyle}>
             <div style={{ display: 'flex' }}>
               <div style={cs(styles.subtitleTextStyle, { flex: 1 })}>From</div>
-              <div style={styles.subtitleTextStyle}>Balance: 0.34 ETH</div>
+              <div style={styles.subtitleTextStyle}>Balance: {formatWei(balance)}</div>
             </div>
             <div style={styles.fieldContainerStyle}>
               <TextField
                 name={'fromValue'}
-                type={'none'}
-                placeholder={'0.02'}
+                styleType={'none'}
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
                 autoFocus={true}
+                type="numerical"
               />
-              <div style={styles.maxBtnStyle}>Max</div>
-              <div style={styles.suffixTextStyle}>ETH</div>
+              <div style={styles.maxBtnStyle} onClick={onClickSetMaxAllocation}>
+                Max
+              </div>
+              <div style={styles.suffixTextStyle}>MOVR</div>
             </div>
           </div>
+
+          {methods.errors.fromValue ? <span>{methods.errors.fromValue.message}</span> : null}
+
           <div style={styles.arrowContainerStyle}>
             <img src={arrowDown} />
           </div>
           <div style={cs(styles.boxContainerStyle)}>
             <div style={{ display: 'flex' }}>
               <div style={cs(styles.subtitleTextStyle, { flex: 1 })}>To</div>
-              <div style={styles.subtitleTextStyle}>Remaining: 239485.32</div>
+              <div style={styles.subtitleTextStyle}>
+                Remaining:&nbsp;
+                {data && getRemainingTokens}
+              </div>
             </div>
             <div style={styles.fieldContainerStyle}>
               <TextField
                 name={'toValue'}
-                type={'none'}
-                placeholder={'349857'}
+                styleType={'none'}
+                type="numerical"
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
               />
@@ -70,13 +176,16 @@ export const JoinProjectForm = () => {
             </div>
           </div>
 
-          <div style={styles.maxAllocTextStyle}>Max. allocation is 0.02 ETH</div>
+          {methods.errors.toValue ? <span>{methods.errors.toValue.message}</span> : null}
+
+          <div style={styles.maxAllocTextStyle}>Max. allocation is {formattedMaxAllocation} MOVR</div>
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
-              title={'JOIN PROJECT'}
+              title={saleContract ? 'JOIN PROJECT' : 'CONNECT WALLET FIRST'}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
+              disabled={!saleContract}
               style={{ width: '100%' }}
             />
           </div>
