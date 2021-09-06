@@ -1,7 +1,6 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
-import { ethers } from 'ethers';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -22,7 +21,6 @@ import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
-import { numberWithDots } from '../../utils/numModifiyngFuncs';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
@@ -142,7 +140,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && numberWithDots(data?.sales[0].maxDepositAmount)
+                  data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
                 } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
@@ -171,10 +169,12 @@ export const ProjectDetailsPage = () => {
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
-                  {data?.sales[0] &&
-                    `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
-                      data?.sales[0].maxDepositAmount,
-                    )} USD`}
+                  {
+                    /* TODO: Replace maxDepositAmount with totalDeposits */ data?.sales[0] &&
+                      `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
+                        data?.sales[0].maxDepositAmount,
+                      )} ${config.CURRENCY}`
+                  }
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <ProgressBar
