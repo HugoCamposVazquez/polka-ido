@@ -164,7 +164,9 @@ export const ProjectDetailsPage = () => {
                   data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
                 } ETH`}</div>
               </div>
-              {account && data && <TotalAllocation account={account} projectId={data?.sales[0].id} />}
+              {account && data && (
+                <TotalAllocation account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />
+              )}
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
@@ -195,7 +197,7 @@ export const ProjectDetailsPage = () => {
         </div>
       </div>
 
-      {account && data && <Allocations account={account} projectId={data?.sales[0].id} />}
+      {account && data && <Allocations account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />}
 
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>

@@ -1,15 +1,25 @@
-import React from 'react';
+import { BigNumber } from 'ethers';
+import React, { useCallback, useMemo } from 'react';
 
+import { config } from '../../config';
 import { useUserAllocations } from '../../hooks/apollo/useUserAllocations';
+import { convertDateFromUnixtime } from '../../utils/date';
+import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
 interface IProps {
   account: string;
   projectId: string;
+  tokenPrice: string;
 }
 
-export const Allocations = ({ account, projectId }: IProps) => {
-  const { data } = useUserAllocations(projectId, account);
+export const Allocations = ({ account, projectId, tokenPrice }: IProps) => {
+  const { data } = useUserAllocations(projectId, account.toLowerCase());
+
+  const getNumberOfTokens = useCallback(
+    (allocation: string) => formatWei(BigNumber.from(allocation).mul(BigNumber.from(tokenPrice))),
+    [data],
+  );
 
   return (
     <div className={styles.allocationsContainerClassName}>
@@ -18,69 +28,53 @@ export const Allocations = ({ account, projectId }: IProps) => {
         <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
           Purchased
         </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
+        <div style={{ flex: 0.35 }} className={styles.allocationsTitleStyle}>
           Amount
         </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
-          Dollars
-        </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
+        <div style={{ flex: 0.35 }} className={styles.allocationsTitleStyle}>
           Tokens
         </div>
       </div>
-      <div style={styles.projectDetailsItemStyle}>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          6/21/19
+      {data?.allocations.map((sale) => (
+        <div style={styles.projectDetailsItemStyle} key={sale.id}>
+          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
+            {/* TODO */ convertDateFromUnixtime(new Date().getTime() / 1000)}
+          </div>
+          <div style={{ flex: 0.35 }} className={styles.allocationsItemNormalStyle}>
+            {formatWei(sale.amount)} {config.CURRENCY}
+          </div>
+          <div style={{ flex: 0.35 }} className={styles.allocationsItemNormalStyle}>
+            {getNumberOfTokens(sale.amount)} TKN
+          </div>
         </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          0.28 ETH
-        </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          1,239 USDT
-        </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          304,985 TKN
-        </div>
-      </div>
-      <div style={styles.projectDetailsItemStyle}>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          6/21/19
-        </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          0.012 ETH
-        </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          190 USDT
-        </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-          23,498 TKN
-        </div>
-      </div>
+      ))}
+
       <div style={{ padding: '1.5rem 0', alignItems: 'center', display: 'flex' }}>
         <div style={{ flex: 0.25 }} className={styles.allocationsTotalTextStyle}>
           Total
         </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemBoldStyle}>
-          0.292 ETH
+        <div style={{ flex: 0.35 }} className={styles.allocationsItemBoldStyle}>
+          {formatWei(data?.totalAllocation || '0')} {config.CURRENCY}
         </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemBoldStyle}>
-          1,429 USDT
-        </div>
-        <div style={{ flex: 0.25 }} className={styles.allocationsItemBoldStyle}>
-          328,483 TKN
+        <div style={{ flex: 0.35 }} className={styles.allocationsItemBoldStyle}>
+          {getNumberOfTokens(data?.totalAllocation || '0')} TKN
         </div>
       </div>
     </div>
   );
 };
 
-export const TotalAllocation = ({ account, projectId }: IProps) => {
-  const { data } = useUserAllocations(projectId, account);
+export const TotalAllocation = ({ account, projectId, tokenPrice }: IProps) => {
+  const { data } = useUserAllocations(projectId, account.toLowerCase());
+  const totalAllocation = useMemo(
+    () => formatWei(BigNumber.from(data?.totalAllocation || '0').mul(BigNumber.from(tokenPrice))),
+    [data],
+  );
 
   return (
     <div style={styles.descriptionParentStyle}>
       <div className={styles.description2TextStyle}>Your allocation</div>
-      <div className={styles.content2TextStyle}>0 TKN</div>
+      <div className={styles.content2TextStyle}>{totalAllocation} TKN</div>
     </div>
   );
 };

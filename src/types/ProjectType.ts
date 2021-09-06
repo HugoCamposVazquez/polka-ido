@@ -56,11 +56,16 @@ export interface ProjectSales {
   }[];
 }
 
-export interface ProjectAllocations {
-  allocations: {
+export interface AllocationDto {
+  id: string;
+  amount: string;
+  user: {
     id: string;
-    amount: number;
-  }[];
+  };
+}
+
+export interface ProjectAllocationsDto {
+  allocations: AllocationDto[];
 }
 
 export interface ProjectData {
