@@ -9,6 +9,7 @@ import projectCardBackground from '../../assets/project_card_background.png';
 import telegramIcon from '../../assets/telegram_icon.svg';
 import twitterIcon from '../../assets/twitter_icon.svg';
 import webIcon from '../../assets/web_icon.svg';
+import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
@@ -142,7 +143,7 @@ export const ProjectDetailsPage = () => {
                 <div className={styles.descriptionTextStyle}>Allocation</div>
                 <div className={styles.contentTextStyle}>{`${
                   data?.sales[0] && numberWithDots(data?.sales[0].maxDepositAmount)
-                } ETH`}</div>
+                } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Access</div>
@@ -162,7 +163,7 @@ export const ProjectDetailsPage = () => {
                 <div className={styles.descriptionTextStyle}>Max. deposit</div>
                 <div className={styles.contentTextStyle}>{`${
                   data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
-                } ETH`}</div>
+                } ${config.CURRENCY}`}</div>
               </div>
               {account && data && (
                 <TotalAllocation account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />
@@ -185,7 +186,9 @@ export const ProjectDetailsPage = () => {
                     borderRadius={'0rem'}
                   />
                 </div>
-                <div style={styles.smallTextStyle}>1 TKN = {tokenPrice} ETH</div>
+                <div style={styles.smallTextStyle}>
+                  1 TKN = {tokenPrice} {config.CURRENCY}
+                </div>
               </div>
             </div>
 
