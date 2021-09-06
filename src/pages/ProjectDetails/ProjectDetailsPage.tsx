@@ -10,7 +10,6 @@ import telegramIcon from '../../assets/telegram_icon.svg';
 import twitterIcon from '../../assets/twitter_icon.svg';
 import webIcon from '../../assets/web_icon.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
-import { useUserAllocations } from '../../hooks/apollo/useUserAllocations';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
@@ -24,6 +23,7 @@ import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
 import { numberWithDots } from '../../utils/numModifiyngFuncs';
 import { formatWei } from '../../utils/numModifiyngFuncs';
+import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
 import { TokenDetails } from './TokenDetails';
 
@@ -34,7 +34,6 @@ export const ProjectDetailsPage = () => {
   const { account } = useWeb3React();
 
   const { data } = useSingleProject(id);
-  const { data: allocationsData } = useUserAllocations(id, account as string);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
 
   const projectStatus = useMemo((): string => {
@@ -165,18 +164,7 @@ export const ProjectDetailsPage = () => {
                   data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
                 } ETH`}</div>
               </div>
-              <div style={styles.descriptionParentStyle}>
-                <div className={styles.description2TextStyle}>Your allocation</div>
-                <div className={styles.content2TextStyle}>
-                  {allocationsData?.allocations && allocationsData?.allocations.length
-                    ? allocationsData.allocations.map((allocation) => (
-                        <li className={styles.allocationListItem} key={allocation.id}>
-                          {ethers.utils.formatEther(allocation.amount)} ETH
-                        </li>
-                      ))
-                    : 'No Allocations'}
-                </div>
-              </div>
+              {account && data && <TotalAllocation account={account} projectId={data?.sales[0].id} />}
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
@@ -206,65 +194,9 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      <div className={styles.allocationsContainerClassName}>
-        <div className={styles.subtitleStyle}>Allocations</div>
-        <div style={{ marginTop: '1.5rem', display: 'flex' }}>
-          <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
-            Purchased
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
-            Amount
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
-            Dollars
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsTitleStyle}>
-            Tokens
-          </div>
-        </div>
-        <div style={styles.projectDetailsItemStyle}>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            6/21/19
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            0.28 ETH
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            1,239 USDT
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            304,985 TKN
-          </div>
-        </div>
-        <div style={styles.projectDetailsItemStyle}>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            6/21/19
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            0.012 ETH
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            190 USDT
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            23,498 TKN
-          </div>
-        </div>
-        <div style={{ padding: '1.5rem 0', alignItems: 'center', display: 'flex' }}>
-          <div style={{ flex: 0.25 }} className={styles.allocationsTotalTextStyle}>
-            Total
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemBoldStyle}>
-            0.292 ETH
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemBoldStyle}>
-            1,429 USDT
-          </div>
-          <div style={{ flex: 0.25 }} className={styles.allocationsItemBoldStyle}>
-            328,483 TKN
-          </div>
-        </div>
-      </div>
+
+      {account && data && <Allocations account={account} projectId={data?.sales[0].id} />}
+
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>

@@ -8,7 +8,7 @@ interface ProjectsAllocationsHook {
   data: ProjectAllocations | undefined;
 }
 
-export const useUserAllocations = (id: string, userAddress?: string): ProjectsAllocationsHook => {
+export const useUserAllocations = (id: string, userAddress: string): ProjectsAllocationsHook => {
   const { data, loading } = useQuery(FETCH_PROJECT_ALLOCATION_DATA, {
     client,
     variables: {
