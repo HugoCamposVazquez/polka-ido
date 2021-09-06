@@ -1,12 +1,12 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { AccountsDropdown } from '../../shared/AccountsDropdown';
-import { MainButton } from '../../shared/gui/MainButton';
+import { formatWei } from '../../utils/numModifiyngFuncs';
+import { AccountsDropdown } from '../AccountsDropdown';
+import { MainButton } from '../gui/MainButton';
 import { TextField } from '../gui/TextField';
 import * as styles from './ClaimTokensModal.styles';
 import { Modal } from './Modal';
@@ -23,15 +23,16 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
-  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<BigNumber | string>();
+  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState('0');
 
   useEffect(() => {
     const getClaimableTokens = async () => {
       try {
-        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress as string);
-        setAmountOfClaimableTokens(claimableBalance);
-      } catch (error) {
-        setAmountOfClaimableTokens('0');
+        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
+        setAmountOfClaimableTokens(claimableBalance.toString());
+      } catch (e) {
+        // TODO: Display notification
+        console.error(`Error while loading amount of possible tokens to claim: ${e.message}`);
       }
     };
     getClaimableTokens();
@@ -86,7 +87,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>{amountOfClaimableTokens} TKN</div>
+      <div style={styles.tknValueTextStyle}>{formatWei(amountOfClaimableTokens)} TKN</div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>
@@ -104,7 +105,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
+                disabled={!accounts.length || amountOfClaimableTokens === '0'}
                 title={'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
