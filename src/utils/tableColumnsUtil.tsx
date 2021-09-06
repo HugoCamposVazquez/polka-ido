@@ -1,9 +1,10 @@
-import { format, fromUnixTime, getUnixTime } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import React from 'react';
 
 import binImage from '../assets/bin_image.svg';
 import starEmpty from '../assets/star_empty.svg';
 import startFill from '../assets/star_fill.svg';
+import { getIPFSResolvedLink } from './data';
 
 export const getAllColumns = () => {
   return [
@@ -21,9 +22,9 @@ export const getAllColumns = () => {
         <div style={{ display: 'flex' }}>
           <img
             style={{ height: '1.5rem', width: '1.5rem', objectFit: 'cover', marginRight: '0.75rem' }}
-            src={cellProps.record.imageUrl}
+            src={cellProps.record.imageUrl ? getIPFSResolvedLink(cellProps.record.imageUrl) : ''}
           />
-          <div>TODO FROM IPFS</div>
+          <div>{cellProps.record.title ? cellProps.record.title : ''}</div>
         </div>
       ),
     },
@@ -33,14 +34,13 @@ export const getAllColumns = () => {
       width: '9.375rem',
       renderRepresentation: (cellProps: any) => (
         <div>
-          <div>{cellProps.record.startDate < fromUnixTime(Date.now()) ? 'Upcoming' : ' '}</div>
+          <div>{cellProps.record.startDate < fromUnixTime(Date.now()) && 'Upcoming'}</div>
           <div>
             {cellProps.record.startDate < fromUnixTime(Date.now()) &&
-            fromUnixTime(Date.now()) < cellProps.record.startDate
-              ? 'InProgress'
-              : ' '}
+              fromUnixTime(Date.now()) < cellProps.record.startDate &&
+              'In Progress'}
           </div>
-          <div>{cellProps.record.endDate > fromUnixTime(Date.now()) ? 'Ended' : ' '}</div>
+          <div>{cellProps.record.endDate > fromUnixTime(Date.now()) && 'Ended'}</div>
         </div>
       ),
     },

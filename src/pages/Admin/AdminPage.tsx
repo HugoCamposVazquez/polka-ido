@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useProjects } from '../../hooks/apollo/useProjects';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { EditableCell } from '../../shared/EditableCell';
+import { ProjectMetadata } from '../../types/ProjectType';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
 import * as styles from './AdminPage.styles';
 
@@ -41,7 +42,13 @@ export const AdminPage = () => {
   });
 
   const { data: projects, loading: projectsLoading } = useProjects();
-  const { data: metaData, loading: IPFSloading } = useReadIPFS(projects?.sales[0].metadataURI);
+  const { data: metaData, loading: IPFSloading } = useReadIPFS<ProjectMetadata>(projects?.sales[0].metadataURI);
+
+  const combiendProjectsData = projects?.sales.map((projectData) => {
+    if (metaData) return { ...projectData, ...metaData };
+
+    return projectData;
+  });
 
   if (projectsLoading && IPFSloading) {
     return <Spin style={styles.spinnerStyle} size="large" />;
@@ -61,7 +68,7 @@ export const AdminPage = () => {
         <div style={styles.tableContainerStyle}>
           <Table
             rowKey={'id'}
-            dataSource={projects?.sales}
+            dataSource={combiendProjectsData}
             tableLayout={'fixed'}
             scroll={{ x: 'min-content' }}
             sticky
