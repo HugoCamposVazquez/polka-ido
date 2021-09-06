@@ -44,11 +44,14 @@ export const AdminPage = () => {
   const { data: projects, loading: projectsLoading } = useProjects();
   const { data: metaData, loading: IPFSloading } = useReadIPFS<ProjectMetadata>(projects?.sales[0].metadataURI);
 
-  const combiendProjectsData = projects?.sales.map((projectData) => {
-    if (metaData) return { ...projectData, ...metaData };
+  const combiendProjectsData = React.useMemo(() => {
+    const combiendData = projects?.sales.map((projectData) => {
+      return { ...projectData, ...metaData };
+    });
 
-    return projectData;
-  });
+    if (metaData) return combiendData;
+    return projects?.sales;
+  }, [projects, metaData]);
 
   if (projectsLoading && IPFSloading) {
     return <Spin style={styles.spinnerStyle} size="large" />;

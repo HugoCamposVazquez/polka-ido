@@ -58,7 +58,6 @@ export interface ProjectSales {
     }[];
   }[];
 }
-
 export interface ProjectData {
   id: string;
   salePrice: string;
