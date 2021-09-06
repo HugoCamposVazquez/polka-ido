@@ -7,6 +7,7 @@ import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { useMoonbeanBalance } from '../../hooks/web3/useMoonbeamBalance';
 import { MainButton } from '../../shared/gui/MainButton';
@@ -19,6 +20,8 @@ import * as styles from './JoinProjectPage.styles';
 export const JoinProjectForm = () => {
   const { id: address }: { id: string } = useParams();
   const { data } = useSingleProject(address);
+  const { data: tokenData } = useStatemintToken(address);
+
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
   const maxAllocation = BigNumber.from(data?.sales[0].maxDepositAmount || '0');
@@ -172,7 +175,7 @@ export const JoinProjectForm = () => {
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
               />
-              <div style={styles.suffixTextStyle}>TKN</div>
+              <div style={styles.suffixTextStyle}>{tokenData ? tokenData : 'TKN'}</div>
             </div>
           </div>
 
