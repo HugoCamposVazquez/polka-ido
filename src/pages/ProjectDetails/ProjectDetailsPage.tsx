@@ -11,7 +11,7 @@ import webIcon from '../../assets/web_icon.svg';
 import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
-import { TokenMetadata, useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
@@ -201,9 +201,7 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-
       {account && data && <Allocations account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />}
-
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>
