@@ -4,7 +4,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import backToProject from '../../assets/back_to_project.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
-import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { Footer } from '../../shared/insets/user/Footer';
 import { ProjectMetadata } from '../../types/ProjectType';
 import { JoinProjectForm } from './JoinProjectForm';
