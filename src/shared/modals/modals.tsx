@@ -2,6 +2,7 @@ import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContrac
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
 import { ClaimTokensModal } from './ClaimTokensModal';
 import { UnsupportedNetwork } from './UnsupportedNetwork';
 import { WalletModal } from './WalletModal';
@@ -37,10 +38,21 @@ const detachDiv = () => {
   }
 };
 
-export const openClaimTokensModal = (id: string, contract: SaleContract, userEthAddress: string) => {
+export const openClaimTokensModal = (
+  id: string,
+  contract: SaleContract,
+  userEthAddress: string,
+  tokenData: TokenMetadata,
+) => {
   attachDiv();
   ReactDOM.render(
-    <ClaimTokensModal closeModal={detachDiv} id={id} contract={contract} userEthAddress={userEthAddress} />,
+    <ClaimTokensModal
+      closeModal={detachDiv}
+      id={id}
+      contract={contract}
+      userEthAddress={userEthAddress}
+      tokenData={tokenData}
+    />,
     stackOfModalDivs[stackOfModalDivs.length - 1],
   );
 };

@@ -1,10 +1,10 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -17,9 +17,10 @@ interface IProps {
   id: string;
   contract: SaleContract;
   userEthAddress: string;
+  tokenData: TokenMetadata;
 }
 
-export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenData }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
@@ -89,7 +90,9 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>{amountOfClaimableTokens} TKN</div>
+      <div style={styles.tknValueTextStyle}>
+        {amountOfClaimableTokens} {tokenData ? tokenData.symbol : ''}
+      </div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>
