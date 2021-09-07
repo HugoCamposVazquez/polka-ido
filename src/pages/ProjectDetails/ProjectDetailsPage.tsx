@@ -10,6 +10,7 @@ import twitterIcon from '../../assets/twitter_icon.svg';
 import webIcon from '../../assets/web_icon.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { TokenMetadata, useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
@@ -30,6 +31,7 @@ export const ProjectDetailsPage = () => {
   const { id }: { id: string } = useParams();
   const saleContract = useSaleContract(id);
   const { account } = useWeb3React();
+  const { data: tokenData } = useStatemintToken(id);
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
@@ -63,8 +65,8 @@ export const ProjectDetailsPage = () => {
   }, [data?.sales[0]]);
 
   const onClaimClick = useCallback((): void => {
-    if (account && saleContract) {
-      openClaimTokensModal(id, saleContract, account);
+    if (account && saleContract && tokenData) {
+      openClaimTokensModal(id, saleContract, account, tokenData);
     }
   }, [id, saleContract, account]);
 
@@ -184,7 +186,9 @@ export const ProjectDetailsPage = () => {
                     borderRadius={'0rem'}
                   />
                 </div>
-                <div style={styles.smallTextStyle}>1 TKN = {tokenPrice} ETH</div>
+                <div style={styles.smallTextStyle}>
+                  1 {tokenData ? tokenData.symbol : 'TKN'}N = {tokenPrice} ETH
+                </div>
               </div>
             </div>
 
@@ -222,7 +226,7 @@ export const ProjectDetailsPage = () => {
             1,239 USDT
           </div>
           <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            304,985 TKN
+            304,985 {tokenData ? tokenData.symbol : 'TKN'}
           </div>
         </div>
         <div style={styles.projectDetailsItemStyle}>
@@ -236,7 +240,7 @@ export const ProjectDetailsPage = () => {
             190 USDT
           </div>
           <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            23,498 TKN
+            23,498 {tokenData ? tokenData.symbol : 'TKN'}
           </div>
         </div>
         <div style={{ padding: '1.5rem 0', alignItems: 'center', display: 'flex' }}>
@@ -250,7 +254,7 @@ export const ProjectDetailsPage = () => {
             1,429 USDT
           </div>
           <div style={{ flex: 0.25 }} className={styles.allocationsItemBoldStyle}>
-            328,483 TKN
+            328,483 {tokenData ? tokenData.symbol : 'TKN'}
           </div>
         </div>
       </div>
