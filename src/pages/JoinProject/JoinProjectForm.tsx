@@ -176,7 +176,7 @@ export const JoinProjectForm = () => {
                 mode={'dark'}
                 style={{ fontSize: '1.25rem' }}
               />
-              <div style={styles.suffixTextStyle}>{tokenData ? tokenData.symbol : 'TKN'}</div>
+              <div style={styles.suffixTextStyle}>{tokenData ? tokenData.symbol : ''}</div>
             </div>
           </div>
 

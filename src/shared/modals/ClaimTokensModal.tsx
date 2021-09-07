@@ -90,7 +90,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenDa
       </div>
 
       <div style={styles.tknValueTextStyle}>
-        {formatWei(amountOfClaimableTokens)} {tokenData ? tokenData.symbol : 'TKN'}
+        {formatWei(amountOfClaimableTokens)} {tokenData ? tokenData.symbol : ''}
       </div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
