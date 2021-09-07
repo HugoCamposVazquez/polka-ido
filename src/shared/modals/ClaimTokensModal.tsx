@@ -4,8 +4,9 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { AccountsDropdown } from '../../shared/AccountsDropdown';
-import { MainButton } from '../../shared/gui/MainButton';
+import { formatWei } from '../../utils/numModifiyngFuncs';
+import { AccountsDropdown } from '../AccountsDropdown';
+import { MainButton } from '../gui/MainButton';
 import { TextField } from '../gui/TextField';
 import * as styles from './ClaimTokensModal.styles';
 import { Modal } from './Modal';
@@ -22,7 +23,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
-  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<Number>();
+  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<Number>(0);
 
   useEffect(() => {
     const getClaimableTokens = async () => {
@@ -85,7 +86,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>{amountOfClaimableTokens} TKN</div>
+      <div style={styles.tknValueTextStyle}>{formatWei(amountOfClaimableTokens.toString())} TKN</div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>

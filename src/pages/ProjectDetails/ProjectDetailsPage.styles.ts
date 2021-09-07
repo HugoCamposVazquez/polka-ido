@@ -449,3 +449,7 @@ export const topRightBottomLeftNotch = styled.cssStyle`
     0% calc(100% - var(--notchSize))
   );
 `;
+
+export const allocationListItem = styled.cssClassName`
+  list-style: none;
+`;
