@@ -35,9 +35,6 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
         token {
           id
         }
-        allocations {
-          id
-        }
       }
     }
     `,

@@ -25,6 +25,9 @@ export const formatBalance = (str: string, maxDecimalDigits: number): string => 
 };
 
 export const formatWei = (numberInWei: string | BigNumber): string => {
+  if (numberInWei.toString() === '0') {
+    return '0';
+  }
   const eth = ethers.utils.formatEther(numberInWei);
   return eth.replace(/\.0+$/, ''); // replace zeros
 };

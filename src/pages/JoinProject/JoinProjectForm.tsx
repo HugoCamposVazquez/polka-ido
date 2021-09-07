@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
+import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
@@ -150,7 +151,7 @@ export const JoinProjectForm = () => {
               <div style={styles.maxBtnStyle} onClick={onClickSetMaxAllocation}>
                 Max
               </div>
-              <div style={styles.suffixTextStyle}>MOVR</div>
+              <div style={styles.suffixTextStyle}>{config.CURRENCY}</div>
             </div>
           </div>
 
@@ -181,7 +182,9 @@ export const JoinProjectForm = () => {
 
           {methods.errors.toValue ? <span>{methods.errors.toValue.message}</span> : null}
 
-          <div style={styles.maxAllocTextStyle}>Max. allocation is {formattedMaxAllocation} MOVR</div>
+          <div style={styles.maxAllocTextStyle}>
+            Max. allocation is {formattedMaxAllocation} {config.CURRENCY}
+          </div>
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
