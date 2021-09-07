@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getStatemintApi } from '../../services/polkadot';
 import { IData } from '../ipfs/useReadIPFS';
 
-interface TokenMetadata {
+export interface TokenMetadata {
   symbol: string;
   name: string;
   decimals: string;
