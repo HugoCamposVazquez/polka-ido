@@ -3,9 +3,7 @@ import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
-import { sideColor3, sideColor5 } from '../../utils/colorsUtil';
 import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';

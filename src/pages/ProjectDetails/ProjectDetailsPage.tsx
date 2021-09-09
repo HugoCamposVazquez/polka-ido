@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import projectCardBackground from '../../assets/project_card_background.png';
 import telegramIcon from '../../assets/telegram_icon.svg';
