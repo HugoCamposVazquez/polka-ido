@@ -105,9 +105,8 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           isFeatured: project.featured,
         },
         {
-          startTime: convertDateToUnixtime(project.distributionDate),
-          unlockInterval: 300, // unlockInterval should be removed?
-          percentageToMint: 10, // should be replaced by distribution?
+          startTime: convertDateToUnixtime(project.vestingStartDate),
+          endTime: convertDateToUnixtime(project.vestingEndDate),
         },
         `ipfs://${response.IpfsHash}`,
       );
@@ -230,13 +229,13 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
-              <div style={styles.fieldSectionStyle}>Distribution date</div>
-              <DateField name={'distributionDate'} mode={'light'} placeholder={'Select vesting start date'} />
+              <div style={styles.fieldSectionStyle}>Vesting start date</div>
+              <DateField name={'vestingStartDate'} mode={'light'} placeholder={'Select vesting start date'} />
             </div>
 
-            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Unlock interval (days)</div>
-              <TextField name={'unlockInterval'} styleType={'bordered'} mode={'light'} placeholder={'30'} />
+            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
+              <div style={styles.fieldSectionStyle}>Vesting end date</div>
+              <DateField name={'vestingEndDate'} mode={'light'} placeholder={'Select vesting end date'} />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>

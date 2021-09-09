@@ -32,7 +32,8 @@ export type ProjectType = ProjectMetadata & {
   raiseAmountTotal: number | string;
   tokenPrice: number | string;
   tokenValue: number;
-  distributionDate: Date;
+  vestingStartDate: Date;
+  vestingEndDate: Date;
   minSwapLevel: number;
   tokenId: number;
   raiseAmountCurrent?: number;
