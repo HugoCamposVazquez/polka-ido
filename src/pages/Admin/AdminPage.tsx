@@ -2,8 +2,10 @@ import { Spin, Table, TablePaginationConfig } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useProjects } from '../../api/api/api';
+import { useProjects } from '../../hooks/apollo/useProjects';
+import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { EditableCell } from '../../shared/EditableCell';
+import { ProjectMetadata } from '../../types/ProjectType';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
 import * as styles from './AdminPage.styles';
 
@@ -39,9 +41,19 @@ export const AdminPage = () => {
     };
   });
 
-  const { data: projects, isLoading: projectsLoading } = useProjects(undefined);
+  const { data: projects, loading: projectsLoading } = useProjects();
+  const { data: metaData, loading: IPFSloading } = useReadIPFS<ProjectMetadata>(projects?.sales[0].metadataURI);
 
-  if (projectsLoading) {
+  const combiendProjectsData = React.useMemo(() => {
+    const combiendData = projects?.sales.map((projectData) => {
+      return { ...projectData, ...metaData };
+    });
+
+    if (metaData) return combiendData;
+    return projects?.sales;
+  }, [projects, metaData]);
+
+  if (projectsLoading && IPFSloading) {
     return <Spin style={styles.spinnerStyle} size="large" />;
   }
 
@@ -59,7 +71,7 @@ export const AdminPage = () => {
         <div style={styles.tableContainerStyle}>
           <Table
             rowKey={'id'}
-            dataSource={projects?.data}
+            dataSource={combiendProjectsData}
             tableLayout={'fixed'}
             scroll={{ x: 'min-content' }}
             sticky

@@ -6,6 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { sideColor3, sideColor5 } from '../../utils/colorsUtil';
+import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -13,28 +14,30 @@ import { TextField } from '../gui/TextField';
 import * as styles from './ClaimTokensModal.styles';
 import { Modal } from './Modal';
 import { modalTextStyle } from './Modal.styles';
-
 interface IProps {
   closeModal: () => void;
   id: string;
   contract: SaleContract;
   userEthAddress: string;
+  tokenData: TokenMetadata;
 }
 
-export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenData }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
-  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState('0');
+  const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
 
   useEffect(() => {
     const getClaimableTokens = async () => {
       try {
-        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
-        setAmountOfClaimableTokens(claimableBalance.toString());
-      } catch (e) {
-        // TODO: Display notification
-        console.error(`Error while loading amount of possible tokens to claim: ${e.message}`);
+        if (userEthAddress) {
+          const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
+          const formattedClaimableBalance = formatWei(claimableBalance);
+          setAmountOfClaimableTokens(formattedClaimableBalance);
+        }
+      } catch (error) {
+        setAmountOfClaimableTokens('0');
       }
     };
     getClaimableTokens();
@@ -111,7 +114,9 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>{formatWei(amountOfClaimableTokens)} TKN</div>
+      <div style={styles.tknValueTextStyle}>
+        {amountOfClaimableTokens} {tokenData ? tokenData.symbol : ''}
+      </div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>
@@ -129,7 +134,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!accounts.length || amountOfClaimableTokens === '0'}
+                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
                 title={'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}

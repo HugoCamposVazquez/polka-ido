@@ -12,6 +12,7 @@ import webIcon from '../../assets/web_icon.svg';
 import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
@@ -32,6 +33,7 @@ export const ProjectDetailsPage = () => {
   const { id }: { id: string } = useParams();
   const saleContract = useSaleContract(id);
   const { account } = useWeb3React();
+  const { data: tokenData } = useStatemintToken(id);
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
@@ -65,8 +67,8 @@ export const ProjectDetailsPage = () => {
   }, [data?.sales[0]]);
 
   const onClaimClick = useCallback((): void => {
-    if (account && saleContract) {
-      openClaimTokensModal(id, saleContract, account);
+    if (account && saleContract && tokenData) {
+      openClaimTokensModal(id, saleContract, account, tokenData);
     }
   }, [id, saleContract, account]);
 
