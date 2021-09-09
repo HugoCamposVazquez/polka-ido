@@ -187,18 +187,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             </div>
           </div>
 
-          <div style={styles.sectionContainerStyle}>
-            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.4 })}>
-              <div style={styles.fieldSectionStyle}>Statemint address that holds tokens</div>
-              <TextField
-                name={'walletAddress'}
-                styleType={'bordered'}
-                mode={'light'}
-                placeholder={'5FTrdVXtzt25ewJ2ADMzX83yEPY2nrKJGezZGstVrF51BXLX'}
-              />
-            </div>
-          </div>
-
           <div style={styles.lineStyle} />
           <div style={cs(styles.titleSectionStyle, { marginTop: '1.5rem' })}>Project details</div>
 
@@ -266,6 +254,18 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Token decimals</div>
               <TextField name={'decimals'} styleType={'bordered'} mode={'light'} placeholder={'18'} />
+            </div>
+          </div>
+
+          <div style={styles.sectionContainerStyle}>
+            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.4 })}>
+              <div style={styles.fieldSectionStyle}>Statemint address that holds tokens</div>
+              <TextField
+                name={'walletAddress'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'5FTrdVXtzt25ewJ2ADMzX83yEPY2nrKJGezZGstVrF51BXLX'}
+              />
             </div>
           </div>
 

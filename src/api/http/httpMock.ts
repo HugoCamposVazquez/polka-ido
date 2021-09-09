@@ -42,6 +42,7 @@ for (let i = 0; i < 80; i++) {
       'For athletes, high altitude produces two contradictory effects on performance. For explosive events (sprints up to 400 metres, long jump, triple jump)',
     raiseAmountCurrent: Math.floor(Math.random() * 90000),
     joined: Math.random() > 0.5,
+    walletAddress: '5FTrdVXtzt25ewJ2ADMzX83yEPY2nrKJGezZGstVrF51BXLX',
   });
 }
 
