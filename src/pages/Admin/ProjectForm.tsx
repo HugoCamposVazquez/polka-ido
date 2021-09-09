@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import { config } from '../../config';
 import { useWriteJSONToIPFS } from '../../hooks/ipfs/useWriteJSONToIPFS';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
@@ -98,7 +99,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         {
           tokenID: project.tokenId,
           decimals: 18,
-          walletAddress: account,
+          walletAddress: project.walletAddress,
         },
         {
           whitelist: project.access === 'whitelist',
@@ -173,16 +174,28 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
-              <div style={styles.fieldSectionStyle}>Min. deposit ()</div>
+              <div style={styles.fieldSectionStyle}>Min. deposit ({config.CURRENCY})</div>
               <TextField name={'minUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'0'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
-              <div style={styles.fieldSectionStyle}>Max. deposit ()</div>
+              <div style={styles.fieldSectionStyle}>Max. deposit ({config.CURRENCY})</div>
               <TextField name={'maxUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'0.02'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Token price</div>
               <TextField name={'tokenPrice'} styleType={'bordered'} mode={'light'} placeholder={'0,022'} />
+            </div>
+          </div>
+
+          <div style={styles.sectionContainerStyle}>
+            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.4 })}>
+              <div style={styles.fieldSectionStyle}>Statemint address that holds tokens</div>
+              <TextField
+                name={'walletAddress'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'5FTrdVXtzt25ewJ2ADMzX83yEPY2nrKJGezZGstVrF51BXLX'}
+              />
             </div>
           </div>
 

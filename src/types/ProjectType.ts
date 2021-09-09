@@ -38,6 +38,7 @@ export type ProjectType = ProjectMetadata & {
   tokenId: number;
   raiseAmountCurrent?: number;
   joined?: boolean;
+  walletAddress: string;
 };
 
 export interface ProjectSales {
