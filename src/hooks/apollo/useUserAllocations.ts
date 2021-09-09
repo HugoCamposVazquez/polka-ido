@@ -3,9 +3,8 @@ import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { client } from '../../services/apollo';
-import { ProjectAllocationsDto } from '../../types/ProjectType';
+import { Allocation, ProjectAllocationsDto } from '../../types/ProjectType';
 
-type Allocation = { id: string; amount: string };
 interface AllocationsData {
   allocations: Allocation[];
   totalAllocation: string;
@@ -29,14 +28,13 @@ export const useUserAllocations = (id: string, userAddress: string): ProjectsAll
   });
 
   useEffect(() => {
-    if (data) {
-      const userAllocations = data.allocations.filter((allocation) => allocation.user.id == userAddress);
-      const total = userAllocations.reduce(
+    if (data && data.sale) {
+      const total = data.sale.allocations.reduce(
         (prevTotal: BigNumber, sale: Allocation) => prevTotal.add(BigNumber.from(sale.amount)),
         BigNumber.from(0),
       );
       setAllocations({
-        allocations: userAllocations,
+        allocations: data.sale.allocations,
         totalAllocation: total.toString(),
       });
       setDataReady(true);
@@ -52,13 +50,14 @@ export const useUserAllocations = (id: string, userAddress: string): ProjectsAll
 const FETCH_PROJECT_ALLOCATION_DATA = gql(
   `
     query Sale($id: String, $userAddress: String) {
-      allocations {
+      sale (id: $id) {
+        id
+        metadataURI
+        allocations (where: { user: $userAddress }) {
           id
           amount
-          user {
-            id
-          }
         }
+      }
     }
     `,
 );
