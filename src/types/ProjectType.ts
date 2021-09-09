@@ -27,8 +27,8 @@ export type ProjectType = ProjectMetadata & {
   featured: boolean;
   starts: Date;
   ends: Date;
-  minUserDeposit: string;
-  maxUserDeposit: string;
+  minUserDepositAmount: string;
+  maxUserDepositAmount: string;
   raiseAmountTotal: number | string;
   tokenPrice: number | string;
   tokenValue: number;

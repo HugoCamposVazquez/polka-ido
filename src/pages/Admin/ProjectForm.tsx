@@ -91,8 +91,8 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
       const tx = await contract?.createSaleContract(
         convertDateToUnixtime(project.starts),
         convertDateToUnixtime(project.ends),
-        utils.parseEther(project.minUserDeposit),
-        utils.parseEther(project.maxUserDeposit),
+        utils.parseEther(project.minUserDepositAmount),
+        utils.parseEther(project.maxUserDepositAmount),
         project.raiseAmountTotal,
         utils.parseEther(project.tokenPrice.toString()), // should be token ratio?
         {
@@ -174,11 +174,11 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Min. deposit ()</div>
-              <TextField name={'minUserDeposit'} styleType={'bordered'} mode={'light'} placeholder={'0'} />
+              <TextField name={'minUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'0'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Max. deposit ()</div>
-              <TextField name={'maxUserDeposit'} styleType={'bordered'} mode={'light'} placeholder={'0.02'} />
+              <TextField name={'maxUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'0.02'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Token price</div>
