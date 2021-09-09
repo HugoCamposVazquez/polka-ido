@@ -4,6 +4,7 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
 import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
@@ -12,15 +13,15 @@ import { TextField } from '../gui/TextField';
 import * as styles from './ClaimTokensModal.styles';
 import { Modal } from './Modal';
 import { modalTextStyle } from './Modal.styles';
-
 interface IProps {
   closeModal: () => void;
   id: string;
   contract: SaleContract;
   userEthAddress: string;
+  tokenData: TokenMetadata;
 }
 
-export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenData }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
@@ -30,11 +31,13 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
   useEffect(() => {
     const getClaimableTokens = async () => {
       try {
-        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
-        setAmountOfClaimableTokens(claimableBalance.toString());
-      } catch (e) {
-        // TODO: Display notification
-        console.error(`Error while loading amount of possible tokens to claim: ${e.message}`);
+        if (userEthAddress) {
+          const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
+          const formattedClaimableBalance = formatWei(claimableBalance);
+          setAmountOfClaimableTokens(formattedClaimableBalance);
+        }
+      } catch (error) {
+        setAmountOfClaimableTokens('0');
       }
     };
     getClaimableTokens();
@@ -96,7 +99,9 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
         )}
       </div>
 
-      <div style={styles.tknValueTextStyle}>{formatWei(amountOfClaimableTokens)} TKN</div>
+      <div style={styles.tknValueTextStyle}>
+        {amountOfClaimableTokens} {tokenData ? tokenData.symbol : ''}
+      </div>
       <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
       <FormProvider {...methods}>
         <form>

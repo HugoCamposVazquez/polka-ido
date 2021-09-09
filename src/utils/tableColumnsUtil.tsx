@@ -1,9 +1,10 @@
-import { format } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import React from 'react';
 
 import binImage from '../assets/bin_image.svg';
 import starEmpty from '../assets/star_empty.svg';
 import startFill from '../assets/star_fill.svg';
+import { getIPFSResolvedLink } from './data';
 
 export const getAllColumns = () => {
   return [
@@ -21,9 +22,9 @@ export const getAllColumns = () => {
         <div style={{ display: 'flex' }}>
           <img
             style={{ height: '1.5rem', width: '1.5rem', objectFit: 'cover', marginRight: '0.75rem' }}
-            src={cellProps.record.imageUrl}
+            src={cellProps.record.imageUrl ? getIPFSResolvedLink(cellProps.record.imageUrl) : ''}
           />
-          <div>{cellProps.record.title}</div>
+          <div>{cellProps.record.title ? cellProps.record.title : ''}</div>
         </div>
       ),
     },
@@ -31,37 +32,49 @@ export const getAllColumns = () => {
       title: 'Status',
       dataIndex: 'status',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.status}</div>,
+      renderRepresentation: (cellProps: any) => (
+        <div>
+          <div>{cellProps.record.startDate < fromUnixTime(Date.now()) && 'Upcoming'}</div>
+          <div>
+            {cellProps.record.startDate < fromUnixTime(Date.now()) &&
+              fromUnixTime(Date.now()) < cellProps.record.startDate &&
+              'In Progress'}
+          </div>
+          <div>{cellProps.record.endDate > fromUnixTime(Date.now()) && 'Ended'}</div>
+        </div>
+      ),
     },
     {
       title: 'Starts',
       dataIndex: 'starts',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{format(cellProps.record.starts, 'dd/MM/yy')}</div>,
+      renderRepresentation: (cellProps: any) => (
+        <div>{format(fromUnixTime(cellProps.record.startDate), 'dd/MM/yy')}</div>
+      ),
     },
     {
       title: 'Ends',
       dataIndex: 'ends',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{format(cellProps.record.ends, 'dd/MM/yy')}</div>,
+      renderRepresentation: (cellProps: any) => <div>{format(fromUnixTime(cellProps.record.endDate), 'dd/MM/yy')}</div>,
     },
     {
       title: 'Raise amount',
       dataIndex: 'raiseAmountTotal',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.raiseAmountTotal}</div>,
+      renderRepresentation: (cellProps: any) => <div>{cellProps.record.currentDepositAmount}</div>,
     },
     {
       title: 'Access',
       dataIndex: 'access',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.access}</div>,
+      renderRepresentation: (cellProps: any) => <div>{cellProps.record.whitelisted ? 'Whitelisted' : 'Private'}</div>,
     },
     {
       title: 'Token price',
       dataIndex: 'tokenPrice',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.tokenPrice}</div>,
+      renderRepresentation: (cellProps: any) => <div>{cellProps.record.salePrice}</div>,
     },
     {
       title: 'Featured',

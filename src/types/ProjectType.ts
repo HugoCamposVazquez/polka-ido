@@ -55,7 +55,6 @@ export interface ProjectSales {
     };
   }[];
 }
-
 export interface AllocationDto {
   id: string;
   amount: string;
