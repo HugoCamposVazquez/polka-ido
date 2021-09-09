@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
@@ -42,14 +42,14 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
   const { fetchTokenData } = useStatemintToken();
-  const onTokenIdBlur = async (): Promise<void> => {
-    methods.setValue('decimals', 'Loading...');
+  const onTokenIdBlur = useCallback(async (): Promise<void> => {
+    // methods.setValue('decimals', 'Loading...');
     const tokenId = methods.getValues('tokenId');
     const tokenData = await fetchTokenData(tokenId);
     if (tokenData) {
       methods.setValue('decimals', tokenData.decimals);
     }
-  };
+  }, [methods, fetchTokenData]);
 
   useEffect(() => {
     if (!loadingProjectData) {
@@ -88,17 +88,19 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         return;
       }
 
+      console.log('project: ', project);
+
       // 2. Create new sale smart contract
       const tx = await contract?.createSaleContract(
         convertDateToUnixtime(project.starts),
         convertDateToUnixtime(project.ends),
         utils.parseEther(project.minUserDepositAmount),
         utils.parseEther(project.maxUserDepositAmount),
-        project.raiseAmountTotal,
+        utils.parseEther(project.raiseAmountTotal),
         utils.parseEther(project.tokenPrice.toString()), // should be token ratio?
         {
           tokenID: project.tokenId,
-          decimals: 18,
+          decimals: project.decimals,
           walletAddress: project.walletAddress,
         },
         {

@@ -29,7 +29,7 @@ export type ProjectType = ProjectMetadata & {
   ends: Date;
   minUserDepositAmount: string;
   maxUserDepositAmount: string;
-  raiseAmountTotal: number | string;
+  raiseAmountTotal: string;
   tokenPrice: number | string;
   tokenValue: number;
   vestingStartDate: Date;
@@ -39,6 +39,7 @@ export type ProjectType = ProjectMetadata & {
   raiseAmountCurrent?: number;
   joined?: boolean;
   walletAddress: string;
+  decimals: number;
 };
 
 export interface ProjectSales {

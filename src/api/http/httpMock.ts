@@ -23,7 +23,7 @@ for (let i = 0; i < 80; i++) {
     featured: Math.random() > 0.5,
     starts: new Date(2014, 1, 11),
     ends: new Date(2014, 1, 11),
-    raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000),
+    raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000).toString(),
     tokenPrice: 0.02,
     tokenValue: 20,
     imageUrl: imageUrls[Math.floor(Math.random() * imageUrls.length)],
@@ -43,6 +43,7 @@ for (let i = 0; i < 80; i++) {
     raiseAmountCurrent: Math.floor(Math.random() * 90000),
     joined: Math.random() > 0.5,
     walletAddress: '5FTrdVXtzt25ewJ2ADMzX83yEPY2nrKJGezZGstVrF51BXLX',
+    decimals: 8,
   });
 }
 
