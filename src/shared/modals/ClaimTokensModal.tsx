@@ -6,6 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { sideColor3, sideColor5 } from '../../utils/colorsUtil';
+import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -26,6 +27,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState('0');
+  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
 
   useEffect(() => {
     const getClaimableTokens = async () => {
@@ -52,33 +54,18 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
 
   const onSubmit = async ({ address }: { address: string }) => {
     try {
-      toast.loading('Confirm Transaction...', {
-        position: 'top-center',
-        style: { color: sideColor3, backgroundColor: sideColor5 },
-        toastId: 'claimingTokens',
-      });
+      notifyTransactionConfirmation('Confirm Transaction...', 'claimingTokens');
+      setIsTranasctionInProgress(true);
 
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
-      toast.update('claimingTokens', {
-        render: 'Transaction confirmend.',
-        type: 'error',
-        isLoading: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        pauseOnHover: false,
-      });
+      setIsTranasctionInProgress(false);
+      notifySuccess('Claim Successful', 'claimingTokens', 2000);
       closeModal();
     } catch (e) {
       // show notification or error message
       console.log(e);
-      toast.update('claimingTokens', {
-        render: 'Transaction Canceld.',
-        type: 'error',
-        isLoading: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        pauseOnHover: false,
-      });
+      notifyError('TransactionCanceled.', 'claimingTokens');
+      setIsTranasctionInProgress(false);
     }
   };
 
@@ -129,8 +116,8 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!accounts.length || amountOfClaimableTokens === '0'}
-                title={'Claim'}
+                disabled={!accounts.length || amountOfClaimableTokens === '0' || isTransactionInProggress}
+                title={isTransactionInProggress ? 'Waiting for Conformation' : 'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
                 style={{ width: '100%' }}

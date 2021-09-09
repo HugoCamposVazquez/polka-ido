@@ -15,9 +15,9 @@ import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { useMoonbeanBalance } from '../../hooks/web3/useMoonbeamBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
-import { sideColor3, sideColor5 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
+import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
 import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
@@ -50,58 +50,39 @@ export const JoinProjectForm = () => {
 
   const onSubmit = async ({ fromValue }: { fromValue: string }): Promise<void> => {
     try {
-      toast.loading('Confirm Transaction...', {
-        position: 'top-center',
-        style: { color: sideColor3, backgroundColor: sideColor5 },
-        toastId: 'buyingTokens',
-      });
-
+      notifyTransactionConfirmation('Confirm Transaction...', 'buyingTokens');
       setIsTranasctionInProgress(true);
       await saleContract?.buyTokens({
         value: ethers.utils.parseEther(fromValue),
         gasLimit: 10000000,
       });
 
-      toast.update('buyingTokens', {
-        render: (
-          <div>
-            Success! Thank you for joining.
-            <MainButton
-              title="OK"
-              type={'fill'}
-              onClick={() => history.goBack()}
-              style={{
-                display: 'inline-flex',
-                marginLeft: '0.625rem',
-                width: '2.188rem',
-                height: '1.563rem',
-                cursor: 'default',
-              }}
-            />
-          </div>
-        ),
-        type: 'success',
-        isLoading: false,
-        closeOnClick: true,
-        autoClose: 10000,
-        hideProgressBar: false,
-        pauseOnHover: false,
-      });
+      notifySuccess(
+        <div>
+          Success! Thank you for joining
+          <MainButton
+            title="OK"
+            type={'fill'}
+            onClick={() => history.goBack()}
+            style={{
+              display: 'inline-flex',
+              marginLeft: '0.625rem',
+              width: '2.188rem',
+              height: '1.563rem',
+              cursor: 'default',
+            }}
+          />
+        </div>,
+        'buyingTokens',
+        10000,
+      );
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
       setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
-
-      toast.update('buyingTokens', {
-        render: 'Transaction Canceld.',
-        type: 'error',
-        isLoading: false,
-        autoClose: 2000,
-        hideProgressBar: false,
-        pauseOnHover: false,
-      });
+      notifyError('TransactionCanceled.', 'buyingTokens');
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
@@ -144,7 +125,7 @@ export const JoinProjectForm = () => {
     [data?.sales[0]],
   );
 
-  const showSubmitButttonText = (): string => {
+  const getSubmitButttonText = (): string => {
     if (saleContract && isTransactionInProggress) return 'Waiting for confirmation...';
     if (saleContract) return 'JOIN PROJECT';
     return 'CONNECT WALLET FIRST';
@@ -246,7 +227,7 @@ export const JoinProjectForm = () => {
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
-              title={showSubmitButttonText()}
+              title={getSubmitButttonText()}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
               disabled={!saleContract || isTransactionInProggress}
