@@ -3,7 +3,9 @@ import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
+import { sideColor3, sideColor5 } from '../../utils/colorsUtil';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -50,11 +52,33 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress }: IProp
 
   const onSubmit = async ({ address }: { address: string }) => {
     try {
+      toast.loading('Confirm Transaction...', {
+        position: 'top-center',
+        style: { color: sideColor3, backgroundColor: sideColor5 },
+        toastId: 'claimingTokens',
+      });
+
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
+      toast.update('claimingTokens', {
+        render: 'Transaction confirmend.',
+        type: 'error',
+        isLoading: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+      });
       closeModal();
     } catch (e) {
       // show notification or error message
       console.log(e);
+      toast.update('claimingTokens', {
+        render: 'Transaction Canceld.',
+        type: 'error',
+        isLoading: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+      });
     }
   };
 
