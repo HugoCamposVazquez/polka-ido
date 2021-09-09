@@ -144,7 +144,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
                     color={sideColor3}
                     options={[
                       { value: 'whitelist', label: 'Whitelist' },
-                      { value: 'private', label: 'Private' },
+                      { value: 'public', label: 'Public' },
                     ]}
                   />
                 </div>

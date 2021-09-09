@@ -7,7 +7,7 @@ import { ProjectType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 
 const projectStatuses: ProjectStatus[] = ['upcoming', 'ended'];
-const projectAccesses: ProjectAccess[] = ['whitelist', 'private'];
+const projectAccesses: ProjectAccess[] = ['whitelist', 'public'];
 const imageUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];

@@ -68,7 +68,7 @@ export const getAllColumns = () => {
       title: 'Access',
       dataIndex: 'access',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.whitelisted ? 'Whitelisted' : 'Private'}</div>,
+      renderRepresentation: (cellProps: any) => <div>{cellProps.record.whitelisted ? 'Whitelisted' : 'Public'}</div>,
     },
     {
       title: 'Token price',
