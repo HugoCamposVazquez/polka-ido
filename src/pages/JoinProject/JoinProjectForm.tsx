@@ -1,8 +1,11 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
@@ -12,13 +15,16 @@ import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { useMoonbeanBalance } from '../../hooks/web3/useMoonbeamBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
+import { sideColor3, sideColor5 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
 import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
+  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
+  const history = useHistory();
   const { data } = useSingleProject(address);
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
@@ -44,13 +50,62 @@ export const JoinProjectForm = () => {
 
   const onSubmit = async ({ fromValue }: { fromValue: string }): Promise<void> => {
     try {
+      toast.loading('Confirm Transaction...', {
+        position: 'top-center',
+        style: { color: sideColor3, backgroundColor: sideColor5 },
+        toastId: 'buyingTokens',
+      });
+
+      setIsTranasctionInProgress(true);
       await saleContract?.buyTokens({
         value: ethers.utils.parseEther(fromValue),
+        gasLimit: 10000000,
       });
+
+      toast.update('buyingTokens', {
+        render: (
+          <div>
+            Success! Thank you for joining.
+            <MainButton
+              title="OK"
+              type={'fill'}
+              onClick={() => history.goBack()}
+              style={{
+                display: 'inline-flex',
+                marginLeft: '0.625rem',
+                width: '2.188rem',
+                height: '1.563rem',
+                cursor: 'default',
+              }}
+            />
+          </div>
+        ),
+        type: 'success',
+        isLoading: false,
+        closeOnClick: true,
+        autoClose: 10000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+      });
+
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
+      setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
+
+      toast.update('buyingTokens', {
+        render: 'Transaction Canceld.',
+        type: 'error',
+        isLoading: false,
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+      });
+
+      methods.setValue('toValue', '');
+      methods.setValue('fromValue', '');
+      setIsTranasctionInProgress(false);
     }
   };
 
@@ -88,6 +143,12 @@ export const JoinProjectForm = () => {
     },
     [data?.sales[0]],
   );
+
+  const showSubmitButttonText = (): string => {
+    if (saleContract && isTransactionInProggress) return 'Waiting for confirmation...';
+    if (saleContract) return 'JOIN PROJECT';
+    return 'CONNECT WALLET FIRST';
+  };
 
   const getRemainingTokens = React.useMemo(() => {
     const calculatedRemainingTokens =
@@ -185,12 +246,11 @@ export const JoinProjectForm = () => {
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
-              title={saleContract ? 'JOIN PROJECT' : 'CONNECT WALLET FIRST'}
+              title={showSubmitButttonText()}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
-              disabled={!saleContract}
-              style={{ width: '100%' }}
-            />
+              disabled={!saleContract || isTransactionInProggress}
+              style={{ width: '100%' }}></MainButton>
           </div>
         </div>
       </form>

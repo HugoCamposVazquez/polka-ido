@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import projectCardBackground from '../../assets/project_card_background.png';
 import telegramIcon from '../../assets/telegram_icon.svg';
@@ -199,9 +200,7 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-
       {account && data && <Allocations account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />}
-
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import backToProject from '../../assets/back_to_project.svg';
 import { Footer } from '../../shared/insets/user/Footer';
@@ -24,6 +25,7 @@ export const JoinProjectPage = () => {
         </div>
       </div>
       <Footer />
+      <ToastContainer />
     </>
   );
 };
