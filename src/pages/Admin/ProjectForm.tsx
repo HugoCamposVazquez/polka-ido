@@ -95,7 +95,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         utils.parseEther(project.maxUserDeposit),
         project.raiseAmountTotal,
         utils.parseEther(project.tokenPrice.toString()), // should be token ratio?
-        project.maxUserDeposit, //_totalDepositPerUser should be removed?
         {
           tokenID: project.tokenId,
           decimals: 18,
