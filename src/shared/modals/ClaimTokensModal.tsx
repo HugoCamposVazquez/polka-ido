@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
-import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifycations';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -60,12 +60,12 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenDa
 
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
       setIsTranasctionInProgress(false);
-      notifySuccess('Claim Successful', 'claimingTokens', 2000);
+      updateNotifySuccess('Claim Successful', 'claimingTokens', 2000);
       closeModal();
     } catch (e) {
       // show notification or error message
       console.log(e);
-      notifyError('TransactionCanceled.', 'claimingTokens');
+      updateNotifyError('Transaction Canceled.', 'claimingTokens');
       setIsTranasctionInProgress(false);
     }
   };
