@@ -139,12 +139,6 @@ export const ProjectDetailsPage = () => {
                 </div>
               </div>
               <div style={styles.descriptionParentStyle}>
-                <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].maxUserDepositAmount)
-                } ${config.CURRENCY}`}</div>
-              </div>
-              <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Access</div>
                 <div className={styles.contentTextStyle}>
                   {data?.sales[0] && data?.sales[0].whitelisted ? 'Whitelisted' : 'Public'}
