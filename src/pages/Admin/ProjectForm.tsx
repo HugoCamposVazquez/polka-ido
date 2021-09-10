@@ -77,7 +77,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         title: project.title,
         shortDescription: project.shortDescription,
         description: project.description,
-        etherscanLink: project.etherscanLink,
         webLink: project.webLink,
         twitterLink: project.twitterLink,
         telegramLink: project.telegramLink,
@@ -195,13 +194,6 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Project icon</div>
               <ImagePicker name={'iconUrl'} onImageUpload={setImageUrl} />
-            </div>
-            <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Etherscan</div>
-              <div>
-                <TextField name={'etherscanLink'} styleType={'bordered'} mode={'light'} placeholder={'Link'} />
-              </div>
-              <div style={{ flex: 1 }} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Web</div>
