@@ -42,21 +42,28 @@ export type ProjectType = ProjectMetadata & {
   decimals: number;
 };
 
-export interface ProjectSales {
-  sales: {
+export interface ProjectData {
+  id: string;
+  salePrice: string;
+  startDate: string;
+  endDate: string;
+  whitelisted: boolean;
+  featured: boolean;
+  metadataURI: string;
+  minUserDepositAmount: string;
+  maxUserDepositAmount: string;
+  totalDepositAmount: string;
+  currentDepositAmount: string;
+}
+
+interface SalesDto extends ProjectData {
+  token: {
     id: string;
-    salePrice: string;
-    startDate: string;
-    endDate: string;
-    whitelisted: boolean;
-    featured: boolean;
-    metadataURI: string;
-    maxDepositAmount: string;
-    currentDepositAmount: string;
-    token: {
-      id: string;
-    };
-  }[];
+  };
+}
+
+export interface ProjectSales {
+  sales: SalesDto[];
 }
 
 export interface Allocation {
@@ -75,16 +82,4 @@ export interface ProjectAllocationsDto {
   sale: {
     allocations: AllocationDto[];
   };
-}
-
-export interface ProjectData {
-  id: string;
-  salePrice: string;
-  startDate: string;
-  endDate: string;
-  whitelisted: boolean;
-  featured: boolean;
-  metadataURI: string;
-  maxDepositAmount: string;
-  currentDepositAmount: string;
 }

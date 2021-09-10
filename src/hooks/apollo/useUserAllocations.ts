@@ -56,6 +56,7 @@ const FETCH_PROJECT_ALLOCATION_DATA = gql(
         allocations (where: { user: $userAddress }) {
           id
           amount
+          timestamp
         }
       }
     }

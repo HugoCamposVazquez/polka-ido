@@ -25,7 +25,7 @@ export const JoinProjectForm = () => {
 
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
-  const maxAllocation = BigNumber.from(data?.sales[0].maxDepositAmount || '0');
+  const maxAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
   const formattedMaxAllocation = React.useMemo(() => formatWei(maxAllocation), [maxAllocation]);
 
   const validationSchema = yup.object().shape({

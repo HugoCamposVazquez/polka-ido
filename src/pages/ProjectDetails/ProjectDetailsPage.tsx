@@ -51,9 +51,8 @@ export const ProjectDetailsPage = () => {
 
   const filledAllocationPercentage = useMemo((): string => {
     if (data?.sales[0]) {
-      // TODO: should be totalDeposit instead of maxDepositAmount but not on subgraph
-      const { currentDepositAmount, maxDepositAmount } = data.sales[0];
-      return getPercentage(currentDepositAmount, maxDepositAmount);
+      const { currentDepositAmount, totalDepositAmount } = data.sales[0];
+      return getPercentage(currentDepositAmount, totalDepositAmount);
     }
     return '0';
   }, [data?.sales[0]]);
@@ -142,7 +141,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
+                  data?.sales[0] && formatWei(data?.sales[0].maxUserDepositAmount)
                 } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
@@ -153,16 +152,20 @@ export const ProjectDetailsPage = () => {
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>TODO</div>
+                <div className={styles.contentTextStyle}>{`${
+                  data?.sales[0] && formatWei(data?.sales[0].totalDepositAmount)
+                } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Min. deposit</div>
-                <div className={styles.contentTextStyle}>TODO</div>
+                <div className={styles.contentTextStyle}>{`${
+                  data?.sales[0] && formatWei(data?.sales[0].minUserDepositAmount)
+                } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Max. deposit</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
+                  data?.sales[0] && formatWei(data?.sales[0].maxUserDepositAmount)
                 } ${config.CURRENCY}`}</div>
               </div>
               {account && data && (
@@ -171,12 +174,10 @@ export const ProjectDetailsPage = () => {
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
-                  {
-                    /* TODO: Replace maxDepositAmount with totalDeposits */ data?.sales[0] &&
-                      `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
-                        data?.sales[0].maxDepositAmount,
-                      )} ${config.CURRENCY}`
-                  }
+                  {data?.sales[0] &&
+                    `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
+                      data?.sales[0].totalDepositAmount,
+                    )} ${config.CURRENCY}`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <ProgressBar
