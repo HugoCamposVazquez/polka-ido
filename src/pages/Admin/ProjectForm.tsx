@@ -120,6 +120,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
       }
       setIsSavingData(false);
       notifySuccess('Project successfuly created.', 2000);
+      navigation.goBack();
     } catch (e) {
       console.log(e);
       // TODO: show notification or error message
