@@ -54,6 +54,8 @@ export interface ProjectData {
   maxUserDepositAmount: string;
   totalDepositAmount: string;
   currentDepositAmount: string;
+  vestingStartDate: string;
+  vestingEndDate: string;
 }
 
 interface SalesDto extends ProjectData {

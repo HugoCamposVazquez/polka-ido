@@ -34,6 +34,8 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
         maxUserDepositAmount
         totalDepositAmount
         currentDepositAmount
+        vestingStartDate
+        vestingEndDate
         token {
           id
         }
