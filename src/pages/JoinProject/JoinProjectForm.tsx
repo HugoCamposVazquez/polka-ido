@@ -15,7 +15,7 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
-import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
+import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
