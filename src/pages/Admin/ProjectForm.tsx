@@ -279,6 +279,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
                 mode={'light'}
                 placeholder={'Short description text here'}
                 style={{ height: '6.25rem' }}
+                maxLength={200}
               />
             </div>
           </div>
