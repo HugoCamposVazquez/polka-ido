@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
@@ -17,14 +17,13 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
-import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifications';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
   const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
-  const history = useHistory();
   const { data } = useSingleProject(address);
   const { data: tokenData } = useStatemintToken(address);
 
@@ -59,21 +58,14 @@ export const JoinProjectForm = () => {
         gasLimit: 10000000,
       });
 
-      notifySuccess(
-        <div>
-          Success! Thank you for joining
-          <MainButton title="OK" type={'fill'} onClick={() => history.goBack()} className={styles.notificationBtn} />
-        </div>,
-        'buyingTokens',
-        10000,
-      );
+      updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
       setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
-      notifyError('Transaction Cancelled.', 'buyingTokens');
+      updateNotifyError('Transaction Cancelled', 'buyingTokens');
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
@@ -126,12 +118,6 @@ export const JoinProjectForm = () => {
   // Note: Not taking into account calculation for user based on user's current deposits
   const remainingTokens = React.useMemo((): string => {
     if (data) {
-      console.log(
-        'remaining amount to invest: ',
-        BigNumber.from(data?.sales[0].totalDepositAmount)
-          .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
-          .toString(),
-      );
       const calculatedRemainingTokens = BigNumber.from(data?.sales[0].totalDepositAmount)
         .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
         .mul(BigNumber.from(data?.sales[0].salePrice))
