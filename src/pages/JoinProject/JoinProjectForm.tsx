@@ -62,18 +62,7 @@ export const JoinProjectForm = () => {
       notifySuccess(
         <div>
           Success! Thank you for joining
-          <MainButton
-            title="OK"
-            type={'fill'}
-            onClick={() => history.goBack()}
-            style={{
-              display: 'inline-flex',
-              marginLeft: '0.625rem',
-              width: '2.188rem',
-              height: '1.563rem',
-              cursor: 'default',
-            }}
-          />
+          <MainButton title="OK" type={'fill'} onClick={() => history.goBack()} className={styles.notificationBtn} />
         </div>,
         'buyingTokens',
         10000,
@@ -84,7 +73,7 @@ export const JoinProjectForm = () => {
       setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
-      notifyError('TransactionCanceled.', 'buyingTokens');
+      // notifyError('TransactionCanceled.', 'buyingTokens');
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
