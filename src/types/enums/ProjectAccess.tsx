@@ -1,1 +1,1 @@
-export type ProjectAccess = 'whitelist' | 'private';
+export type ProjectAccess = 'whitelist' | 'public';

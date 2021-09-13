@@ -34,6 +34,7 @@ export const useStatemintToken = (assetId?: string): ReturnData => {
       const blockHash = await api.rpc.chain.getBlockHash();
       const asset = (await api.query.assets.asset.at(blockHash, id)).toJSON() as unknown as Asset;
       const metadata = (await api.query.assets.metadata.at(blockHash, id)).toJSON() as unknown as StatemintToken;
+
       const data = {
         ...metadata,
         ...asset,

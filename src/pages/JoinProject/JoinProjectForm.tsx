@@ -30,14 +30,14 @@ export const JoinProjectForm = () => {
 
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
-  const maxAllocation = BigNumber.from(data?.sales[0].maxDepositAmount || '0');
-  const formattedMaxAllocation = React.useMemo(() => formatWei(maxAllocation), [maxAllocation]);
+  const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
+  const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
       .required('Required input')
-      .max(Number(formattedMaxAllocation))
+      .max(Number(formattedmaxUserAllocation))
       .matches(/^[0-9]*[.,]?[0-9]*$/, 'Invalid format'),
   });
 
@@ -81,8 +81,8 @@ export const JoinProjectForm = () => {
     }
   };
 
-  const onClickSetMaxAllocation = () => {
-    const maxPossible = balance.gt(maxAllocation) ? maxAllocation : balance;
+  const onClickSetmaxUserAllocation = () => {
+    const maxPossible = balance.gt(maxUserAllocation) ? maxUserAllocation : balance;
     const formattedMaxPossible = formatWei(maxPossible);
     methods.setValue('fromValue', formattedMaxPossible);
     const toValue = calculateToValue(formattedMaxPossible);
@@ -122,17 +122,25 @@ export const JoinProjectForm = () => {
     return 'CONNECT WALLET FIRST';
   };
 
-  const getRemainingTokens = React.useMemo(() => {
-    const calculatedRemainingTokens =
-      maxAllocation &&
-      data &&
-      maxAllocation
-        .sub(ethers.utils.parseEther(data?.sales[0].currentDepositAmount))
-        .div(ethers.utils.parseEther(data?.sales[0].salePrice))
-        .toString();
-    const remainingTokens = calculatedRemainingTokens && numberWithDots(calculatedRemainingTokens);
+  // Total number of tokens left for sale
+  // Note: Not taking into account calculation for user based on user's current deposits
+  const remainingTokens = React.useMemo((): string => {
+    if (data) {
+      console.log(
+        'remaining amount to invest: ',
+        BigNumber.from(data?.sales[0].totalDepositAmount)
+          .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
+          .toString(),
+      );
+      const calculatedRemainingTokens = BigNumber.from(data?.sales[0].totalDepositAmount)
+        .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
+        .mul(BigNumber.from(data?.sales[0].salePrice))
+        .div(ethers.utils.parseEther('1'));
 
-    return remainingTokens;
+      return formatWei(calculatedRemainingTokens);
+    }
+    return '0';
+
   }, [data?.sales[0]]);
 
   // Setting opposite output swapping value on change
@@ -178,7 +186,7 @@ export const JoinProjectForm = () => {
                 autoFocus={true}
                 type="numerical"
               />
-              <div style={styles.maxBtnStyle} onClick={onClickSetMaxAllocation}>
+              <div style={styles.maxBtnStyle} onClick={onClickSetmaxUserAllocation}>
                 Max
               </div>
               <div style={styles.suffixTextStyle}>{config.CURRENCY}</div>
@@ -195,7 +203,7 @@ export const JoinProjectForm = () => {
               <div style={cs(styles.subtitleTextStyle, { flex: 1 })}>To</div>
               <div style={styles.subtitleTextStyle}>
                 Remaining:&nbsp;
-                {data && getRemainingTokens}
+                {remainingTokens}
               </div>
             </div>
             <div style={styles.fieldContainerStyle}>
@@ -213,7 +221,7 @@ export const JoinProjectForm = () => {
           {methods.errors.toValue ? <span>{methods.errors.toValue.message}</span> : null}
 
           <div style={styles.maxAllocTextStyle}>
-            Max. allocation is {formattedMaxAllocation} {config.CURRENCY}
+            Max. allocation is {formattedmaxUserAllocation} {config.CURRENCY}
           </div>
 
           <div style={{ marginTop: '1.5rem' }}>

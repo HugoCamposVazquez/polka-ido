@@ -7,7 +7,7 @@ import { ProjectType } from '../../types/ProjectType';
 import { SourceType } from '../../types/SourceType';
 
 const projectStatuses: ProjectStatus[] = ['upcoming', 'ended'];
-const projectAccesses: ProjectAccess[] = ['whitelist', 'private'];
+const projectAccesses: ProjectAccess[] = ['whitelist', 'public'];
 const imageUrls: any[] = [projectImage, horseImage];
 
 const allProjects: ProjectType[] = [];
@@ -23,17 +23,17 @@ for (let i = 0; i < 80; i++) {
     featured: Math.random() > 0.5,
     starts: new Date(2014, 1, 11),
     ends: new Date(2014, 1, 11),
-    raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000),
+    raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000).toString(),
     tokenPrice: 0.02,
     tokenValue: 20,
     imageUrl: imageUrls[Math.floor(Math.random() * imageUrls.length)],
-    etherscanLink: 'string',
     webLink: 'string',
     twitterLink: 'string',
     telegramLink: 'string',
-    distributionDate: new Date(2014, 1, 11),
-    minUserDeposit: '150',
-    maxUserDeposit: '20000',
+    vestingStartDate: new Date(2014, 1, 11),
+    vestingEndDate: new Date(2014, 2, 11),
+    minUserDepositAmount: '150',
+    maxUserDepositAmount: '20000',
     minSwapLevel: 0.01,
     tokenId: 123,
     shortDescription: 'string',
@@ -41,6 +41,8 @@ for (let i = 0; i < 80; i++) {
       'For athletes, high altitude produces two contradictory effects on performance. For explosive events (sprints up to 400 metres, long jump, triple jump)',
     raiseAmountCurrent: Math.floor(Math.random() * 90000),
     joined: Math.random() > 0.5,
+    walletAddress: '5FTrdVXtzt25ewJ2ADMzX83yEPY2nrKJGezZGstVrF51BXLX',
+    decimals: 8,
   });
 }
 

@@ -42,9 +42,8 @@ export const ProjectCard = ({ direction, project }: IProps) => {
   );
 
   const filledAllocationPercentage = useMemo((): string => {
-    // TODO: should be totalDeposit instead of maxDepositAmount but not on subgraph
-    const { currentDepositAmount, maxDepositAmount } = project;
-    return getPercentage(currentDepositAmount, maxDepositAmount);
+    const { currentDepositAmount, totalDepositAmount } = project;
+    return getPercentage(currentDepositAmount, totalDepositAmount);
   }, [project]);
 
   const tokenPrice = useMemo((): string => {
@@ -72,7 +71,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
           </div>
           <div style={styles.projectCardStatusTextStyle}>{getProjectStatus(true)}</div>
         </div>
-        <div style={{ height: '6rem' }}>
+        <div style={{ height: '7.2rem' }}>
           <div style={styles.projectNameContainerStyle}>
             <div style={styles.projectNameStyle}>{metadata?.title}</div>
           </div>
@@ -84,7 +83,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
 
         <div style={styles.progressTextContainerStyle}>
           <div style={styles.progressTextPrefixStyle}>{formatWei(project.currentDepositAmount)}</div>
-          <div style={styles.progressTextSufixStyle}>/{formatWei(project.maxDepositAmount)} USD</div>
+          <div style={styles.progressTextSufixStyle}>/{formatWei(project.totalDepositAmount)} USD</div>
         </div>
         <div style={{ margin: '0.38rem 1rem' }}>
           <ProgressBar

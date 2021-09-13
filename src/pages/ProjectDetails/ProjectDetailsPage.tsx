@@ -11,7 +11,6 @@ import webIcon from '../../assets/web_icon.svg';
 import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
-import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
@@ -22,6 +21,7 @@ import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
+import { getTimeDiff } from '../../utils/date';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
@@ -32,7 +32,6 @@ export const ProjectDetailsPage = () => {
   const { id }: { id: string } = useParams();
   const saleContract = useSaleContract(id);
   const { account } = useWeb3React();
-  const { data: tokenData } = useStatemintToken(id);
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
@@ -51,9 +50,8 @@ export const ProjectDetailsPage = () => {
 
   const filledAllocationPercentage = useMemo((): string => {
     if (data?.sales[0]) {
-      // TODO: should be totalDeposit instead of maxDepositAmount but not on subgraph
-      const { currentDepositAmount, maxDepositAmount } = data.sales[0];
-      return getPercentage(currentDepositAmount, maxDepositAmount);
+      const { currentDepositAmount, totalDepositAmount } = data.sales[0];
+      return getPercentage(currentDepositAmount, totalDepositAmount);
     }
     return '0';
   }, [data?.sales[0]]);
@@ -66,10 +64,22 @@ export const ProjectDetailsPage = () => {
   }, [data?.sales[0]]);
 
   const onClaimClick = useCallback((): void => {
-    if (account && saleContract && tokenData) {
-      openClaimTokensModal(id, saleContract, account, tokenData);
+    if (account && saleContract) {
+      openClaimTokensModal(id, saleContract, account, data?.sales[0].token.id);
     }
   }, [id, saleContract, account]);
+
+  const vestingDuration = useMemo(() => {
+    if (data?.sales[0]) {
+      const { vestingStartDate, vestingEndDate } = data?.sales[0];
+      if (!vestingStartDate || !vestingEndDate) {
+        return 'N/A';
+      }
+      return getTimeDiff(vestingStartDate, vestingEndDate);
+    } else {
+      return 'N/A';
+    }
+  }, [data?.sales]);
 
   return (
     <div>
@@ -100,12 +110,6 @@ export const ProjectDetailsPage = () => {
               <div style={styles.shortDescriptionTextStyle}>Short description</div>
               <div className={styles.shortDescriptionTextClassName}>{metadata?.shortDescription}</div>
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
-                {metadata?.etherscanLink && (
-                  <ExternalLink href={metadata?.etherscanLink}>
-                    <div style={styles.etherScanBtnStyle}>Etherscan</div>
-                  </ExternalLink>
-                )}
-
                 {metadata?.webLink && (
                   <ExternalLink href={metadata?.webLink}>
                     <img style={{ marginLeft: '1.5rem', cursor: 'pointer' }} src={webIcon} />
@@ -140,29 +144,27 @@ export const ProjectDetailsPage = () => {
                 </div>
               </div>
               <div style={styles.descriptionParentStyle}>
-                <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
-                } ${config.CURRENCY}`}</div>
-              </div>
-              <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Access</div>
                 <div className={styles.contentTextStyle}>
-                  {data?.sales[0] && data?.sales[0].whitelisted ? 'Whitelisted' : 'Private'}
+                  {data?.sales[0] && data?.sales[0].whitelisted ? 'Whitelisted' : 'Public'}
                 </div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>TODO</div>
+                <div className={styles.contentTextStyle}>{`${
+                  data?.sales[0] && formatWei(data?.sales[0].totalDepositAmount)
+                } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Min. deposit</div>
-                <div className={styles.contentTextStyle}>TODO</div>
+                <div className={styles.contentTextStyle}>{`${
+                  data?.sales[0] && formatWei(data?.sales[0].minUserDepositAmount)
+                } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Max. deposit</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].maxDepositAmount)
+                  data?.sales[0] && formatWei(data?.sales[0].maxUserDepositAmount)
                 } ${config.CURRENCY}`}</div>
               </div>
               {account && data && (
@@ -171,12 +173,10 @@ export const ProjectDetailsPage = () => {
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
-                  {
-                    /* TODO: Replace maxDepositAmount with totalDeposits */ data?.sales[0] &&
-                      `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
-                        data?.sales[0].maxDepositAmount,
-                      )} ${config.CURRENCY}`
-                  }
+                  {data?.sales[0] &&
+                    `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
+                      data?.sales[0].totalDepositAmount,
+                    )} ${config.CURRENCY}`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <ProgressBar
@@ -214,12 +214,12 @@ export const ProjectDetailsPage = () => {
               <div style={styles.projectDetailsSubtitleStyle}>RELEASE SCHEDULE</div>
               <div style={{ marginTop: '2.25rem' }}>
                 <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Vesting duration</div>
-                  <div className={styles.content3TextStyle}>TODO</div>
+                  <div className={styles.descriptionTextStyle}>Vesting start time</div>
+                  <div className={styles.content3TextStyle}>{data?.sales[0].vestingStartDate || 'N/A'}</div>
                 </div>
                 <div style={styles.projectDetailsItemStyle}>
-                  <div className={styles.descriptionTextStyle}>Vesting start time</div>
-                  <div className={styles.content3TextStyle}>TODO</div>
+                  <div className={styles.descriptionTextStyle}>Vesting duration</div>
+                  <div className={styles.content3TextStyle}>{vestingDuration}</div>
                 </div>
               </div>
             </div>
