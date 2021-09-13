@@ -20,7 +20,7 @@ import { ProjectApiType, ProjectType } from '../../types/ProjectType';
 import { sideColor3 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { convertDateToUnixtime } from '../../utils/date';
-import { notifyError, notifySuccess } from '../../utils/notifycations';
+import { notifyError, notifySuccess } from '../../utils/notifications';
 import * as styles from './AdminProjectPage.styles';
 
 interface IProps {

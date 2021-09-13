@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
@@ -14,18 +14,16 @@ import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { useMoonbeanBalance } from '../../hooks/web3/useMoonbeamBalance';
 import { MainButton } from '../../shared/gui/MainButton';
+import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
-import { formatWei } from '../../utils/numModifiyngFuncs';
-import { updateNotifyError, updateNotifySuccess, notifyTransactionConfirmation } from '../../utils/notifications';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
-import { TextField } from '../../shared/gui/TextField';
 
 export const JoinProjectForm = () => {
   const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
-  const history = useHistory();
   const { data } = useSingleProject(address);
   const { data: tokenData } = useStatemintToken(address);
 
@@ -60,14 +58,7 @@ export const JoinProjectForm = () => {
         gasLimit: 10000000,
       });
 
-      updateNotifySuccess(
-        <div>
-          Success! Thank you for joining
-          <MainButton title="OK" type={'fill'} onClick={() => history.goBack()} className={styles.notificationBtn} />
-        </div>,
-        'buyingTokens',
-        10000,
-      );
+      updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');

@@ -126,11 +126,3 @@ export const fieldContainerStyle = styled.cssStyle`
   display: flex;
   align-items: center;
 `;
-
-export const notificationBtn = styled.cssStyle`
-  display: 'inline-flex';
-  marginleft: '0.625rem';
-  width: '2.188rem';
-  height: '1.563rem';
-  cursor: 'default';
-`;
