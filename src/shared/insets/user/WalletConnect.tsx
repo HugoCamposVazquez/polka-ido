@@ -30,9 +30,7 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
   };
 
   const { balance } = useMoonbeanBalance();
-  const formattedBalance = useMemo(() => formatWei(balance), [balance]);
-  const slicedFormatedBalance = formatBalance(formattedBalance, 3);
-
+  const formattedBalance = useMemo(() => formatBalance(formatWei(balance), 3), [balance]);
   return (
     <>
       {!account && (
@@ -49,7 +47,7 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
           onClick={() => {
             openWalletModal(onWalletChange);
           }}>
-          <div style={styles.balanceStyle}>{slicedFormatedBalance} MOVR</div>
+          <div style={styles.balanceStyle}>{formattedBalance} MOVR</div>
           <div style={styles.addressContainerStyle}>
             <div style={styles.addressStyle}>
               {account.slice(0, 6)}...{account.slice(-4)}
