@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
-import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
+import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -66,7 +66,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     } catch (e) {
       // show notification or error message
       console.log(e);
-      notifyError('TransactionCanceled.', 'claimingTokens');
+      notifyError('Transaction Cancelled.', 'claimingTokens');
       setIsTranasctionInProgress(false);
     }
   };

@@ -17,7 +17,7 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
-import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
+import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
@@ -73,7 +73,7 @@ export const JoinProjectForm = () => {
       setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
-      notifyError('TransactionCanceled.', 'buyingTokens');
+      notifyError('Transaction Cancelled.', 'buyingTokens');
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
