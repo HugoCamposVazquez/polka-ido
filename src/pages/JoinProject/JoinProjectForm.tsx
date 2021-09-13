@@ -1,8 +1,10 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
@@ -15,11 +17,14 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
+import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
+  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
+  const history = useHistory();
   const { data } = useSingleProject(address);
   const { data: tokenData } = useStatemintToken(address);
 
@@ -47,13 +52,32 @@ export const JoinProjectForm = () => {
 
   const onSubmit = async ({ fromValue }: { fromValue: string }): Promise<void> => {
     try {
+      notifyTransactionConfirmation('Confirm Transaction...', 'buyingTokens');
+      setIsTranasctionInProgress(true);
       await saleContract?.buyTokens({
         value: ethers.utils.parseEther(fromValue),
+        gasLimit: 10000000,
       });
+
+      notifySuccess(
+        <div>
+          Success! Thank you for joining
+          <MainButton title="OK" type={'fill'} onClick={() => history.goBack()} className={styles.notificationBtn} />
+        </div>,
+        'buyingTokens',
+        10000,
+      );
+
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
+      setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
+      notifyError('Transaction Cancelled.', 'buyingTokens');
+
+      methods.setValue('toValue', '');
+      methods.setValue('fromValue', '');
+      setIsTranasctionInProgress(false);
     }
   };
 
@@ -91,6 +115,12 @@ export const JoinProjectForm = () => {
     },
     [data?.sales[0]],
   );
+
+  const getSubmitButttonText = (): string => {
+    if (saleContract && isTransactionInProggress) return 'Waiting for confirmation...';
+    if (saleContract) return 'JOIN PROJECT';
+    return 'CONNECT WALLET FIRST';
+  };
 
   // Total number of tokens left for sale
   // Note: Not taking into account calculation for user based on user's current deposits
@@ -195,12 +225,11 @@ export const JoinProjectForm = () => {
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
-              title={saleContract ? 'JOIN PROJECT' : 'CONNECT WALLET FIRST'}
+              title={getSubmitButttonText()}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
-              disabled={!saleContract}
-              style={{ width: '100%' }}
-            />
+              disabled={!saleContract || isTransactionInProggress}
+              style={{ width: '100%' }}></MainButton>
           </div>
         </div>
       </form>

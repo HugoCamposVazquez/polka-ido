@@ -10,6 +10,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { client } from '../src/services/apollo';
 import { MainRouter } from './pages/routers/MainRouter';
@@ -28,6 +29,7 @@ ReactDOM.render(
       <ScrollToTop>
         <ApolloProvider client={client}>
           <Web3ReactProvider getLibrary={getLibrary}>
+            <ToastContainer />
             <MainRouter />
           </Web3ReactProvider>
         </ApolloProvider>

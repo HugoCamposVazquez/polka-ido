@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
+import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -24,6 +25,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
+  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
   const { data: tokenData } = useStatemintToken(tokenId);
 
@@ -54,11 +56,18 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
   const onSubmit = async ({ address }: { address: string }) => {
     try {
+      notifyTransactionConfirmation('Confirm Transaction...', 'claimingTokens');
+      setIsTranasctionInProgress(true);
+
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
+      setIsTranasctionInProgress(false);
+      notifySuccess('Claim Successful', 'claimingTokens', 2000);
       closeModal();
     } catch (e) {
       // show notification or error message
       console.log(e);
+      notifyError('Transaction Cancelled.', 'claimingTokens');
+      setIsTranasctionInProgress(false);
     }
   };
 
@@ -111,8 +120,8 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
-                title={'Claim'}
+                disabled={!accounts.length || amountOfClaimableTokens === '0' || isTransactionInProggress}
+                title={isTransactionInProggress ? 'Waiting for Conformation' : 'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
                 style={{ width: '100%' }}
