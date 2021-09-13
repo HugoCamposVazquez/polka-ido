@@ -4,10 +4,8 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-
-import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
-import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
+import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';

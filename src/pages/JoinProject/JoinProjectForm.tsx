@@ -18,7 +18,7 @@ import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
 import { notifyError, notifySuccess, notifyTransactionConfirmation } from '../../utils/notifycations';
-import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
+import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
@@ -140,7 +140,6 @@ export const JoinProjectForm = () => {
       return formatWei(calculatedRemainingTokens);
     }
     return '0';
-
   }, [data?.sales[0]]);
 
   // Setting opposite output swapping value on change
