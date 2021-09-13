@@ -27,7 +27,6 @@ for (let i = 0; i < 80; i++) {
     tokenPrice: 0.02,
     tokenValue: 20,
     imageUrl: imageUrls[Math.floor(Math.random() * imageUrls.length)],
-    etherscanLink: 'string',
     webLink: 'string',
     twitterLink: 'string',
     telegramLink: 'string',

@@ -11,7 +11,6 @@ export type ProjectApiType = {
 
 export type ProjectMetadata = {
   title: string;
-  etherscanLink: string;
   webLink: string;
   twitterLink: string;
   telegramLink: string;

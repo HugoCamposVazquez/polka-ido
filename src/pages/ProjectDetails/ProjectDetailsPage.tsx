@@ -110,12 +110,6 @@ export const ProjectDetailsPage = () => {
               <div style={styles.shortDescriptionTextStyle}>Short description</div>
               <div className={styles.shortDescriptionTextClassName}>{metadata?.shortDescription}</div>
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
-                {metadata?.etherscanLink && (
-                  <ExternalLink href={metadata?.etherscanLink}>
-                    <div style={styles.etherScanBtnStyle}>Etherscan</div>
-                  </ExternalLink>
-                )}
-
                 {metadata?.webLink && (
                   <ExternalLink href={metadata?.webLink}>
                     <img style={{ marginLeft: '1.5rem', cursor: 'pointer' }} src={webIcon} />
