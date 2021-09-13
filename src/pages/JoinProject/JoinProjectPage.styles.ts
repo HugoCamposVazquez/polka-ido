@@ -1,5 +1,3 @@
-import { notification } from 'antd';
-
 import { sideColor, sideColor3, sideColor4, sideColor5, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 

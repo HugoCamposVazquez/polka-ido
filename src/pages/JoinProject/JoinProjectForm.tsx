@@ -73,7 +73,7 @@ export const JoinProjectForm = () => {
       setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
-      // notifyError('TransactionCanceled.', 'buyingTokens');
+      notifyError('TransactionCanceled.', 'buyingTokens');
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
