@@ -33,7 +33,9 @@ const FETCH_PROJECTS_DATA = gql(
         whitelisted
         featured
         metadataURI
-        maxDepositAmount
+        totalDepositAmount
+        minUserDepositAmount
+        maxUserDepositAmount
         currentDepositAmount
         allocations {
           id

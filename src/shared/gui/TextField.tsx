@@ -80,6 +80,8 @@ export const TextField = ({
                   // replace commas with periods
                   const formattedValue = e.target.value.replace(/,/g, '.');
                   onChange(formattedValue);
+                } else {
+                  onChange(e);
                 }
               }}
             />

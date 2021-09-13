@@ -27,45 +27,20 @@ export type ProjectType = ProjectMetadata & {
   featured: boolean;
   starts: Date;
   ends: Date;
-  minUserDeposit: string;
-  maxUserDeposit: string;
-  raiseAmountTotal: number | string;
+  minUserDepositAmount: string;
+  maxUserDepositAmount: string;
+  raiseAmountTotal: string;
   tokenPrice: number | string;
   tokenValue: number;
-  distributionDate: Date;
+  vestingStartDate: Date;
+  vestingEndDate: Date;
   minSwapLevel: number;
   tokenId: number;
   raiseAmountCurrent?: number;
   joined?: boolean;
+  walletAddress: string;
+  decimals: number;
 };
-
-export interface ProjectSales {
-  sales: {
-    id: string;
-    salePrice: string;
-    startDate: string;
-    endDate: string;
-    whitelisted: boolean;
-    featured: boolean;
-    metadataURI: string;
-    maxDepositAmount: string;
-    currentDepositAmount: string;
-    token: {
-      id: string;
-    };
-  }[];
-}
-export interface AllocationDto {
-  id: string;
-  amount: string;
-  user: {
-    id: string;
-  };
-}
-
-export interface ProjectAllocationsDto {
-  allocations: AllocationDto[];
-}
 
 export interface ProjectData {
   id: string;
@@ -75,6 +50,38 @@ export interface ProjectData {
   whitelisted: boolean;
   featured: boolean;
   metadataURI: string;
-  maxDepositAmount: string;
+  minUserDepositAmount: string;
+  maxUserDepositAmount: string;
+  totalDepositAmount: string;
   currentDepositAmount: string;
+  vestingStartDate: string;
+  vestingEndDate: string;
+}
+
+interface SalesDto extends ProjectData {
+  token: {
+    id: string;
+  };
+}
+
+export interface ProjectSales {
+  sales: SalesDto[];
+}
+
+export interface Allocation {
+  id: string;
+  amount: string;
+  timestamp: string;
+}
+
+export interface AllocationDto extends Allocation {
+  user: {
+    id: string;
+  };
+}
+
+export interface ProjectAllocationsDto {
+  sale: {
+    allocations: AllocationDto[];
+  };
 }
