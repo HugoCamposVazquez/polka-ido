@@ -1,8 +1,10 @@
+import { formatUnits } from '@ethersproject/units';
 import React from 'react';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
+import { formatTokenAmount } from '../../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
 interface IProps {
@@ -33,7 +35,9 @@ export const TokenDetails = ({ assetId }: IProps) => {
           </div>
           <div style={{ display: 'flex', padding: '0.75rem 0' }}>
             <div className={styles.descriptionTextStyle}>Total supply</div>
-            <div className={styles.content3TextStyle}>10,000,000</div>
+            <div className={styles.content3TextStyle}>
+              {data ? formatTokenAmount(data?.supply, data?.decimals) : 'N/A'}
+            </div>
           </div>
         </div>
       </div>

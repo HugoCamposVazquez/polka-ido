@@ -23,7 +23,7 @@ import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
 import { convertDateFromUnixtime, getTimeDiff } from '../../utils/date';
-import { formatWei } from '../../utils/numModifiyngFuncs';
+import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
 import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
 import { TokenDetails } from './TokenDetails';
@@ -154,7 +154,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].totalDepositAmount)
+                  data?.sales[0] && numberWithDots(formatWei(data?.sales[0].totalDepositAmount))
                 } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
@@ -181,8 +181,8 @@ export const ProjectDetailsPage = () => {
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
                   {data?.sales[0] &&
-                    `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
-                      data?.sales[0].totalDepositAmount,
+                    `${numberWithDots(formatWei(data?.sales[0].currentDepositAmount))}/${numberWithDots(
+                      formatWei(data?.sales[0].totalDepositAmount),
                     )} ${config.CURRENCY}`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
