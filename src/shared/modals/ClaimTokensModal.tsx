@@ -4,7 +4,7 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -17,14 +17,15 @@ interface IProps {
   id: string;
   contract: SaleContract;
   userEthAddress: string;
-  tokenData: TokenMetadata;
+  tokenId?: string;
 }
 
-export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenData }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
+  const { data: tokenData } = useStatemintToken(tokenId);
 
   useEffect(() => {
     const getClaimableTokens = async () => {

@@ -30,8 +30,12 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
         whitelisted
         featured
         metadataURI
-        maxDepositAmount
+        minUserDepositAmount
+        maxUserDepositAmount
+        totalDepositAmount
         currentDepositAmount
+        vestingStartDate
+        vestingEndDate
         token {
           id
         }
