@@ -55,7 +55,7 @@ export const useStatemintToken = (assetId?: string): ReturnData => {
     if (assetId) {
       fetchTokenData(assetId);
     }
-  }, []);
+  }, [assetId]);
 
   return {
     loading,

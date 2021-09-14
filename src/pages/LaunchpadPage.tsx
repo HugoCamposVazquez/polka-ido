@@ -2,20 +2,22 @@ import { getUnixTime } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ryu3 from '../assets/ryu3.png';
+import { config } from '../config';
 import { usePlatformsStats } from '../hooks/apollo/usePlatformsStats';
 import { useProjects } from '../hooks/apollo/useProjects';
 import { Footer } from '../shared/insets/user/Footer';
 import { LoadingData } from '../shared/LoadingData';
 import { ProjectCard } from '../shared/ProjectCard';
-import { ProjectData } from '../types/ProjectType';
+import { SalesDto } from '../types/ProjectType';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { sideColor3 } from '../utils/colorsUtil';
+import { formatBalance, formatWei } from '../utils/numModifiyngFuncs';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
 
 export const LaunchpadPage = () => {
   const [shownProjects, setShownProjects] = useState<'upcoming' | 'joined' | 'featured' | undefined>('upcoming');
-  const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [projects, setProjects] = useState<SalesDto[]>([]);
   const { width } = useWindowDimensions();
 
   const { data: platformsData } = usePlatformsStats();
@@ -23,7 +25,7 @@ export const LaunchpadPage = () => {
 
   const filterUpcoming = useCallback((): void => {
     setShownProjects('upcoming');
-    let upcomingProjects: ProjectData[] = [];
+    let upcomingProjects: SalesDto[] = [];
     projectsData?.sales.map((project) => {
       if (getUnixTime(new Date()) < +project.startDate) {
         upcomingProjects.push(project);
@@ -36,7 +38,7 @@ export const LaunchpadPage = () => {
 
   const onClickFilterFeatured = useCallback((): void => {
     setShownProjects('featured');
-    let featuredProjects: ProjectData[] = [];
+    let featuredProjects: SalesDto[] = [];
     projectsData?.sales.map((project) => {
       if (project.featured) {
         featuredProjects.push(project);
@@ -54,7 +56,7 @@ export const LaunchpadPage = () => {
 
   const onClickShowAllProjects = useCallback((): void => {
     setShownProjects(undefined);
-    const allProjects: ProjectData[] = [];
+    const allProjects: SalesDto[] = [];
     projectsData?.sales.map((project) => {
       allProjects.push(project);
       setProjects(allProjects);
@@ -97,7 +99,10 @@ export const LaunchpadPage = () => {
                 Funds raised
               </div>
               <div className={styles.boldTextStyle}>
-                {platformsData?.platforms[0] ? platformsData?.platforms[0].fundsRaised : '0'} USDT
+                {platformsData?.platforms[0]
+                  ? formatBalance(formatWei(platformsData?.platforms[0].fundsRaised), 3)
+                  : '0'}{' '}
+                {config.CURRENCY}
               </div>
             </div>
             <div style={styles.launchpadDetailsItemStyle}>
@@ -141,7 +146,7 @@ export const LaunchpadPage = () => {
       </div>
       <div className={styles.projectsCardsContainerParentClassName}>
         <div className={styles.projectsCardsContainerClassName}>
-          {projects.map((project: ProjectData, index: number) => {
+          {projects.map((project, index: number) => {
             return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
           })}
         </div>

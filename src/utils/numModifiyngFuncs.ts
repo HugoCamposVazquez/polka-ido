@@ -1,3 +1,4 @@
+import { formatUnits } from '@ethersproject/units';
 import { BigNumber, ethers } from 'ethers';
 
 export const fixNums = (num: number, fixTo: number) => {
@@ -30,4 +31,10 @@ export const formatWei = (numberInWei: string | BigNumber): string => {
   }
   const eth = ethers.utils.formatEther(numberInWei);
   return eth.replace(/\.0+$/, ''); // replace zeros
+};
+
+export const formatTokenAmount = (numberInWei: string | BigNumber, decimals: string): string => {
+  const parsed = formatUnits(numberInWei, decimals);
+  const basicNumber = parsed.replace(/\.0+$/, ''); // replace trailing zeros
+  return numberWithDots(basicNumber);
 };
