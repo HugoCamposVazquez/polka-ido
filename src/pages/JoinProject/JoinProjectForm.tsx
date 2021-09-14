@@ -22,21 +22,21 @@ import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
-  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
+  const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
   const { data } = useSingleProject(address);
-  const { data: tokenData } = useStatemintToken(address);
+  const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
 
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
   const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
-  const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
+  const formattedMaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
       .required('Required input')
-      .max(Number(formattedmaxUserAllocation))
+      .max(Number(formattedMaxUserAllocation))
       .matches(/^[0-9]*[.,]?[0-9]*$/, 'Invalid format'),
   });
 
@@ -52,7 +52,7 @@ export const JoinProjectForm = () => {
   const onSubmit = async ({ fromValue }: { fromValue: string }): Promise<void> => {
     try {
       notifyTransactionConfirmation('Confirm Transaction...', 'buyingTokens');
-      setIsTranasctionInProgress(true);
+      setIsTransactionInProgress(true);
       await saleContract?.buyTokens({
         value: ethers.utils.parseEther(fromValue),
         gasLimit: 10000000,
@@ -62,14 +62,14 @@ export const JoinProjectForm = () => {
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
-      setIsTranasctionInProgress(false);
+      setIsTransactionInProgress(false);
     } catch (e) {
       console.error(e.message);
       updateNotifyError('Transaction Cancelled', 'buyingTokens');
 
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
-      setIsTranasctionInProgress(false);
+      setIsTransactionInProgress(false);
     }
   };
 
@@ -109,7 +109,7 @@ export const JoinProjectForm = () => {
   );
 
   const getSubmitButttonText = (): string => {
-    if (saleContract && isTransactionInProggress) return 'Waiting for confirmation...';
+    if (saleContract && isTransactionInProgress) return 'Waiting for confirmation...';
     if (saleContract) return 'JOIN PROJECT';
     return 'CONNECT WALLET FIRST';
   };
@@ -206,7 +206,7 @@ export const JoinProjectForm = () => {
           {methods.errors.toValue ? <span>{methods.errors.toValue.message}</span> : null}
 
           <div style={styles.maxAllocTextStyle}>
-            Max. allocation is {formattedmaxUserAllocation} {config.CURRENCY}
+            Max. allocation is {formattedMaxUserAllocation} {config.CURRENCY}
           </div>
 
           <div style={{ marginTop: '1.5rem' }}>
@@ -214,7 +214,7 @@ export const JoinProjectForm = () => {
               title={getSubmitButttonText()}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
-              disabled={!saleContract || isTransactionInProggress}
+              disabled={!saleContract || isTransactionInProgress}
               style={{ width: '100%' }}></MainButton>
           </div>
         </div>

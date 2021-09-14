@@ -11,6 +11,7 @@ import webIcon from '../../assets/web_icon.svg';
 import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
@@ -35,6 +36,7 @@ export const ProjectDetailsPage = () => {
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
+  const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
 
   const projectStatus = useMemo((): string => {
     if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {
@@ -168,7 +170,12 @@ export const ProjectDetailsPage = () => {
                 } ${config.CURRENCY}`}</div>
               </div>
               {account && data && (
-                <TotalAllocation account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />
+                <TotalAllocation
+                  account={account}
+                  projectId={data?.sales[0].id}
+                  tokenPrice={tokenPrice}
+                  tokenSymbol={tokenData?.symbol}
+                />
               )}
 
               <div style={{ marginTop: '2.25rem' }}>
@@ -189,7 +196,7 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  1 TKN = {tokenPrice} {config.CURRENCY}
+                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
                 </div>
               </div>
             </div>
@@ -201,7 +208,14 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {account && data && <Allocations account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />}
+      {account && data && (
+        <Allocations
+          account={account}
+          projectId={data?.sales[0].id}
+          tokenPrice={tokenPrice}
+          tokenSymbol={tokenData?.symbol}
+        />
+      )}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>
