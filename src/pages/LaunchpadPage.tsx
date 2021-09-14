@@ -11,7 +11,7 @@ import { ProjectCard } from '../shared/ProjectCard';
 import { SalesDto } from '../types/ProjectType';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { sideColor3 } from '../utils/colorsUtil';
-import { formatBalance, formatWei, numberWithDots } from '../utils/numModifiyngFuncs';
+import { formatBalance, formatWei } from '../utils/numModifiyngFuncs';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
 

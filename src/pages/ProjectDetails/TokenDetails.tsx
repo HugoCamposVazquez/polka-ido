@@ -1,4 +1,3 @@
-import { formatUnits } from '@ethersproject/units';
 import React from 'react';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
