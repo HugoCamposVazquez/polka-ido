@@ -22,7 +22,7 @@ import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
-import { getTimeDiff } from '../../utils/date';
+import { convertDateFromUnixtime, getTimeDiff } from '../../utils/date';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
@@ -77,7 +77,7 @@ export const ProjectDetailsPage = () => {
       if (!vestingStartDate || !vestingEndDate) {
         return 'N/A';
       }
-      return getTimeDiff(vestingStartDate, vestingEndDate);
+      return `${getTimeDiff(vestingEndDate, vestingStartDate)} days`;
     } else {
       return 'N/A';
     }
@@ -229,7 +229,9 @@ export const ProjectDetailsPage = () => {
               <div style={{ marginTop: '2.25rem' }}>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting start time</div>
-                  <div className={styles.content3TextStyle}>{data?.sales[0].vestingStartDate || 'N/A'}</div>
+                  <div className={styles.content3TextStyle}>
+                    {data ? convertDateFromUnixtime(data.sales[0].vestingStartDate) : 'N/A'}
+                  </div>
                 </div>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting duration</div>
