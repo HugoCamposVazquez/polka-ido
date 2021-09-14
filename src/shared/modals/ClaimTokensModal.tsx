@@ -4,7 +4,8 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { TokenMetadata } from '../../hooks/polkadot/useStatemintToken';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -17,14 +18,16 @@ interface IProps {
   id: string;
   contract: SaleContract;
   userEthAddress: string;
-  tokenData: TokenMetadata;
+  tokenId?: string;
 }
 
-export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenData }: IProps) => {
+export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
+  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
+  const { data: tokenData } = useStatemintToken(tokenId);
 
   useEffect(() => {
     const getClaimableTokens = async () => {
@@ -53,11 +56,18 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenDa
 
   const onSubmit = async ({ address }: { address: string }) => {
     try {
+      notifyTransactionConfirmation('Confirm Transaction...', 'claimingTokens');
+      setIsTranasctionInProgress(true);
+
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
+      setIsTranasctionInProgress(false);
+      updateNotifySuccess('Claim Successful', 'claimingTokens', 2000);
       closeModal();
     } catch (e) {
       // show notification or error message
       console.log(e);
+      updateNotifyError('Transaction Canceled.', 'claimingTokens');
+      setIsTranasctionInProgress(false);
     }
   };
 
@@ -110,8 +120,8 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenDa
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
-                title={'Claim'}
+                disabled={!accounts.length || amountOfClaimableTokens === '0' || isTransactionInProggress}
+                title={isTransactionInProggress ? 'Waiting for Conformation' : 'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
                 style={{ width: '100%' }}

@@ -38,7 +38,7 @@ export const Allocations = ({ account, projectId, tokenPrice }: IProps) => {
       {data?.allocations.map((sale) => (
         <div style={styles.projectDetailsItemStyle} key={sale.id}>
           <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            {/* TODO */ convertDateFromUnixtime(new Date().getTime() / 1000)}
+            {convertDateFromUnixtime(parseInt(sale.timestamp))}
           </div>
           <div style={{ flex: 0.35 }} className={styles.allocationsItemNormalStyle}>
             {formatWei(sale.amount)} {config.CURRENCY}

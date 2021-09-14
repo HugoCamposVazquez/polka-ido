@@ -22,7 +22,6 @@ export const fillButtonDisabledStyle = cs(
     background-color: ${sideColor};
     color: ${sideColor8};
     border-color: ${sideColor2};
-    cursor: not-allowed;
   `,
 );
 

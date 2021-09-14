@@ -1,6 +1,8 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -15,24 +17,26 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
-import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
+import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
+  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
   const { data } = useSingleProject(address);
   const { data: tokenData } = useStatemintToken(address);
 
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
-  const maxAllocation = BigNumber.from(data?.sales[0].maxDepositAmount || '0');
-  const formattedMaxAllocation = React.useMemo(() => formatWei(maxAllocation), [maxAllocation]);
+  const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
+  const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
       .required('Required input')
-      .max(Number(formattedMaxAllocation))
+      .max(Number(formattedmaxUserAllocation))
       .matches(/^[0-9]*[.,]?[0-9]*$/, 'Invalid format'),
   });
 
@@ -47,18 +51,30 @@ export const JoinProjectForm = () => {
 
   const onSubmit = async ({ fromValue }: { fromValue: string }): Promise<void> => {
     try {
+      notifyTransactionConfirmation('Confirm Transaction...', 'buyingTokens');
+      setIsTranasctionInProgress(true);
       await saleContract?.buyTokens({
         value: ethers.utils.parseEther(fromValue),
+        gasLimit: 10000000,
       });
+
+      updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
+
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
+      setIsTranasctionInProgress(false);
     } catch (e) {
       console.error(e.message);
+      updateNotifyError('Transaction Cancelled', 'buyingTokens');
+
+      methods.setValue('toValue', '');
+      methods.setValue('fromValue', '');
+      setIsTranasctionInProgress(false);
     }
   };
 
-  const onClickSetMaxAllocation = () => {
-    const maxPossible = balance.gt(maxAllocation) ? maxAllocation : balance;
+  const onClickSetmaxUserAllocation = () => {
+    const maxPossible = balance.gt(maxUserAllocation) ? maxUserAllocation : balance;
     const formattedMaxPossible = formatWei(maxPossible);
     methods.setValue('fromValue', formattedMaxPossible);
     const toValue = calculateToValue(formattedMaxPossible);
@@ -92,17 +108,24 @@ export const JoinProjectForm = () => {
     [data?.sales[0]],
   );
 
-  const getRemainingTokens = React.useMemo(() => {
-    const calculatedRemainingTokens =
-      maxAllocation &&
-      data &&
-      maxAllocation
-        .sub(ethers.utils.parseEther(data?.sales[0].currentDepositAmount))
-        .div(ethers.utils.parseEther(data?.sales[0].salePrice))
-        .toString();
-    const remainingTokens = calculatedRemainingTokens && numberWithDots(calculatedRemainingTokens);
+  const getSubmitButttonText = (): string => {
+    if (saleContract && isTransactionInProggress) return 'Waiting for confirmation...';
+    if (saleContract) return 'JOIN PROJECT';
+    return 'CONNECT WALLET FIRST';
+  };
 
-    return remainingTokens;
+  // Total number of tokens left for sale
+  // Note: Not taking into account calculation for user based on user's current deposits
+  const remainingTokens = React.useMemo((): string => {
+    if (data) {
+      const calculatedRemainingTokens = BigNumber.from(data?.sales[0].totalDepositAmount)
+        .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
+        .mul(BigNumber.from(data?.sales[0].salePrice))
+        .div(ethers.utils.parseEther('1'));
+
+      return formatWei(calculatedRemainingTokens);
+    }
+    return '0';
   }, [data?.sales[0]]);
 
   // Setting opposite output swapping value on change
@@ -148,7 +171,7 @@ export const JoinProjectForm = () => {
                 autoFocus={true}
                 type="numerical"
               />
-              <div style={styles.maxBtnStyle} onClick={onClickSetMaxAllocation}>
+              <div style={styles.maxBtnStyle} onClick={onClickSetmaxUserAllocation}>
                 Max
               </div>
               <div style={styles.suffixTextStyle}>{config.CURRENCY}</div>
@@ -165,7 +188,7 @@ export const JoinProjectForm = () => {
               <div style={cs(styles.subtitleTextStyle, { flex: 1 })}>To</div>
               <div style={styles.subtitleTextStyle}>
                 Remaining:&nbsp;
-                {data && getRemainingTokens}
+                {remainingTokens}
               </div>
             </div>
             <div style={styles.fieldContainerStyle}>
@@ -183,17 +206,16 @@ export const JoinProjectForm = () => {
           {methods.errors.toValue ? <span>{methods.errors.toValue.message}</span> : null}
 
           <div style={styles.maxAllocTextStyle}>
-            Max. allocation is {formattedMaxAllocation} {config.CURRENCY}
+            Max. allocation is {formattedmaxUserAllocation} {config.CURRENCY}
           </div>
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
-              title={saleContract ? 'JOIN PROJECT' : 'CONNECT WALLET FIRST'}
+              title={getSubmitButttonText()}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
-              disabled={!saleContract}
-              style={{ width: '100%' }}
-            />
+              disabled={!saleContract || isTransactionInProggress}
+              style={{ width: '100%' }}></MainButton>
           </div>
         </div>
       </form>
