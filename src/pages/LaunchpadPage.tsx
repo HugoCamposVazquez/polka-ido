@@ -2,6 +2,7 @@ import { getUnixTime } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ryu3 from '../assets/ryu3.png';
+import { config } from '../config';
 import { usePlatformsStats } from '../hooks/apollo/usePlatformsStats';
 import { useProjects } from '../hooks/apollo/useProjects';
 import { Footer } from '../shared/insets/user/Footer';
@@ -10,6 +11,7 @@ import { ProjectCard } from '../shared/ProjectCard';
 import { SalesDto } from '../types/ProjectType';
 import { getCardDirection } from '../utils/cardDirectionUtil';
 import { sideColor3 } from '../utils/colorsUtil';
+import { formatBalance, formatWei, numberWithDots } from '../utils/numModifiyngFuncs';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
 
@@ -97,7 +99,10 @@ export const LaunchpadPage = () => {
                 Funds raised
               </div>
               <div className={styles.boldTextStyle}>
-                {platformsData?.platforms[0] ? platformsData?.platforms[0].fundsRaised : '0'} USDT
+                {platformsData?.platforms[0]
+                  ? formatBalance(formatWei(platformsData?.platforms[0].fundsRaised), 3)
+                  : '0'}{' '}
+                {config.CURRENCY}
               </div>
             </div>
             <div style={styles.launchpadDetailsItemStyle}>
