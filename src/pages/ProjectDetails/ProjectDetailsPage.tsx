@@ -32,6 +32,7 @@ export const ProjectDetailsPage = () => {
   const { id }: { id: string } = useParams();
   const saleContract = useSaleContract(id);
   const { account } = useWeb3React();
+  const history = useHistory();
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
@@ -196,7 +197,12 @@ export const ProjectDetailsPage = () => {
 
             <div className={styles.projectDetailsBtnsParentStyle}>
               <MainButton title="CLAIM TOKENS" type={'bordered'} onClick={onClaimClick} />
-              <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
+              <MainButton
+                title="JOIN"
+                type={'fill'}
+                onClick={() => navigation.push(`/project/${id}/join`)}
+                disabled={data && +new Date() > +data?.sales[0].endDate}
+              />
             </div>
           </div>
         </div>

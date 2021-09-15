@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
 import React, { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import arrowDown from '../../assets/arrow_down.svg';
@@ -27,6 +27,7 @@ export const JoinProjectForm = () => {
   const saleContract = useSaleContract(address);
   const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
   const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
+  const history = useHistory();
 
   const validationSchema = yup.object().shape({
     fromValue: yup
