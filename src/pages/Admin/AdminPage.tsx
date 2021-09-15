@@ -1,9 +1,9 @@
 import { Spin, Table, TablePaginationConfig } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useProjects } from '../../hooks/apollo/useProjects';
-import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { fetchData } from '../../services/fetchIPFSData';
 import { EditableCell } from '../../shared/EditableCell';
 import { ProjectMetadata } from '../../types/ProjectType';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
@@ -28,6 +28,7 @@ const pagination: TablePaginationConfig = {
 export const AdminPage = () => {
   const navigation = useHistory();
   const allColumns = getAllColumns();
+  const [combiendProjectsData, setCombinedProjectsData] = useState<any>([]);
 
   const mappedColumns = allColumns.map((column) => {
     return {
@@ -42,18 +43,23 @@ export const AdminPage = () => {
   });
 
   const { data: projects, loading: projectsLoading } = useProjects();
-  const { data: metaData, loading: IPFSloading } = useReadIPFS<ProjectMetadata>(projects?.sales[0].metadataURI);
 
-  const combiendProjectsData = React.useMemo(() => {
-    const combiendData = projects?.sales.map((projectData) => {
-      return { ...projectData, ...metaData };
-    });
+  const getCombinedData = async (): Promise<void> => {
+    if (projects) {
+      Promise.all(
+        projects.sales.map(async (projectData) => {
+          const ipfsData: ProjectMetadata = await fetchData(projectData.metadataURI);
+          return { ...projectData, ...ipfsData };
+        }),
+      ).then(setCombinedProjectsData);
+    }
+  };
 
-    if (metaData) return combiendData;
-    return projects?.sales;
-  }, [projects, metaData]);
+  useEffect(() => {
+    getCombinedData();
+  }, [projects]);
 
-  if (projectsLoading && IPFSloading) {
+  if (projectsLoading) {
     return <Spin style={styles.spinnerStyle} size="large" />;
   }
 
