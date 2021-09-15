@@ -17,7 +17,7 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { RadioGroup } from '../../shared/gui/RadioGroup';
 import { TextArea } from '../../shared/gui/TextArea';
 import { TextField } from '../../shared/gui/TextField';
-import { ProjectApiType, ProjectType } from '../../types/ProjectType';
+import { ProjectType } from '../../types/ProjectType';
 import { sideColor3 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { convertDateToUnixtime } from '../../utils/date';
@@ -28,16 +28,18 @@ import * as styles from './AdminProjectPage.styles';
 interface IProps {
   projectId?: string;
   loadingProjectData: boolean;
-  project?: ProjectApiType | { data: undefined };
+  defaultProjectData?: ProjectType;
 }
 
-export const ProjectForm = ({ loadingProjectData, project, projectId }: IProps) => {
+export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId }: IProps) => {
   const methods = useForm<ProjectType>();
 
   const navigation = useHistory();
   const [imageUrl, setImageUrl] = useState('');
   const [isSavingData, setIsSavingData] = useState(false);
   const { account } = useWeb3React();
+
+  // const defaultData = project?.sales[0] as ProjectType
 
   // TODO: Add fields validation
 
@@ -58,7 +60,7 @@ export const ProjectForm = ({ loadingProjectData, project, projectId }: IProps) 
 
   useEffect(() => {
     if (!loadingProjectData) {
-      if (project?.data === undefined) {
+      if (defaultProjectData === undefined) {
         // Creating new project
         methods.reset({
           access: 'whitelist',
@@ -66,21 +68,21 @@ export const ProjectForm = ({ loadingProjectData, project, projectId }: IProps) 
       } else {
         // Editing project
         methods.reset({
-          ...project?.data,
-          access: project?.data?.access,
+          ...defaultProjectData,
+          access: defaultProjectData?.access,
         });
       }
     }
-  }, [loadingProjectData, project]);
+  }, [loadingProjectData, defaultProjectData]);
 
   const onSubmit = async (projectSubmit: ProjectType) => {
     if (!account) return;
     setIsSavingData(true);
     //EDIT
-    if (!!projectId && project?.data && saleContract) {
+    if (!!projectId && defaultProjectData && saleContract) {
       editProject(
         saleContract,
-        project.data,
+        defaultProjectData,
         projectSubmit,
         (successMessage) => {
           setIsSavingData(false);
@@ -187,11 +189,11 @@ export const ProjectForm = ({ loadingProjectData, project, projectId }: IProps) 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Starts</div>
-              <DateField name={'starts'} mode={'light'} placeholder="Select start time" />
+              {/* <DateField name={'starts'} mode={'light'} placeholder="Select start time" /> */}
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Ends</div>
-              <DateField name={'ends'} mode={'light'} placeholder="Select end time" />
+              {/* <DateField name={'ends'} mode={'light'} placeholder="Select end time" /> */}
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Raise amount</div>
@@ -251,12 +253,12 @@ export const ProjectForm = ({ loadingProjectData, project, projectId }: IProps) 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Vesting start date</div>
-              <DateField name={'vestingStartDate'} mode={'light'} placeholder={'Select vesting start date'} />
+              {/* <DateField name={'vestingStartDate'} mode={'light'} placeholder={'Select vesting start date'} /> */}
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Vesting end date</div>
-              <DateField name={'vestingEndDate'} mode={'light'} placeholder={'Select vesting end date'} />
+              {/* <DateField name={'vestingEndDate'} mode={'light'} placeholder={'Select vesting end date'} /> */}
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>

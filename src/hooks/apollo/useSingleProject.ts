@@ -8,7 +8,7 @@ interface ProjectsHook {
   data: ProjectSales | undefined;
 }
 
-export const useSingleProject = (id: string): ProjectsHook => {
+export const useSingleProject = (id?: string): ProjectsHook => {
   const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
     client,
     variables: {

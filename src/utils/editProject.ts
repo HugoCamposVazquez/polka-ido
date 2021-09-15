@@ -1,6 +1,6 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 
-import { ProjectType } from '../types/ProjectType';
+import { ProjectSales, ProjectType } from '../types/ProjectType';
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 type keyOfProjectType = (keyof ProjectType)[];
@@ -176,4 +176,62 @@ export const editProject = async (
     //?? - not sure which contract method is this
     console.log('description changed');
   }
+};
+
+export const convertToProjectType = (project?: ProjectSales): ProjectType | undefined => {
+  if (project?.sales[0]) {
+    const {
+      id,
+      salePrice,
+      startDate,
+      endDate,
+      whitelisted,
+      featured,
+      metadataURI,
+      minUserDepositAmount,
+      maxUserDepositAmount,
+      totalDepositAmount,
+      currentDepositAmount,
+      vestingStartDate,
+      vestingEndDate,
+    } = project.sales[0];
+    return {
+      id: parseInt(id),
+      //TODO
+      status: 'upcoming',
+      access: whitelisted ? 'whitelist' : 'public',
+      featured,
+      starts: new Date(startDate),
+      ends: new Date(endDate),
+      minUserDepositAmount,
+      maxUserDepositAmount,
+      //TODO
+      raiseAmountTotal: '10000',
+      tokenPrice: salePrice,
+      //TODO
+      tokenValue: 100,
+      vestingStartDate: new Date(vestingStartDate),
+      vestingEndDate: new Date(vestingEndDate),
+      //TODO
+      minSwapLevel: 1,
+      //TODO
+      tokenId: 505,
+      //TODO
+      raiseAmountCurrent: 0,
+      //TODO
+      joined: true,
+      //TODO
+      walletAddress: 'string',
+      //TODO
+      decimals: 18,
+      //TODO
+      title: 'string',
+      webLink: 'string',
+      twitterLink: 'string',
+      telegramLink: 'string',
+      shortDescription: 'string',
+      description: 'string',
+      imageUrl: 'string',
+    };
+  } else return undefined;
 };

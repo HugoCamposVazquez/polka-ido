@@ -2,8 +2,9 @@ import { Spin } from 'antd';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { useProject } from '../../api/api/api';
 import binImage from '../../assets/bin_image.svg';
+import { useSingleProject } from '../../hooks/apollo/useSingleProject';
+import { convertToProjectType } from '../../utils/editProject';
 import * as styles from './AdminProjectPage.styles';
 import { ProjectForm } from './ProjectForm';
 
@@ -15,11 +16,14 @@ export const AdminProjectPage = () => {
   const navigation = useHistory();
 
   const { id } = useParams<IProps>();
-  const { data: project, isLoading: projectLoading } = useProject(id);
+  // const { data: project, isLoading: projectLoading } = useProject(id);
+
+  const { data: project, loading: projectLoading } = useSingleProject(id);
+  console.log(project);
 
   useEffect(() => {
     // Project that needs to be edited is not found
-    if (id && !projectLoading && project?.data === undefined) {
+    if (id && !projectLoading && project?.sales[0] === undefined) {
       navigation.push('/admin');
     }
   }, []);
@@ -39,7 +43,11 @@ export const AdminProjectPage = () => {
           </div>
         )}
       </div>
-      <ProjectForm project={project} loadingProjectData={projectLoading} projectId={id} />
+      <ProjectForm
+        defaultProjectData={convertToProjectType(project)}
+        loadingProjectData={projectLoading}
+        projectId={id}
+      />
     </div>
   );
 };
