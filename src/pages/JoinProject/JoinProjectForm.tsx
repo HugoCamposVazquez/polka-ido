@@ -25,7 +25,7 @@ export const JoinProjectForm = () => {
 
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
-  const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
+  const maxUserAllocation = BigNumber.from(data?.maxUserDepositAmount || '0');
   const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
   const validationSchema = yup.object().shape({
@@ -71,25 +71,25 @@ export const JoinProjectForm = () => {
   const calculateToValue = React.useCallback(
     (value: string): string => {
       try {
-        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data?.sales[0].salePrice || '0')));
+        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data?.salePrice || '0')));
       } catch (e) {
         console.error(`Error while calculating output value: ${e.message}`);
       }
       return '0';
     },
-    [data?.sales[0]],
+    [data],
   );
 
   const calculateFromValue = React.useCallback(
     (value: string): string => {
       try {
-        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data?.sales[0].salePrice || '0')));
+        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data?.salePrice || '0')));
       } catch (e) {
         console.error(`Error while calculating output value: ${e.message}`);
       }
       return '0';
     },
-    [data?.sales[0]],
+    [data],
   );
 
   // Total number of tokens left for sale
@@ -98,19 +98,17 @@ export const JoinProjectForm = () => {
     if (data) {
       console.log(
         'remaining amount to invest: ',
-        BigNumber.from(data?.sales[0].totalDepositAmount)
-          .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
-          .toString(),
+        BigNumber.from(data?.totalDepositAmount).sub(BigNumber.from(data?.currentDepositAmount)).toString(),
       );
-      const calculatedRemainingTokens = BigNumber.from(data?.sales[0].totalDepositAmount)
-        .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
-        .mul(BigNumber.from(data?.sales[0].salePrice))
+      const calculatedRemainingTokens = BigNumber.from(data?.totalDepositAmount)
+        .sub(BigNumber.from(data?.currentDepositAmount))
+        .mul(BigNumber.from(data?.salePrice))
         .div(ethers.utils.parseEther('1'));
 
       return formatWei(calculatedRemainingTokens);
     }
     return '0';
-  }, [data?.sales[0]]);
+  }, [data]);
 
   // Setting opposite output swapping value on change
   useEffect(() => {
