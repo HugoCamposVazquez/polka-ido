@@ -1,4 +1,4 @@
-import { fromUnixTime } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import React from 'react';
 
 import binImage from '../assets/bin_image.svg';
@@ -44,20 +44,20 @@ export const getAllColumns = () => {
         </div>
       ),
     },
-    // {
-    //   title: 'Starts',
-    //   dataIndex: 'starts',
-    //   width: '9.375rem',
-    //   renderRepresentation: (cellProps: any) => (
-    //     <div>{format(fromUnixTime(cellProps.record.startDate), 'dd/MM/yy')}</div>
-    //   ),
-    // },
-    // {
-    //   title: 'Ends',
-    //   dataIndex: 'ends',
-    //   width: '9.375rem',
-    //   renderRepresentation: (cellProps: any) => <div>{format(fromUnixTime(cellProps.record.endDate), 'dd/MM/yy')}</div>,
-    // },
+    {
+      title: 'Starts',
+      dataIndex: 'starts',
+      width: '9.375rem',
+      renderRepresentation: (cellProps: any) => (
+        <div>{format(fromUnixTime(cellProps.record.startDate), 'dd/MM/yy')}</div>
+      ),
+    },
+    {
+      title: 'Ends',
+      dataIndex: 'ends',
+      width: '9.375rem',
+      renderRepresentation: (cellProps: any) => <div>{format(fromUnixTime(cellProps.record.endDate), 'dd/MM/yy')}</div>,
+    },
     {
       title: 'Raise amount',
       dataIndex: 'raiseAmountTotal',
