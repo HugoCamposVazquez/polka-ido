@@ -39,7 +39,7 @@ export const AdminProjectPage = () => {
           </div>
         )}
       </div>
-      <ProjectForm project={project} loadingProjectData={projectLoading} isEdit={!!id} />
+      <ProjectForm project={project} loadingProjectData={projectLoading} projectId={id} />
     </div>
   );
 };
