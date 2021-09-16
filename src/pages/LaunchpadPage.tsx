@@ -1,7 +1,9 @@
+import { useWeb3React } from '@web3-react/core';
 import { getUnixTime } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ryu3 from '../assets/ryu3.png';
+import { useJoinedProjects } from '../hooks/apollo/useJoinedProjects';
 import { usePlatformsStats } from '../hooks/apollo/usePlatformsStats';
 import { useProjects } from '../hooks/apollo/useProjects';
 import { Footer } from '../shared/insets/user/Footer';
@@ -17,9 +19,11 @@ export const LaunchpadPage = () => {
   const [shownProjects, setShownProjects] = useState<'upcoming' | 'joined' | 'featured' | undefined>('upcoming');
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const { width } = useWindowDimensions();
+  const { account } = useWeb3React();
 
   const { data: platformsData } = usePlatformsStats();
   const { data: projectsData, loading: projectLoading } = useProjects();
+  const { data: joinedProjects } = useJoinedProjects(account as string);
 
   const filterUpcoming = useCallback((): void => {
     setShownProjects('upcoming');
@@ -33,7 +37,6 @@ export const LaunchpadPage = () => {
       setProjects(upcomingProjects);
     });
   }, [projectsData]);
-
   const onClickFilterFeatured = useCallback((): void => {
     setShownProjects('featured');
     let featuredProjects: ProjectData[] = [];
@@ -49,7 +52,12 @@ export const LaunchpadPage = () => {
 
   const onClickFilterJoined = (): void => {
     setShownProjects('joined');
-    setProjects([]);
+    const allJoinedProjects = joinedProjects?.filter(
+      (joinedProject, index, arr) => index === arr.findIndex((project) => project.id === joinedProject.id),
+    );
+    if (allJoinedProjects) {
+      setProjects(allJoinedProjects);
+    }
   };
 
   const onClickShowAllProjects = useCallback((): void => {

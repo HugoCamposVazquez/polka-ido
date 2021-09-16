@@ -22,8 +22,8 @@ export const useUserAllocations = (id: string, userAddress: string): ProjectsAll
   const { data } = useQuery<ProjectAllocationsDto>(FETCH_PROJECT_ALLOCATION_DATA, {
     client,
     variables: {
-      id: id.toLowerCase(),
-      userAddress: userAddress.toLowerCase(),
+      id: id,
+      userAddress: userAddress,
     },
   });
 
