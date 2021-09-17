@@ -57,6 +57,8 @@ export const LaunchpadPage = () => {
     );
     if (allJoinedProjects) {
       setProjects(allJoinedProjects);
+    } else {
+      setProjects([]);
     }
   };
 

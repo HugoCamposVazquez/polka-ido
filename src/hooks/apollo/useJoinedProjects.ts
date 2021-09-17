@@ -16,7 +16,7 @@ export const useJoinedProjects = (userAddress: string): ProjectsHook => {
     },
   });
 
-  const data = joinedProjectData?.user.allocations.map((joinedProject: any) => {
+  const data = joinedProjectData?.user?.allocations.map((joinedProject: any) => {
     return { ...joinedProject.sale };
   });
 
