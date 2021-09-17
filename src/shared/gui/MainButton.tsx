@@ -10,9 +10,10 @@ type IProps = {
   type: 'fill' | 'bordered';
   style?: any;
   disabled?: boolean;
+  className?: string;
 };
 
-export const MainButton = ({ title, onClick, type, style, disabled }: IProps) => {
+export const MainButton = ({ title, onClick, type, style, disabled, className }: IProps) => {
   const getButtonStyle = useCallback(() => {
     if (disabled) {
       return styles.fillButtonDisabledStyle;
@@ -26,7 +27,7 @@ export const MainButton = ({ title, onClick, type, style, disabled }: IProps) =>
 
   const buttonStyle = getButtonStyle();
   return (
-    <Button onClick={onClick} style={cs(buttonStyle, style)} disabled={disabled}>
+    <Button onClick={onClick} style={cs(buttonStyle, style)} disabled={disabled} className={className}>
       {title}
     </Button>
   );

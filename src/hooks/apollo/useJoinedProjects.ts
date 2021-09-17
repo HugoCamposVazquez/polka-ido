@@ -1,11 +1,11 @@
 import { gql, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
-import { ProjectData } from '../../types/ProjectType';
+import { ProjectData, SalesDto } from '../../types/ProjectType';
 
 interface ProjectsHook {
   loading: boolean;
-  data: ProjectData[] | undefined;
+  data: SalesDto[] | undefined;
 }
 
 export const useJoinedProjects = (userAddress: string): ProjectsHook => {
@@ -25,28 +25,28 @@ export const useJoinedProjects = (userAddress: string): ProjectsHook => {
 
 const FETCH_JOINED_PROJECTS = gql(
   `
-  query JoinedProjects($userAddress: String) {
+  query UserProjectsg {
     user( id: $userAddress ) { 
-      allocations {
-        sale {
-          id
-          salePrice
-          startDate
-          endDate
-          whitelisted
-          featured
-          metadataURI
-          minUserDepositAmount
-          maxUserDepositAmount
-          totalDepositAmount
-          currentDepositAmount
-          vestingStartDate
-          vestingEndDate
-          token {
-              id
-          }
+    allocations {
+      sale {
+        id
+        salePrice
+        startDate
+        endDate
+        whitelisted
+        featured
+        metadataURI
+        minUserDepositAmount
+        maxUserDepositAmount
+        totalDepositAmount
+        currentDepositAmount
+        vestingStartDate
+        vestingEndDate
+        token {
+            id
         }
       }
+    }
     }
   }`,
 );

@@ -11,9 +11,10 @@ type IProps = {
   style?: any;
   autoFocus?: boolean;
   mode: 'light' | 'dark';
+  maxLength?: number;
 };
 
-export const TextArea = ({ name, placeholder, disabled, autoFocus, mode, style }: IProps) => {
+export const TextArea = ({ name, placeholder, disabled, autoFocus, mode, style, maxLength }: IProps) => {
   const { control } = useFormContext();
 
   return (
@@ -34,6 +35,7 @@ export const TextArea = ({ name, placeholder, disabled, autoFocus, mode, style }
               disabled={disabled}
               onChange={onChange}
               autoFocus={autoFocus}
+              maxLength={maxLength}
             />
           );
         }}

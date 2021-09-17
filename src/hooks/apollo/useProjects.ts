@@ -37,6 +37,9 @@ const FETCH_PROJECTS_DATA = gql(
         minUserDepositAmount
         maxUserDepositAmount
         currentDepositAmount
+        token {
+           id
+        }
         allocations {
           id
         }

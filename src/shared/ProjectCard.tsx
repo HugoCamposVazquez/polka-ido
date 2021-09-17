@@ -3,8 +3,10 @@ import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { config } from '../config';
 import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
-import { ProjectData, ProjectMetadata } from '../types/ProjectType';
+import { useStatemintToken } from '../hooks/polkadot/useStatemintToken';
+import { ProjectMetadata, SalesDto } from '../types/ProjectType';
 import { sideColor3, sideColor6 } from '../utils/colorsUtil';
 import { cs } from '../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../utils/data';
@@ -13,7 +15,7 @@ import * as styles from './ProjectCard.styles';
 
 type IProps = {
   direction: 'left' | 'right';
-  project: ProjectData;
+  project: SalesDto;
 };
 
 export const ProjectCard = ({ direction, project }: IProps) => {
@@ -21,6 +23,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
   const projectStartDate = format(fromUnixTime(+project.startDate), 'dd/MM/yy');
   const projectEndDate = format(fromUnixTime(+project.endDate), 'dd/MM/yy');
   const { data: metadata } = useReadIPFS<ProjectMetadata>(project.metadataURI);
+  const { data: tokenData } = useStatemintToken(project.token.id);
 
   const getProjectStatus = useCallback(
     (upperLeftCorner?: boolean): string => {
@@ -83,7 +86,9 @@ export const ProjectCard = ({ direction, project }: IProps) => {
 
         <div style={styles.progressTextContainerStyle}>
           <div style={styles.progressTextPrefixStyle}>{formatWei(project.currentDepositAmount)}</div>
-          <div style={styles.progressTextSufixStyle}>/{formatWei(project.totalDepositAmount)} USD</div>
+          <div style={styles.progressTextSufixStyle}>
+            /{formatWei(project.totalDepositAmount)} {config.CURRENCY}
+          </div>
         </div>
         <div style={{ margin: '0.38rem 1rem' }}>
           <ProgressBar
@@ -103,8 +108,10 @@ export const ProjectCard = ({ direction, project }: IProps) => {
           }>
           <div style={styles.statsContainerStyle}>
             <div>
-              <div style={styles.detailsTitleStyle}>Per token</div>
-              <div style={styles.detailsValueStyle}>{tokenPrice} USD</div>
+              <div style={styles.detailsTitleStyle}>Per 1 {config.CURRENCY}</div>
+              <div style={styles.detailsValueStyle}>
+                {tokenPrice} {tokenData?.symbol || 'tokens'}
+              </div>
             </div>
             <div>
               <div style={styles.detailsTitleStyle}>{getProjectStatus()}</div>

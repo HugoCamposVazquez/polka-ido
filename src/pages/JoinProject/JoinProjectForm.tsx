@@ -1,6 +1,8 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -15,24 +17,26 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { getTokenPrice } from '../../utils/data';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 export const JoinProjectForm = () => {
+  const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
   const { data } = useSingleProject(address);
-  const { data: tokenData } = useStatemintToken(address);
+  const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
 
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
   const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
-  const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
+  const formattedMaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
       .required('Required input')
-      .max(Number(formattedmaxUserAllocation))
+      .max(Number(formattedMaxUserAllocation))
       .matches(/^[0-9]*[.,]?[0-9]*$/, 'Invalid format'),
   });
 
@@ -47,13 +51,25 @@ export const JoinProjectForm = () => {
 
   const onSubmit = async ({ fromValue }: { fromValue: string }): Promise<void> => {
     try {
+      notifyTransactionConfirmation('Confirm Transaction...', 'buyingTokens');
+      setIsTransactionInProgress(true);
       await saleContract?.buyTokens({
         value: ethers.utils.parseEther(fromValue),
+        gasLimit: 10000000,
       });
+
+      updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
+
       methods.setValue('toValue', '');
       methods.setValue('fromValue', '');
+      setIsTransactionInProgress(false);
     } catch (e) {
       console.error(e.message);
+      updateNotifyError('Transaction Cancelled', 'buyingTokens');
+
+      methods.setValue('toValue', '');
+      methods.setValue('fromValue', '');
+      setIsTransactionInProgress(false);
     }
   };
 
@@ -92,16 +108,16 @@ export const JoinProjectForm = () => {
     [data?.sales[0]],
   );
 
+  const getSubmitButttonText = (): string => {
+    if (saleContract && isTransactionInProgress) return 'Waiting for confirmation...';
+    if (saleContract) return 'JOIN PROJECT';
+    return 'CONNECT WALLET FIRST';
+  };
+
   // Total number of tokens left for sale
   // Note: Not taking into account calculation for user based on user's current deposits
   const remainingTokens = React.useMemo((): string => {
     if (data) {
-      console.log(
-        'remaining amount to invest: ',
-        BigNumber.from(data?.sales[0].totalDepositAmount)
-          .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
-          .toString(),
-      );
       const calculatedRemainingTokens = BigNumber.from(data?.sales[0].totalDepositAmount)
         .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
         .mul(BigNumber.from(data?.sales[0].salePrice))
@@ -190,17 +206,16 @@ export const JoinProjectForm = () => {
           {methods.errors.toValue ? <span>{methods.errors.toValue.message}</span> : null}
 
           <div style={styles.maxAllocTextStyle}>
-            Max. allocation is {formattedmaxUserAllocation} {config.CURRENCY}
+            Max. allocation is {formattedMaxUserAllocation} {config.CURRENCY}
           </div>
 
           <div style={{ marginTop: '1.5rem' }}>
             <MainButton
-              title={saleContract ? 'JOIN PROJECT' : 'CONNECT WALLET FIRST'}
+              title={getSubmitButttonText()}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
-              disabled={!saleContract}
-              style={{ width: '100%' }}
-            />
+              disabled={!saleContract || isTransactionInProgress}
+              style={{ width: '100%' }}></MainButton>
           </div>
         </div>
       </form>
