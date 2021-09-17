@@ -16,7 +16,7 @@ export const useJoinedProjects = (userAddress: string): ProjectsHook => {
     },
   });
 
-  const data = joinedProjectData?.allocations.map((joinedProject: any) => {
+  const data = joinedProjectData?.user.allocations.map((joinedProject: any) => {
     return { ...joinedProject.sale };
   });
 
@@ -25,25 +25,27 @@ export const useJoinedProjects = (userAddress: string): ProjectsHook => {
 
 const FETCH_JOINED_PROJECTS = gql(
   `
-  query UserProjects($userAddress: String) {
-    allocations {
-      sale {
-        id
-        salePrice
-        startDate
-        endDate
-        whitelisted
-        featured
-        metadataURI
-        minUserDepositAmount
-        maxUserDepositAmount
-        totalDepositAmount
-        currentDepositAmount
-        vestingStartDate
-        vestingEndDate
+  query JoinedProjects($userAddress: String) {
+    user( id: $userAddress ) { 
+      allocations {
+        sale {
+          id
+          salePrice
+          startDate
+          endDate
+          whitelisted
+          featured
+          metadataURI
+          minUserDepositAmount
+          maxUserDepositAmount
+          totalDepositAmount
+          currentDepositAmount
+          vestingStartDate
+          vestingEndDate
           token {
-            id
+              id
           }
+        }
       }
     }
   }`,
