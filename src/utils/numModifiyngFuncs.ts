@@ -3,7 +3,7 @@ import { BigNumber, ethers } from 'ethers';
 export const fixNums = (num: number, fixTo: number) => {
   if (!fixTo) return num.toFixed(fixTo); // don't go wrong if no decimal
 
-  return num.toFixed(fixTo).replace(/\.?0+$/, '');
+  return removeTrailingZeros(num.toFixed(fixTo));
 };
 
 export const numberWithDots = (num: string) => {
@@ -11,8 +11,10 @@ export const numberWithDots = (num: string) => {
   const pattern = /(-?\d+)(\d{3})/;
   while (pattern.test(num)) num = num.replace(pattern, '$1.$2');
 
-  return num; //
+  return num;
 };
+
+const removeTrailingZeros = (str: string): string => str.replace(/\.0+$/, '');
 
 export const formatBalance = (str: string, maxDecimalDigits: number): string => {
   if (str.includes('.')) {
@@ -21,7 +23,7 @@ export const formatBalance = (str: string, maxDecimalDigits: number): string => 
     return parts[0] + '.' + parts[1].slice(0, maxDecimalDigits);
   }
 
-  return str;
+  return removeTrailingZeros(str);
 };
 
 export const formatWei = (numberInWei: string | BigNumber): string => {
@@ -29,5 +31,5 @@ export const formatWei = (numberInWei: string | BigNumber): string => {
     return '0';
   }
   const eth = ethers.utils.formatEther(numberInWei);
-  return eth.replace(/\.0+$/, ''); // replace zeros
+  return removeTrailingZeros(eth);
 };
