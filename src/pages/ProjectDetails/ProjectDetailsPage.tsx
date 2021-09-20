@@ -200,7 +200,7 @@ export const ProjectDetailsPage = () => {
                 title="JOIN"
                 type={'fill'}
                 onClick={() => navigation.push(`/project/${id}/join`)}
-                disabled={projectStatus === 'Ended'}
+                disabled={projectStatus === 'Ended' || projectStatus === 'Upcoming'}
               />
             </div>
           </div>
