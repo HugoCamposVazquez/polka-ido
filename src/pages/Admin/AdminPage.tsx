@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useProjects } from '../../hooks/apollo/useProjects';
-import { fetchData } from '../../services/fetchIPFSData';
+import { fetchIPFShData } from '../../services/fetchIPFSData';
 import { EditableCell } from '../../shared/EditableCell';
-import { ProjectMetadata } from '../../types/ProjectType';
+import { FullProjectData, ProjectMetadata } from '../../types/ProjectType';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
 import * as styles from './AdminPage.styles';
 
@@ -28,7 +28,7 @@ const pagination: TablePaginationConfig = {
 export const AdminPage = () => {
   const navigation = useHistory();
   const allColumns = getAllColumns();
-  const [combiendProjectsData, setCombinedProjectsData] = useState<any>([]);
+  const [combiendProjectsData, setCombinedProjectsData] = useState<FullProjectData[]>([]);
 
   const mappedColumns = allColumns.map((column) => {
     return {
@@ -47,11 +47,11 @@ export const AdminPage = () => {
   const getCombinedData = async (): Promise<void> => {
     if (projects) {
       Promise.all(
-        projects.sales.map(async (projectData) => {
-          const ipfsData: ProjectMetadata = await fetchData(projectData.metadataURI);
+        projects?.sales.map(async (projectData) => {
+          const ipfsData: ProjectMetadata = await fetchIPFShData(projectData.metadataURI);
           return { ...projectData, ...ipfsData };
         }),
-      ).then(setCombinedProjectsData);
+      ).then((result) => result !== undefined && setCombinedProjectsData(result));
     }
   };
 

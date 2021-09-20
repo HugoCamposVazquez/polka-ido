@@ -1,8 +1,9 @@
 import axios from 'axios';
 
+import { ProjectMetadata } from '../types/ProjectType';
 import { getIPFSResolvedLink } from '../utils/data';
 
-export const fetchData = async (hash: string) => {
+export const fetchIPFShData = async (hash: string) => {
   try {
     if (hash) {
       const response = await axios.get(getIPFSResolvedLink(hash));

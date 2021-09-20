@@ -84,3 +84,5 @@ export interface ProjectAllocationsDto {
     allocations: AllocationDto[];
   };
 }
+
+export type FullProjectData = ProjectMetadata & SalesDto;
