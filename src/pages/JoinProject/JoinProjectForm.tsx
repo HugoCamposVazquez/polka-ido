@@ -27,7 +27,6 @@ export const JoinProjectForm = () => {
   const saleContract = useSaleContract(address);
   const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
   const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
-  const history = useHistory();
 
   const validationSchema = yup.object().shape({
     fromValue: yup
