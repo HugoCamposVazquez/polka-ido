@@ -1,31 +1,29 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
 import { ProjectData, SalesDto } from '../../types/ProjectType';
 
 interface ProjectsHook {
   loading: boolean;
-  data: SalesDto[] | undefined;
+  data: SalesDto[];
+  getJoinedProjects: Function;
 }
 
-export const useJoinedProjects = (userAddress: string): ProjectsHook => {
-  const { data: joinedProjectData, loading } = useQuery(FETCH_JOINED_PROJECTS, {
+export const useJoinedProjects = (): ProjectsHook => {
+  const [getJoinedProjects, { data: joinedProjectData, loading }] = useLazyQuery(FETCH_JOINED_PROJECTS, {
     client,
-    variables: {
-      userAddress,
-    },
   });
 
   const data = joinedProjectData?.user?.allocations.map((joinedProject: any) => {
     return { ...joinedProject.sale };
   });
 
-  return { data, loading };
+  return { getJoinedProjects, data, loading };
 };
 
 const FETCH_JOINED_PROJECTS = gql(
   `
-  query UserProjectsg {
+  query UserProjects($userAddress: String) {
     user( id: $userAddress ) { 
     allocations {
       sale {
