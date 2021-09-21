@@ -19,14 +19,6 @@ export const WalletModal = ({ closeModal, changeWallet, account }: IProps) => {
       <div style={styles.boxStyle}>
         <div style={styles.changeWalletParentStyle}>
           <div style={styles.connectedTextStyle}>Connected with MetaMask</div>
-          <div
-            style={styles.changeWalletBtnStyle}
-            onClick={() => {
-              closeModal();
-              changeWallet();
-            }}>
-            CHANGE
-          </div>
         </div>
         <div style={styles.addressTextStyle}>
           {account.slice(0, 6)}...{account.slice(-4)}
