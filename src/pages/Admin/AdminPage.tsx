@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useProjects } from '../../hooks/apollo/useProjects';
-import { getCombinedData } from '../../services/combinedProjectData';
+import { getCombinedProjectData } from '../../services/combinedProjectData';
 import { EditableCell } from '../../shared/EditableCell';
 import { FullProjectData } from '../../types/ProjectType';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
@@ -47,7 +47,7 @@ export const AdminPage = () => {
   useEffect(() => {
     const setProjectData = async () => {
       if (projects) {
-        const combinedData = await getCombinedData(projects);
+        const combinedData = await getCombinedProjectData(projects);
         setCombinedProjectsData(combinedData);
       }
     };
