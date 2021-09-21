@@ -85,4 +85,4 @@ export interface ProjectAllocationsDto {
   };
 }
 
-export type FullProjectData = ProjectMetadata & SalesDto;
+export type FullProjectData = Partial<ProjectMetadata> & SalesDto;
