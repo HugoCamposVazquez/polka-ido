@@ -1,7 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
 import { getUnixTime } from 'date-fns';
-import { loadavg } from 'os';
-import { join } from 'path';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ryu3 from '../assets/ryu3.png';
@@ -54,7 +52,7 @@ export const LaunchpadPage = () => {
   }, [projectsData]);
 
   const onClickFilterJoined = useCallback((): void => {
-    getJoinedProjects({ variables: { userAddress: '0x3651c3fe3b498b7cd31068d08724a5d56cbc22b2' } });
+    getJoinedProjects({ variables: { userAddress: account } });
     setShownProjects('joined');
 
     const allJoinedProjects = joinedProjects?.filter(

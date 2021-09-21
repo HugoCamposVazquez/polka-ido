@@ -1,7 +1,7 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
-import { ProjectData, SalesDto } from '../../types/ProjectType';
+import { SalesDto } from '../../types/ProjectType';
 
 interface ProjectsHook {
   loading: boolean;
