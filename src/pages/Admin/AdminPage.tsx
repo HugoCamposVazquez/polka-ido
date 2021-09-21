@@ -48,7 +48,7 @@ export const AdminPage = () => {
     const setProjectData = async () => {
       if (projects) {
         const combinedData = await getCombinedProjectData(projects);
-        setCombinedProjectsData(combinedData);
+        if (combinedData) setCombinedProjectsData(combinedData);
       }
     };
     setProjectData();
