@@ -4,9 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { useProjects } from '../../hooks/apollo/useProjects';
 import { getCombinedData } from '../../services/combinedProjectData';
-import { fetchIPFSData } from '../../services/fetchIPFSData';
 import { EditableCell } from '../../shared/EditableCell';
-import { FullProjectData, ProjectMetadata, ProjectSales } from '../../types/ProjectType';
+import { FullProjectData } from '../../types/ProjectType';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
 import * as styles from './AdminPage.styles';
 
