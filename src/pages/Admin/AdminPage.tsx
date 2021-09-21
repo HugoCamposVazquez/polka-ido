@@ -1,11 +1,11 @@
 import { Spin, Table, TablePaginationConfig } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useProjects } from '../../hooks/apollo/useProjects';
-import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { getCombinedProjectData } from '../../services/combinedProjectData';
 import { EditableCell } from '../../shared/EditableCell';
-import { ProjectMetadata } from '../../types/ProjectType';
+import { FullProjectData } from '../../types/ProjectType';
 import { getAllColumns } from '../../utils/tableColumnsUtil';
 import * as styles from './AdminPage.styles';
 
@@ -28,6 +28,7 @@ const pagination: TablePaginationConfig = {
 export const AdminPage = () => {
   const navigation = useHistory();
   const allColumns = getAllColumns();
+  const [combinedProjectsData, setCombinedProjectsData] = useState<FullProjectData[]>([]);
 
   const mappedColumns = allColumns.map((column) => {
     return {
@@ -42,18 +43,18 @@ export const AdminPage = () => {
   });
 
   const { data: projects, loading: projectsLoading } = useProjects();
-  const { data: metaData, loading: IPFSloading } = useReadIPFS<ProjectMetadata>(projects?.sales[0].metadataURI);
 
-  const combiendProjectsData = React.useMemo(() => {
-    const combiendData = projects?.sales.map((projectData) => {
-      return { ...projectData, ...metaData };
-    });
+  useEffect(() => {
+    const setProjectData = async () => {
+      if (projects) {
+        const combinedData = await getCombinedProjectData(projects);
+        if (combinedData) setCombinedProjectsData(combinedData);
+      }
+    };
+    setProjectData();
+  }, [projects]);
 
-    if (metaData) return combiendData;
-    return projects?.sales;
-  }, [projects, metaData]);
-
-  if (projectsLoading && IPFSloading) {
+  if (projectsLoading) {
     return <Spin style={styles.spinnerStyle} size="large" />;
   }
 
@@ -71,7 +72,7 @@ export const AdminPage = () => {
         <div style={styles.tableContainerStyle}>
           <Table
             rowKey={'id'}
-            dataSource={combiendProjectsData}
+            dataSource={combinedProjectsData}
             tableLayout={'fixed'}
             scroll={{ x: 'min-content' }}
             sticky
