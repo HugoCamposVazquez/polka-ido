@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
@@ -5,7 +6,13 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
-import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
+import { getStatemintApi } from '../../services/polkadot';
+import {
+  notifyError,
+  notifyTransactionConfirmation,
+  updateNotifyError,
+  updateNotifySuccess,
+} from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -24,10 +31,18 @@ interface IProps {
 export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
-  const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
+  const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
   const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
   const { data: tokenData } = useStatemintToken(tokenId);
+
+  const isSufficentBalance = async (): Promise<boolean | undefined> => {
+    if (selectedDotAcc?.address) {
+      const api = await getStatemintApi();
+      const balance = await api.query.system.account(selectedDotAcc.address);
+      return BigNumber.from(balance.data.free.toString()).lte(api.consts.balances.existentialDeposit.toString());
+    }
+  };
 
   useEffect(() => {
     const getClaimableTokens = async () => {
@@ -43,8 +58,10 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     };
     getClaimableTokens();
 
-    if (accounts.length) methods.setValue('address', accounts[0].address);
-    if (selectedDotAcc) methods.setValue('address', selectedDotAcc.address);
+    if (selectedDotAcc) {
+      methods.setValue('address', selectedDotAcc.address);
+      isSufficentBalance() && notifyError('Insufficient funds! Minimum wallet balanc is 1 DOT.', 2500);
+    }
   }, [accounts, selectedDotAcc, userEthAddress]);
 
   const methods = useForm({
@@ -76,6 +93,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     if (extensions.length !== 0) {
       const allAccounts = await web3Accounts();
       setAccounts(allAccounts);
+      setSelectedDotAcc(allAccounts[0]);
       setIsConnectWallet(true);
     }
   };
@@ -120,7 +138,12 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!accounts.length || amountOfClaimableTokens === '0' || isTransactionInProggress}
+                disabled={
+                  !accounts.length ||
+                  amountOfClaimableTokens === '0' ||
+                  isTransactionInProggress ||
+                  Boolean(isSufficentBalance())
+                }
                 title={isTransactionInProggress ? 'Waiting for Conformation' : 'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
