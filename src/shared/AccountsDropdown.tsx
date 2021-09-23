@@ -6,6 +6,7 @@ import { MenuInfo } from 'rc-menu/lib/interface';
 import React from 'react';
 
 import userIcon from '../assets/user_icon.svg';
+import { checkPolakdotBalance } from '../services/checkPolkadotBalance';
 import * as styles from './AccountsDropdown.styles';
 import { MainButton } from './gui/MainButton';
 
@@ -13,15 +14,23 @@ interface IProps {
   options: InjectedAccountWithMeta[];
   initialAccount: InjectedAccountWithMeta;
   setSelectedDotAcc: (account: InjectedAccountWithMeta) => void;
+  setIsInsuficcientPolkadotBalance: (polkadotBalance: boolean) => any;
 }
 
-export const AccountsDropdown = ({ options, initialAccount, setSelectedDotAcc }: IProps) => {
+export const AccountsDropdown = ({
+  options,
+  initialAccount,
+  setSelectedDotAcc,
+  setIsInsuficcientPolkadotBalance,
+}: IProps) => {
   const [selectedAccount, setSelectedAccount] = React.useState<InjectedAccountWithMeta>(initialAccount);
-  const onOptionSelect = (item: MenuInfo) => {
+  const onOptionSelect = async (item: MenuInfo) => {
     const account = options.find((option) => option.address === item.key);
     if (account) {
+      const polkadotBalanceCheck = await checkPolakdotBalance(account.address);
       setSelectedAccount(account);
       setSelectedDotAcc(account);
+      polkadotBalanceCheck && setIsInsuficcientPolkadotBalance(polkadotBalanceCheck);
     }
   };
 

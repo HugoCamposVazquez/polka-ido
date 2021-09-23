@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber';
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
@@ -6,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
-import { getStatemintApi } from '../../services/polkadot';
+import { checkPolakdotBalance } from '../../services/checkPolkadotBalance';
 import {
   notifyError,
   notifyTransactionConfirmation,
@@ -34,15 +33,8 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
   const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
+  const [isInsuficcientPolkadotBalance, setIsInsuficcientPolkadotBalance] = useState<boolean>();
   const { data: tokenData } = useStatemintToken(tokenId);
-
-  const isSufficentBalance = async (): Promise<boolean | undefined> => {
-    if (selectedDotAcc?.address) {
-      const api = await getStatemintApi();
-      const balance = await api.query.system.account(selectedDotAcc.address);
-      return BigNumber.from(balance.data.free.toString()).lte(api.consts.balances.existentialDeposit.toString());
-    }
-  };
 
   useEffect(() => {
     const getClaimableTokens = async () => {
@@ -60,9 +52,9 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
     if (selectedDotAcc) {
       methods.setValue('address', selectedDotAcc.address);
-      isSufficentBalance() && notifyError('Insufficient funds! Minimum wallet balanc is 1 DOT.', 2500);
+      isInsuficcientPolkadotBalance && notifyError('Insufficient funds! Minimum wallet balance is 1 DOT.', 2500);
     }
-  }, [accounts, selectedDotAcc, userEthAddress]);
+  }, [accounts, selectedDotAcc, userEthAddress, isInsuficcientPolkadotBalance]);
 
   const methods = useForm({
     defaultValues: {
@@ -92,9 +84,11 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     const extensions = await web3Enable('RYU network');
     if (extensions.length !== 0) {
       const allAccounts = await web3Accounts();
+      const polkadotBalanceCheck = await checkPolakdotBalance(allAccounts[0].address);
       setAccounts(allAccounts);
       setSelectedDotAcc(allAccounts[0]);
       setIsConnectWallet(true);
+      setIsInsuficcientPolkadotBalance(polkadotBalanceCheck);
     }
   };
 
@@ -113,7 +107,12 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
         {isConnectedWallet && (
           <>
             <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown options={accounts} initialAccount={accounts[0]} setSelectedDotAcc={setSelectedDotAcc} />
+            <AccountsDropdown
+              options={accounts}
+              initialAccount={accounts[0]}
+              setSelectedDotAcc={setSelectedDotAcc}
+              setIsInsuficcientPolkadotBalance={setIsInsuficcientPolkadotBalance}
+            />
           </>
         )}
       </div>
@@ -142,7 +141,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
                   !accounts.length ||
                   amountOfClaimableTokens === '0' ||
                   isTransactionInProggress ||
-                  Boolean(isSufficentBalance())
+                  isInsuficcientPolkadotBalance
                 }
                 title={isTransactionInProggress ? 'Waiting for Conformation' : 'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
