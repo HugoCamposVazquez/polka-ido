@@ -19,7 +19,7 @@ import { Footer } from '../../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../../shared/modals/modals';
 import { ProjectDetailsSectionLoading } from '../../shared/ProjectDetailsSectionLoading';
 import { ExternalLink } from '../../shared/wrappers/ExternalLink';
-import { ProjectStatuses } from '../../types/enums/ProjectStatus';
+import { ProjectSaleStatus } from '../../types/enums/ProjectStatus';
 import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
@@ -41,20 +41,29 @@ export const ProjectDetailsPage = () => {
   const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
 
   const projectStatus = useMemo((): string | undefined => {
-    const upcomingDate = data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate;
-    const currentDate =
-      data?.sales[0] &&
-      getUnixTime(new Date()) > +data?.sales[0].startDate &&
-      getUnixTime(new Date()) < +data?.sales[0].endDate;
-    const endedDate = data?.sales[0] && getUnixTime(new Date()) > +data?.sales[0].endDate;
+    if (!data?.sales[0]) {
+      return;
+    }
 
-    if (upcomingDate) return ProjectStatuses.UPCOMING;
-    if (currentDate) return ProjectStatuses.INPROGRESS;
-    if (
-      endedDate ||
-      (data && BigNumber.from(data?.sales[0].currentDepositAmount).gte(data?.sales[0].totalDepositAmount))
-    )
-      return ProjectStatuses.ENDED;
+    const timeNow = getUnixTime(new Date());
+    const upcomingDate = timeNow < +data?.sales[0].startDate;
+    if (upcomingDate) {
+      return ProjectSaleStatus.UPCOMING;
+    }
+
+    const isCurrentDate = timeNow > +data?.sales[0].startDate && timeNow < +data?.sales[0].endDate;
+    if (isCurrentDate) {
+      const isCapReached = BigNumber.from(data?.sales[0].currentDepositAmount).gte(data?.sales[0].totalDepositAmount);
+      if (isCapReached) {
+        return ProjectSaleStatus.ENDED;
+      }
+      return ProjectSaleStatus.IN_PROGRESS;
+    }
+
+    const isFinishedDate = timeNow > +data?.sales[0].endDate;
+    if (isFinishedDate) {
+      return ProjectSaleStatus.ENDED;
+    }
   }, [data?.sales]);
 
   const filledAllocationPercentage = useMemo((): string => {

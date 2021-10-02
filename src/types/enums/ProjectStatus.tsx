@@ -1,7 +1,7 @@
 export type ProjectStatus = 'upcoming' | 'ended';
 
-export enum ProjectStatuses {
+export enum ProjectSaleStatus {
   UPCOMING = 'Upcoming',
-  INPROGRESS = 'In Progress',
+  IN_PROGRESS = 'In Progress',
   ENDED = 'Ended',
 }
