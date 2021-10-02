@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
-import { checkPolakdotBalance } from '../../services/checkPolkadotBalance';
+import { isAddressBalanceSufficient } from '../../services/isAddressBalanceSufficient';
 import {
   notifyError,
   notifyTransactionConfirmation,
@@ -31,9 +31,9 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
-  const [isTransactionInProggress, setIsTranasctionInProgress] = useState(false);
+  const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
-  const [isInsuficcientPolkadotBalance, setIsInsuficcientPolkadotBalance] = useState<boolean>();
+  const [isSufficientPolkadotBalance, setIsSufficientPolkadotBalance] = useState<boolean>();
   const { data: tokenData } = useStatemintToken(tokenId);
 
   useEffect(() => {
@@ -52,9 +52,11 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
     if (selectedDotAcc) {
       methods.setValue('address', selectedDotAcc.address);
-      isInsuficcientPolkadotBalance && notifyError('Insufficient funds! Minimum wallet balance is 1 DOT.', 2500);
+      if (!isSufficientPolkadotBalance) {
+        notifyError('Insufficient funds! Minimum wallet balance is 1 DOT.', 2500);
+      }
     }
-  }, [accounts, selectedDotAcc, userEthAddress, isInsuficcientPolkadotBalance]);
+  }, [accounts, selectedDotAcc, userEthAddress, isSufficientPolkadotBalance]);
 
   const methods = useForm({
     defaultValues: {
@@ -66,29 +68,32 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
   const onSubmit = async ({ address }: { address: string }) => {
     try {
       notifyTransactionConfirmation('Confirm Transaction...', 'claimingTokens');
-      setIsTranasctionInProgress(true);
+      setIsTransactionInProgress(true);
 
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
-      setIsTranasctionInProgress(false);
+      setIsTransactionInProgress(false);
       updateNotifySuccess('Claim Successful', 'claimingTokens', 2000);
       closeModal();
     } catch (e) {
       // show notification or error message
       console.log(e);
       updateNotifyError('Transaction Canceled.', 'claimingTokens');
-      setIsTranasctionInProgress(false);
+      setIsTransactionInProgress(false);
     }
+  };
+
+  const onAccountChange = async (account: InjectedAccountWithMeta): Promise<void> => {
+    setSelectedDotAcc(account);
+    setIsSufficientPolkadotBalance(await isAddressBalanceSufficient(account.address));
   };
 
   const onPolkadotJsConnect = async () => {
     const extensions = await web3Enable('RYU network');
     if (extensions.length !== 0) {
       const allAccounts = await web3Accounts();
-      const polkadotBalanceCheck = await checkPolakdotBalance(allAccounts[0].address);
       setAccounts(allAccounts);
-      setSelectedDotAcc(allAccounts[0]);
       setIsConnectWallet(true);
-      setIsInsuficcientPolkadotBalance(polkadotBalanceCheck);
+      await onAccountChange(allAccounts[0]);
     }
   };
 
@@ -107,12 +112,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
         {isConnectedWallet && (
           <>
             <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown
-              options={accounts}
-              initialAccount={accounts[0]}
-              setSelectedDotAcc={setSelectedDotAcc}
-              setIsInsuficcientPolkadotBalance={setIsInsuficcientPolkadotBalance}
-            />
+            <AccountsDropdown options={accounts} initialAccount={accounts[0]} onAccountChange={onAccountChange} />
           </>
         )}
       </div>
@@ -140,10 +140,10 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
                 disabled={
                   !accounts.length ||
                   amountOfClaimableTokens === '0' ||
-                  isTransactionInProggress ||
-                  isInsuficcientPolkadotBalance
+                  isTransactionInProgress ||
+                  !isSufficientPolkadotBalance
                 }
-                title={isTransactionInProggress ? 'Waiting for Conformation' : 'Claim'}
+                title={isTransactionInProgress ? 'Waiting for Conformation' : 'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
                 style={{ width: '100%' }}
