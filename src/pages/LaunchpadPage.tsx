@@ -164,9 +164,13 @@ export const LaunchpadPage = () => {
       </div>
       <div className={styles.projectsCardsContainerParentClassName}>
         <div className={styles.projectsCardsContainerClassName}>
-          {projects.map((project, index: number) => {
-            return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
-          })}
+          {!account && shownProjects === 'joined' ? (
+            <div>Please connect your wallet to see the sales which you have joined.</div>
+          ) : (
+            projects.map((project, index: number) => {
+              return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
+            })
+          )}
         </div>
       </div>
       <Footer />
