@@ -6,12 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { isAddressBalanceSufficient } from '../../services/isAddressBalanceSufficient';
-import {
-  notifyError,
-  notifyTransactionConfirmation,
-  updateNotifyError,
-  updateNotifySuccess,
-} from '../../utils/notifications';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -52,9 +47,6 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
     if (selectedDotAcc) {
       methods.setValue('address', selectedDotAcc.address);
-      if (!isSufficientPolkadotBalance) {
-        notifyError('Insufficient funds! Minimum wallet balance is 1 DOT.', 2500);
-      }
     }
   }, [accounts, selectedDotAcc, userEthAddress, isSufficientPolkadotBalance]);
 
@@ -120,7 +112,15 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
       <div style={styles.tknValueTextStyle}>
         {amountOfClaimableTokens} {tokenData ? tokenData.symbol : ''}
       </div>
-      <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
+      <div style={modalTextStyle}>
+        {isSufficientPolkadotBalance ? (
+          'Enter an address to claim the tokens.'
+        ) : (
+          <b>
+            Sorry, can't claim any tokens as your account doesn't have the existential deposit required on the network.
+          </b>
+        )}
+      </div>
       <FormProvider {...methods}>
         <form>
           <div>
