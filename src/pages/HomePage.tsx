@@ -31,7 +31,6 @@ export const HomePage = () => {
       email: '',
       message: '',
     },
-    //resolver: yupResolver(loginValidationSchema),
   });
 
   const onSubmit = async ({ email, message }: { email: string; message: string }) => {
@@ -40,14 +39,8 @@ export const HomePage = () => {
 
       if (response.ok) notifySuccess('Message has been sent successfully.', 1500);
       if (!response.ok) notifyError('Error while sending message.', 1500);
-
-      // const { token } = await generalHTTP.login(email, message);
-      // localStorage.setItem('token', token);
-      // window.location.reload();
     } catch (e) {
       console.log(e);
-
-      // show notification or error message
     }
   };
 
@@ -108,20 +101,20 @@ export const HomePage = () => {
           <FormProvider {...methods}>
             <form>
               <div style={styles.textFieldContainerStyle}>
-                <TextField name="email" placeholder="E-mail" mode={'dark'} styleType={'bordered'} />
+                <TextField name="email" placeholder="E-mail" mode="dark" styleType={'bordered'} />
               </div>
               <div style={styles.textFieldContainerStyle}>
                 <TextArea
                   name="message"
                   placeholder="Message"
-                  mode={'dark'}
+                  mode="dark"
                   style={{ height: '8.38rem' }}
                   maxLength={2000}
                 />
               </div>
               <MainButton
                 title="SEND"
-                type={'fill'}
+                type="fill"
                 onClick={methods.handleSubmit(onSubmit)}
                 disabled={formspreeState.submitting}
               />
