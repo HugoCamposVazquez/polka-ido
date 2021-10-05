@@ -189,11 +189,11 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Starts</div>
-              {/* <DateField name={'starts'} mode={'light'} placeholder="Select start time" /> */}
+              <DateField name={'starts'} mode={'light'} placeholder="Select start time" />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Ends</div>
-              {/* <DateField name={'ends'} mode={'light'} placeholder="Select end time" /> */}
+              <DateField name={'ends'} mode={'light'} placeholder="Select end time" />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Raise amount</div>
@@ -253,12 +253,12 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Vesting start date</div>
-              {/* <DateField name={'vestingStartDate'} mode={'light'} placeholder={'Select vesting start date'} /> */}
+              <DateField name={'vestingStartDate'} mode={'light'} placeholder={'Select vesting start date'} />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Vesting end date</div>
-              {/* <DateField name={'vestingEndDate'} mode={'light'} placeholder={'Select vesting end date'} /> */}
+              <DateField name={'vestingEndDate'} mode={'light'} placeholder={'Select vesting end date'} />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>

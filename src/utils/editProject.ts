@@ -201,8 +201,8 @@ export const convertToProjectType = (project?: ProjectSales): ProjectType | unde
       status: 'upcoming',
       access: whitelisted ? 'whitelist' : 'public',
       featured,
-      starts: new Date(startDate),
-      ends: new Date(endDate),
+      starts: new Date(parseInt(startDate)),
+      ends: new Date(parseInt(endDate)),
       minUserDepositAmount,
       maxUserDepositAmount,
       //TODO
@@ -210,8 +210,8 @@ export const convertToProjectType = (project?: ProjectSales): ProjectType | unde
       tokenPrice: salePrice,
       //TODO
       tokenValue: 100,
-      vestingStartDate: new Date(vestingStartDate),
-      vestingEndDate: new Date(vestingEndDate),
+      vestingStartDate: new Date(parseInt(vestingStartDate)),
+      vestingEndDate: new Date(parseInt(vestingEndDate)),
       //TODO
       minSwapLevel: 1,
       //TODO
