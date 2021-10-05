@@ -1,3 +1,4 @@
+import { useForm as useFormspreeForm } from '@formspree/react';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -13,31 +14,33 @@ import { Footer } from '../shared/insets/user/Footer';
 import { ProjectCard } from '../shared/ProjectCard';
 import { ProjectCardLoading } from '../shared/ProjectCardLoading';
 import { getCardDirection } from '../utils/cardDirectionUtil';
+import { notifyError, notifySuccess } from '../utils/notifications';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './HomePage.styles';
 
+const FORM_ID = process.env.REACT_APP_FORMSPREE_FORM_ID;
+
 export const HomePage = () => {
   const navigation = useHistory();
-
   const { width } = useWindowDimensions();
+
+  const [formspreeState, handleSubmitFormspree] = useFormspreeForm(FORM_ID);
 
   const methods = useForm({
     defaultValues: {
       email: '',
       message: '',
     },
-    //resolver: yupResolver(loginValidationSchema),
   });
 
-  const onSubmit = async ({ email, message }: any) => {
+  const onSubmit = async ({ email, message }: { email: string; message: string }) => {
     try {
-      console.log('test', email, message);
-      // const { token } = await generalHTTP.login(email, message);
-      // localStorage.setItem('token', token);
-      // window.location.reload();
+      const { response } = await handleSubmitFormspree({ email: email, message: message });
+
+      if (response.ok) notifySuccess('Message has been sent successfully.', 1500);
+      if (!response.ok) notifyError('Error while sending message.', 1500);
     } catch (e) {
       console.log(e);
-      // show notification or error message
     }
   };
 
@@ -98,12 +101,23 @@ export const HomePage = () => {
           <FormProvider {...methods}>
             <form>
               <div style={styles.textFieldContainerStyle}>
-                <TextField name="email" placeholder="E-mail" mode={'dark'} styleType={'bordered'} />
+                <TextField name="email" placeholder="E-mail" mode="dark" styleType={'bordered'} />
               </div>
               <div style={styles.textFieldContainerStyle}>
-                <TextArea name="message" placeholder="Message" mode={'dark'} style={{ height: '8.38rem' }} />
+                <TextArea
+                  name="message"
+                  placeholder="Message"
+                  mode="dark"
+                  style={{ height: '8.38rem' }}
+                  maxLength={2000}
+                />
               </div>
-              <MainButton title="SEND" type={'fill'} onClick={methods.handleSubmit(onSubmit)} />
+              <MainButton
+                title="SEND"
+                type="fill"
+                onClick={methods.handleSubmit(onSubmit)}
+                disabled={formspreeState.submitting}
+              />
             </form>
           </FormProvider>
         </div>
