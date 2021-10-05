@@ -18,7 +18,7 @@ import { notifyError, notifySuccess } from '../utils/notifications';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './HomePage.styles';
 
-const FORM_ID = process.env.REACT_APP_FORMSPREE_FORM_ID as string;
+const FORM_ID = process.env.REACT_APP_FORMSPREE_FORM_ID;
 
 export const HomePage = () => {
   const navigation = useHistory();
