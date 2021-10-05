@@ -1,6 +1,7 @@
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
+import { BigNumber } from 'ethers';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -11,18 +12,20 @@ import webIcon from '../../assets/web_icon.svg';
 import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../../shared/modals/modals';
 import { ProjectDetailsSectionLoading } from '../../shared/ProjectDetailsSectionLoading';
 import { ExternalLink } from '../../shared/wrappers/ExternalLink';
+import { ProjectSaleStatus } from '../../types/enums/ProjectStatus';
 import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
-import { getTimeDiff } from '../../utils/date';
-import { formatWei } from '../../utils/numModifiyngFuncs';
+import { convertDateFromUnixtime, getTimeDiff } from '../../utils/date';
+import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
 import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
 import { TokenDetails } from './TokenDetails';
@@ -35,17 +38,32 @@ export const ProjectDetailsPage = () => {
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
+  const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
 
-  const projectStatus = useMemo((): string => {
-    if (data?.sales[0] && getUnixTime(new Date()) < +data?.sales[0].startDate) {
-      return 'Upcoming';
-    } else if (
-      data?.sales[0] &&
-      getUnixTime(new Date()) > +data?.sales[0].startDate &&
-      getUnixTime(new Date()) < +data?.sales[0].endDate
-    ) {
-      return 'In Progress';
-    } else return 'Ended';
+  const projectStatus = useMemo((): string | undefined => {
+    if (!data?.sales[0]) {
+      return;
+    }
+
+    const timeNow = getUnixTime(new Date());
+    const upcomingDate = timeNow < +data?.sales[0].startDate;
+    if (upcomingDate) {
+      return ProjectSaleStatus.UPCOMING;
+    }
+
+    const isCurrentDate = timeNow > +data?.sales[0].startDate && timeNow < +data?.sales[0].endDate;
+    if (isCurrentDate) {
+      const isCapReached = BigNumber.from(data?.sales[0].currentDepositAmount).gte(data?.sales[0].totalDepositAmount);
+      if (isCapReached) {
+        return ProjectSaleStatus.ENDED;
+      }
+      return ProjectSaleStatus.IN_PROGRESS;
+    }
+
+    const isFinishedDate = timeNow > +data?.sales[0].endDate;
+    if (isFinishedDate) {
+      return ProjectSaleStatus.ENDED;
+    }
   }, [data?.sales]);
 
   const filledAllocationPercentage = useMemo((): string => {
@@ -75,7 +93,7 @@ export const ProjectDetailsPage = () => {
       if (!vestingStartDate || !vestingEndDate) {
         return 'N/A';
       }
-      return getTimeDiff(vestingStartDate, vestingEndDate);
+      return `${getTimeDiff(vestingEndDate, vestingStartDate)} days`;
     } else {
       return 'N/A';
     }
@@ -152,7 +170,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].totalDepositAmount)
+                  data?.sales[0] && numberWithDots(formatWei(data?.sales[0].totalDepositAmount))
                 } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
@@ -168,14 +186,19 @@ export const ProjectDetailsPage = () => {
                 } ${config.CURRENCY}`}</div>
               </div>
               {account && data && (
-                <TotalAllocation account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />
+                <TotalAllocation
+                  account={account}
+                  projectId={data?.sales[0].id}
+                  tokenPrice={tokenPrice}
+                  tokenSymbol={tokenData?.symbol}
+                />
               )}
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
                   {data?.sales[0] &&
-                    `${formatWei(data?.sales[0].currentDepositAmount)}/${formatWei(
-                      data?.sales[0].totalDepositAmount,
+                    `${numberWithDots(formatWei(data?.sales[0].currentDepositAmount))}/${numberWithDots(
+                      formatWei(data?.sales[0].totalDepositAmount),
                     )} ${config.CURRENCY}`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
@@ -189,19 +212,31 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  1 TKN = {tokenPrice} {config.CURRENCY}
+                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
                 </div>
               </div>
             </div>
 
             <div className={styles.projectDetailsBtnsParentStyle}>
               <MainButton title="CLAIM TOKENS" type={'bordered'} onClick={onClaimClick} />
-              <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
+              <MainButton
+                title="JOIN"
+                type={'fill'}
+                onClick={() => navigation.push(`/project/${id}/join`)}
+                disabled={projectStatus === 'Ended' || projectStatus === 'Upcoming'}
+              />
             </div>
           </div>
         </div>
       </div>
-      {account && data && <Allocations account={account} projectId={data?.sales[0].id} tokenPrice={tokenPrice} />}
+      {account && data && (
+        <Allocations
+          account={account}
+          projectId={data?.sales[0].id}
+          tokenPrice={tokenPrice}
+          tokenSymbol={tokenData?.symbol}
+        />
+      )}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>
@@ -215,7 +250,9 @@ export const ProjectDetailsPage = () => {
               <div style={{ marginTop: '2.25rem' }}>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting start time</div>
-                  <div className={styles.content3TextStyle}>{data?.sales[0].vestingStartDate || 'N/A'}</div>
+                  <div className={styles.content3TextStyle}>
+                    {data ? convertDateFromUnixtime(data.sales[0].vestingStartDate) : 'N/A'}
+                  </div>
                 </div>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting duration</div>

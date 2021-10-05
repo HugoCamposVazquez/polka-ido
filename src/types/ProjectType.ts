@@ -57,7 +57,7 @@ export interface ProjectData {
   vestingEndDate: string;
 }
 
-interface SalesDto extends ProjectData {
+export interface SalesDto extends ProjectData {
   token: {
     id: string;
   };
@@ -84,3 +84,5 @@ export interface ProjectAllocationsDto {
     allocations: AllocationDto[];
   };
 }
+
+export type FullProjectData = Partial<ProjectMetadata> & SalesDto;

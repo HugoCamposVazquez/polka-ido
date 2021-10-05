@@ -12,16 +12,16 @@ import { MainButton } from './gui/MainButton';
 interface IProps {
   options: InjectedAccountWithMeta[];
   initialAccount: InjectedAccountWithMeta;
-  setSelectedDotAcc: (account: InjectedAccountWithMeta) => void;
+  onAccountChange: (account: InjectedAccountWithMeta) => Promise<void>;
 }
 
-export const AccountsDropdown = ({ options, initialAccount, setSelectedDotAcc }: IProps) => {
+export const AccountsDropdown = ({ options, initialAccount, onAccountChange }: IProps) => {
   const [selectedAccount, setSelectedAccount] = React.useState<InjectedAccountWithMeta>(initialAccount);
-  const onOptionSelect = (item: MenuInfo) => {
+  const onOptionSelect = async (item: MenuInfo) => {
     const account = options.find((option) => option.address === item.key);
     if (account) {
       setSelectedAccount(account);
-      setSelectedDotAcc(account);
+      await onAccountChange(account);
     }
   };
 
