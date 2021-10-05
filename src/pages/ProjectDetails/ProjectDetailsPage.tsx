@@ -114,7 +114,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.topRightBottomLeftNotch} className={styles.projectImageBackgroundStyle}>
                 <img
                   className={styles.projectIconClassName}
-                  src={metadata ? getIPFSResolvedLink(metadata?.imageUrl) : ''}
+                  src={metadata ? getIPFSResolvedLink(metadata?.imageUrl ?? '') : ''}
                 />
               </div>
               <div style={{ marginLeft: '1.5rem' }}>

@@ -222,7 +222,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Project icon</div>
-              <ImagePicker name={'iconUrl'} onImageUpload={setImageUrl} />
+              <ImagePicker name={'imageUrl'} onImageUpload={setImageUrl} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Web</div>

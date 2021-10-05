@@ -16,7 +16,7 @@ export type ProjectMetadata = {
   telegramLink: string;
   shortDescription: string;
   description: string;
-  imageUrl: string;
+  imageUrl: string | undefined;
 };
 
 export type ProjectType = ProjectMetadata & {

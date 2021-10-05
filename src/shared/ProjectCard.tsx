@@ -68,7 +68,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
             <div style={styles.projectCardHeaderIconContainer}>
               <img
                 style={styles.projectCardHeaderIconStyle}
-                src={metadata ? getIPFSResolvedLink(metadata?.imageUrl) : ''}
+                src={metadata ? getIPFSResolvedLink(metadata?.imageUrl ?? '') : ''}
               />
             </div>
           </div>

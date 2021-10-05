@@ -3,7 +3,7 @@ import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContrac
 import { ProjectSales, ProjectType } from '../types/ProjectType';
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
-type keyOfProjectType = (keyof ProjectType)[];
+type keyOfProjectType = keyof ProjectType;
 
 const editTx = async <T extends Function>(
   contractMethod: T,
@@ -30,9 +30,9 @@ export const editProject = async (
   onFaliure: (message: string) => void,
 ): Promise<void> => {
   //returns true if any of given properties are changed
-  const isChanged = ([propertyKey]: keyOfProjectType): boolean => {
+  const isChanged = (propertyKeys: keyOfProjectType[]): boolean => {
     let isChanged = false;
-    [propertyKey].forEach((key) => {
+    propertyKeys.forEach((key) => {
       isChanged = isChanged || defaultData[key] !== submitedData[key];
     });
     return isChanged;
@@ -81,6 +81,7 @@ export const editProject = async (
   }
   //Raise mount
   if (isChanged(['raiseAmountTotal'])) {
+    console.log('raiseAmountTotal changed');
     //?? - not sure which contract method is this
   }
   //Min. deposit / Max. deposit
@@ -231,7 +232,7 @@ export const convertToProjectType = (project?: ProjectSales): ProjectType | unde
       telegramLink: 'string',
       shortDescription: 'string',
       description: 'string',
-      imageUrl: 'string',
+      imageUrl: undefined,
     };
   } else return undefined;
 };
