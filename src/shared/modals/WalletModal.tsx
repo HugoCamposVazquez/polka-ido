@@ -35,7 +35,7 @@ export const WalletModal = ({ closeModal, account }: IProps) => {
               Copy Address
             </div>
           </div>
-          <a style={styles.link} href={address.href.toString()} target="_blank" rel="noreferrer">
+          <a style={styles.link} href={address.href} target="_blank" rel="noreferrer">
             <div style={styles.viewInExplorerParentStyle}>
               <img src={viewInExplorer} />
               <div style={styles.viewInExplorerBtnStyle}>View in Explorer </div>
