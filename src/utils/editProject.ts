@@ -1,5 +1,6 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 
+import { ProjectSaleStatus, ProjectStatus } from '../types/enums/ProjectStatus';
 import { ProjectSales, ProjectType } from '../types/ProjectType';
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
@@ -198,41 +199,47 @@ export const convertToProjectType = (project?: ProjectSales): ProjectType | unde
     } = project.sales[0];
     return {
       id: parseInt(id),
-      //TODO
-      status: 'upcoming',
+      status: getStatus(startDate, endDate),
       access: whitelisted ? 'whitelist' : 'public',
       featured,
       starts: new Date(parseInt(startDate)),
       ends: new Date(parseInt(endDate)),
       minUserDepositAmount,
       maxUserDepositAmount,
-      //TODO
+      //TODO-form
       raiseAmountTotal: '10000',
       tokenPrice: salePrice,
-      //TODO
+      //TODO-form
       tokenValue: 100,
       vestingStartDate: new Date(parseInt(vestingStartDate)),
       vestingEndDate: new Date(parseInt(vestingEndDate)),
-      //TODO
+      //TODO-?
       minSwapLevel: 1,
-      //TODO
+      //TODO-form
       tokenId: 505,
-      //TODO
-      raiseAmountCurrent: 0,
-      //TODO
-      joined: true,
-      //TODO
-      walletAddress: 'string',
-      //TODO
+      //TODO-form
+      walletAddress: 'placeholder',
+      //TODO-form
       decimals: 18,
-      //TODO
-      title: 'string',
-      webLink: 'string',
-      twitterLink: 'string',
-      telegramLink: 'string',
-      shortDescription: 'string',
-      description: 'string',
+      //TODO-metadata fields
+      title: 'placeholder',
+      webLink: 'placeholder',
+      twitterLink: 'placeholder',
+      telegramLink: 'placeholder',
+      shortDescription: 'placeholder',
+      description: 'placeholder',
       imageUrl: undefined,
     };
   } else return undefined;
+};
+
+const getStatus = (startDate: string, endDate: string): ProjectStatus => {
+  const timeNow = Date.now();
+  const starts = new Date(parseInt(startDate));
+  const ends = new Date(parseInt(endDate));
+
+  if (ends.valueOf() < timeNow) {
+    if (starts.valueOf() < timeNow) return 'inProgress';
+    else return 'upcoming';
+  } else return 'ended';
 };

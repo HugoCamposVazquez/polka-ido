@@ -1,4 +1,4 @@
-export type ProjectStatus = 'upcoming' | 'ended';
+export type ProjectStatus = 'upcoming' | 'ended' | 'inProgress';
 
 export enum ProjectSaleStatus {
   UPCOMING = 'Upcoming',
