@@ -10,6 +10,8 @@ interface IProps {
   account: string;
 }
 export const WalletModal = ({ closeModal, account }: IProps) => {
+  const moonbeamAddress = new URL(`address/${account}`, process.env.REACT_APP_MOONRIVER_URL);
+
   return (
     <Modal title="ACCOUNT" closeModal={closeModal}>
       <div style={styles.boxStyle}>
@@ -32,11 +34,7 @@ export const WalletModal = ({ closeModal, account }: IProps) => {
               Copy Address
             </div>
           </div>
-          <a
-            style={styles.link}
-            href={`${process.env.REACT_APP_MOONRIVER_URL}address/${account}`}
-            target="_blank"
-            rel="noreferrer">
+          <a style={styles.link} href={`${moonbeamAddress}address/${account}`} target="_blank" rel="noreferrer">
             <div style={styles.viewInExplorerParentStyle}>
               <img src={viewInExplorer} />
               <div style={styles.viewInExplorerBtnStyle}>View in Explorer </div>
