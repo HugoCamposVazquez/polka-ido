@@ -2,18 +2,14 @@ import React from 'react';
 
 import copyAddress from '../../assets/copy_address.svg';
 import viewInExplorer from '../../assets/view_in_explorer.svg';
-import { styled } from '../../utils/css';
 import { notifySuccess } from '../../utils/notifications';
 import { Modal } from './Modal';
 import * as styles from './WalletModal.styles';
-
-const ETHERSCAN_URL = process.env.REACT_APP_ETHERSCAN_URL;
 interface IProps {
   closeModal: () => void;
-  changeWallet: any;
   account: string;
 }
-export const WalletModal = ({ closeModal, changeWallet, account }: IProps) => {
+export const WalletModal = ({ closeModal, account }: IProps) => {
   return (
     <Modal title="ACCOUNT" closeModal={closeModal}>
       <div style={styles.boxStyle}>
@@ -36,7 +32,11 @@ export const WalletModal = ({ closeModal, changeWallet, account }: IProps) => {
               Copy Address
             </div>
           </div>
-          <a style={styles.link} href={`${ETHERSCAN_URL}/${account}`} target="_blank" rel="noreferrer">
+          <a
+            style={styles.link}
+            href={`${process.env.REACT_APP_MOONRIVER_URL}address/${account}`}
+            target="_blank"
+            rel="noreferrer">
             <div style={styles.viewInExplorerParentStyle}>
               <img src={viewInExplorer} />
               <div style={styles.viewInExplorerBtnStyle}>View in Explorer </div>
