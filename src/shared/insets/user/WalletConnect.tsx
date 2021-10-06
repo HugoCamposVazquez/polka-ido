@@ -5,7 +5,7 @@ import { injected } from '../../../hooks/web3/connectors';
 import { onLogin } from '../../../hooks/web3/useEagerConnect';
 import { useMoonbeanBalance } from '../../../hooks/web3/useMoonbeamBalance';
 import { cs } from '../../../utils/css';
-import { formatWei } from '../../../utils/numModifiyngFuncs';
+import { formatBalance, formatWei } from '../../../utils/numModifiyngFuncs';
 import { MainButton } from '../../gui/MainButton';
 import { openUnsupportedNetworkModal, openWalletModal } from '../../modals/modals';
 import * as styles from './WalletConnect.styles';
@@ -30,8 +30,7 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
   };
 
   const { balance } = useMoonbeanBalance();
-  const formattedBalance = useMemo(() => formatWei(balance), [balance]);
-
+  const formattedBalance = useMemo(() => formatBalance(formatWei(balance), 3), [balance]);
   return (
     <>
       {!account && (

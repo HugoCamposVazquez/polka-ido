@@ -1,8 +1,10 @@
+import { useWeb3React } from '@web3-react/core';
 import { getUnixTime } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import ryu3 from '../assets/ryu3.png';
 import { config } from '../config';
+import { useJoinedProjects } from '../hooks/apollo/useJoinedProjects';
 import { usePlatformsStats } from '../hooks/apollo/usePlatformsStats';
 import { useProjects } from '../hooks/apollo/useProjects';
 import { Footer } from '../shared/insets/user/Footer';
@@ -19,10 +21,11 @@ export const LaunchpadPage = () => {
   const [shownProjects, setShownProjects] = useState<'upcoming' | 'joined' | 'featured' | undefined>('upcoming');
   const [projects, setProjects] = useState<SalesDto[]>([]);
   const { width } = useWindowDimensions();
+  const { account } = useWeb3React();
 
   const { data: platformsData } = usePlatformsStats();
   const { data: projectsData, loading: projectLoading } = useProjects();
-
+  const { getJoinedProjects, data: joinedProjects } = useJoinedProjects();
   const filterUpcoming = useCallback((): void => {
     setShownProjects('upcoming');
     let upcomingProjects: SalesDto[] = [];
@@ -35,7 +38,6 @@ export const LaunchpadPage = () => {
       setProjects(upcomingProjects);
     });
   }, [projectsData]);
-
   const onClickFilterFeatured = useCallback((): void => {
     setShownProjects('featured');
     let featuredProjects: SalesDto[] = [];
@@ -49,10 +51,20 @@ export const LaunchpadPage = () => {
     });
   }, [projectsData]);
 
-  const onClickFilterJoined = (): void => {
+  const onClickFilterJoined = useCallback((): void => {
+    getJoinedProjects({ variables: { userAddress: account } });
     setShownProjects('joined');
-    setProjects([]);
-  };
+
+    const allJoinedProjects = joinedProjects?.filter(
+      (joinedProject, index, arr) => index === arr.findIndex((project) => project.id === joinedProject.id),
+    );
+
+    if (allJoinedProjects) {
+      setProjects(allJoinedProjects);
+    } else {
+      setProjects([]);
+    }
+  }, [joinedProjects]);
 
   const onClickShowAllProjects = useCallback((): void => {
     setShownProjects(undefined);
@@ -62,6 +74,12 @@ export const LaunchpadPage = () => {
       setProjects(allProjects);
     });
   }, [projectsData]);
+
+  useEffect(() => {
+    if (joinedProjects) {
+      onClickFilterJoined();
+    }
+  }, [joinedProjects?.length]);
 
   useEffect(() => {
     filterUpcoming();
@@ -146,9 +164,13 @@ export const LaunchpadPage = () => {
       </div>
       <div className={styles.projectsCardsContainerParentClassName}>
         <div className={styles.projectsCardsContainerClassName}>
-          {projects.map((project, index: number) => {
-            return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
-          })}
+          {!account && shownProjects === 'joined' ? (
+            <div>Please connect your wallet to see the sales which you have joined.</div>
+          ) : (
+            projects.map((project, index: number) => {
+              return <ProjectCard key={index} project={project} direction={getCardDirection(width, index)} />;
+            })
+          )}
         </div>
       </div>
       <Footer />
