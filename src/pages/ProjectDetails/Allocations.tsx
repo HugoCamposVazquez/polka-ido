@@ -74,7 +74,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }:
 
   return (
     <div style={styles.descriptionParentStyle}>
-      <div className={styles.description2TextStyle}>Your allocation x TKN ( Claimed : 25 )</div>
+      <div className={styles.description2TextStyle}>Your allocation</div>
       <div className={styles.content2TextStyle}>
         {totalAllocation} {tokenSymbol || 'tokens'}
       </div>

@@ -28,6 +28,7 @@ export const copyAddressBtnStyle = styled.cssStyle`
 `;
 
 export const viewInExplorerBtnStyle = styled.cssStyle`
+  display: flex;
   margin-left: 0.8125rem;
   font-family: Titillium Web;
   font-weight: 400;
@@ -51,6 +52,7 @@ export const btnsContainerStyle = styled.cssStyle`
   margin: 1.5rem 1.5rem 1.875rem 1.5rem;
 `;
 export const connectedTextStyle = styled.cssStyle`
+  displa: flex;
   flex: 1;
   font-family: Titillium Web;
   font-weight: 400;
@@ -69,4 +71,9 @@ export const accountParentStyle = styled.cssStyle`
 export const boxStyle = styled.cssStyle`
   border: 0.0625rem solid #ccc;
   margin-top: 0.625rem;
+`;
+
+export const link = styled.cssStyle`
+  text-decoration: none;
+  display: flex;
 `;

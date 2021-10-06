@@ -51,10 +51,10 @@ export const openClaimTokensModal = (id: string, contract: SaleContract, userEth
   );
 };
 
-export const openWalletModal = (changeWallet: any) => {
+export const openWalletModal = (changeWallet: any, account: string) => {
   attachDiv();
   ReactDOM.render(
-    <WalletModal closeModal={detachDiv} changeWallet={changeWallet} />,
+    <WalletModal closeModal={detachDiv} account={account} />,
     stackOfModalDivs[stackOfModalDivs.length - 1],
   );
 };
