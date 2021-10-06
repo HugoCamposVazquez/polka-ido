@@ -5,12 +5,13 @@ import viewInExplorer from '../../assets/view_in_explorer.svg';
 import { notifySuccess } from '../../utils/notifications';
 import { Modal } from './Modal';
 import * as styles from './WalletModal.styles';
+
 interface IProps {
   closeModal: () => void;
   account: string;
 }
 export const WalletModal = ({ closeModal, account }: IProps) => {
-  const moonbeamAddress = new URL(`address/${account}`, process.env.REACT_APP_MOONRIVER_URL);
+  const address = new URL(`address/${account}`, process.env.REACT_APP_MOONRIVER_URL);
 
   return (
     <Modal title="ACCOUNT" closeModal={closeModal}>
@@ -34,7 +35,7 @@ export const WalletModal = ({ closeModal, account }: IProps) => {
               Copy Address
             </div>
           </div>
-          <a style={styles.link} href={`${moonbeamAddress}address/${account}`} target="_blank" rel="noreferrer">
+          <a style={styles.link} href={address.href.toString()} target="_blank" rel="noreferrer">
             <div style={styles.viewInExplorerParentStyle}>
               <img src={viewInExplorer} />
               <div style={styles.viewInExplorerBtnStyle}>View in Explorer </div>
