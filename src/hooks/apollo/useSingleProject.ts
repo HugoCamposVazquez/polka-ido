@@ -9,14 +9,21 @@ interface ProjectsHook {
 }
 
 export const useSingleProject = (id?: string): ProjectsHook => {
-  const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
-    client,
-    variables: {
-      id,
-    },
-  });
+  if (id) {
+    const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
+      client,
+      variables: {
+        id,
+      },
+    });
 
-  return { data, loading };
+    return { data, loading };
+  } else {
+    return {
+      data: undefined,
+      loading: false,
+    };
+  }
 };
 
 const FETCH_SINGLE_PROJECT_DATA = gql(

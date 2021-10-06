@@ -5,10 +5,11 @@ import { useContract } from './useContract';
 
 export const useSaleContract = (address?: string): SaleContract | null => {
   try {
-    return useContract(address, abi) as SaleContract;
+    if (address) {
+      return useContract(address, abi) as SaleContract;
+    } else return null;
   } catch (e) {
     console.error(`An error ocurred while trying to connect to sale contract ${address}: ${e.message}`);
-
     return null;
   }
 };
