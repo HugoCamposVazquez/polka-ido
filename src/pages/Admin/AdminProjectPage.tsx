@@ -4,6 +4,8 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import binImage from '../../assets/bin_image.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
+import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { ProjectMetadata } from '../../types/ProjectType';
 import { convertToProjectType } from '../../utils/editProject';
 import * as styles from './AdminProjectPage.styles';
 import { ProjectForm } from './ProjectForm';
@@ -16,10 +18,10 @@ export const AdminProjectPage = () => {
   const navigation = useHistory();
 
   const { id } = useParams<IProps>();
-  // const { data: project, isLoading: projectLoading } = useProject(id);
 
   const { data: project, loading: projectLoading } = useSingleProject(id);
-  console.log(project);
+
+  const { data: metaData } = useReadIPFS<ProjectMetadata>(project?.sales[0].metadataURI);
 
   useEffect(() => {
     // Project that needs to be edited is not found
@@ -44,7 +46,7 @@ export const AdminProjectPage = () => {
         )}
       </div>
       <ProjectForm
-        defaultProjectData={convertToProjectType(project)}
+        defaultProjectData={convertToProjectType(project, metaData)}
         loadingProjectData={projectLoading}
         projectId={id}
       />

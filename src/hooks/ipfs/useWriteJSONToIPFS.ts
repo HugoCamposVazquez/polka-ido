@@ -1,11 +1,15 @@
-import axios from 'axios';
 import { useCallback, useState } from 'react';
 
-import { getPinataApi, PinataResponse } from '../../services/pinata';
+import { PinataResponse } from '../../services/pinata';
+import { writeToIPFS } from '../../utils/editProject';
 
 interface IData {
   loading: boolean;
-  writeData: (body: unknown) => Promise<PinataResponse | null>;
+  writeData: (
+    body: unknown,
+    setError: (e: string) => void,
+    setLoading: (isLoading: boolean) => void,
+  ) => Promise<PinataResponse | null>;
   error?: string;
 }
 
@@ -14,23 +18,7 @@ export const useWriteJSONToIPFS = (): IData => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
 
-  const writeData = useCallback(async (body: unknown): Promise<PinataResponse | null> => {
-    try {
-      const api = getPinataApi();
-      const response = await api.post('/pinning/pinJSONToIPFS', body);
-      if (response.data) {
-        return response.data;
-      }
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        setError(e.response?.data);
-      } else {
-        setError(`An unexpected error occurred: ${e.message}`);
-      }
-    }
-    setLoading(false);
-    return null;
-  }, []);
+  const writeData = useCallback((data) => writeToIPFS(data, setError, setLoading), []);
 
   return {
     loading,

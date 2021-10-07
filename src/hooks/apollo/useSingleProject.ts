@@ -31,21 +31,23 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
     query Projects($id: String) {
       sales(where: { id: $id }) {
         id
+        token {
+          id
+          decimals
+          walletAddress
+        }
         salePrice
         startDate
         endDate
         whitelisted
         featured
         metadataURI
-        minUserDepositAmount
-        maxUserDepositAmount
-        totalDepositAmount
-        currentDepositAmount
         vestingStartDate
         vestingEndDate
-        token {
-          id
-        }
+        minUserDepositAmount
+        maxUserDepositAmount
+        currentDepositAmount
+        totalDepositAmount
       }
     }
     `,

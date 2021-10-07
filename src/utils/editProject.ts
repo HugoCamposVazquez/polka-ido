@@ -1,7 +1,10 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
+import axios from 'axios';
+import { ContractTransaction } from 'ethers';
 
-import { ProjectSaleStatus, ProjectStatus } from '../types/enums/ProjectStatus';
-import { ProjectSales, ProjectType } from '../types/ProjectType';
+import { getPinataApi, PinataResponse } from '../services/pinata';
+import { ProjectStatus } from '../types/enums/ProjectStatus';
+import { ProjectMetadata, ProjectSales, ProjectType } from '../types/ProjectType';
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 type keyOfProjectType = keyof ProjectType;
@@ -14,7 +17,7 @@ const editTx = async <T extends Function>(
   onFaliure: (message: string) => void,
 ) => {
   try {
-    const tx = await contractMethod(contractMethodProps);
+    const tx: ContractTransaction = await contractMethod(...contractMethodProps);
     if (tx) tx.wait(1);
     onSuccess(successMessage);
   } catch (err) {
@@ -40,13 +43,9 @@ export const editProject = async (
   };
 
   //--------------------------Sale-information--------------------------
-  //Project name
-  if (isChanged(['title'])) {
-    //?? - not sure which contract method is this
-    console.log('title changed');
-  }
   //Access
   if (isChanged(['access'])) {
+    console.log('access');
     await editTx(
       saleContract.setWhitelisting,
       [submitedData.access === 'whitelist'],
@@ -59,7 +58,7 @@ export const editProject = async (
   if (isChanged(['featured'])) {
     await editTx(
       saleContract.setFeatured,
-      [submitedData.featured === true],
+      [submitedData.featured],
       { successMessage: 'Featured successfuly updated.', errorMessage: 'Failed to update featured.' },
       onSuccess,
       onFaliure,
@@ -71,10 +70,10 @@ export const editProject = async (
       saleContract.setTimeDates,
       [submitedData.starts.valueOf(), submitedData.ends.valueOf()],
       {
-        successMessage: `${isChanged(['starts']) && 'Starts successfuly updated.'} 
-        ${isChanged(['ends']) && 'Ends successfuly updated.'}`,
-        errorMessage: `${isChanged(['starts']) && 'Starts failed to update.'} 
-        ${isChanged(['ends']) && 'Ends failed to update.'}`,
+        successMessage: `${isChanged(['starts']) ? 'Starts successfuly updated.' : ''} 
+        ${isChanged(['ends']) ? 'Ends successfuly updated.' : ''}`,
+        errorMessage: `${isChanged(['starts']) ? 'Starts failed to update.' : ''} 
+        ${isChanged(['ends']) ? 'Ends failed to update.' : ''}`,
       },
       onSuccess,
       onFaliure,
@@ -82,8 +81,9 @@ export const editProject = async (
   }
   //Raise mount
   if (isChanged(['raiseAmountTotal'])) {
+    //TODO - setCap method when new contract deploys
+
     console.log('raiseAmountTotal changed');
-    //?? - not sure which contract method is this
   }
   //Min. deposit / Max. deposit
   if (isChanged(['minUserDepositAmount', 'maxUserDepositAmount'])) {
@@ -91,10 +91,10 @@ export const editProject = async (
       saleContract.setLimits,
       [submitedData.minUserDepositAmount, submitedData.maxUserDepositAmount],
       {
-        successMessage: `${isChanged(['minUserDepositAmount']) && 'Min. deposit successfuly updated.'} 
-        ${isChanged(['maxUserDepositAmount']) && 'Max. deposit successfuly updated.'}`,
-        errorMessage: `${isChanged(['minUserDepositAmount']) && 'Min. deposit failed to update.'} 
-        ${isChanged(['maxUserDepositAmount']) && 'Max. deposit failed to updated.'}`,
+        successMessage: `${isChanged(['minUserDepositAmount']) ? 'Min. deposit successfuly updated.' : ''} 
+        ${isChanged(['maxUserDepositAmount']) ? 'Max. deposit successfuly updated.' : ''}`,
+        errorMessage: `${isChanged(['minUserDepositAmount']) ? 'Min. deposit failed to update.' : ''} 
+        ${isChanged(['maxUserDepositAmount']) ? 'Max. deposit failed to updated.' : ''}`,
       },
       onSuccess,
       onFaliure,
@@ -111,28 +111,39 @@ export const editProject = async (
     );
   }
 
-  //--------------------------Project-details--------------------------
-  //Project icon
-  if (isChanged(['imageUrl'])) {
-    //?? - not sure which contract method is this
-    console.log('image changed');
+  //--------------------------Metadata--------------------------
+  //Project name / Project icon / Web / Twitter / Telegram / Short description / Description
+  if (isChanged(['title', 'imageUrl', 'webLink', 'twitterLink', 'telegramLink', 'shortDescription', 'description'])) {
+    const { title, shortDescription, description, webLink, twitterLink, telegramLink, imageUrl } = submitedData;
+    const IPFSResponse = await writeToIPFS(
+      {
+        title,
+        shortDescription,
+        description,
+        webLink,
+        twitterLink,
+        telegramLink,
+        imageUrl,
+      },
+      (errorMessage) => {
+        onFaliure(`Error updating metadata: ${errorMessage}`);
+      },
+      () => {},
+    );
+    if (IPFSResponse !== null) {
+      onSuccess(
+        `
+        ${isChanged(['title']) ? 'Title updated.' : ''}
+        ${isChanged(['imageUrl']) ? 'Project icon updated.' : ''}
+        ${isChanged(['webLink']) ? 'Web updated.' : ''}
+        ${isChanged(['twitterLink']) ? 'Twitter updated.' : ''}
+        ${isChanged(['telegramLink']) ? 'Telegram updated.' : ''}
+        ${isChanged(['shortDescription']) ? 'Short description updated.' : ''}
+        ${isChanged(['description']) ? 'Description updated.' : ''}
+        `,
+      );
+    }
   }
-  //Web
-  if (isChanged(['webLink'])) {
-    //?? - not sure which contract method is this
-    console.log('web changed');
-  }
-  //Twitter
-  if (isChanged(['twitterLink'])) {
-    //?? - not sure which contract method is this
-    console.log('twitter changed');
-  }
-  //Telegram
-  if (isChanged(['telegramLink'])) {
-    //?? - not sure which contract method is this
-    console.log('telegram changed');
-  }
-
   //--------------------------Token-details--------------------------
   //Vesting start date / Vesting end date
   if (isChanged(['vestingStartDate', 'vestingEndDate'])) {
@@ -140,10 +151,10 @@ export const editProject = async (
       saleContract.updateVestingConfig,
       [{ startTime: submitedData.vestingStartDate.valueOf(), endTime: submitedData.vestingEndDate.valueOf() }],
       {
-        successMessage: `${isChanged(['minUserDepositAmount']) && 'Min. vesting successfuly updated.'} 
-        ${isChanged(['maxUserDepositAmount']) && 'Max. vesting successfuly updated.'}`,
-        errorMessage: `${isChanged(['minUserDepositAmount']) && 'Min. vesting failed to update.'} 
-        ${isChanged(['maxUserDepositAmount']) && 'Max. vesting failed to updated.'}`,
+        successMessage: `${isChanged(['minUserDepositAmount']) ? 'Min. vesting successfuly updated.' : ''}
+        ${isChanged(['maxUserDepositAmount']) ? 'Max. vesting successfuly updated.' : ''}`,
+        errorMessage: `${isChanged(['minUserDepositAmount']) ? 'Min. vesting failed to update.' : ''} 
+        ${isChanged(['maxUserDepositAmount']) ? 'Max. vesting failed to updated.' : ''}`,
       },
       onSuccess,
       onFaliure,
@@ -155,50 +166,40 @@ export const editProject = async (
       saleContract.setToken,
       [{ tokenID: submitedData.tokenId, decimals: submitedData.decimals, walletAddress: submitedData.walletAddress }],
       {
-        successMessage: `${isChanged(['tokenId']) && 'Token ID successfuly updated.'} 
-        ${isChanged(['decimals']) && 'Decimals successfuly updated.'}
-        ${isChanged(['walletAddress']) && 'Address successfuly updated.'}`,
-        errorMessage: `${isChanged(['tokenId']) && 'Token ID failed to update.'} 
-        ${isChanged(['decimals']) && 'Decimals failed to updated.'}
-        ${isChanged(['walletAddress']) && 'Address successfuly updated.'}`,
+        successMessage: `${isChanged(['tokenId']) ? 'Token ID successfuly updated.' : ''} 
+        ${isChanged(['decimals']) ? 'Decimals successfuly updated.' : ''}
+        ${isChanged(['walletAddress']) ? 'Address successfuly updated.' : ''}`,
+        errorMessage: `${isChanged(['tokenId']) ? 'Token ID failed to update.' : ''} 
+        ${isChanged(['decimals']) ? 'Decimals failed to updated.' : ''}
+        ${isChanged(['walletAddress']) ? 'Address successfuly updated.' : ''}`,
       },
       onSuccess,
       onFaliure,
     );
   }
 
-  //--------------------------Project description--------------------------
-  //Short description
-  if (isChanged(['shortDescription'])) {
-    //?? - not sure which contract method is this
-    console.log('short description changed');
-  }
-  //Description
-  if (isChanged(['description'])) {
-    //?? - not sure which contract method is this
-    console.log('description changed');
+  if (!isChanged(editProjectFields)) {
+    onFaliure('No changes were made');
   }
 };
 
-export const convertToProjectType = (project?: ProjectSales): ProjectType | undefined => {
-  if (project?.sales[0]) {
+export const convertToProjectType = (project?: ProjectSales, metadata?: ProjectMetadata): ProjectType | undefined => {
+  if (project?.sales[0] && metadata) {
     const {
-      id,
       salePrice,
       startDate,
       endDate,
       whitelisted,
       featured,
-      metadataURI,
       minUserDepositAmount,
       maxUserDepositAmount,
       totalDepositAmount,
-      currentDepositAmount,
       vestingStartDate,
       vestingEndDate,
+      token,
     } = project.sales[0];
+
     return {
-      id: parseInt(id),
       status: getStatus(startDate, endDate),
       access: whitelisted ? 'whitelist' : 'public',
       featured,
@@ -206,29 +207,22 @@ export const convertToProjectType = (project?: ProjectSales): ProjectType | unde
       ends: new Date(parseInt(endDate)),
       minUserDepositAmount,
       maxUserDepositAmount,
-      //TODO-form
-      raiseAmountTotal: '10000',
+      //TODO - will be renamed to cap after contract update
+      raiseAmountTotal: totalDepositAmount,
       tokenPrice: salePrice,
-      //TODO-form
-      tokenValue: 100,
       vestingStartDate: new Date(parseInt(vestingStartDate)),
       vestingEndDate: new Date(parseInt(vestingEndDate)),
-      //TODO-?
-      minSwapLevel: 1,
-      //TODO-form
-      tokenId: 505,
-      //TODO-form
-      walletAddress: 'placeholder',
-      //TODO-form
-      decimals: 18,
-      //TODO-metadata fields
-      title: 'placeholder',
-      webLink: 'placeholder',
-      twitterLink: 'placeholder',
-      telegramLink: 'placeholder',
-      shortDescription: 'placeholder',
-      description: 'placeholder',
-      imageUrl: undefined,
+      tokenId: parseInt(token.id),
+      walletAddress: token.walletAddress,
+      decimals: token.decimals,
+      //metadata
+      title: metadata.title,
+      webLink: metadata.twitterLink,
+      twitterLink: metadata.twitterLink,
+      telegramLink: metadata.telegramLink,
+      shortDescription: metadata.shortDescription,
+      description: metadata.description,
+      imageUrl: metadata.imageUrl,
     };
   } else return undefined;
 };
@@ -243,3 +237,48 @@ const getStatus = (startDate: string, endDate: string): ProjectStatus => {
     else return 'upcoming';
   } else return 'ended';
 };
+
+export const writeToIPFS = async (
+  body: unknown,
+  setError: (e: string) => void,
+  setLoading: (isLoading: boolean) => void,
+): Promise<PinataResponse | null> => {
+  try {
+    const api = getPinataApi();
+    const response = await api.post('/pinning/pinJSONToIPFS', body);
+    if (response.data) {
+      return response.data;
+    }
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      setError(e.response?.data);
+    } else {
+      setError(`An unexpected error occurred: ${e.message}`);
+    }
+  }
+  setLoading(false);
+  return null;
+};
+
+const editProjectFields: keyOfProjectType[] = [
+  'access',
+  'decimals',
+  'description',
+  'ends',
+  'featured',
+  'imageUrl',
+  'maxUserDepositAmount',
+  'minUserDepositAmount',
+  'raiseAmountCurrent',
+  'shortDescription',
+  'starts',
+  'telegramLink',
+  'title',
+  'tokenId',
+  'tokenPrice',
+  'twitterLink',
+  'vestingEndDate',
+  'vestingStartDate',
+  'walletAddress',
+  'webLink',
+];

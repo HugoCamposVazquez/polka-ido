@@ -25,7 +25,6 @@ for (let i = 0; i < 80; i++) {
     ends: new Date(2014, 1, 11),
     raiseAmountTotal: Math.floor(Math.random() * (100000 - 90000) + 90000).toString(),
     tokenPrice: 0.02,
-    tokenValue: 20,
     imageUrl: imageUrls[Math.floor(Math.random() * imageUrls.length)],
     webLink: 'string',
     twitterLink: 'string',
@@ -34,7 +33,6 @@ for (let i = 0; i < 80; i++) {
     vestingEndDate: new Date(2014, 2, 11),
     minUserDepositAmount: '150',
     maxUserDepositAmount: '20000',
-    minSwapLevel: 0.01,
     tokenId: 123,
     shortDescription: 'string',
     description:

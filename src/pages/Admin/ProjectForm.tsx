@@ -38,14 +38,12 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const [imageUrl, setImageUrl] = useState('');
   const [isSavingData, setIsSavingData] = useState(false);
   const { account } = useWeb3React();
-
-  // const defaultData = project?.sales[0] as ProjectType
+  const notificationTimer = 10000;
 
   // TODO: Add fields validation
 
   const saleFactoryContract = useSaleFactoryContract();
   const saleContract = useSaleContract(projectId);
-  // TODO: Watch for error
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
   const { fetchTokenData } = useStatemintToken();
@@ -78,6 +76,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const onSubmit = async (projectSubmit: ProjectType) => {
     if (!account) return;
     setIsSavingData(true);
+
     //EDIT
     if (!!projectId && defaultProjectData && saleContract) {
       editProject(
@@ -86,11 +85,11 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         projectSubmit,
         (successMessage) => {
           setIsSavingData(false);
-          notifySuccess(successMessage, 2000);
+          notifySuccess(successMessage, notificationTimer);
         },
         (faliureMessage) => {
           setIsSavingData(false);
-          notifyError(faliureMessage, 2000);
+          notifyError(faliureMessage, notificationTimer);
         },
       );
 
@@ -99,19 +98,22 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
       try {
         // 1. Write metadata to IPFS to get hash (URI)
 
-        const response = await writeDataToIPFS({
-          title: projectSubmit.title,
-          shortDescription: projectSubmit.shortDescription,
-          description: projectSubmit.description,
-          webLink: projectSubmit.webLink,
-          twitterLink: projectSubmit.twitterLink,
-          telegramLink: projectSubmit.telegramLink,
-          imageUrl,
-        });
+        const response = await writeDataToIPFS(
+          {
+            title: projectSubmit.title,
+            shortDescription: projectSubmit.shortDescription,
+            description: projectSubmit.description,
+            webLink: projectSubmit.webLink,
+            twitterLink: projectSubmit.twitterLink,
+            telegramLink: projectSubmit.telegramLink,
+            imageUrl,
+          },
+          (errorMessage) => notifyError(`Error writing to IPFS: ${errorMessage}`, notificationTimer),
+          (isLoading) => setIsSavingData(isLoading),
+        );
         if (!response) {
           return;
         }
-        console.log('projectSubmit: ', projectSubmit);
 
         // 2. Create new sale smart contract
         const tx = await saleFactoryContract?.createSaleContract(
@@ -141,13 +143,13 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           navigation.push('/admin/project');
         }
         setIsSavingData(false);
-        notifySuccess('Project successfuly created.', 2000);
+        notifySuccess('Project successfuly created.', notificationTimer);
         navigation.goBack();
       } catch (e) {
         console.log(e);
         // TODO: show notification or error message
         setIsSavingData(false);
-        notifyError('Error while creating project.', 2000);
+        notifyError('Error while creating project.', notificationTimer);
       }
     }
   };

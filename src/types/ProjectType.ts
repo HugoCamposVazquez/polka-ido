@@ -9,7 +9,7 @@ export type ProjectApiType = {
   data: ProjectType;
 };
 
-export type ProjectMetadata = {
+export interface ProjectMetadata {
   title: string;
   webLink: string;
   twitterLink: string;
@@ -17,9 +17,9 @@ export type ProjectMetadata = {
   shortDescription: string;
   description: string;
   imageUrl: string | undefined;
-};
+}
 
-export type ProjectType = ProjectMetadata & {
+export interface ProjectType extends ProjectMetadata {
   id?: number;
   status: ProjectStatus;
   access: ProjectAccess;
@@ -30,16 +30,14 @@ export type ProjectType = ProjectMetadata & {
   maxUserDepositAmount: string;
   raiseAmountTotal: string;
   tokenPrice: number | string;
-  tokenValue: number;
   vestingStartDate: Date;
   vestingEndDate: Date;
-  minSwapLevel: number;
   tokenId: number;
   raiseAmountCurrent?: number;
   joined?: boolean;
   walletAddress: string;
   decimals: number;
-};
+}
 
 export interface ProjectData {
   id: string;
@@ -60,6 +58,8 @@ export interface ProjectData {
 export interface SalesDto extends ProjectData {
   token: {
     id: string;
+    decimals: number;
+    walletAddress: string;
   };
 }
 
