@@ -115,8 +115,6 @@ export const ProjectDetailsPage = () => {
     getBalance();
   });
 
-  console.log(polkadotWalletBalance);
-
   return (
     <div>
       <div className={styles.imageParentContainerClassName}>
