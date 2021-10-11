@@ -42,7 +42,7 @@ export const ProjectDetailsPage = () => {
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
   const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
 
-  const [polkadotWalletBalance, setPolkadotWalletBalance] = useState<string>();
+  const [polkadotWalletBalance, setPolkadotWalletBalance] = useState<string>('0');
 
   const projectStatus = useMemo((): string | undefined => {
     if (!data?.sales[0]) {
@@ -106,9 +106,9 @@ export const ProjectDetailsPage = () => {
   useEffect(() => {
     const getBalance = async () => {
       const extensions = await web3Enable('RYU network');
-      if (extensions.length !== 0) {
+      if (extensions.length !== 0 && data?.sales[0].token.id) {
         const allAccounts = await web3Accounts();
-        const polkadotBalance = await getpolkadotWalletBalance(allAccounts[0].address);
+        const polkadotBalance = await getpolkadotWalletBalance(allAccounts[0].address, data?.sales[0].token.id);
         setPolkadotWalletBalance(polkadotBalance);
       }
     };
