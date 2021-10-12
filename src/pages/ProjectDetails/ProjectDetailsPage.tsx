@@ -116,7 +116,7 @@ export const ProjectDetailsPage = () => {
       }
     };
     getBalance();
-  });
+  }, [projectTokenClaimedAmount]);
 
   return (
     <div>
