@@ -15,7 +15,7 @@ import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
-import { getpolkadotWalletBalance } from '../../services/isAddressBalanceSufficient';
+import { getStatemintTokenBalance } from '../../services/getTokenStatemintBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../../shared/modals/modals';
@@ -42,7 +42,7 @@ export const ProjectDetailsPage = () => {
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
   const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
 
-  const [polkadotWalletBalance, setPolkadotWalletBalance] = useState<string>('0');
+  const [projectTokenClaimedAmount, setProjectTokenClaimedAmount] = useState<string>('0');
 
   const projectStatus = useMemo((): string | undefined => {
     if (!data?.sales[0]) {
@@ -108,8 +108,8 @@ export const ProjectDetailsPage = () => {
       const extensions = await web3Enable('RYU network');
       if (extensions.length !== 0 && data?.sales[0].token.id) {
         const allAccounts = await web3Accounts();
-        const polkadotBalance = await getpolkadotWalletBalance(allAccounts[0].address, data?.sales[0].token.id);
-        setPolkadotWalletBalance(polkadotBalance);
+        const polkadotBalance = await getStatemintTokenBalance(allAccounts[0].address, data?.sales[0].token.id);
+        polkadotBalance && setProjectTokenClaimedAmount(polkadotBalance);
       }
     };
     getBalance();
@@ -207,7 +207,7 @@ export const ProjectDetailsPage = () => {
                   projectId={data?.sales[0].id}
                   tokenPrice={tokenPrice}
                   tokenSymbol={tokenData?.symbol}
-                  polkadotBalance={polkadotWalletBalance}
+                  claimedTokenBalance={projectTokenClaimedAmount}
                 />
               )}
 
