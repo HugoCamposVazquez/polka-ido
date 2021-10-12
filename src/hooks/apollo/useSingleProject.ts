@@ -47,7 +47,7 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
         minUserDepositAmount
         maxUserDepositAmount
         currentDepositAmount
-        totalDepositAmount
+        cap
       }
     }
     `,

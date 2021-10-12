@@ -45,7 +45,6 @@ export const editProject = async (
   //--------------------------Sale-information--------------------------
   //Access
   if (isChanged(['access'])) {
-    console.log('access');
     await editTx(
       saleContract.setWhitelisting,
       [submitedData.access === 'whitelist'],
@@ -81,9 +80,16 @@ export const editProject = async (
   }
   //Raise mount
   if (isChanged(['raiseAmountTotal'])) {
-    //TODO - setCap method when new contract deploys
-
-    console.log('raiseAmountTotal changed');
+    await editTx(
+      saleContract.setCap,
+      [submitedData.raiseAmountTotal],
+      {
+        successMessage: `${isChanged(['raiseAmountTotal']) ? 'Raise amount successfuly updated' : ''}`,
+        errorMessage: `${isChanged(['raiseAmountTotal']) ? 'Raise amount failed to update' : ''}`,
+      },
+      onSuccess,
+      onFaliure,
+    );
   }
   //Min. deposit / Max. deposit
   if (isChanged(['minUserDepositAmount', 'maxUserDepositAmount'])) {
@@ -125,11 +131,33 @@ export const editProject = async (
         telegramLink,
         imageUrl,
       },
-      (errorMessage) => {
-        onFaliure(`Error updating metadata: ${errorMessage}`);
-      },
+      () => {},
       () => {},
     );
+    if (IPFSResponse) {
+      const newMetaDataURI = `ipfs://${IPFSResponse.IpfsHash}`;
+      await editTx(
+        saleContract.setMetadataURI,
+        [newMetaDataURI],
+        {
+          successMessage: `
+            ${isChanged(['title']) ? 'Title updated.' : ''}
+            ${isChanged(['imageUrl']) ? 'Project icon updated.' : ''}
+            ${isChanged(['webLink']) ? 'Web updated.' : ''}
+            ${isChanged(['twitterLink']) ? 'Twitter updated.' : ''}
+            ${isChanged(['telegramLink']) ? 'Telegram updated.' : ''}
+            ${isChanged(['shortDescription']) ? 'Short description updated.' : ''}
+            ${isChanged(['description']) ? 'Description updated.' : ''}
+          `,
+          errorMessage: `Failed to set new metadataURI`,
+        },
+        onSuccess,
+        onFaliure,
+      );
+    } else {
+      onFaliure(`Failed to write new IPFS: `);
+    }
+
     if (IPFSResponse !== null) {
       onSuccess(
         `
@@ -193,7 +221,7 @@ export const convertToProjectType = (project?: ProjectSales, metadata?: ProjectM
       featured,
       minUserDepositAmount,
       maxUserDepositAmount,
-      totalDepositAmount,
+      cap,
       vestingStartDate,
       vestingEndDate,
       token,
@@ -207,8 +235,7 @@ export const convertToProjectType = (project?: ProjectSales, metadata?: ProjectM
       ends: new Date(parseInt(endDate)),
       minUserDepositAmount,
       maxUserDepositAmount,
-      //TODO - will be renamed to cap after contract update
-      raiseAmountTotal: totalDepositAmount,
+      raiseAmountTotal: cap,
       tokenPrice: salePrice,
       vestingStartDate: new Date(parseInt(vestingStartDate)),
       vestingEndDate: new Date(parseInt(vestingEndDate)),
@@ -217,7 +244,7 @@ export const convertToProjectType = (project?: ProjectSales, metadata?: ProjectM
       decimals: token.decimals,
       //metadata
       title: metadata.title,
-      webLink: metadata.twitterLink,
+      webLink: metadata.webLink,
       twitterLink: metadata.twitterLink,
       telegramLink: metadata.telegramLink,
       shortDescription: metadata.shortDescription,

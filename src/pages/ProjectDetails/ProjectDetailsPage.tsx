@@ -53,7 +53,7 @@ export const ProjectDetailsPage = () => {
 
     const isCurrentDate = timeNow > +data?.sales[0].startDate && timeNow < +data?.sales[0].endDate;
     if (isCurrentDate) {
-      const isCapReached = BigNumber.from(data?.sales[0].currentDepositAmount).gte(data?.sales[0].totalDepositAmount);
+      const isCapReached = BigNumber.from(data?.sales[0].currentDepositAmount).gte(data?.sales[0].cap);
       if (isCapReached) {
         return ProjectSaleStatus.ENDED;
       }
@@ -68,8 +68,8 @@ export const ProjectDetailsPage = () => {
 
   const filledAllocationPercentage = useMemo((): string => {
     if (data?.sales[0]) {
-      const { currentDepositAmount, totalDepositAmount } = data.sales[0];
-      return getPercentage(currentDepositAmount, totalDepositAmount);
+      const { currentDepositAmount, cap } = data.sales[0];
+      return getPercentage(currentDepositAmount, cap);
     }
     return '0';
   }, [data?.sales[0]]);
@@ -170,7 +170,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
                 <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && numberWithDots(formatWei(data?.sales[0].totalDepositAmount))
+                  data?.sales[0] && numberWithDots(formatWei(data?.sales[0].cap))
                 } ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
@@ -198,7 +198,7 @@ export const ProjectDetailsPage = () => {
                 <div className={styles.valueDescTextStyle}>
                   {data?.sales[0] &&
                     `${numberWithDots(formatWei(data?.sales[0].currentDepositAmount))}/${numberWithDots(
-                      formatWei(data?.sales[0].totalDepositAmount),
+                      formatWei(data?.sales[0].cap),
                     )} ${config.CURRENCY}`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>

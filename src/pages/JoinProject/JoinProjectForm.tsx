@@ -118,7 +118,7 @@ export const JoinProjectForm = () => {
   // Note: Not taking into account calculation for user based on user's current deposits
   const remainingTokens = React.useMemo((): string => {
     if (data) {
-      const calculatedRemainingTokens = BigNumber.from(data?.sales[0].totalDepositAmount)
+      const calculatedRemainingTokens = BigNumber.from(data?.sales[0].cap)
         .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
         .mul(BigNumber.from(data?.sales[0].salePrice))
         .div(ethers.utils.parseEther('1'));

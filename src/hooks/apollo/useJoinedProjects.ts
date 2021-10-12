@@ -36,7 +36,7 @@ const FETCH_JOINED_PROJECTS = gql(
         metadataURI
         minUserDepositAmount
         maxUserDepositAmount
-        totalDepositAmount
+        cap
         currentDepositAmount
         vestingStartDate
         vestingEndDate

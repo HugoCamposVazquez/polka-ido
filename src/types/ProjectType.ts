@@ -49,7 +49,7 @@ export interface ProjectData {
   metadataURI: string;
   minUserDepositAmount: string;
   maxUserDepositAmount: string;
-  totalDepositAmount: string;
+  cap: string;
   currentDepositAmount: string;
   vestingStartDate: string;
   vestingEndDate: string;

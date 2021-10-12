@@ -65,10 +65,8 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         });
       } else {
         // Editing project
-        methods.reset({
-          ...defaultProjectData,
-          access: defaultProjectData?.access,
-        });
+
+        methods.reset(defaultProjectData);
       }
     }
   }, [loadingProjectData, defaultProjectData]);

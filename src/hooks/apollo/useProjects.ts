@@ -33,7 +33,7 @@ const FETCH_PROJECTS_DATA = gql(
         whitelisted
         featured
         metadataURI
-        totalDepositAmount
+        cap
         minUserDepositAmount
         maxUserDepositAmount
         currentDepositAmount
