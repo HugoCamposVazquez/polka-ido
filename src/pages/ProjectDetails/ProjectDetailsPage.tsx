@@ -108,8 +108,11 @@ export const ProjectDetailsPage = () => {
       const extensions = await web3Enable('RYU network');
       if (extensions.length !== 0 && data?.sales[0].token.id) {
         const allAccounts = await web3Accounts();
-        const polkadotBalance = await getStatemintTokenBalance(allAccounts[0].address, data?.sales[0].token.id);
-        polkadotBalance && setProjectTokenClaimedAmount(polkadotBalance);
+        const claimedProjectTokenAmount = await getStatemintTokenBalance(
+          allAccounts[0].address,
+          data?.sales[0].token.id,
+        );
+        setProjectTokenClaimedAmount(claimedProjectTokenAmount);
       }
     };
     getBalance();

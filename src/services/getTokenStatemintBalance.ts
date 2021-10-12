@@ -6,13 +6,14 @@ interface TokenBalance {
   isSufficient: boolean;
 }
 
-export const getStatemintTokenBalance = async (polkadotAddress: string, id: string): Promise<string | void> => {
+export const getStatemintTokenBalance = async (polkadotAddress: string, id: string): Promise<string> => {
   try {
     const api = await getStatemintApi();
     const balance = (await api.query.assets.account(id, polkadotAddress)).toJSON() as unknown as TokenBalance;
 
     return balance.balance.toString();
   } catch (error) {
+    return '0';
     console.error(error.message);
   }
 };
