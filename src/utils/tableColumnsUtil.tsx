@@ -60,7 +60,7 @@ export const getAllColumns = () => {
     },
     {
       title: 'Raise amount',
-      dataIndex: 'raiseAmountTotal',
+      dataIndex: 'cap',
       width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.currentDepositAmount}</div>,
     },

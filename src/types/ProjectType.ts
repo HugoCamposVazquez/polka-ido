@@ -28,7 +28,7 @@ export interface ProjectType extends ProjectMetadata {
   ends: Date;
   minUserDepositAmount: string;
   maxUserDepositAmount: string;
-  raiseAmountTotal: string;
+  cap: string;
   tokenPrice: number | string;
   vestingStartDate: Date;
   vestingEndDate: Date;

@@ -1,6 +1,7 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import axios from 'axios';
 import { ContractTransaction } from 'ethers';
+import { formatEther, parseEther } from 'ethers/lib/utils';
 
 import { getPinataApi, PinataResponse } from '../services/pinata';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
@@ -79,13 +80,14 @@ export const editProject = async (
     );
   }
   //Raise mount
-  if (isChanged(['raiseAmountTotal'])) {
+  if (isChanged(['cap'])) {
+    console.log(parseEther(submitedData.cap));
     await editTx(
       saleContract.setCap,
-      [submitedData.raiseAmountTotal],
+      [parseEther(submitedData.cap)],
       {
-        successMessage: `${isChanged(['raiseAmountTotal']) ? 'Raise amount successfuly updated' : ''}`,
-        errorMessage: `${isChanged(['raiseAmountTotal']) ? 'Raise amount failed to update' : ''}`,
+        successMessage: `${isChanged(['cap']) ? 'Raise amount successfuly updated' : ''}`,
+        errorMessage: `${isChanged(['cap']) ? 'Raise amount failed to update' : ''}`,
       },
       onSuccess,
       onFaliure,
@@ -95,7 +97,7 @@ export const editProject = async (
   if (isChanged(['minUserDepositAmount', 'maxUserDepositAmount'])) {
     await editTx(
       saleContract.setLimits,
-      [submitedData.minUserDepositAmount, submitedData.maxUserDepositAmount],
+      [parseEther(submitedData.minUserDepositAmount), parseEther(submitedData.maxUserDepositAmount)],
       {
         successMessage: `${isChanged(['minUserDepositAmount']) ? 'Min. deposit successfuly updated.' : ''} 
         ${isChanged(['maxUserDepositAmount']) ? 'Max. deposit successfuly updated.' : ''}`,
@@ -110,7 +112,7 @@ export const editProject = async (
   if (isChanged(['tokenPrice'])) {
     await editTx(
       saleContract.setSalePrice,
-      [submitedData.tokenPrice],
+      [parseEther(submitedData.tokenPrice.toString())],
       { successMessage: 'Token price successfuly updated.', errorMessage: 'Token price failed to update.' },
       onSuccess,
       onFaliure,
@@ -151,8 +153,8 @@ export const editProject = async (
           `,
           errorMessage: `Failed to set new metadataURI`,
         },
-        onSuccess,
-        onFaliure,
+        () => {},
+        () => {},
       );
     } else {
       onFaliure(`Failed to write new IPFS: `);
@@ -233,10 +235,10 @@ export const convertToProjectType = (project?: ProjectSales, metadata?: ProjectM
       featured,
       starts: new Date(parseInt(startDate)),
       ends: new Date(parseInt(endDate)),
-      minUserDepositAmount,
-      maxUserDepositAmount,
-      raiseAmountTotal: cap,
-      tokenPrice: salePrice,
+      minUserDepositAmount: formatEther(minUserDepositAmount),
+      maxUserDepositAmount: formatEther(maxUserDepositAmount),
+      cap: formatEther(cap),
+      tokenPrice: formatEther(salePrice),
       vestingStartDate: new Date(parseInt(vestingStartDate)),
       vestingEndDate: new Date(parseInt(vestingEndDate)),
       tokenId: parseInt(token.id),
@@ -296,7 +298,7 @@ const editProjectFields: keyOfProjectType[] = [
   'imageUrl',
   'maxUserDepositAmount',
   'minUserDepositAmount',
-  'raiseAmountCurrent',
+  'cap',
   'shortDescription',
   'starts',
   'telegramLink',

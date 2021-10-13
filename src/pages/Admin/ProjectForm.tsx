@@ -119,7 +119,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           convertDateToUnixtime(projectSubmit.ends),
           utils.parseEther(projectSubmit.minUserDepositAmount),
           utils.parseEther(projectSubmit.maxUserDepositAmount),
-          utils.parseEther(projectSubmit.raiseAmountTotal),
+          utils.parseEther(projectSubmit.cap),
           utils.parseEther(projectSubmit.tokenPrice.toString()), // should be token ratio?
           {
             tokenID: projectSubmit.tokenId,
@@ -197,7 +197,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Raise amount</div>
-              <TextField name={'raiseAmountTotal'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+              <TextField name={'cap'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
             </div>
           </div>
 
