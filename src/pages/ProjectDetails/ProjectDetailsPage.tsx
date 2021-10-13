@@ -1,8 +1,9 @@
+import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import { BigNumber } from 'ethers';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import projectCardBackground from '../../assets/project_card_background.png';
@@ -14,6 +15,7 @@ import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
+import { getStatemintTokenBalance } from '../../services/getTokenStatemintBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../../shared/modals/modals';
@@ -39,6 +41,8 @@ export const ProjectDetailsPage = () => {
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
   const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
+
+  const [projectTokenClaimedAmount, setProjectTokenClaimedAmount] = useState<string>('0');
 
   const projectStatus = useMemo((): string | undefined => {
     if (!data?.sales[0]) {
@@ -98,6 +102,21 @@ export const ProjectDetailsPage = () => {
       return 'N/A';
     }
   }, [data?.sales]);
+
+  useEffect(() => {
+    const getBalance = async () => {
+      const extensions = await web3Enable('RYU network');
+      if (extensions.length !== 0 && data?.sales[0].token.id) {
+        const allAccounts = await web3Accounts();
+        const claimedProjectTokenAmount = await getStatemintTokenBalance(
+          allAccounts[0].address,
+          data?.sales[0].token.id,
+        );
+        setProjectTokenClaimedAmount(claimedProjectTokenAmount);
+      }
+    };
+    getBalance();
+  }, [projectTokenClaimedAmount]);
 
   return (
     <div>
@@ -181,9 +200,9 @@ export const ProjectDetailsPage = () => {
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Max. deposit</div>
-                <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].maxUserDepositAmount)
-                } ${config.CURRENCY}`}</div>
+                <div className={styles.contentTextStyle}>
+                  {`${data?.sales[0] && formatWei(data?.sales[0].maxUserDepositAmount)} ${config.CURRENCY}`}
+                </div>
               </div>
               {account && data && (
                 <TotalAllocation
@@ -191,6 +210,7 @@ export const ProjectDetailsPage = () => {
                   projectId={data?.sales[0].id}
                   tokenPrice={tokenPrice}
                   tokenSymbol={tokenData?.symbol}
+                  claimedTokenBalance={projectTokenClaimedAmount}
                 />
               )}
 

@@ -12,6 +12,7 @@ interface IProps {
   projectId: string;
   tokenPrice: string;
   tokenSymbol?: string;
+  claimedTokenBalance?: string;
 }
 
 export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
@@ -65,7 +66,7 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IPr
   );
 };
 
-export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
+export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, claimedTokenBalance }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const totalAllocation = useMemo(
     () => formatWei(BigNumber.from(data?.totalAllocation || '0').mul(BigNumber.from(tokenPrice))),
@@ -76,7 +77,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }:
     <div style={styles.descriptionParentStyle}>
       <div className={styles.description2TextStyle}>Your allocation</div>
       <div className={styles.content2TextStyle}>
-        {totalAllocation} {tokenSymbol || 'tokens'}
+        {totalAllocation} {tokenSymbol || 'tokens'} (Claimed: {claimedTokenBalance})
       </div>
     </div>
   );
