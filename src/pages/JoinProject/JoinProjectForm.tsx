@@ -25,18 +25,18 @@ export const JoinProjectForm = () => {
   const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const { id: address }: { id: string } = useParams();
   const { data } = useSingleProject(address);
-  const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
+  const { data: tokenData } = useStatemintToken(data?.token.id);
 
   const { balance } = useMoonbeanBalance();
   const saleContract = useSaleContract(address);
-  const maxUserAllocation = BigNumber.from(data?.sales[0].maxUserDepositAmount || '0');
-  const formattedMaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
+  const maxUserAllocation = BigNumber.from(data?.maxUserDepositAmount || '0');
+  const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
       .required('Required input')
-      .max(Number(formattedMaxUserAllocation))
+      .max(Number(formattedmaxUserAllocation))
       .matches(/^[0-9]*[.,]?[0-9]*$/, 'Invalid format'),
   });
 
@@ -87,25 +87,25 @@ export const JoinProjectForm = () => {
   const calculateToValue = React.useCallback(
     (value: string): string => {
       try {
-        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data?.sales[0].salePrice || '0')));
+        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data?.salePrice || '0')));
       } catch (e) {
         console.error(`Error while calculating output value: ${e.message}`);
       }
       return '0';
     },
-    [data?.sales[0]],
+    [data],
   );
 
   const calculateFromValue = React.useCallback(
     (value: string): string => {
       try {
-        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data?.sales[0].salePrice || '0')));
+        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data?.salePrice || '0')));
       } catch (e) {
         console.error(`Error while calculating output value: ${e.message}`);
       }
       return '0';
     },
-    [data?.sales[0]],
+    [data],
   );
 
   const getSubmitButttonText = (): string => {
@@ -118,15 +118,15 @@ export const JoinProjectForm = () => {
   // Note: Not taking into account calculation for user based on user's current deposits
   const remainingTokens = React.useMemo((): string => {
     if (data) {
-      const calculatedRemainingTokens = BigNumber.from(data?.sales[0].totalDepositAmount)
-        .sub(BigNumber.from(data?.sales[0].currentDepositAmount))
-        .mul(BigNumber.from(data?.sales[0].salePrice))
+      const calculatedRemainingTokens = BigNumber.from(data?.totalDepositAmount)
+        .sub(BigNumber.from(data?.currentDepositAmount))
+        .mul(BigNumber.from(data?.salePrice))
         .div(ethers.utils.parseEther('1'));
 
       return formatWei(calculatedRemainingTokens);
     }
     return '0';
-  }, [data?.sales[0]]);
+  }, [data]);
 
   // Setting opposite output swapping value on change
   useEffect(() => {
@@ -206,7 +206,7 @@ export const JoinProjectForm = () => {
           {methods.errors.toValue ? <span>{methods.errors.toValue.message}</span> : null}
 
           <div style={styles.maxAllocTextStyle}>
-            Max. allocation is {formattedMaxUserAllocation} {config.CURRENCY}
+            Max. allocation is {formattedmaxUserAllocation} {config.CURRENCY}
           </div>
 
           <div style={{ marginTop: '1.5rem' }}>

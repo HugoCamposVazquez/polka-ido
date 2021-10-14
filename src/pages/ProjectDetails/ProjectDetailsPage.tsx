@@ -26,8 +26,8 @@ import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { getIPFSResolvedLink, getPercentage, getTokenPrice } from '../../utils/data';
-import { convertDateFromUnixtime, getTimeDiff } from '../../utils/date';
-import { formatWei, numberWithDots } from '../../utils/numModifiyngFuncs';
+import { getTimeDiff } from '../../utils/date';
+import { formatWei } from '../../utils/numModifiyngFuncs';
 import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
 import { TokenDetails } from './TokenDetails';
@@ -39,61 +39,61 @@ export const ProjectDetailsPage = () => {
   const { account } = useWeb3React();
 
   const { data } = useSingleProject(id);
-  const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
-  const { data: tokenData } = useStatemintToken(data?.sales[0].token.id);
+  const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.metadataURI);
+  const { data: tokenData } = useStatemintToken(data?.token.id);
 
   const [projectTokenClaimedAmount, setProjectTokenClaimedAmount] = useState<string>('0');
 
   const projectStatus = useMemo((): string | undefined => {
-    if (!data?.sales[0]) {
+    if (!data) {
       return;
     }
 
     const timeNow = getUnixTime(new Date());
-    const upcomingDate = timeNow < +data?.sales[0].startDate;
+    const upcomingDate = timeNow < +data?.startDate;
     if (upcomingDate) {
       return ProjectSaleStatus.UPCOMING;
     }
 
-    const isCurrentDate = timeNow > +data?.sales[0].startDate && timeNow < +data?.sales[0].endDate;
+    const isCurrentDate = timeNow > +data?.startDate && timeNow < +data?.endDate;
     if (isCurrentDate) {
-      const isCapReached = BigNumber.from(data?.sales[0].currentDepositAmount).gte(data?.sales[0].totalDepositAmount);
+      const isCapReached = BigNumber.from(data?.currentDepositAmount).gte(data?.totalDepositAmount);
       if (isCapReached) {
         return ProjectSaleStatus.ENDED;
       }
       return ProjectSaleStatus.IN_PROGRESS;
     }
 
-    const isFinishedDate = timeNow > +data?.sales[0].endDate;
+    const isFinishedDate = timeNow > +data?.endDate;
     if (isFinishedDate) {
       return ProjectSaleStatus.ENDED;
     }
-  }, [data?.sales]);
+  }, [data]);
 
   const filledAllocationPercentage = useMemo((): string => {
-    if (data?.sales[0]) {
-      const { currentDepositAmount, totalDepositAmount } = data.sales[0];
+    if (data) {
+      const { currentDepositAmount, totalDepositAmount } = data;
       return getPercentage(currentDepositAmount, totalDepositAmount);
     }
     return '0';
-  }, [data?.sales[0]]);
+  }, [data]);
 
   const tokenPrice = useMemo((): string => {
-    if (data?.sales[0]) {
-      return getTokenPrice(data.sales[0].salePrice);
+    if (data) {
+      return getTokenPrice(data.salePrice);
     }
     return '0';
-  }, [data?.sales[0]]);
+  }, [data]);
 
   const onClaimClick = useCallback((): void => {
     if (account && saleContract) {
-      openClaimTokensModal(id, saleContract, account, data?.sales[0].token.id);
+      openClaimTokensModal(id, saleContract, account, data?.token.id);
     }
   }, [id, saleContract, account]);
 
   const vestingDuration = useMemo(() => {
-    if (data?.sales[0]) {
-      const { vestingStartDate, vestingEndDate } = data?.sales[0];
+    if (data) {
+      const { vestingStartDate, vestingEndDate } = data;
       if (!vestingStartDate || !vestingEndDate) {
         return 'N/A';
       }
@@ -101,17 +101,14 @@ export const ProjectDetailsPage = () => {
     } else {
       return 'N/A';
     }
-  }, [data?.sales]);
+  }, [data]);
 
   useEffect(() => {
     const getBalance = async () => {
       const extensions = await web3Enable('RYU network');
-      if (extensions.length !== 0 && data?.sales[0].token.id) {
+      if (extensions.length !== 0 && data?.token.id) {
         const allAccounts = await web3Accounts();
-        const claimedProjectTokenAmount = await getStatemintTokenBalance(
-          allAccounts[0].address,
-          data?.sales[0].token.id,
-        );
+        const claimedProjectTokenAmount = await getStatemintTokenBalance(allAccounts[0].address, data?.token.id);
         setProjectTokenClaimedAmount(claimedProjectTokenAmount);
       }
     };
@@ -170,56 +167,42 @@ export const ProjectDetailsPage = () => {
             <div className={styles.projectContainerRightStyle}>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Starts</div>
-                <div className={styles.contentTextStyle}>
-                  {data?.sales[0] && format(fromUnixTime(+data?.sales[0].startDate), 'PPpp')}
-                </div>
+                <div className={styles.contentTextStyle}>{data && format(fromUnixTime(+data?.startDate), 'PPpp')}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Ends</div>
-                <div className={styles.contentTextStyle}>
-                  {data?.sales[0] && format(fromUnixTime(+data?.sales[0].endDate), 'PPpp')}
-                </div>
+                <div className={styles.contentTextStyle}>{data && format(fromUnixTime(+data?.endDate), 'PPpp')}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Access</div>
-                <div className={styles.contentTextStyle}>
-                  {data?.sales[0] && data?.sales[0].whitelisted ? 'Whitelisted' : 'Public'}
-                </div>
+                <div className={styles.contentTextStyle}>{data && data?.whitelisted ? 'Whitelisted' : 'Public'}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && numberWithDots(formatWei(data?.sales[0].totalDepositAmount))
-                } ${config.CURRENCY}`}</div>
+                <div className={styles.contentTextStyle}>{`${data && formatWei(data?.totalDepositAmount)} ${
+                  config.CURRENCY
+                }`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Min. deposit</div>
-                <div className={styles.contentTextStyle}>{`${
-                  data?.sales[0] && formatWei(data?.sales[0].minUserDepositAmount)
-                } ${config.CURRENCY}`}</div>
+                <div className={styles.contentTextStyle}>{`${data && formatWei(data?.minUserDepositAmount)} ${
+                  config.CURRENCY
+                }`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Max. deposit</div>
-                <div className={styles.contentTextStyle}>
-                  {`${data?.sales[0] && formatWei(data?.sales[0].maxUserDepositAmount)} ${config.CURRENCY}`}
-                </div>
+                <div className={styles.contentTextStyle}>{`${data && formatWei(data?.maxUserDepositAmount)} ${
+                  config.CURRENCY
+                }`}</div>
               </div>
-              {account && data && (
-                <TotalAllocation
-                  account={account}
-                  projectId={data?.sales[0].id}
-                  tokenPrice={tokenPrice}
-                  tokenSymbol={tokenData?.symbol}
-                  claimedTokenBalance={projectTokenClaimedAmount}
-                />
-              )}
+              {account && data && <TotalAllocation account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
-                  {data?.sales[0] &&
-                    `${numberWithDots(formatWei(data?.sales[0].currentDepositAmount))}/${numberWithDots(
-                      formatWei(data?.sales[0].totalDepositAmount),
-                    )} ${config.CURRENCY}`}
+                  {data &&
+                    `${formatWei(data?.currentDepositAmount)}/${formatWei(data?.totalDepositAmount)} ${
+                      config.CURRENCY
+                    }`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <ProgressBar
@@ -249,14 +232,7 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {account && data && (
-        <Allocations
-          account={account}
-          projectId={data?.sales[0].id}
-          tokenPrice={tokenPrice}
-          tokenSymbol={tokenData?.symbol}
-        />
-      )}
+      {account && data && <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>
@@ -270,9 +246,7 @@ export const ProjectDetailsPage = () => {
               <div style={{ marginTop: '2.25rem' }}>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting start time</div>
-                  <div className={styles.content3TextStyle}>
-                    {data ? convertDateFromUnixtime(data.sales[0].vestingStartDate) : 'N/A'}
-                  </div>
+                  <div className={styles.content3TextStyle}>{data?.vestingStartDate || 'N/A'}</div>
                 </div>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting duration</div>
@@ -282,11 +256,7 @@ export const ProjectDetailsPage = () => {
             </div>
           </div>
 
-          {data?.sales[0].token.id ? (
-            <TokenDetails assetId={data?.sales[0].token.id} />
-          ) : (
-            <ProjectDetailsSectionLoading />
-          )}
+          {data?.token.id ? <TokenDetails assetId={data?.token.id} /> : <ProjectDetailsSectionLoading />}
         </div>
       </div>
       <div className={styles.aboutTheProjectContainerClassName}>

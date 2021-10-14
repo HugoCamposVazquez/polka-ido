@@ -14,7 +14,7 @@ export const JoinProjectPage = () => {
   const { id }: { id: string } = useParams();
 
   const { data } = useSingleProject(id);
-  const { data: metaData } = useReadIPFS<ProjectMetadata>(data?.sales[0].metadataURI);
+  const { data: metaData } = useReadIPFS<ProjectMetadata>(data?.metadataURI);
 
   return (
     <>
