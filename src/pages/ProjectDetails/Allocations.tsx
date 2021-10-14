@@ -11,9 +11,11 @@ interface IProps {
   account: string;
   projectId: string;
   tokenPrice: string;
+  tokenSymbol?: string;
+  claimedTokenBalance?: string;
 }
 
-export const Allocations = ({ account, projectId, tokenPrice }: IProps) => {
+export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
 
   const getNumberOfTokens = useCallback(
@@ -44,7 +46,7 @@ export const Allocations = ({ account, projectId, tokenPrice }: IProps) => {
             {formatWei(sale.amount)} {config.CURRENCY}
           </div>
           <div style={{ flex: 0.35 }} className={styles.allocationsItemNormalStyle}>
-            {getNumberOfTokens(sale.amount)} TKN
+            {getNumberOfTokens(sale.amount)} {tokenSymbol || 'tokens'}
           </div>
         </div>
       ))}
@@ -57,14 +59,14 @@ export const Allocations = ({ account, projectId, tokenPrice }: IProps) => {
           {formatWei(data?.totalAllocation || '0')} {config.CURRENCY}
         </div>
         <div style={{ flex: 0.35 }} className={styles.allocationsItemBoldStyle}>
-          {getNumberOfTokens(data?.totalAllocation || '0')} TKN
+          {getNumberOfTokens(data?.totalAllocation || '0')} {tokenSymbol || 'tokens'}
         </div>
       </div>
     </div>
   );
 };
 
-export const TotalAllocation = ({ account, projectId, tokenPrice }: IProps) => {
+export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, claimedTokenBalance }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const totalAllocation = useMemo(
     () => formatWei(BigNumber.from(data?.totalAllocation || '0').mul(BigNumber.from(tokenPrice))),
@@ -74,7 +76,9 @@ export const TotalAllocation = ({ account, projectId, tokenPrice }: IProps) => {
   return (
     <div style={styles.descriptionParentStyle}>
       <div className={styles.description2TextStyle}>Your allocation</div>
-      <div className={styles.content2TextStyle}>{totalAllocation} TKN</div>
+      <div className={styles.content2TextStyle}>
+        {totalAllocation} {tokenSymbol || 'tokens'} (Claimed: {claimedTokenBalance})
+      </div>
     </div>
   );
 };

@@ -1,7 +1,9 @@
+import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
-import React, { useCallback, useMemo } from 'react';
+import { BigNumber } from 'ethers';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import projectCardBackground from '../../assets/project_card_background.png';
@@ -11,12 +13,15 @@ import webIcon from '../../assets/web_icon.svg';
 import { config } from '../../config';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
+import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
+import { getStatemintTokenBalance } from '../../services/getTokenStatemintBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../../shared/modals/modals';
 import { ProjectDetailsSectionLoading } from '../../shared/ProjectDetailsSectionLoading';
 import { ExternalLink } from '../../shared/wrappers/ExternalLink';
+import { ProjectSaleStatus } from '../../types/enums/ProjectStatus';
 import { ProjectMetadata } from '../../types/ProjectType';
 import { sideColor3, sideColor6, sideColor8 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
@@ -35,13 +40,34 @@ export const ProjectDetailsPage = () => {
 
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.metadataURI);
+  const { data: tokenData } = useStatemintToken(data?.token.id);
 
-  const projectStatus = useMemo((): string => {
-    if (data && getUnixTime(new Date()) < +data?.startDate) {
-      return 'Upcoming';
-    } else if (data && getUnixTime(new Date()) > +data?.startDate && getUnixTime(new Date()) < +data?.endDate) {
-      return 'In Progress';
-    } else return 'Ended';
+  const [projectTokenClaimedAmount, setProjectTokenClaimedAmount] = useState<string>('0');
+
+  const projectStatus = useMemo((): string | undefined => {
+    if (!data) {
+      return;
+    }
+
+    const timeNow = getUnixTime(new Date());
+    const upcomingDate = timeNow < +data?.startDate;
+    if (upcomingDate) {
+      return ProjectSaleStatus.UPCOMING;
+    }
+
+    const isCurrentDate = timeNow > +data?.startDate && timeNow < +data?.endDate;
+    if (isCurrentDate) {
+      const isCapReached = BigNumber.from(data?.currentDepositAmount).gte(data?.totalDepositAmount);
+      if (isCapReached) {
+        return ProjectSaleStatus.ENDED;
+      }
+      return ProjectSaleStatus.IN_PROGRESS;
+    }
+
+    const isFinishedDate = timeNow > +data?.endDate;
+    if (isFinishedDate) {
+      return ProjectSaleStatus.ENDED;
+    }
   }, [data]);
 
   const filledAllocationPercentage = useMemo((): string => {
@@ -71,11 +97,23 @@ export const ProjectDetailsPage = () => {
       if (!vestingStartDate || !vestingEndDate) {
         return 'N/A';
       }
-      return getTimeDiff(vestingStartDate, vestingEndDate);
+      return `${getTimeDiff(vestingEndDate, vestingStartDate)} days`;
     } else {
       return 'N/A';
     }
   }, [data]);
+
+  useEffect(() => {
+    const getBalance = async () => {
+      const extensions = await web3Enable('RYU network');
+      if (extensions.length !== 0 && data?.token.id) {
+        const allAccounts = await web3Accounts();
+        const claimedProjectTokenAmount = await getStatemintTokenBalance(allAccounts[0].address, data?.token.id);
+        setProjectTokenClaimedAmount(claimedProjectTokenAmount);
+      }
+    };
+    getBalance();
+  }, [projectTokenClaimedAmount]);
 
   return (
     <div>
@@ -177,14 +215,19 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  1 TKN = {tokenPrice} {config.CURRENCY}
+                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
                 </div>
               </div>
             </div>
 
             <div className={styles.projectDetailsBtnsParentStyle}>
               <MainButton title="CLAIM TOKENS" type={'bordered'} onClick={onClaimClick} />
-              <MainButton title="JOIN" type={'fill'} onClick={() => navigation.push(`/project/${id}/join`)} />
+              <MainButton
+                title="JOIN"
+                type={'fill'}
+                onClick={() => navigation.push(`/project/${id}/join`)}
+                disabled={projectStatus === 'Ended' || projectStatus === 'Upcoming'}
+              />
             </div>
           </div>
         </div>

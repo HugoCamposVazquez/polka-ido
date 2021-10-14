@@ -20,6 +20,7 @@ import { ProjectApiType, ProjectType } from '../../types/ProjectType';
 import { sideColor3 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { convertDateToUnixtime } from '../../utils/date';
+import { notifyError, notifySuccess } from '../../utils/notifications';
 import * as styles from './AdminProjectPage.styles';
 
 interface IProps {
@@ -74,6 +75,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
     try {
       // 1. Write metadata to IPFS to get hash (URI)
+
       const response = await writeDataToIPFS({
         title: project.title,
         shortDescription: project.shortDescription,
@@ -117,10 +119,13 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
         navigation.push('/admin/project');
       }
       setIsSavingData(false);
+      notifySuccess('Project successfuly created.', 2000);
+      navigation.goBack();
     } catch (e) {
       console.log(e);
       // TODO: show notification or error message
       setIsSavingData(false);
+      notifyError('Error while creating project.', 2000);
     }
   };
 
@@ -274,6 +279,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
                 mode={'light'}
                 placeholder={'Short description text here'}
                 style={{ height: '6.25rem' }}
+                maxLength={200}
               />
             </div>
           </div>

@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
+import { isAddressBalanceSufficient } from '../../services/isAddressBalanceSufficient';
+import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
@@ -23,8 +25,10 @@ interface IProps {
 export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId }: IProps) => {
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
-  const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>(accounts[0]);
+  const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
+  const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
+  const [isSufficientPolkadotBalance, setIsSufficientPolkadotBalance] = useState<boolean>();
   const { data: tokenData } = useStatemintToken(tokenId);
 
   useEffect(() => {
@@ -41,9 +45,10 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     };
     getClaimableTokens();
 
-    if (accounts.length) methods.setValue('address', accounts[0].address);
-    if (selectedDotAcc) methods.setValue('address', selectedDotAcc.address);
-  }, [accounts, selectedDotAcc, userEthAddress]);
+    if (selectedDotAcc) {
+      methods.setValue('address', selectedDotAcc.address);
+    }
+  }, [accounts, selectedDotAcc, userEthAddress, isSufficientPolkadotBalance]);
 
   const methods = useForm({
     defaultValues: {
@@ -54,12 +59,24 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
   const onSubmit = async ({ address }: { address: string }) => {
     try {
+      notifyTransactionConfirmation('Confirm Transaction...', 'claimingTokens');
+      setIsTransactionInProgress(true);
+
       await contract.claimVestedTokens(address, { gasLimit: 1000000 });
+      setIsTransactionInProgress(false);
+      updateNotifySuccess('Claim Successful', 'claimingTokens', 2000);
       closeModal();
     } catch (e) {
       // show notification or error message
       console.log(e);
+      updateNotifyError('Transaction Canceled.', 'claimingTokens');
+      setIsTransactionInProgress(false);
     }
+  };
+
+  const onAccountChange = async (account: InjectedAccountWithMeta): Promise<void> => {
+    setSelectedDotAcc(account);
+    setIsSufficientPolkadotBalance(await isAddressBalanceSufficient(account.address));
   };
 
   const onPolkadotJsConnect = async () => {
@@ -68,6 +85,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
       const allAccounts = await web3Accounts();
       setAccounts(allAccounts);
       setIsConnectWallet(true);
+      await onAccountChange(allAccounts[0]);
     }
   };
 
@@ -86,7 +104,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
         {isConnectedWallet && (
           <>
             <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown options={accounts} initialAccount={accounts[0]} setSelectedDotAcc={setSelectedDotAcc} />
+            <AccountsDropdown options={accounts} initialAccount={accounts[0]} onAccountChange={onAccountChange} />
           </>
         )}
       </div>
@@ -94,7 +112,15 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
       <div style={styles.tknValueTextStyle}>
         {amountOfClaimableTokens} {tokenData ? tokenData.symbol : ''}
       </div>
-      <div style={modalTextStyle}>Enter an address to trigger a claim.</div>
+      <div style={modalTextStyle}>
+        {isSufficientPolkadotBalance ? (
+          'Enter an address to claim the tokens.'
+        ) : (
+          <b>
+            Sorry, can't claim any tokens as your account doesn't have the existential deposit required on the network.
+          </b>
+        )}
+      </div>
       <FormProvider {...methods}>
         <form>
           <div>
@@ -111,8 +137,13 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
 
             <div style={{ marginTop: '1.5rem' }}>
               <MainButton
-                disabled={!!(!accounts.length || amountOfClaimableTokens === '0')}
-                title={'Claim'}
+                disabled={
+                  !accounts.length ||
+                  amountOfClaimableTokens === '0' ||
+                  isTransactionInProgress ||
+                  !isSufficientPolkadotBalance
+                }
+                title={isTransactionInProgress ? 'Waiting for Conformation' : 'Claim'}
                 onClick={methods.handleSubmit(onSubmit)}
                 type={'fill'}
                 style={{ width: '100%' }}
