@@ -201,7 +201,7 @@ export const editProject = async (
         ${isChanged(['walletAddress']) ? 'Address successfuly updated.' : ''}`,
         errorMessage: `${isChanged(['tokenId']) ? 'Token ID failed to update.' : ''} 
         ${isChanged(['decimals']) ? 'Decimals failed to updated.' : ''}
-        ${isChanged(['walletAddress']) ? 'Address successfuly updated.' : ''}`,
+        ${isChanged(['walletAddress']) ? 'Address failed to update.' : ''}`,
       },
       onSuccess,
       onFaliure,
@@ -268,7 +268,7 @@ const getStatus = (startDate: string, endDate: string): ProjectStatus => {
 };
 
 export const writeToIPFS = async (
-  body: unknown,
+  body: ProjectMetadata,
   setError: (e: string) => void,
   setLoading: (isLoading: boolean) => void,
 ): Promise<PinataResponse | null> => {

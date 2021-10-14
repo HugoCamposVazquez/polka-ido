@@ -145,7 +145,6 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         navigation.goBack();
       } catch (e) {
         console.log(e);
-        // TODO: show notification or error message
         setIsSavingData(false);
         notifyError('Error while creating project.', notificationTimer);
       }
