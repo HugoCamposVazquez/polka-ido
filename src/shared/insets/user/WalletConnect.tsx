@@ -45,7 +45,7 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
         <div
           style={cs(styles.connectWalletContainerStyle, isMobile ? { marginLeft: 0 } : {})}
           onClick={() => {
-            openWalletModal(onWalletChange);
+            openWalletModal(onWalletChange, account);
           }}>
           <div style={styles.balanceStyle}>{formattedBalance} MOVR</div>
           <div style={styles.addressContainerStyle}>

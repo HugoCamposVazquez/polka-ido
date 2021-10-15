@@ -5,7 +5,7 @@ import { formatEther, parseEther } from 'ethers/lib/utils';
 
 import { getPinataApi, PinataResponse } from '../services/pinata';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
-import { ProjectMetadata, ProjectSales, ProjectType } from '../types/ProjectType';
+import { ProjectMetadata, ProjectType, SalesDto } from '../types/ProjectType';
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 type keyOfProjectType = keyof ProjectType;
@@ -213,8 +213,8 @@ export const editProject = async (
   }
 };
 
-export const convertToProjectType = (project?: ProjectSales, metadata?: ProjectMetadata): ProjectType | undefined => {
-  if (project?.sales[0] && metadata) {
+export const convertToProjectType = (project?: SalesDto, metadata?: ProjectMetadata): ProjectType | undefined => {
+  if (project && metadata) {
     const {
       salePrice,
       startDate,
@@ -227,7 +227,7 @@ export const convertToProjectType = (project?: ProjectSales, metadata?: ProjectM
       vestingStartDate,
       vestingEndDate,
       token,
-    } = project.sales[0];
+    } = project;
 
     return {
       status: getStatus(startDate, endDate),

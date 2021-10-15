@@ -32,6 +32,7 @@
     "@apollo/client": "^3.3.21",
     "@fontsource/odibee-sans": "^4.5.0",
     "@fontsource/titillium-web": "^4.5.0",
+    "@formspree/react": "^2.2.4",
     "@hookform/resolvers": "^1.0.0",
     "@nodefactoryio/ryu-contracts": "0.6.0",
     "@polkadot/api": "^5.7.1",

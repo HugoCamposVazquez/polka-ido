@@ -17,7 +17,7 @@ interface Asset {
   minBalance: string;
 }
 
-type StatemintToken = TokenMetadata & Asset;
+export type StatemintToken = TokenMetadata & Asset;
 
 interface ReturnData extends IData<StatemintToken> {
   fetchTokenData: (tokenId: string) => Promise<StatemintToken | null>;

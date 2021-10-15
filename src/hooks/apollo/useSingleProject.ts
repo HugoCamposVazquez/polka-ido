@@ -1,29 +1,42 @@
 import { gql, useQuery } from '@apollo/client';
 
 import { client } from '../../services/apollo';
-import { ProjectSales } from '../../types/ProjectType';
+import { SalesDto } from '../../types/ProjectType';
 
-interface ProjectsHook {
+interface ProjectHook {
   loading: boolean;
-  data: ProjectSales | undefined;
+  data: SalesDto | undefined;
 }
 
-export const useSingleProject = (id?: string): ProjectsHook => {
-  if (id) {
-    const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
-      client,
-      variables: {
-        id,
-      },
-    });
+export const useSingleProject = (id?: string): ProjectHook => {
+  const { data: projectData, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
+    client,
+    variables: {
+      id,
+    },
+  });
 
-    return { data, loading };
-  } else {
-    return {
-      data: undefined,
-      loading: false,
-    };
-  }
+  const data = projectData && {
+    ...projectData.sales[0],
+  };
+
+  return { data, loading };
+
+  // if (id) {
+  //   const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
+  //     client,
+  //     variables: {
+  //       id,
+  //     },
+  //   });
+
+  //   return { data, loading };
+  // } else {
+  //   return {
+  //     data: undefined,
+  //     loading: false,
+  //   };
+  // }
 };
 
 const FETCH_SINGLE_PROJECT_DATA = gql(

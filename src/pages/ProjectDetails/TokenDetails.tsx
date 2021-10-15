@@ -35,7 +35,7 @@ export const TokenDetails = ({ assetId }: IProps) => {
           <div style={{ display: 'flex', padding: '0.75rem 0' }}>
             <div className={styles.descriptionTextStyle}>Total supply</div>
             <div className={styles.content3TextStyle}>
-              {data ? formatTokenAmount(data?.supply, data?.decimals) : 'N/A'}
+              {data?.supply && data?.decimals ? formatTokenAmount(data?.supply, data?.decimals) : 'N/A'}
             </div>
           </div>
         </div>

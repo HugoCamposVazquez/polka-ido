@@ -21,11 +21,11 @@ export const AdminProjectPage = () => {
 
   const { data: project, loading: projectLoading } = useSingleProject(id);
 
-  const { data: metaData } = useReadIPFS<ProjectMetadata>(project?.sales[0].metadataURI);
+  const { data: metaData } = useReadIPFS<ProjectMetadata>(project?.metadataURI);
 
   useEffect(() => {
     // Project that needs to be edited is not found
-    if (id && !projectLoading && project?.sales[0] === undefined) {
+    if (id && !projectLoading && project === undefined) {
       navigation.push('/admin');
     }
   }, []);
