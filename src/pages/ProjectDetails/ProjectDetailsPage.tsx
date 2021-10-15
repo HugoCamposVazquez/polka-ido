@@ -57,7 +57,7 @@ export const ProjectDetailsPage = () => {
 
     const isCurrentDate = timeNow > +data?.startDate && timeNow < +data?.endDate;
     if (isCurrentDate) {
-      const isCapReached = BigNumber.from(data?.currentDepositAmount).gte(data?.totalDepositAmount);
+      const isCapReached = BigNumber.from(data?.currentDepositAmount).gte(data?.cap);
       if (isCapReached) {
         return ProjectSaleStatus.ENDED;
       }
@@ -72,8 +72,8 @@ export const ProjectDetailsPage = () => {
 
   const filledAllocationPercentage = useMemo((): string => {
     if (data) {
-      const { currentDepositAmount, totalDepositAmount } = data;
-      return getPercentage(currentDepositAmount, totalDepositAmount);
+      const { currentDepositAmount, cap } = data;
+      return getPercentage(currentDepositAmount, cap);
     }
     return '0';
   }, [data]);
@@ -130,7 +130,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.topRightBottomLeftNotch} className={styles.projectImageBackgroundStyle}>
                 <img
                   className={styles.projectIconClassName}
-                  src={metadata ? getIPFSResolvedLink(metadata?.imageUrl) : ''}
+                  src={metadata ? getIPFSResolvedLink(metadata?.imageUrl ?? '') : ''}
                 />
               </div>
               <div style={{ marginLeft: '1.5rem' }}>
@@ -179,9 +179,7 @@ export const ProjectDetailsPage = () => {
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Allocation</div>
-                <div className={styles.contentTextStyle}>{`${data && formatWei(data?.totalDepositAmount)} ${
-                  config.CURRENCY
-                }`}</div>
+                <div className={styles.contentTextStyle}>{`${data && formatWei(data?.cap)} ${config.CURRENCY}`}</div>
               </div>
               <div style={styles.descriptionParentStyle}>
                 <div className={styles.descriptionTextStyle}>Min. deposit</div>
@@ -199,10 +197,7 @@ export const ProjectDetailsPage = () => {
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
-                  {data &&
-                    `${formatWei(data?.currentDepositAmount)}/${formatWei(data?.totalDepositAmount)} ${
-                      config.CURRENCY
-                    }`}
+                  {data && `${formatWei(data?.currentDepositAmount)}/${formatWei(data?.cap)} ${config.CURRENCY}`}
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <ProgressBar

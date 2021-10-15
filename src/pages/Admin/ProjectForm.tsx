@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { config } from '../../config';
 import { useWriteJSONToIPFS } from '../../hooks/ipfs/useWriteJSONToIPFS';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
+import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
 import { CheckboxField } from '../../shared/gui/CheckboxField';
 import { DateField } from '../../shared/gui/DateField';
@@ -16,37 +17,40 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { RadioGroup } from '../../shared/gui/RadioGroup';
 import { TextArea } from '../../shared/gui/TextArea';
 import { TextField } from '../../shared/gui/TextField';
-import { ProjectApiType, ProjectType } from '../../types/ProjectType';
+import { ProjectType } from '../../types/ProjectType';
 import { sideColor3 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { convertDateToUnixtime } from '../../utils/date';
+import { editProject } from '../../utils/editProject';
 import { notifyError, notifySuccess } from '../../utils/notifications';
 import * as styles from './AdminProjectPage.styles';
 
 interface IProps {
-  isEdit: boolean;
+  projectId?: string;
   loadingProjectData: boolean;
-  project?: ProjectApiType | { data: undefined };
+  defaultProjectData?: ProjectType;
 }
 
-export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => {
-  const methods = useForm();
+export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId }: IProps) => {
+  const methods = useForm<ProjectType>();
+
   const navigation = useHistory();
   const [imageUrl, setImageUrl] = useState('');
   const [isSavingData, setIsSavingData] = useState(false);
   const { account } = useWeb3React();
+  const notificationTimer = 10000;
 
   // TODO: Add fields validation
 
-  const contract = useSaleFactoryContract();
-  // TODO: Watch for error
+  const saleFactoryContract = useSaleFactoryContract();
+  const saleContract = useSaleContract(projectId);
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
   const { fetchTokenData } = useStatemintToken();
   const onTokenIdBlur = useCallback(async (): Promise<void> => {
     // methods.setValue('decimals', 'Loading...');
     const tokenId = methods.getValues('tokenId');
-    const tokenData = await fetchTokenData(tokenId);
+    const tokenData = await fetchTokenData(tokenId.toString());
     if (tokenData) {
       methods.setValue('decimals', tokenData.decimals);
     }
@@ -54,78 +58,96 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
 
   useEffect(() => {
     if (!loadingProjectData) {
-      if (project?.data === undefined) {
+      if (defaultProjectData === undefined) {
         // Creating new project
         methods.reset({
           access: 'whitelist',
         });
       } else {
         // Editing project
-        methods.reset({
-          ...project?.data,
-          access: project?.data?.access,
-        });
+
+        methods.reset(defaultProjectData);
       }
     }
-  }, [loadingProjectData, project]);
+  }, [loadingProjectData, defaultProjectData]);
 
-  const onSubmit = async (project: ProjectType) => {
+  const onSubmit = async (projectSubmit: ProjectType) => {
     if (!account) return;
     setIsSavingData(true);
 
-    try {
-      // 1. Write metadata to IPFS to get hash (URI)
-
-      const response = await writeDataToIPFS({
-        title: project.title,
-        shortDescription: project.shortDescription,
-        description: project.description,
-        webLink: project.webLink,
-        twitterLink: project.twitterLink,
-        telegramLink: project.telegramLink,
-        imageUrl,
-      });
-      if (!response) {
-        return;
-      }
-
-      console.log('project: ', project);
-
-      // 2. Create new sale smart contract
-      const tx = await contract?.createSaleContract(
-        convertDateToUnixtime(project.starts),
-        convertDateToUnixtime(project.ends),
-        utils.parseEther(project.minUserDepositAmount),
-        utils.parseEther(project.maxUserDepositAmount),
-        utils.parseEther(project.raiseAmountTotal),
-        utils.parseEther(project.tokenPrice.toString()), // should be token ratio?
-        {
-          tokenID: project.tokenId,
-          decimals: project.decimals,
-          walletAddress: project.walletAddress,
+    //EDIT
+    if (!!projectId && defaultProjectData && saleContract) {
+      editProject(
+        saleContract,
+        defaultProjectData,
+        projectSubmit,
+        (successMessage) => {
+          setIsSavingData(false);
+          notifySuccess(successMessage, notificationTimer);
         },
-        {
-          whitelist: project.access === 'whitelist',
-          isFeatured: project.featured,
+        (faliureMessage) => {
+          setIsSavingData(false);
+          notifyError(faliureMessage, notificationTimer);
         },
-        {
-          startTime: convertDateToUnixtime(project.vestingStartDate),
-          endTime: convertDateToUnixtime(project.vestingEndDate),
-        },
-        `ipfs://${response.IpfsHash}`,
       );
-      if (tx) {
-        tx.wait(1);
-        navigation.push('/admin/project');
+
+      //CREATE
+    } else {
+      try {
+        // 1. Write metadata to IPFS to get hash (URI)
+
+        const response = await writeDataToIPFS(
+          {
+            title: projectSubmit.title,
+            shortDescription: projectSubmit.shortDescription,
+            description: projectSubmit.description,
+            webLink: projectSubmit.webLink,
+            twitterLink: projectSubmit.twitterLink,
+            telegramLink: projectSubmit.telegramLink,
+            imageUrl,
+          },
+          (errorMessage) => notifyError(`Error writing to IPFS: ${errorMessage}`, notificationTimer),
+          (isLoading) => setIsSavingData(isLoading),
+        );
+        if (!response) {
+          return;
+        }
+
+        // 2. Create new sale smart contract
+        const tx = await saleFactoryContract?.createSaleContract(
+          convertDateToUnixtime(projectSubmit.starts),
+          convertDateToUnixtime(projectSubmit.ends),
+          utils.parseEther(projectSubmit.minUserDepositAmount),
+          utils.parseEther(projectSubmit.maxUserDepositAmount),
+          utils.parseEther(projectSubmit.cap),
+          utils.parseEther(projectSubmit.tokenPrice.toString()), // should be token ratio?
+          {
+            tokenID: projectSubmit.tokenId,
+            decimals: projectSubmit.decimals,
+            walletAddress: projectSubmit.walletAddress,
+          },
+          {
+            whitelist: projectSubmit.access === 'whitelist',
+            isFeatured: projectSubmit.featured,
+          },
+          {
+            startTime: convertDateToUnixtime(projectSubmit.vestingStartDate),
+            endTime: convertDateToUnixtime(projectSubmit.vestingEndDate),
+          },
+          `ipfs://${response.IpfsHash}`,
+        );
+        if (tx) {
+          tx.wait(1);
+          navigation.push('/admin/project');
+        }
+        setIsSavingData(false);
+        notifySuccess('Project successfuly created.', notificationTimer);
+        navigation.goBack();
+      } catch (e) {
+        console.log(e);
+        setIsSavingData(false);
+        notifyError('Error while creating project.', notificationTimer);
       }
-      setIsSavingData(false);
-      notifySuccess('Project successfuly created.', 2000);
-      navigation.goBack();
-    } catch (e) {
-      console.log(e);
-      // TODO: show notification or error message
-      setIsSavingData(false);
-      notifyError('Error while creating project.', 2000);
     }
   };
 
@@ -174,7 +196,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Raise amount</div>
-              <TextField name={'raiseAmountTotal'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+              <TextField name={'cap'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
             </div>
           </div>
 
@@ -199,7 +221,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Project icon</div>
-              <ImagePicker name={'iconUrl'} onImageUpload={setImageUrl} />
+              <ImagePicker name={'imageUrl'} onImageUpload={setImageUrl} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Web</div>
@@ -299,7 +321,7 @@ export const ProjectForm = ({ loadingProjectData, project, isEdit }: IProps) => 
           <div style={styles.sectionContainerStyle}>
             {isSavingData ? <Spin style={{ marginRight: '1.5rem' }} /> : null}
             <MainButton
-              title={isEdit ? 'UPDATE' : 'CREATE'}
+              title={projectId ? 'UPDATE' : 'CREATE'}
               onClick={methods.handleSubmit(onSubmit)}
               type={'fill'}
               style={{ marginRight: '1.5rem' }}

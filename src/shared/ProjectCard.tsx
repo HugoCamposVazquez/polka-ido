@@ -45,8 +45,8 @@ export const ProjectCard = ({ direction, project }: IProps) => {
   );
 
   const filledAllocationPercentage = useMemo((): string => {
-    const { currentDepositAmount, totalDepositAmount } = project;
-    return getPercentage(currentDepositAmount, totalDepositAmount);
+    const { currentDepositAmount, cap } = project;
+    return getPercentage(currentDepositAmount, cap);
   }, [project]);
 
   const tokenPrice = useMemo((): string => {
@@ -68,7 +68,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
             <div style={styles.projectCardHeaderIconContainer}>
               <img
                 style={styles.projectCardHeaderIconStyle}
-                src={metadata ? getIPFSResolvedLink(metadata?.imageUrl) : ''}
+                src={metadata ? getIPFSResolvedLink(metadata?.imageUrl ?? '') : ''}
               />
             </div>
           </div>
@@ -87,7 +87,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
         <div style={styles.progressTextContainerStyle}>
           <div style={styles.progressTextPrefixStyle}>{formatWei(project.currentDepositAmount)}</div>
           <div style={styles.progressTextSufixStyle}>
-            /{formatWei(project.totalDepositAmount)} {config.CURRENCY}
+            /{formatWei(project.cap)} {config.CURRENCY}
           </div>
         </div>
         <div style={{ margin: '0.38rem 1rem' }}>

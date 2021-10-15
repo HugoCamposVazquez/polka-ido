@@ -8,7 +8,7 @@ interface ProjectHook {
   data: SalesDto | undefined;
 }
 
-export const useSingleProject = (id: string): ProjectHook => {
+export const useSingleProject = (id?: string): ProjectHook => {
   const { data: projectData, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
     client,
     variables: {
@@ -21,6 +21,22 @@ export const useSingleProject = (id: string): ProjectHook => {
   };
 
   return { data, loading };
+
+  // if (id) {
+  //   const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
+  //     client,
+  //     variables: {
+  //       id,
+  //     },
+  //   });
+
+  //   return { data, loading };
+  // } else {
+  //   return {
+  //     data: undefined,
+  //     loading: false,
+  //   };
+  // }
 };
 
 const FETCH_SINGLE_PROJECT_DATA = gql(
@@ -28,21 +44,23 @@ const FETCH_SINGLE_PROJECT_DATA = gql(
     query Projects($id: String) {
       sales(where: { id: $id }) {
         id
+        token {
+          id
+          decimals
+          walletAddress
+        }
         salePrice
         startDate
         endDate
         whitelisted
         featured
         metadataURI
-        minUserDepositAmount
-        maxUserDepositAmount
-        totalDepositAmount
-        currentDepositAmount
         vestingStartDate
         vestingEndDate
-        token {
-          id
-        }
+        minUserDepositAmount
+        maxUserDepositAmount
+        currentDepositAmount
+        cap
       }
     }
     `,
