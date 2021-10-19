@@ -40,10 +40,12 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const { account } = useWeb3React();
   const notificationTimer = 10000;
 
+  const [isTextareaDisplay, setIsTextareaDisplayed] = useState<boolean>(false);
+
   // TODO: Add fields validation
 
   const saleFactoryContract = useSaleFactoryContract();
-  const saleContract = useSaleContract(projectId);
+  const saleContract = projectId && useSaleContract(projectId);
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
   const { fetchTokenData } = useStatemintToken();
@@ -184,7 +186,6 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               </div>
             </div>
           </div>
-
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Starts</div>
@@ -328,6 +329,31 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               disabled={isSavingData}
             />
             <MainButton title={'BACK'} onClick={() => navigation.goBack()} type={'bordered'} disabled={isSavingData} />
+          </div>
+
+          <div style={styles.whitelistedAddressesContainerStyle}>
+            <p
+              onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
+              style={styles.addWhitelisteAddressesTitleStyle}>
+              + Whitelist adresses
+            </p>
+            {isTextareaDisplay && (
+              <div>
+                <TextArea
+                  name="whitelistedAddresses"
+                  mode="light"
+                  style={{ height: '15.625rem' }}
+                  placeholder="Add addresses you wish to whitelist"
+                />
+
+                <MainButton
+                  title="Whitelist addresses"
+                  type={'fill'}
+                  style={{ margin: '1rem 0' }}
+                  onClick={() => console.log('aaa')}
+                />
+              </div>
+            )}
           </div>
         </div>
       </form>
