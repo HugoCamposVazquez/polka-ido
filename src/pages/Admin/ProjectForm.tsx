@@ -172,7 +172,6 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
       }
     };
     validateWhitelistedAddressesFormat();
-    console.log(whitelistedAddresses);
   }, [whitelistedAddressesString]);
 
   const onSubmitWhitelistedAddresses = (): void => {
@@ -364,11 +363,13 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           </div>
 
           <div style={styles.whitelistedAddressesContainerStyle}>
-            <p
-              onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
-              style={styles.addWhitelisteAddressesTitleStyle}>
-              + Whitelist adresses
-            </p>
+            {defaultProjectData?.access === 'whitelist' && (
+              <p
+                onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
+                style={styles.addWhitelisteAddressesTitleStyle}>
+                + Whitelist adresses
+              </p>
+            )}
             {isTextareaDisplay && (
               <div>
                 <TextArea
