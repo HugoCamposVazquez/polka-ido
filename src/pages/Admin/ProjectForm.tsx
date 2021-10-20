@@ -41,6 +41,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const notificationTimer = 10000;
 
   const [isTextareaDisplay, setIsTextareaDisplayed] = useState<boolean>(false);
+  const [areAddressesValid, setAreAddressesValid] = useState<boolean>(false);
 
   // TODO: Add fields validation
 
@@ -150,6 +151,32 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         setIsSavingData(false);
         notifyError('Error while creating project.', notificationTimer);
       }
+    }
+  };
+
+  const whitelistedAddressesString = methods.watch('whitelistedAddresses') && methods.watch('whitelistedAddresses');
+
+  useEffect(() => {
+    const validateWhitelistedAddressesFormat = (): void => {
+      if (whitelistedAddressesString) {
+        const stringToDissasemble = whitelistedAddressesString as string;
+        const userAddress = stringToDissasemble.split(',').map((address: string) => address.trim());
+        const verifieAddresses = userAddress.every((userAddress) => {
+          return userAddress.match(/^0x[a-fA-F0-9]{40}$/)?.input;
+        });
+        setAreAddressesValid(verifieAddresses);
+      }
+    };
+    validateWhitelistedAddressesFormat();
+  }, [whitelistedAddressesString]);
+
+  const onSubmitWhitelistedAddresses = (): void => {
+    try {
+      console.log('Here goes the code to submit addresses');
+      notifySuccess('Addresses successfully whitelisted', 2000);
+    } catch (error) {
+      console.error(error);
+      notifyError('Error while whitelisting addresses', 2000);
     }
   };
 
@@ -343,14 +370,15 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                   name="whitelistedAddresses"
                   mode="light"
                   style={{ height: '15.625rem' }}
-                  placeholder="Add addresses you wish to whitelist"
+                  placeholder="Add addresses you wish to whitelist,please use commas for seperateing addresses"
                 />
 
                 <MainButton
                   title="Whitelist addresses"
                   type={'fill'}
                   style={{ margin: '1rem 0' }}
-                  onClick={() => console.log('aaa')}
+                  disabled={!areAddressesValid || !whitelistedAddressesString}
+                  onClick={onSubmitWhitelistedAddresses}
                 />
               </div>
             )}
