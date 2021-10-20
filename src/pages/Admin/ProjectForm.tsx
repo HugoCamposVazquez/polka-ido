@@ -176,7 +176,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
 
   const onSubmitWhitelistedAddresses = (): void => {
     try {
-      // saleContract?.addToWhitelist(whitelistedAddresses); // Will uncomment this when contract gets updated
+      saleContract?.addToWhitelist(whitelistedAddresses);
       notifySuccess('Addresses successfully whitelisted', 2000);
     } catch (error) {
       console.error(error);
