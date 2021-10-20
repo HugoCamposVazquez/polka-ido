@@ -1,3 +1,4 @@
+import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
@@ -42,11 +43,12 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
 
   const [isTextareaDisplay, setIsTextareaDisplayed] = useState<boolean>(false);
   const [areAddressesValid, setAreAddressesValid] = useState<boolean>(false);
+  const [whitelistedAddresses, setWhitelistedAddresses] = useState<string[]>([]);
 
   // TODO: Add fields validation
 
   const saleFactoryContract = useSaleFactoryContract();
-  const saleContract = projectId && useSaleContract(projectId);
+  const saleContract = useSaleContract(projectId as string);
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
   const { fetchTokenData } = useStatemintToken();
@@ -161,6 +163,8 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
       if (whitelistedAddressesString) {
         const stringToDissasemble = whitelistedAddressesString as string;
         const userAddress = stringToDissasemble.split(',').map((address: string) => address.trim());
+        setWhitelistedAddresses(userAddress);
+
         const verifieAddresses = userAddress.every((userAddress) => {
           return userAddress.match(/^0x[a-fA-F0-9]{40}$/)?.input;
         });
@@ -168,11 +172,12 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
       }
     };
     validateWhitelistedAddressesFormat();
+    console.log(whitelistedAddresses);
   }, [whitelistedAddressesString]);
 
   const onSubmitWhitelistedAddresses = (): void => {
     try {
-      console.log('Here goes the code to submit addresses');
+      // saleContract?.addToWhitelist(whitelistedAddresses); // Will uncomment this when contract gets updated
       notifySuccess('Addresses successfully whitelisted', 2000);
     } catch (error) {
       console.error(error);
