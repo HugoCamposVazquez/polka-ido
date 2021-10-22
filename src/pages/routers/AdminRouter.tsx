@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -15,6 +16,12 @@ const adminRouterStyle = styled.cssStyle`
 `;
 
 export const AdminRouter = (): any => {
+  const { account } = useWeb3React();
+
+  if (account && account !== process.env.REACT_APP_ADMIN_ADDRESS) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <div style={adminRouterStyle}>
       <Header />
