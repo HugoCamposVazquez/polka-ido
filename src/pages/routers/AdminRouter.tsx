@@ -1,4 +1,3 @@
-import { SaleContractFactory } from '@nodefactoryio/ryu-contracts/typechain/SaleContractFactory';
 import { useWeb3React } from '@web3-react/core';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
