@@ -111,3 +111,7 @@ export const addWhitelisteAddressesTitleStyle = styled.cssStyle`
   cursor: pointer;
   margin-bottom: 1.25rem;
 `;
+
+export const whitelistingButtonsContainer = styled.cssStyle`
+  display: flex;
+`;

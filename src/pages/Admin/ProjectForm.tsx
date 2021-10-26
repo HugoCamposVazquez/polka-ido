@@ -174,13 +174,22 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     validateWhitelistedAddressesFormat();
   }, [whitelistedAddressesString]);
 
-  const onSubmitWhitelistedAddresses = (): void => {
+  const onWhitelistAddresses = (): void => {
     try {
       saleContract?.addToWhitelist(whitelistedAddresses);
       notifySuccess('Addresses successfully whitelisted', 2000);
     } catch (error) {
       console.error(error);
       notifyError('Error while whitelisting addresses', 2000);
+    }
+  };
+
+  const onDeleteWhitelistedAddress = (): void => {
+    try {
+      saleContract?.removeFromWhitelist(whitelistedAddresses);
+      notifySuccess('Addresses succesfuly deleted', 2000);
+    } catch (error) {
+      notifyError('An error occured while deleting addresses', 2000);
     }
   };
 
@@ -367,7 +376,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               <p
                 onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
                 style={styles.addWhitelisteAddressesTitleStyle}>
-                + Whitelist adresses
+                + Whitelist/Delete whitelisted adresses
               </p>
             )}
             {isTextareaDisplay && (
@@ -376,16 +385,25 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                   name="whitelistedAddresses"
                   mode="light"
                   style={{ height: '15.625rem' }}
-                  placeholder="Add addresses you wish to whitelist,please use commas for seperateing addresses"
+                  placeholder="Add addresses you wish to whitelist/delete, please use commas for seperateing addresses"
                 />
+                <div style={styles.whitelistingButtonsContainer}>
+                  <MainButton
+                    title="Whitelist addresses"
+                    type={'fill'}
+                    style={{ margin: '1.5rem 0' }}
+                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    onClick={onWhitelistAddresses}
+                  />
 
-                <MainButton
-                  title="Whitelist addresses"
-                  type={'fill'}
-                  style={{ margin: '1rem 0' }}
-                  disabled={!areAddressesValid || !whitelistedAddressesString}
-                  onClick={onSubmitWhitelistedAddresses}
-                />
+                  <MainButton
+                    title="Delete addresses"
+                    type={'bordered'}
+                    style={{ margin: '1.5rem 1.5rem' }}
+                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    onClick={onDeleteWhitelistedAddress}
+                  />
+                </div>
               </div>
             )}
           </div>
