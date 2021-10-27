@@ -22,21 +22,6 @@ export const useSingleProject = (id?: string): ProjectHook => {
 
   return { data, loading };
 
-  // if (id) {
-  //   const { data, loading } = useQuery(FETCH_SINGLE_PROJECT_DATA, {
-  //     client,
-  //     variables: {
-  //       id,
-  //     },
-  //   });
-
-  //   return { data, loading };
-  // } else {
-  //   return {
-  //     data: undefined,
-  //     loading: false,
-  //   };
-  // }
 };
 
 const FETCH_SINGLE_PROJECT_DATA = gql(

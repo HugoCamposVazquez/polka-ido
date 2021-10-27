@@ -18,7 +18,6 @@ export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): Pro
       loadFeatured,
     },
   });
-
   return { data, loading };
 };
 
@@ -27,19 +26,24 @@ const FETCH_PROJECTS_DATA = gql(
     query Projects($numberOfItems: Int, $loadFeatured: Boolean) {
       sales(first: $numberOfItems,  featured: $loadFeatured) {
         id
+        token {
+          id
+          decimals
+          walletAddress
+        }
         salePrice
         startDate
         endDate
         whitelisted
         featured
         metadataURI
-        cap
+        vestingStartDate
+        vestingEndDate
         minUserDepositAmount
         maxUserDepositAmount
         currentDepositAmount
-        token {
-           id
-        }
+        cap
+
         allocations {
           id
         }
