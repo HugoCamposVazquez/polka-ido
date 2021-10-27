@@ -178,6 +178,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     try {
       saleContract?.addToWhitelist(whitelistedAddresses);
       notifySuccess('Addresses successfully whitelisted', 2000);
+      methods.reset({ whitelistedAddresses: '' });
     } catch (error) {
       console.error(error);
       notifyError('Error while whitelisting addresses', 2000);
@@ -188,6 +189,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     try {
       saleContract?.removeFromWhitelist(whitelistedAddresses);
       notifySuccess('Addresses succesfuly deleted', 2000);
+      methods.reset({ whitelistedAddresses: '' });
     } catch (error) {
       notifyError('An error occured while deleting addresses', 2000);
     }
@@ -372,13 +374,13 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           </div>
 
           <div style={styles.whitelistedAddressesContainerStyle}>
-            {defaultProjectData?.access === 'whitelist' && (
+            {
               <p
                 onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
                 style={styles.addWhitelisteAddressesTitleStyle}>
                 + Whitelist/Delete whitelisted adresses
               </p>
-            )}
+            }
             {isTextareaDisplay && (
               <div>
                 <TextArea
