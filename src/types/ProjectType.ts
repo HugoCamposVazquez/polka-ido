@@ -37,6 +37,7 @@ export interface ProjectType extends ProjectMetadata {
   joined?: boolean;
   walletAddress: string;
   decimals: number;
+  whitelistedAddresses?: string;
 }
 
 export interface ProjectData {

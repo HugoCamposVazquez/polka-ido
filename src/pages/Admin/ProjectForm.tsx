@@ -1,3 +1,4 @@
+import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
@@ -40,10 +41,14 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const { account } = useWeb3React();
   const notificationTimer = 10000;
 
+  const [isTextareaDisplay, setIsTextareaDisplayed] = useState<boolean>(false);
+  const [areAddressesValid, setAreAddressesValid] = useState<boolean>(false);
+  const [whitelistedAddresses, setWhitelistedAddresses] = useState<string[]>([]);
+
   // TODO: Add fields validation
 
   const saleFactoryContract = useSaleFactoryContract();
-  const saleContract = useSaleContract(projectId);
+  const saleContract = useSaleContract(projectId as string);
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
 
   const { fetchTokenData } = useStatemintToken();
@@ -151,6 +156,45 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     }
   };
 
+  const whitelistedAddressesString = methods.watch('whitelistedAddresses') && methods.watch('whitelistedAddresses');
+
+  useEffect(() => {
+    const validateWhitelistedAddressesFormat = (): void => {
+      if (whitelistedAddressesString) {
+        const stringToDissasemble = whitelistedAddressesString as string;
+        const userAddress = stringToDissasemble.split(',').map((address: string) => address.trim());
+        setWhitelistedAddresses(userAddress);
+
+        const verifieAddresses = userAddress.every((userAddress) => {
+          return userAddress.match(/^0x[a-fA-F0-9]{40}$/)?.input;
+        });
+        setAreAddressesValid(verifieAddresses);
+      }
+    };
+    validateWhitelistedAddressesFormat();
+  }, [whitelistedAddressesString]);
+
+  const onWhitelistAddresses = (): void => {
+    try {
+      saleContract?.addToWhitelist(whitelistedAddresses);
+      notifySuccess('Addresses successfully whitelisted', 2000);
+      methods.reset({ whitelistedAddresses: '' });
+    } catch (error) {
+      console.error(error);
+      notifyError('Error while whitelisting addresses', 2000);
+    }
+  };
+
+  const onDeleteWhitelistedAddress = (): void => {
+    try {
+      saleContract?.removeFromWhitelist(whitelistedAddresses);
+      notifySuccess('Addresses succesfuly deleted', 2000);
+      methods.reset({ whitelistedAddresses: '' });
+    } catch (error) {
+      notifyError('An error occured while deleting addresses', 2000);
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <form>
@@ -184,7 +228,6 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               </div>
             </div>
           </div>
-
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Starts</div>
@@ -328,6 +371,43 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               disabled={isSavingData}
             />
             <MainButton title={'BACK'} onClick={() => navigation.goBack()} type={'bordered'} disabled={isSavingData} />
+          </div>
+
+          <div style={styles.whitelistedAddressesContainerStyle}>
+            {
+              <p
+                onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
+                style={styles.addWhitelisteAddressesTitleStyle}>
+                + Whitelist/Delete whitelisted adresses
+              </p>
+            }
+            {isTextareaDisplay && (
+              <div>
+                <TextArea
+                  name="whitelistedAddresses"
+                  mode="light"
+                  style={{ height: '15.625rem' }}
+                  placeholder="Add addresses you wish to whitelist/delete, please use commas for seperateing addresses"
+                />
+                <div style={styles.whitelistingButtonsContainer}>
+                  <MainButton
+                    title="Whitelist addresses"
+                    type={'fill'}
+                    style={{ margin: '1.5rem 0' }}
+                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    onClick={onWhitelistAddresses}
+                  />
+
+                  <MainButton
+                    title="Delete addresses"
+                    type={'bordered'}
+                    style={{ margin: '1.5rem 1.5rem' }}
+                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    onClick={onDeleteWhitelistedAddress}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </form>

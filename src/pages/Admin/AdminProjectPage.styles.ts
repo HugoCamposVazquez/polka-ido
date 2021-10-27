@@ -1,4 +1,4 @@
-import { sideColor, sideColor2, sideColor6 } from '../../utils/colorsUtil';
+import { sideColor, sideColor2, sideColor3, sideColor6 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 export const titleSectionStyle = styled.cssStyle`
@@ -96,4 +96,22 @@ export const lineStyle = styled.cssStyle`
   width: 100%;
   background-color: ${sideColor};
   margin-top: 2.25rem;
+`;
+
+export const whitelistedAddressesContainerStyle = styled.cssStyle`
+  margin-top: 10px;
+`;
+
+export const addWhitelisteAddressesTitleStyle = styled.cssStyle`
+  display: flex;
+  font-family: Titillium Web;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: ${sideColor3};
+  cursor: pointer;
+  margin-bottom: 1.25rem;
+`;
+
+export const whitelistingButtonsContainer = styled.cssStyle`
+  display: flex;
 `;
