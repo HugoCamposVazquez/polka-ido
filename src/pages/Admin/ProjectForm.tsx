@@ -374,13 +374,13 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           </div>
 
           <div style={styles.whitelistedAddressesContainerStyle}>
-            {
+            {defaultProjectData?.access === 'whitelist' && (
               <p
                 onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
                 style={styles.addWhitelisteAddressesTitleStyle}>
                 + Whitelist/Delete whitelisted adresses
               </p>
-            }
+            )}
             {isTextareaDisplay && (
               <div>
                 <TextArea
