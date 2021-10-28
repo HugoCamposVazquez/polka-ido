@@ -24,14 +24,13 @@ export const AdminRouter = (): any => {
   const [adminAddress, setAdminAddress] = useState<string>();
 
   useEffect(() => {
-    const getOwnerAddress = async () => {
+    (async () => {
       const ownerAddress = await salFactoryContract?.owner();
 
       if (ownerAddress) {
         setAdminAddress(ownerAddress);
       }
-    };
-    getOwnerAddress();
+    })();
   });
 
   if (adminAddress && account && account !== adminAddress) {
