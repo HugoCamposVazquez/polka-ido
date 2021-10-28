@@ -1,4 +1,3 @@
-import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
@@ -55,8 +54,8 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const onTokenIdBlur = useCallback(async (): Promise<void> => {
     // methods.setValue('decimals', 'Loading...');
     const tokenId = methods.getValues('tokenId');
-    
-    try{
+
+    try {
       const tokenData = await fetchTokenData(tokenId.toString());
       if (tokenData) {
         methods.setValue('decimals', tokenData.decimals);
@@ -64,7 +63,6 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     } catch (e) {
       return;
     }
-
   }, [methods, fetchTokenData]);
 
   useEffect(() => {
@@ -152,7 +150,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           notifySuccess('Project successfuly created.', notificationTimer);
         }
         setIsSavingData(false);
-        
+
         navigation.goBack();
       } catch (e) {
         console.log(e);

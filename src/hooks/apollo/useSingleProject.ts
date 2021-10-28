@@ -21,7 +21,6 @@ export const useSingleProject = (id?: string): ProjectHook => {
   };
 
   return { data, loading };
-
 };
 
 const FETCH_SINGLE_PROJECT_DATA = gql(
