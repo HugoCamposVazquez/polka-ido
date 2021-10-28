@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
@@ -21,13 +21,23 @@ export const AdminRouter = (): any => {
   const { account } = useWeb3React();
   const salFactoryContract = useSaleFactoryContract();
 
-  if (salFactoryContract?.address) {
-    if (account && account !== salFactoryContract?.address) {
-      return <Redirect to="/" />;
-    }
+  const [adminAddress, setAdminAddress] = useState<string>();
+
+  useEffect(() => {
+    (async () => {
+      const ownerAddress = await salFactoryContract?.owner();
+
+      if (ownerAddress) {
+        setAdminAddress(ownerAddress);
+      }
+    })();
+  });
+
+  if (adminAddress && account && account.toLocaleUpperCase() !== adminAddress.toLowerCase()) {
+    return <Redirect to="/" />;
   }
 
-  if (!salFactoryContract?.address) {
+  if (!adminAddress) {
     return <LoadingData />;
   }
 
