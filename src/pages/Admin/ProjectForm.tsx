@@ -1,4 +1,3 @@
-import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
@@ -50,14 +49,19 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const saleFactoryContract = useSaleFactoryContract();
   const saleContract = useSaleContract(projectId as string);
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
-
   const { fetchTokenData } = useStatemintToken();
+
   const onTokenIdBlur = useCallback(async (): Promise<void> => {
     // methods.setValue('decimals', 'Loading...');
     const tokenId = methods.getValues('tokenId');
-    const tokenData = await fetchTokenData(tokenId.toString());
-    if (tokenData) {
-      methods.setValue('decimals', tokenData.decimals);
+
+    try {
+      const tokenData = await fetchTokenData(tokenId.toString());
+      if (tokenData) {
+        methods.setValue('decimals', tokenData.decimals);
+      }
+    } catch (e) {
+      return;
     }
   }, [methods, fetchTokenData]);
 
@@ -143,10 +147,10 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         );
         if (tx) {
           tx.wait(1);
-          navigation.push('/admin/project');
+          notifySuccess('Project successfuly created.', notificationTimer);
         }
         setIsSavingData(false);
-        notifySuccess('Project successfuly created.', notificationTimer);
+
         navigation.goBack();
       } catch (e) {
         console.log(e);
