@@ -33,7 +33,7 @@ export const AdminRouter = (): any => {
     })();
   });
 
-  if (adminAddress && account && account.toLocaleUpperCase() !== adminAddress.toLowerCase()) {
+  if (adminAddress && account && account.toLowerCase() !== adminAddress.toLowerCase()) {
     return <Redirect to="/" />;
   }
 
