@@ -1,5 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
