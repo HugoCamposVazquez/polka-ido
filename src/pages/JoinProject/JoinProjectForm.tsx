@@ -130,11 +130,14 @@ export const JoinProjectForm = () => {
     if (isSelectedInput(ActiveInput.To)) {
       selectedInput.current = ActiveInput.To;
       try {
-        const token = ethers.utils.parseUnits(toInputValue, data?.token.decimals || 0);
+        const tokenDecimals = data?.token.decimals || 0;
+        const dotIndex = toInputValue.indexOf('.');
+        const fixedValue = toInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + tokenDecimals + 1);
+        const token = ethers.utils.parseUnits(fixedValue, tokenDecimals);
         const wei = token
           .mul(BigNumber.from(data?.salePrice || '1'))
           // fix number caused by decimal point
-          .div(BigNumber.from(10).pow(data?.token.decimals || 0));
+          .div(BigNumber.from(10).pow(tokenDecimals));
         methods.setValue('fromValue', ethers.utils.formatEther(wei));
       } catch (e) {
         methods.setValue('fromValue', '');
@@ -161,7 +164,7 @@ export const JoinProjectForm = () => {
                 mode="dark"
                 style={{ fontSize: '1.25rem' }}
                 autoFocus={true}
-                type="numerical"
+                type="number"
               />
               <div style={styles.maxBtnStyle} onClick={onClickSetmaxUserAllocation}>
                 Max
@@ -184,7 +187,7 @@ export const JoinProjectForm = () => {
               </div>
             </div>
             <div style={styles.fieldContainerStyle}>
-              <TextField name="toValue" styleType="none" type="numerical" mode="dark" style={{ fontSize: '1.25rem' }} />
+              <TextField name="toValue" styleType="none" type="number" mode="dark" style={{ fontSize: '1.25rem' }} />
               <div style={styles.suffixTextStyle}>{tokenData ? tokenData.symbol : ''}</div>
             </div>
           </div>
