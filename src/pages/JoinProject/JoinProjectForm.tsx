@@ -164,7 +164,7 @@ export const JoinProjectForm = () => {
                 mode="dark"
                 style={{ fontSize: '1.25rem' }}
                 autoFocus={true}
-                type="number"
+                type="numerical"
               />
               <div style={styles.maxBtnStyle} onClick={onClickSetmaxUserAllocation}>
                 Max
@@ -187,7 +187,7 @@ export const JoinProjectForm = () => {
               </div>
             </div>
             <div style={styles.fieldContainerStyle}>
-              <TextField name="toValue" styleType="none" type="number" mode="dark" style={{ fontSize: '1.25rem' }} />
+              <TextField name="toValue" styleType="none" type="numerical" mode="dark" style={{ fontSize: '1.25rem' }} />
               <div style={styles.suffixTextStyle}>{tokenData ? tokenData.symbol : ''}</div>
             </div>
           </div>
