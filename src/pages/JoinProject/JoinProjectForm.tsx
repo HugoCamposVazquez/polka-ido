@@ -56,8 +56,12 @@ export const JoinProjectForm = () => {
     try {
       notifyTransactionConfirmation('Confirm Transaction...', 'buyingTokens');
       setIsTransactionInProgress(true);
+
+      const dotIndex = fromValue.indexOf('.');
+      const fixedValue = fromValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
+
       await saleContract?.buyTokens({
-        value: ethers.utils.parseEther(fromValue),
+        value: ethers.utils.parseEther(fixedValue),
         gasLimit: 10000000,
       });
 
@@ -113,7 +117,9 @@ export const JoinProjectForm = () => {
     if (isSelectedInput(ActiveInput.From)) {
       selectedInput.current = ActiveInput.From;
       try {
-        const wei = ethers.utils.parseEther(fromInputValue);
+        const dotIndex = fromInputValue.indexOf('.');
+        const fixedValue = fromInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
+        const wei = ethers.utils.parseEther(fixedValue);
         // to get decimals it need to be multiplied by decimal point
         const token = wei.mul(BigNumber.from(10).pow(data?.token.decimals || 0)).div(data?.salePrice || '1');
         methods.setValue('toValue', ethers.utils.formatUnits(token, data?.token.decimals || 0));
