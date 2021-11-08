@@ -146,8 +146,11 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           `ipfs://${response.IpfsHash}`,
         );
         if (tx) {
-          tx.wait(1);
-          notifySuccess('Project successfuly created.', notificationTimer);
+          const contractReceipt = await tx.wait(1);
+          if(contractReceipt) {
+            notifySuccess('Project successfuly created.', notificationTimer);
+          } 
+          
         }
         setIsSavingData(false);
 
