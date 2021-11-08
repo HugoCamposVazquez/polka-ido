@@ -32,6 +32,8 @@ export const JoinProjectForm = () => {
   const maxUserAllocation = BigNumber.from(data?.maxUserDepositAmount || '0');
   const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
+  if(!data || !tokenData) return null;
+
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
@@ -87,7 +89,7 @@ export const JoinProjectForm = () => {
   const calculateToValue = React.useCallback(
     (value: string): string => {
       try {
-        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data?.salePrice || '0')));
+        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data.salePrice, tokenData.decimals)));
       } catch (e) {
         console.error(`Error while calculating output value: ${e.message}`);
       }
@@ -99,7 +101,7 @@ export const JoinProjectForm = () => {
   const calculateFromValue = React.useCallback(
     (value: string): string => {
       try {
-        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data?.salePrice || '0')));
+        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data.salePrice, tokenData.decimals)));
       } catch (e) {
         console.error(`Error while calculating output value: ${e.message}`);
       }

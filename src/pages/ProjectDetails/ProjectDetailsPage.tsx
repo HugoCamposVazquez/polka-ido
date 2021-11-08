@@ -193,7 +193,7 @@ export const ProjectDetailsPage = () => {
                   config.CURRENCY
                 }`}</div>
               </div>
-              {account && data && <TotalAllocation account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
+              {/* {account && data && <TotalAllocation account={account} projectId={data?.id} tokenPrice={tokenPrice} />} */}
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
@@ -227,7 +227,7 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {account && data && <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
+      {/* {account && data && <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} />} */}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>

@@ -50,8 +50,11 @@ export const ProjectCard = ({ direction, project }: IProps) => {
   }, [project]);
 
   const tokenPrice = useMemo((): string => {
-    return getTokenPrice(project.salePrice);
-  }, [project]);
+    if(tokenData && project) {
+      return getTokenPrice(project.salePrice, tokenData.decimals);
+    }
+    return "0"
+  }, [project, tokenData]);
 
   return (
     <div

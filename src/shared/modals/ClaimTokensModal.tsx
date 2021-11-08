@@ -7,7 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { isAddressBalanceSufficient } from '../../services/isAddressBalanceSufficient';
 import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
-import { formatWei } from '../../utils/numModifiyngFuncs';
+import { formatTokenAmount, formatWei } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
 import { TextField } from '../gui/TextField';
@@ -34,11 +34,10 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
   useEffect(() => {
     const getClaimableTokens = async () => {
       try {
-        if (userEthAddress) {
-          const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
-          const formattedClaimableBalance = formatWei(claimableBalance);
-          setAmountOfClaimableTokens(formattedClaimableBalance);
-        }
+        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
+        // replace with decimals
+        const formattedClaimableBalance = formatTokenAmount(claimableBalance, "16");
+        setAmountOfClaimableTokens(formattedClaimableBalance);
       } catch (error) {
         setAmountOfClaimableTokens('0');
       }
@@ -48,7 +47,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     if (selectedDotAcc) {
       methods.setValue('address', selectedDotAcc.address);
     }
-  }, [accounts, selectedDotAcc, userEthAddress, isSufficientPolkadotBalance]);
+  }, [accounts, selectedDotAcc, userEthAddress, isSufficientPolkadotBalance, tokenData]);
 
   const methods = useForm({
     defaultValues: {

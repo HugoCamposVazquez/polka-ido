@@ -43,18 +43,17 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const [isTextareaDisplay, setIsTextareaDisplayed] = useState<boolean>(false);
   const [areAddressesValid, setAreAddressesValid] = useState<boolean>(false);
   const [whitelistedAddresses, setWhitelistedAddresses] = useState<string[]>([]);
-
   // TODO: Add fields validation
 
   const saleFactoryContract = useSaleFactoryContract();
   const saleContract = useSaleContract(projectId as string);
   const { writeData: writeDataToIPFS } = useWriteJSONToIPFS();
-  const { fetchTokenData } = useStatemintToken();
+  const { fetchTokenData } = useStatemintToken(defaultProjectData?.tokenId.toString());
 
   const onTokenIdBlur = useCallback(async (): Promise<void> => {
-    // methods.setValue('decimals', 'Loading...');
+    methods.setValue('decimals', 'Loading...');
     const tokenId = methods.getValues('tokenId');
-
+    console.log(tokenId)
     try {
       const tokenData = await fetchTokenData(tokenId.toString());
       if (tokenData) {
@@ -146,8 +145,9 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           `ipfs://${response.IpfsHash}`,
         );
         if (tx) {
-          tx.wait(1);
-          notifySuccess('Project successfuly created.', notificationTimer);
+          const contractReceipt = await tx.wait(1);
+          if(contractReceipt) notifySuccess('Project successfuly created.', notificationTimer);
+          
         }
         setIsSavingData(false);
 
