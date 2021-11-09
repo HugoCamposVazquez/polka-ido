@@ -5,8 +5,8 @@ import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import { BigNumber } from 'ethers';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-
 import projectCardBackground from '../../assets/project_card_background.png';
+import ImgLoading from '../../assets/ryu_logo_animation.gif';
 import telegramIcon from '../../assets/telegram_icon.svg';
 import twitterIcon from '../../assets/twitter_icon.svg';
 import webIcon from '../../assets/web_icon.svg';
@@ -130,7 +130,7 @@ export const ProjectDetailsPage = () => {
               <div style={styles.topRightBottomLeftNotch} className={styles.projectImageBackgroundStyle}>
                 <img
                   className={styles.projectIconClassName}
-                  src={metadata ? getIPFSResolvedLink(metadata?.imageUrl ?? '') : ''}
+                  src={metadata?.imageUrl ? getIPFSResolvedLink(metadata.imageUrl) : ImgLoading}
                 />
               </div>
               <div style={{ marginLeft: '1.5rem' }}>
