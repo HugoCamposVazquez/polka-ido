@@ -2,7 +2,7 @@ import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import ImgLoading from '../assets/ryu_logo_animation.gif';
 import { config } from '../config';
 import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
 import { useStatemintToken } from '../hooks/polkadot/useStatemintToken';
@@ -68,7 +68,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
             <div style={styles.projectCardHeaderIconContainer}>
               <img
                 style={styles.projectCardHeaderIconStyle}
-                src={metadata ? getIPFSResolvedLink(metadata?.imageUrl ?? '') : ''}
+                src={metadata?.imageUrl ? getIPFSResolvedLink(metadata.imageUrl) : ImgLoading}
               />
             </div>
           </div>
