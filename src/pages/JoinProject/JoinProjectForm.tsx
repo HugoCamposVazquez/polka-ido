@@ -60,16 +60,19 @@ export const JoinProjectForm = () => {
       const dotIndex = fromValue.indexOf('.');
       const fixedValue = fromValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
 
-      await saleContract?.buyTokens({
+      const tx = await saleContract?.buyTokens({
         value: ethers.utils.parseEther(fixedValue),
         gasLimit: 10000000,
       });
-
-      updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
-
-      methods.setValue('toValue', '');
-      methods.setValue('fromValue', '');
-      setIsTransactionInProgress(false);
+      if (tx) {
+        const contractReceipt = await tx.wait(1);
+        if (contractReceipt) {
+          updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
+          methods.setValue('toValue', '');
+          methods.setValue('fromValue', '');
+          setIsTransactionInProgress(false);
+        }
+      }
     } catch (e) {
       console.error(e.message);
       updateNotifyError('Transaction Cancelled', 'buyingTokens');

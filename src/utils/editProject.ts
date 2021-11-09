@@ -19,8 +19,8 @@ const editTx = async <T extends Function>(
 ) => {
   try {
     const tx: ContractTransaction = await contractMethod(...contractMethodProps);
-    if (tx) tx.wait(1);
-    onSuccess(successMessage);
+    const contractReceipt = await tx.wait(1);
+    if (contractReceipt) onSuccess(successMessage);
   } catch (err) {
     console.log(err);
     onFaliure(errorMessage);
