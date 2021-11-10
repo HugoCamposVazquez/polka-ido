@@ -12,7 +12,7 @@ export const useSaleFactoryContract = (): SaleContractFactory | null => {
   try {
     const address = getSaleFactoryContractAddress(chainId || DEFAULT_NETWORK_ID);
     return useContract(address, abi) as SaleContractFactory;
-  } catch (e) {
+  } catch (e: any) {
     console.error(`Error while trying to connect to contract: ${e.message}`);
     return null;
   }

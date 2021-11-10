@@ -3,6 +3,7 @@ import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import ImgLoading from '../assets/ryu_logo_animation.gif';
 import { config } from '../config';
 import { useReadIPFS } from '../hooks/ipfs/useReadIPFS';
 import { useStatemintToken } from '../hooks/polkadot/useStatemintToken';
@@ -50,10 +51,10 @@ export const ProjectCard = ({ direction, project }: IProps) => {
   }, [project]);
 
   const tokenPrice = useMemo((): string => {
-    if(tokenData && project) {
+    if (tokenData && project) {
       return getTokenPrice(project.salePrice, tokenData.decimals);
     }
-    return "0"
+    return '0';
   }, [project, tokenData]);
 
   return (
@@ -71,7 +72,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
             <div style={styles.projectCardHeaderIconContainer}>
               <img
                 style={styles.projectCardHeaderIconStyle}
-                src={metadata ? getIPFSResolvedLink(metadata?.imageUrl ?? '') : ''}
+                src={metadata?.imageUrl ? getIPFSResolvedLink(metadata.imageUrl) : ImgLoading}
               />
             </div>
           </div>

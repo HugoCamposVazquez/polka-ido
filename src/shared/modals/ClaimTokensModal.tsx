@@ -7,7 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { isAddressBalanceSufficient } from '../../services/isAddressBalanceSufficient';
 import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
-import { formatTokenAmount, formatWei } from '../../utils/numModifiyngFuncs';
+import { formatTokenAmount } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
 import { TextField } from '../gui/TextField';
@@ -36,7 +36,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
       try {
         const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
         // replace with decimals
-        const formattedClaimableBalance = formatTokenAmount(claimableBalance, "16");
+        const formattedClaimableBalance = formatTokenAmount(claimableBalance, '16');
         setAmountOfClaimableTokens(formattedClaimableBalance);
       } catch (error) {
         setAmountOfClaimableTokens('0');

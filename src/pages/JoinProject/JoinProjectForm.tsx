@@ -1,8 +1,6 @@
-import 'react-toastify/dist/ReactToastify.css';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -16,10 +14,15 @@ import { useMoonbeanBalance } from '../../hooks/web3/useMoonbeamBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
-import { getTokenPrice } from '../../utils/data';
 import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
+
+enum ActiveInput {
+  None,
+  From,
+  To,
+}
 
 export const JoinProjectForm = () => {
   const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
@@ -32,7 +35,7 @@ export const JoinProjectForm = () => {
   const maxUserAllocation = BigNumber.from(data?.maxUserDepositAmount || '0');
   const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
-  if(!data || !tokenData) return null;
+  if (!data || !tokenData) return null;
 
   const validationSchema = yup.object().shape({
     fromValue: yup
@@ -55,17 +58,24 @@ export const JoinProjectForm = () => {
     try {
       notifyTransactionConfirmation('Confirm Transaction...', 'buyingTokens');
       setIsTransactionInProgress(true);
-      await saleContract?.buyTokens({
-        value: ethers.utils.parseEther(fromValue),
+
+      const dotIndex = fromValue.indexOf('.');
+      const fixedValue = fromValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
+
+      const tx = await saleContract?.buyTokens({
+        value: ethers.utils.parseEther(fixedValue),
         gasLimit: 10000000,
       });
-
-      updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
-
-      methods.setValue('toValue', '');
-      methods.setValue('fromValue', '');
-      setIsTransactionInProgress(false);
-    } catch (e) {
+      if (tx) {
+        const contractReceipt = await tx.wait(1);
+        if (contractReceipt) {
+          updateNotifySuccess(<div>Success! Thank you for joining</div>, 'buyingTokens', 10000);
+          methods.setValue('toValue', '');
+          methods.setValue('fromValue', '');
+          setIsTransactionInProgress(false);
+        }
+      }
+    } catch (e: any) {
       console.error(e.message);
       updateNotifyError('Transaction Cancelled', 'buyingTokens');
 
@@ -79,36 +89,7 @@ export const JoinProjectForm = () => {
     const maxPossible = balance.gt(maxUserAllocation) ? maxUserAllocation : balance;
     const formattedMaxPossible = formatWei(maxPossible);
     methods.setValue('fromValue', formattedMaxPossible);
-    const toValue = calculateToValue(formattedMaxPossible);
-    methods.setValue('toValue', toValue);
   };
-
-  const swapValues = methods.watch();
-
-  // Calculates output value (how many token should get)
-  const calculateToValue = React.useCallback(
-    (value: string): string => {
-      try {
-        return formatWei(ethers.utils.parseEther(value).mul(getTokenPrice(data.salePrice, tokenData.decimals)));
-      } catch (e) {
-        console.error(`Error while calculating output value: ${e.message}`);
-      }
-      return '0';
-    },
-    [data],
-  );
-
-  const calculateFromValue = React.useCallback(
-    (value: string): string => {
-      try {
-        return formatWei(ethers.utils.parseEther(value).div(getTokenPrice(data.salePrice, tokenData.decimals)));
-      } catch (e) {
-        console.error(`Error while calculating output value: ${e.message}`);
-      }
-      return '0';
-    },
-    [data],
-  );
 
   const getSubmitButttonText = (): string => {
     if (saleContract && isTransactionInProgress) return 'Waiting for confirmation...';
@@ -130,30 +111,53 @@ export const JoinProjectForm = () => {
     return '0';
   }, [data]);
 
-  // Setting opposite output swapping value on change
-  useEffect(() => {
-    if (data && swapValues.fromValue) {
-      // If not infinite loop, set the other value
-      const nextSwapValue = calculateToValue(swapValues.fromValue);
-      if (swapValues.fromValue && swapValues.toValue !== nextSwapValue) {
-        methods.setValue('toValue', nextSwapValue);
-      }
-    } else if (swapValues.toValue && !swapValues.fromValue) {
-      // Reset field when empty
-      methods.setValue('toValue', '');
-    }
-  }, [swapValues.fromValue, data]);
+  const fromInputValue = methods.watch('fromValue', '0');
+  const toInputValue = methods.watch('toValue', '0');
+
+  const selectedInput = useRef(ActiveInput.None);
+  const isSelectedInput = (type: ActiveInput): boolean =>
+    selectedInput.current === ActiveInput.None || selectedInput.current === type;
 
   useEffect(() => {
-    if (data && swapValues.toValue) {
-      const nextSwapValue = calculateFromValue(swapValues.toValue);
-      if (swapValues.toValue && swapValues.fromValue !== nextSwapValue) {
-        methods.setValue('fromValue', nextSwapValue);
+    if (isSelectedInput(ActiveInput.From)) {
+      selectedInput.current = ActiveInput.From;
+      try {
+        const dotIndex = fromInputValue.indexOf('.');
+        const fixedValue = fromInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
+        const wei = ethers.utils.parseEther(fixedValue);
+        // to get decimals it need to be multiplied by decimal point
+        const token = wei.mul(BigNumber.from(10).pow(data?.token.decimals || 0)).div(data?.salePrice || '1');
+        methods.setValue('toValue', ethers.utils.formatUnits(token, data?.token.decimals || 0));
+      } catch (e: any) {
+        methods.setValue('toValue', '');
+        console.error(`Error while calculating output value: ${e.message}`);
       }
-    } else if (swapValues.fromValue && !swapValues.toValue) {
-      methods.setValue('fromValue', '');
+    } else {
+      selectedInput.current = ActiveInput.None;
     }
-  }, [swapValues.toValue, data]);
+  }, [fromInputValue]);
+
+  useEffect(() => {
+    if (isSelectedInput(ActiveInput.To)) {
+      selectedInput.current = ActiveInput.To;
+      try {
+        const tokenDecimals = data?.token.decimals || 0;
+        const dotIndex = toInputValue.indexOf('.');
+        const fixedValue = toInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + tokenDecimals + 1);
+        const token = ethers.utils.parseUnits(fixedValue, tokenDecimals);
+        const wei = token
+          .mul(BigNumber.from(data?.salePrice || '1'))
+          // fix number caused by decimal point
+          .div(BigNumber.from(10).pow(tokenDecimals));
+        methods.setValue('fromValue', ethers.utils.formatEther(wei));
+      } catch (e: any) {
+        methods.setValue('fromValue', '');
+        console.error(`Error while calculating output value: ${e.message}`);
+      }
+    } else {
+      selectedInput.current = ActiveInput.None;
+    }
+  }, [toInputValue]);
 
   return (
     <FormProvider {...methods}>
@@ -166,9 +170,9 @@ export const JoinProjectForm = () => {
             </div>
             <div style={styles.fieldContainerStyle}>
               <TextField
-                name={'fromValue'}
-                styleType={'none'}
-                mode={'dark'}
+                name="fromValue"
+                styleType="none"
+                mode="dark"
                 style={{ fontSize: '1.25rem' }}
                 autoFocus={true}
                 type="numerical"
@@ -194,13 +198,7 @@ export const JoinProjectForm = () => {
               </div>
             </div>
             <div style={styles.fieldContainerStyle}>
-              <TextField
-                name={'toValue'}
-                styleType={'none'}
-                type="numerical"
-                mode={'dark'}
-                style={{ fontSize: '1.25rem' }}
-              />
+              <TextField name="toValue" styleType="none" type="numerical" mode="dark" style={{ fontSize: '1.25rem' }} />
               <div style={styles.suffixTextStyle}>{tokenData ? tokenData.symbol : ''}</div>
             </div>
           </div>
@@ -215,9 +213,10 @@ export const JoinProjectForm = () => {
             <MainButton
               title={getSubmitButttonText()}
               onClick={methods.handleSubmit(onSubmit)}
-              type={'fill'}
+              type="fill"
               disabled={!saleContract || isTransactionInProgress}
-              style={{ width: '100%' }}></MainButton>
+              style={{ width: '100%' }}
+            />
           </div>
         </div>
       </form>

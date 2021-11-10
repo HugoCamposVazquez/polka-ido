@@ -44,7 +44,7 @@ export const useStatemintToken = (assetId?: string): ReturnData => {
       setData(data);
       setLoading(false);
       return data;
-    } catch (e) {
+    } catch (e: any) {
       setLoading(false);
       setError(e.message);
       return null;

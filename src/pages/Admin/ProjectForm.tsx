@@ -53,7 +53,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const onTokenIdBlur = useCallback(async (): Promise<void> => {
     methods.setValue('decimals', 'Loading...');
     const tokenId = methods.getValues('tokenId');
-    console.log(tokenId)
+    console.log(tokenId);
     try {
       const tokenData = await fetchTokenData(tokenId.toString());
       if (tokenData) {
@@ -146,8 +146,9 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         );
         if (tx) {
           const contractReceipt = await tx.wait(1);
-          if(contractReceipt) notifySuccess('Project successfuly created.', notificationTimer);
-          
+          if (contractReceipt) {
+            notifySuccess('Project successfuly created.', notificationTimer);
+          }
         }
         setIsSavingData(false);
 

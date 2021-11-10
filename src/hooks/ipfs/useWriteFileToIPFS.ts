@@ -30,7 +30,7 @@ export const useWriteFileToIPFS = (): IData => {
         setLoading(false);
         return response.data;
       }
-    } catch (e) {
+    } catch (e: any) {
       if (axios.isAxiosError(e)) {
         setError(e.response?.data);
       } else {

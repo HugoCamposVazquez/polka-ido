@@ -26,7 +26,7 @@ export const useReadIPFS = <ReturnData>(hash?: string): IData<ReturnData> => {
           setData(response.data);
         }
       }
-    } catch (e) {
+    } catch (e: any) {
       if (axios.isAxiosError(e)) {
         setError(e.response?.data);
       } else {

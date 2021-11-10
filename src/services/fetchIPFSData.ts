@@ -11,7 +11,7 @@ export const fetchIPFSData = async (hash: string): Promise<ProjectMetadata | und
         return response.data;
       }
     }
-  } catch (e) {
+  } catch (e: any) {
     console.log(e.message);
   }
 };

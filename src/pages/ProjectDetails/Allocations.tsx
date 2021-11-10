@@ -20,8 +20,8 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IPr
 
   const getNumberOfTokens = useCallback(
     (allocation: string) => {
-      formatWei(BigNumber.from(allocation).mul(BigNumber.from(tokenPrice)))
-    } ,
+      formatWei(BigNumber.from(allocation).mul(BigNumber.from(tokenPrice)));
+    },
     [data],
   );
 

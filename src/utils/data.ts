@@ -1,8 +1,6 @@
 import { BigNumber, utils } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 
-import { numberWithSpaces } from './numModifiyngFuncs';
-
 export const getIPFSResolvedLink = (uri: string): string => {
   let hash = uri;
   if (uri.startsWith('ipfs://')) {
@@ -21,8 +19,8 @@ export const getTokenPrice = (salePrice: string, decimals?: string): string => {
   const precision = 12;
   const precisonMul = (10 ** precision).toString();
 
-  const result = BigNumber.from(salePrice).mul(precisonMul).div(utils.parseUnits('1.0', decimals))
-  const formated = formatUnits(result, precision)
+  const result = BigNumber.from(salePrice).mul(precisonMul).div(utils.parseUnits('1.0', decimals));
+  const formated = formatUnits(result, precision);
 
   return formated;
 };

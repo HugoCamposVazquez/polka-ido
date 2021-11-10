@@ -8,14 +8,14 @@ export const fixNums = (num: number, fixTo: number) => {
 };
 
 export const numberWithSpaces = (num: string) => {
-  let intPart = num.split(".")[0]
-  const decimals = num.split(".")[1]
-  if(intPart === "0") return num;
+  let intPart = num.split('.')[0];
+  const decimals = num.split('.')[1];
+  if (intPart === '0') return num;
 
   const pattern = /(-?\d+)(\d{3})/;
   while (pattern.test(intPart)) intPart = intPart.replace(pattern, '$1 $2');
 
-  return intPart + (decimals ? `.${decimals}` : "");
+  return intPart + (decimals ? `.${decimals}` : '');
 };
 
 const removeTrailingZeros = (str: string): string => str.replace(/\.0+$/, '');
@@ -46,4 +46,4 @@ export const formatTokenAmount = (numberInWei: string | BigNumber, decimals: str
 
 export const mulBigNumber = (first: BigNumber, second: BigNumber) => {
   // if(first)
-}
+};

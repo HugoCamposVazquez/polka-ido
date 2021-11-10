@@ -1,6 +1,7 @@
 import 'antd/dist/antd.css';
 import './index.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-toastify/dist/ReactToastify.css';
 import '@fontsource/odibee-sans';
 import '@fontsource/titillium-web';
 

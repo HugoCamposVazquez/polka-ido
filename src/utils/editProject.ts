@@ -20,8 +20,7 @@ const editTx = async <T extends Function>(
   try {
     const tx: ContractTransaction = await contractMethod(...contractMethodProps);
     const contractReceipt = await tx.wait(1);
-    if(contractReceipt) onSuccess(successMessage);
-    
+    if (contractReceipt) onSuccess(successMessage);
   } catch (err) {
     console.log(err);
     onFaliure(errorMessage);
@@ -279,7 +278,7 @@ export const writeToIPFS = async (
     if (response.data) {
       return response.data;
     }
-  } catch (e) {
+  } catch (e: any) {
     if (axios.isAxiosError(e)) {
       setError(e.response?.data);
     } else {

@@ -43,11 +43,10 @@ export const TextField = ({
   let additionalProps: any = { ...props };
   if (type === 'numerical') {
     additionalProps = {
-      type: 'text',
+      type: 'number',
       inputMode: 'decimal',
       autoComplete: 'off',
       autoCorrect: 'off',
-      pattern: '^[0-9]*[.,]?[0-9]*$',
       title: 'Invalid number',
       placeholder: '0.0',
       minLength: 1,
