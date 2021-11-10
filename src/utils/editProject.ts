@@ -1,7 +1,7 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import axios from 'axios';
 import { ContractTransaction } from 'ethers';
-import { formatEther, parseEther } from 'ethers/lib/utils';
+import { formatEther, formatUnits, parseEther, parseUnits } from 'ethers/lib/utils';
 
 import { getPinataApi, PinataResponse } from '../services/pinata';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
@@ -112,7 +112,7 @@ export const editProject = async (
   if (isChanged(['tokenPrice'])) {
     await editTx(
       saleContract.setSalePrice,
-      [parseEther(submitedData.tokenPrice.toString())],
+      [parseUnits(submitedData.tokenPrice.toString(), submitedData.decimals)],
       { successMessage: 'Token price successfuly updated.', errorMessage: 'Token price failed to update.' },
       onSuccess,
       onFaliure,
@@ -238,7 +238,7 @@ export const convertToProjectType = (project?: SalesDto, metadata?: ProjectMetad
       minUserDepositAmount: formatEther(minUserDepositAmount),
       maxUserDepositAmount: formatEther(maxUserDepositAmount),
       cap: formatEther(cap),
-      tokenPrice: formatEther(salePrice),
+      tokenPrice: formatUnits(salePrice, token.decimals),
       vestingStartDate: new Date(parseInt(vestingStartDate)),
       vestingEndDate: new Date(parseInt(vestingEndDate)),
       tokenId: parseInt(token.id),

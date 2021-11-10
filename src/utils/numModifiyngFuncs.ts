@@ -43,7 +43,3 @@ export const formatTokenAmount = (numberInWei: string | BigNumber, decimals: str
   const basicNumber = parsed.replace(/\.0+$/, ''); // replace trailing zeros
   return numberWithSpaces(basicNumber);
 };
-
-export const mulBigNumber = (first: BigNumber, second: BigNumber) => {
-  // if(first)
-};

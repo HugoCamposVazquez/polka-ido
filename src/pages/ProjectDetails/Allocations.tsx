@@ -1,4 +1,4 @@
-import { BigNumber } from 'ethers';
+import Big from 'big.js';
 import React, { useCallback, useMemo } from 'react';
 
 import { config } from '../../config';
@@ -17,11 +17,8 @@ interface IProps {
 
 export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
-
   const getNumberOfTokens = useCallback(
-    (allocation: string) => {
-      formatWei(BigNumber.from(allocation).mul(BigNumber.from(tokenPrice)));
-    },
+    (allocation: string) => formatWei(Big(allocation).times(Big(tokenPrice)).valueOf()),
     [data],
   );
 
@@ -71,7 +68,12 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IPr
 export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, claimedTokenBalance }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const totalAllocation = useMemo(
-    () => formatWei(BigNumber.from(data?.totalAllocation || '0').mul(BigNumber.from(tokenPrice))),
+    () =>
+      formatWei(
+        Big(data?.totalAllocation || '0')
+          .times(Big(tokenPrice))
+          .valueOf(),
+      ),
     [data],
   );
 
