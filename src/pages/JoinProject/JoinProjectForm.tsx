@@ -35,8 +35,6 @@ export const JoinProjectForm = () => {
   const maxUserAllocation = BigNumber.from(data?.maxUserDepositAmount || '0');
   const formattedmaxUserAllocation = React.useMemo(() => formatWei(maxUserAllocation), [maxUserAllocation]);
 
-  if (!data || !tokenData) return null;
-
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
@@ -121,13 +119,14 @@ export const JoinProjectForm = () => {
   useEffect(() => {
     if (isSelectedInput(ActiveInput.From)) {
       selectedInput.current = ActiveInput.From;
+      if (!data?.token.decimals) return;
       try {
         const dotIndex = fromInputValue.indexOf('.');
         const fixedValue = fromInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
         const wei = ethers.utils.parseEther(fixedValue);
         // to get decimals it need to be multiplied by decimal point
         const token = wei.mul(BigNumber.from(10).pow(data?.token.decimals || 0)).div(data?.salePrice || '1');
-        methods.setValue('toValue', ethers.utils.formatUnits(token, data?.token.decimals || 0));
+        methods.setValue('toValue', ethers.utils.formatUnits(token, data.token.decimals));
       } catch (e: any) {
         methods.setValue('toValue', '');
         console.error(`Error while calculating output value: ${e.message}`);

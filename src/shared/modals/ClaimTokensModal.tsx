@@ -1,7 +1,7 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
@@ -23,20 +23,26 @@ interface IProps {
 }
 
 export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId }: IProps) => {
+  const { data: tokenData } = useStatemintToken(tokenId);
+
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
   const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
   const [isSufficientPolkadotBalance, setIsSufficientPolkadotBalance] = useState<boolean>();
-  const { data: tokenData } = useStatemintToken(tokenId);
+  const [tokenDataError, setTokenDataError] = useState(false);
 
   useEffect(() => {
     const getClaimableTokens = async () => {
+      console.log(tokenData);
+      if (!tokenData) {
+        setTokenDataError(true);
+        return;
+      } else setTokenDataError(false);
       try {
         const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
-        // replace with decimals
-        const formattedClaimableBalance = formatTokenAmount(claimableBalance, '16');
+        const formattedClaimableBalance = formatTokenAmount(claimableBalance, tokenData.decimals);
         setAmountOfClaimableTokens(formattedClaimableBalance);
       } catch (error) {
         setAmountOfClaimableTokens('0');
@@ -118,6 +124,12 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
           <b>
             Sorry, can't claim any tokens as your account doesn't have the existential deposit required on the network.
           </b>
+        )}
+        {tokenDataError && (
+          <Fragment>
+            <br />
+            <b>Error fetching token data.</b>
+          </Fragment>
         )}
       </div>
       <FormProvider {...methods}>
