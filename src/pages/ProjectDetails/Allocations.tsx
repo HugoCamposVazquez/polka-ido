@@ -1,9 +1,10 @@
 import Big from 'big.js';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { config } from '../../config';
 import { useUserAllocations } from '../../hooks/apollo/useUserAllocations';
+import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { convertDateFromUnixtime } from '../../utils/date';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
@@ -13,7 +14,6 @@ interface IProps {
   projectId: string;
   tokenPrice: string;
   tokenSymbol?: string;
-  claimedTokenBalance?: string;
   tokenDecimals?: string;
 }
 
@@ -67,14 +67,7 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol, token
   );
 };
 
-export const TotalAllocation = ({
-  account,
-  projectId,
-  tokenPrice,
-  tokenSymbol,
-  claimedTokenBalance,
-  tokenDecimals,
-}: IProps) => {
+export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, tokenDecimals }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const totalAllocation = useMemo(
     () =>
@@ -87,11 +80,24 @@ export const TotalAllocation = ({
     [data],
   );
 
+  const [claimed, setClaimed] = useState('0.0');
+  const contract = useSaleContract(projectId);
+  useEffect(() => {
+    try {
+      if (contract)
+        contract.getUserClaimableTokens(account).then((count) => {
+          setClaimed(formatUnits(count, tokenDecimals));
+        });
+    } catch {
+      setClaimed('0.0');
+    }
+  }, [account, projectId, contract]);
+
   return (
     <div style={styles.descriptionParentStyle}>
       <div className={styles.description2TextStyle}>Your allocation</div>
       <div className={styles.content2TextStyle}>
-        {totalAllocation} {tokenSymbol || 'tokens'} (Claimed: {claimedTokenBalance || 0})
+        {totalAllocation} {tokenSymbol || 'tokens'} (Claimed: {claimed})
       </div>
     </div>
   );
