@@ -1,13 +1,13 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { isAddressBalanceSufficient } from '../../services/isAddressBalanceSufficient';
 import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
-import { formatWei } from '../../utils/numModifiyngFuncs';
+import { formatTokenAmount } from '../../utils/numModifiyngFuncs';
 import { AccountsDropdown } from '../AccountsDropdown';
 import { MainButton } from '../gui/MainButton';
 import { TextField } from '../gui/TextField';
@@ -23,31 +23,34 @@ interface IProps {
 }
 
 export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId }: IProps) => {
+  const { data: tokenData } = useStatemintToken(tokenId);
+
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
   const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
   const [isSufficientPolkadotBalance, setIsSufficientPolkadotBalance] = useState<boolean>();
-  const { data: tokenData } = useStatemintToken(tokenId);
+  const [tokenDataError, setTokenDataError] = useState(false);
 
   useEffect(() => {
-    const getClaimableTokens = async () => {
+    (async () => {
+      if (!tokenData) {
+        setTokenDataError(true);
+        return;
+      } else setTokenDataError(false);
       try {
-        if (userEthAddress) {
-          const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
-          const formattedClaimableBalance = formatWei(claimableBalance);
-          setAmountOfClaimableTokens(formattedClaimableBalance);
-        }
+        const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
+        const formattedClaimableBalance = formatTokenAmount(claimableBalance, tokenData.decimals);
+        setAmountOfClaimableTokens(formattedClaimableBalance);
       } catch (error) {
         setAmountOfClaimableTokens('0');
       }
-    };
-    getClaimableTokens();
+    })();
 
     if (selectedDotAcc) {
       methods.setValue('address', selectedDotAcc.address);
     }
-  }, [accounts, selectedDotAcc, userEthAddress, isSufficientPolkadotBalance]);
+  }, [accounts, selectedDotAcc, userEthAddress, isSufficientPolkadotBalance, tokenData]);
 
   const methods = useForm({
     defaultValues: {
@@ -118,6 +121,12 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
           <b>
             Sorry, can't claim any tokens as your account doesn't have the existential deposit required on the network.
           </b>
+        )}
+        {tokenDataError && (
+          <Fragment>
+            <br />
+            <b>Error fetching token data.</b>
+          </Fragment>
         )}
       </div>
       <FormProvider {...methods}>

@@ -1,6 +1,5 @@
-import { BigNumber, ethers } from 'ethers';
-
-import { numberWithDots } from './numModifiyngFuncs';
+import { BigNumber, utils } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 
 export const getIPFSResolvedLink = (uri: string): string => {
   let hash = uri;
@@ -16,6 +15,12 @@ export const getPercentage = (fraction: string, total: string): string => {
   return percentage.toString();
 };
 
-export const getTokenPrice = (salePrice: string): string => {
-  return numberWithDots(BigNumber.from(salePrice).div(ethers.utils.parseEther('1.0')).toString());
+export const getTokenPrice = (salePrice: string, decimals?: string): string => {
+  const precision = 12;
+  const precisonMul = (10 ** precision).toString();
+
+  const result = BigNumber.from(salePrice).mul(precisonMul).div(utils.parseUnits('1.0', decimals));
+  const formated = formatUnits(result, precision);
+
+  return formated;
 };

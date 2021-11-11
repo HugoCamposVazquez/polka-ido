@@ -17,7 +17,7 @@ export const useContract = (address: string | undefined, ABI: any): Contract | n
       const signer = library.getSigner(account);
 
       return new Contract(address, ABI, signer);
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Failed to connect to contract ${address}: `, error.message());
 
       return null;
