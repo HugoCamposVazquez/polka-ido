@@ -91,7 +91,7 @@ export const TotalAllocation = ({
     <div style={styles.descriptionParentStyle}>
       <div className={styles.description2TextStyle}>Your allocation</div>
       <div className={styles.content2TextStyle}>
-        {totalAllocation} {tokenSymbol || 'tokens'} (Claimed: {claimedTokenBalance})
+        {totalAllocation} {tokenSymbol || 'tokens'} (Claimed: {claimedTokenBalance || 0})
       </div>
     </div>
   );

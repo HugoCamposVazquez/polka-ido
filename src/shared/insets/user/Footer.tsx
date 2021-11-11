@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import * as styles from './Footer.styles';
 
@@ -26,9 +26,9 @@ export const Footer = withRouter(() => {
           </div>
           <div className={styles.linksGroupsClassName}>
             <div className={styles.linkTitleTextStyle}>Company</div>
-            <a href="/about" className={styles.linkTextStyle}>
+            <Link to="/about" className={styles.linkTextStyle}>
               About us
-            </a>
+            </Link>
           </div>
           <div>
             <div className={styles.linksGroupsClassName}>

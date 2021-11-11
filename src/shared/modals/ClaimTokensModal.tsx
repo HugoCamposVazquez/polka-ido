@@ -26,7 +26,6 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
   const { data: tokenData } = useStatemintToken(tokenId);
 
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
-  const [isConnectedWallet, setIsConnectWallet] = useState(false);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
   const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);
   const [amountOfClaimableTokens, setAmountOfClaimableTokens] = useState<string>();
@@ -82,32 +81,32 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     setIsSufficientPolkadotBalance(await isAddressBalanceSufficient(account.address));
   };
 
-  const onPolkadotJsConnect = async () => {
-    const extensions = await web3Enable('RYU network');
-    if (extensions.length !== 0) {
-      const allAccounts = await web3Accounts();
-      setAccounts(allAccounts);
-      setIsConnectWallet(true);
-      await onAccountChange(allAccounts[0]);
-    }
-  };
+  useEffect(() => {
+    const getAccounts = async () => {
+      const extensions = await web3Enable('RYU network');
+      if (extensions.length !== 0) {
+        const allAccounts = await web3Accounts();
+        setAccounts(allAccounts);
+      }
+    };
+    getAccounts();
+  }, []);
 
   return (
     <Modal title="CLAIM TOKEN" closeModal={closeModal}>
       <div style={styles.walletConnectContainer}>
-        {!isConnectedWallet && (
+        {!selectedDotAcc ? (
           <>
             <div style={styles.subtitleTextStyle}>
               Please connect your Polkadot.js wallet first. Choose the account that you wish to receive the project
               tokens.
             </div>
-            <MainButton title="CONNECT WALLET" type={'bordered'} onClick={onPolkadotJsConnect} />
+            <AccountsDropdown options={accounts} initialAccount={undefined} onAccountChange={onAccountChange} />
           </>
-        )}
-        {isConnectedWallet && (
+        ) : (
           <>
             <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown options={accounts} initialAccount={accounts[0]} onAccountChange={onAccountChange} />
+            <AccountsDropdown options={accounts} initialAccount={selectedDotAcc} onAccountChange={onAccountChange} />
           </>
         )}
       </div>

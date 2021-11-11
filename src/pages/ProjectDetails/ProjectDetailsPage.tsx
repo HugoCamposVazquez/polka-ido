@@ -256,7 +256,9 @@ export const ProjectDetailsPage = () => {
               <div style={{ marginTop: '2.25rem' }}>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting start time</div>
-                  <div className={styles.content3TextStyle}>{data?.vestingStartDate || 'N/A'}</div>
+                  <div className={styles.content3TextStyle}>
+                    {data ? format(fromUnixTime(+data?.vestingStartDate), 'PPpp') : 'N/A'}
+                  </div>
                 </div>
                 <div style={styles.projectDetailsItemStyle}>
                   <div className={styles.descriptionTextStyle}>Vesting duration</div>

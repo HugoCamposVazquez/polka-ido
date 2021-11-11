@@ -11,12 +11,12 @@ import { MainButton } from './gui/MainButton';
 
 interface IProps {
   options: InjectedAccountWithMeta[];
-  initialAccount: InjectedAccountWithMeta;
+  initialAccount?: InjectedAccountWithMeta;
   onAccountChange: (account: InjectedAccountWithMeta) => Promise<void>;
 }
 
 export const AccountsDropdown = ({ options, initialAccount, onAccountChange }: IProps) => {
-  const [selectedAccount, setSelectedAccount] = React.useState<InjectedAccountWithMeta>(initialAccount);
+  const [selectedAccount, setSelectedAccount] = React.useState(initialAccount);
   const onOptionSelect = async (item: MenuInfo) => {
     const account = options.find((option) => option.address === item.key);
     if (account) {
@@ -43,7 +43,7 @@ export const AccountsDropdown = ({ options, initialAccount, onAccountChange }: I
 
   return (
     <Dropdown overlay={menu} placement="bottomCenter" arrow trigger={['click']}>
-      <MainButton type="bordered" title={selectedAccount?.meta.name || 'Select account'} onClick={() => {}} />
+      <MainButton type="bordered" title={selectedAccount?.meta.name || 'CONNECT WALLET'} onClick={() => {}} />
     </Dropdown>
   );
 };

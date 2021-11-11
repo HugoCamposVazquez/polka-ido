@@ -38,9 +38,11 @@ export const JoinProjectForm = () => {
   const validationSchema = yup.object().shape({
     fromValue: yup
       .string()
+      .typeError('Required input')
       .required('Required input')
-      .max(Number(formattedmaxUserAllocation))
-      .matches(/^[0-9]*[.,]?[0-9]*$/, 'Invalid format'),
+      .test('maxValue', `Maximum allocation is ${formattedmaxUserAllocation} MOVR`, (value) =>
+        ethers.utils.parseEther(formattedmaxUserAllocation).gte(ethers.utils.parseEther(value || '0')),
+      ),
   });
 
   const methods = useForm({
