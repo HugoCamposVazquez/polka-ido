@@ -70,7 +70,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
       if (defaultProjectData === undefined) {
         // Creating new project
         methods.reset({
-          access: 'whitelist',
+          access: 'public',
         });
       } else {
         // Editing project
@@ -201,6 +201,8 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     }
   };
 
+  const access = methods.watch('access', 'public');
+
   return (
     <FormProvider {...methods}>
       <form>
@@ -220,8 +222,8 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                     name={'access'}
                     color={sideColor3}
                     options={[
-                      { value: 'whitelist', label: 'Whitelist' },
                       { value: 'public', label: 'Public' },
+                      { value: 'whitelist', label: 'Whitelist' },
                     ]}
                   />
                 </div>
@@ -380,7 +382,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           </div>
 
           <div style={styles.whitelistedAddressesContainerStyle}>
-            {defaultProjectData?.access === 'whitelist' && (
+            {access === 'whitelist' && (
               <p
                 onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
                 style={styles.addWhitelisteAddressesTitleStyle}>
