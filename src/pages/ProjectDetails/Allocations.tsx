@@ -1,4 +1,5 @@
-import { BigNumber } from 'ethers';
+import Big from 'big.js';
+import { formatUnits } from 'ethers/lib/utils';
 import React, { useCallback, useMemo } from 'react';
 
 import { config } from '../../config';
@@ -13,13 +14,13 @@ interface IProps {
   tokenPrice: string;
   tokenSymbol?: string;
   claimedTokenBalance?: string;
+  tokenDecimals?: string;
 }
 
-export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
+export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol, tokenDecimals }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
-
   const getNumberOfTokens = useCallback(
-    (allocation: string) => formatWei(BigNumber.from(allocation).mul(BigNumber.from(tokenPrice))),
+    (allocation: string) => formatUnits(Big(allocation).times(Big(tokenPrice)).valueOf(), tokenDecimals),
     [data],
   );
 
@@ -66,10 +67,23 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IPr
   );
 };
 
-export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, claimedTokenBalance }: IProps) => {
+export const TotalAllocation = ({
+  account,
+  projectId,
+  tokenPrice,
+  tokenSymbol,
+  claimedTokenBalance,
+  tokenDecimals,
+}: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const totalAllocation = useMemo(
-    () => formatWei(BigNumber.from(data?.totalAllocation || '0').mul(BigNumber.from(tokenPrice))),
+    () =>
+      formatUnits(
+        Big(data?.totalAllocation || '0')
+          .times(Big(tokenPrice))
+          .valueOf(),
+        tokenDecimals,
+      ),
     [data],
   );
 

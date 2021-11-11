@@ -12,8 +12,8 @@ export const getStatemintTokenBalance = async (polkadotAddress: string, id: stri
     const balance = (await api.query.assets.account(id, polkadotAddress)).toJSON() as unknown as TokenBalance;
 
     return balance.balance.toString();
-  } catch (error) {
-    return '0';
+  } catch (error: any) {
     console.error(error.message);
+    return '0';
   }
 };

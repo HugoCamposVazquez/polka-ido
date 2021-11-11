@@ -5,6 +5,7 @@ import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import { BigNumber } from 'ethers';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+
 import projectCardBackground from '../../assets/project_card_background.png';
 import ImgLoading from '../../assets/ryu_logo_animation.gif';
 import telegramIcon from '../../assets/telegram_icon.svg';
@@ -79,11 +80,11 @@ export const ProjectDetailsPage = () => {
   }, [data]);
 
   const tokenPrice = useMemo((): string => {
-    if (data) {
-      return getTokenPrice(data.salePrice);
+    if (data && tokenData) {
+      return getTokenPrice(data.salePrice, tokenData.decimals);
     }
     return '0';
-  }, [data]);
+  }, [data, tokenData]);
 
   const onClaimClick = useCallback((): void => {
     if (account && saleContract) {
@@ -193,7 +194,14 @@ export const ProjectDetailsPage = () => {
                   config.CURRENCY
                 }`}</div>
               </div>
-              {account && data && <TotalAllocation account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
+              {account && data && (
+                <TotalAllocation
+                  account={account}
+                  projectId={data?.id}
+                  tokenPrice={tokenPrice}
+                  tokenDecimals={tokenData?.decimals}
+                />
+              )}
 
               <div style={{ marginTop: '2.25rem' }}>
                 <div className={styles.valueDescTextStyle}>
@@ -227,7 +235,14 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {account && data && <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
+      {account && data && (
+        <Allocations
+          account={account}
+          projectId={data?.id}
+          tokenPrice={tokenPrice}
+          tokenDecimals={tokenData?.decimals}
+        />
+      )}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>

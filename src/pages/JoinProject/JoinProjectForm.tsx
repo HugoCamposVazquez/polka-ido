@@ -73,7 +73,7 @@ export const JoinProjectForm = () => {
           setIsTransactionInProgress(false);
         }
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e.message);
       updateNotifyError('Transaction Cancelled', 'buyingTokens');
 
@@ -119,14 +119,15 @@ export const JoinProjectForm = () => {
   useEffect(() => {
     if (isSelectedInput(ActiveInput.From)) {
       selectedInput.current = ActiveInput.From;
+      if (!data?.token.decimals) return;
       try {
         const dotIndex = fromInputValue.indexOf('.');
         const fixedValue = fromInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
         const wei = ethers.utils.parseEther(fixedValue);
         // to get decimals it need to be multiplied by decimal point
         const token = wei.mul(BigNumber.from(10).pow(data?.token.decimals || 0)).div(data?.salePrice || '1');
-        methods.setValue('toValue', ethers.utils.formatUnits(token, data?.token.decimals || 0));
-      } catch (e) {
+        methods.setValue('toValue', ethers.utils.formatUnits(token, data.token.decimals));
+      } catch (e: any) {
         methods.setValue('toValue', '');
         console.error(`Error while calculating output value: ${e.message}`);
       }
@@ -148,7 +149,7 @@ export const JoinProjectForm = () => {
           // fix number caused by decimal point
           .div(BigNumber.from(10).pow(tokenDecimals));
         methods.setValue('fromValue', ethers.utils.formatEther(wei));
-      } catch (e) {
+      } catch (e: any) {
         methods.setValue('fromValue', '');
         console.error(`Error while calculating output value: ${e.message}`);
       }
