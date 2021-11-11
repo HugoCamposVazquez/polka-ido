@@ -34,8 +34,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
   const [tokenDataError, setTokenDataError] = useState(false);
 
   useEffect(() => {
-    const getClaimableTokens = async () => {
-      console.log(tokenData);
+    (async () => {
       if (!tokenData) {
         setTokenDataError(true);
         return;
@@ -47,8 +46,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
       } catch (error) {
         setAmountOfClaimableTokens('0');
       }
-    };
-    getClaimableTokens();
+    })();
 
     if (selectedDotAcc) {
       methods.setValue('address', selectedDotAcc.address);

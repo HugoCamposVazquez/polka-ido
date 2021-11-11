@@ -12,9 +12,8 @@ export const numberWithSpaces = (num: string) => {
   const decimals = num.split('.')[1];
   if (intPart === '0') return num;
 
-  const pattern = /(-?\d+)(\d{3})/;
-  while (pattern.test(intPart)) intPart = intPart.replace(pattern, '$1 $2');
-
+  const pattern = /\B(?=(\d{3})+(?!\d))/g;
+  intPart = intPart.replace(pattern, ' ');
   return intPart + (decimals ? `.${decimals}` : '');
 };
 
