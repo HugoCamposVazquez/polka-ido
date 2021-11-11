@@ -1,9 +1,8 @@
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import ProgressBar from '@ramonak/react-progress-bar/dist';
 import { useWeb3React } from '@web3-react/core';
 import { format, fromUnixTime, getUnixTime } from 'date-fns';
 import { BigNumber } from 'ethers';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import projectCardBackground from '../../assets/project_card_background.png';
@@ -16,7 +15,6 @@ import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { useStatemintToken } from '../../hooks/polkadot/useStatemintToken';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
-import { getStatemintTokenBalance } from '../../services/getTokenStatemintBalance';
 import { MainButton } from '../../shared/gui/MainButton';
 import { Footer } from '../../shared/insets/user/Footer';
 import { openClaimTokensModal } from '../../shared/modals/modals';
@@ -42,8 +40,6 @@ export const ProjectDetailsPage = () => {
   const { data } = useSingleProject(id);
   const { data: metadata } = useReadIPFS<ProjectMetadata>(data?.metadataURI);
   const { data: tokenData } = useStatemintToken(data?.token.id);
-
-  const [projectTokenClaimedAmount, setProjectTokenClaimedAmount] = useState<string>('0');
 
   const projectStatus = useMemo((): string | undefined => {
     if (!data) {
@@ -103,18 +99,6 @@ export const ProjectDetailsPage = () => {
       return 'N/A';
     }
   }, [data]);
-
-  useEffect(() => {
-    const getBalance = async () => {
-      const extensions = await web3Enable('RYU network');
-      if (extensions.length !== 0 && data?.token.id) {
-        const allAccounts = await web3Accounts();
-        const claimedProjectTokenAmount = await getStatemintTokenBalance(allAccounts[0].address, data?.token.id);
-        setProjectTokenClaimedAmount(claimedProjectTokenAmount);
-      }
-    };
-    getBalance();
-  }, [projectTokenClaimedAmount]);
 
   return (
     <div>
