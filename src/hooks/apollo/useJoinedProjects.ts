@@ -48,6 +48,8 @@ const FETCH_JOINED_PROJECTS = gql(
         vestingEndDate
         token {
             id
+            decimals
+            walletAddress
         }
       }
     }

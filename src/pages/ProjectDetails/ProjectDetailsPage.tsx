@@ -86,7 +86,7 @@ export const ProjectDetailsPage = () => {
     if (account && saleContract) {
       openClaimTokensModal(id, saleContract, account, data?.token.id);
     }
-  }, [id, saleContract, account]);
+  }, [id, saleContract, account, data]);
 
   const vestingDuration = useMemo(() => {
     if (data) {
