@@ -45,7 +45,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
     [project],
   );
 
-  const filledAllocationPercentage = useMemo((): string => {
+  const filledAllocationPercentage = useMemo((): number => {
     const { currentDepositAmount, cap } = project;
     return getPercentage(currentDepositAmount, cap);
   }, [project]);

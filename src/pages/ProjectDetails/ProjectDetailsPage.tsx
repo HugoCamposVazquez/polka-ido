@@ -31,6 +31,12 @@ import { Allocations, TotalAllocation } from './Allocations';
 import * as styles from './ProjectDetailsPage.styles';
 import { TokenDetails } from './TokenDetails';
 
+const iconMap = new Map([
+  ['telegramLink', telegramIcon],
+  ['twitterLink', twitterIcon],
+  ['webLink', webIcon],
+]);
+
 export const ProjectDetailsPage = () => {
   const navigation = useHistory();
   const { id }: { id: string } = useParams();
@@ -67,12 +73,12 @@ export const ProjectDetailsPage = () => {
     }
   }, [data]);
 
-  const filledAllocationPercentage = useMemo((): string => {
+  const filledAllocationPercentage = useMemo((): number => {
     if (data) {
       const { currentDepositAmount, cap } = data;
       return getPercentage(currentDepositAmount, cap);
     }
-    return '0';
+    return 0;
   }, [data]);
 
   const tokenPrice = useMemo((): string => {
@@ -129,22 +135,15 @@ export const ProjectDetailsPage = () => {
               <div style={styles.shortDescriptionTextStyle}>Short description</div>
               <div className={styles.shortDescriptionTextClassName}>{metadata?.shortDescription}</div>
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
-                {metadata?.webLink && (
-                  <ExternalLink href={metadata?.webLink}>
-                    <img style={{ marginLeft: '1.5rem', cursor: 'pointer' }} src={webIcon} />
-                  </ExternalLink>
-                )}
-
-                {metadata?.twitterLink && (
-                  <ExternalLink href={metadata?.twitterLink}>
-                    <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={twitterIcon} />
-                  </ExternalLink>
-                )}
-                {metadata?.telegramLink && (
-                  <ExternalLink href={metadata?.telegramLink}>
-                    <img style={{ marginLeft: '1rem', cursor: 'pointer' }} src={telegramIcon} />
-                  </ExternalLink>
-                )}
+                {metadata &&
+                  ['webLink', 'twitterLink', 'telegramLink'].map((name, index) => (
+                    <ExternalLink href={metadata[name as keyof ProjectMetadata] || ''} key={name}>
+                      <img
+                        style={{ marginLeft: index === 0 ? '0' : '1rem', cursor: 'pointer' }}
+                        src={iconMap.get(name) || ''}
+                      />
+                    </ExternalLink>
+                  ))}
               </div>
             </div>
           </div>
