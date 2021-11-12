@@ -26,7 +26,7 @@ export const AccountsDropdown = ({ options, initialAccount, onAccountChange }: I
   };
 
   const menu = (
-    <Menu onClick={onOptionSelect}>
+    <Menu onClick={onOptionSelect} id="accounts-dropdown">
       {options.map((option) => (
         <Menu.Item key={option.address}>
           <div style={styles.accountOptionsContainerStyle}>

@@ -16,6 +16,15 @@ export const Modal = ({ closeModal, children, title }: IProps) => {
       if (!ref.current || ref.current.contains(event.target as Node)) {
         return;
       }
+      const dropdown = document.querySelectorAll('#accounts-dropdown');
+      try {
+        dropdown.forEach((element) => {
+          if (element.contains(event.target as Node)) throw new Error();
+        });
+      } catch {
+        return;
+      }
+
       closeModal();
     };
 
