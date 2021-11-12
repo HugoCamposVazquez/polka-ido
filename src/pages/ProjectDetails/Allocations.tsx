@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { config } from '../../config';
 import { useUserAllocations } from '../../hooks/apollo/useUserAllocations';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
-import { convertDateFromUnixtime } from '../../utils/date';
+import { convertStringFromUnixTime } from '../../utils/date';
 import { formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
@@ -41,7 +41,7 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol, token
       {data?.allocations.map((sale) => (
         <div style={styles.projectDetailsItemStyle} key={sale.id}>
           <div style={{ flex: 0.25 }} className={styles.allocationsItemNormalStyle}>
-            {convertDateFromUnixtime(parseInt(sale.timestamp))}
+            {convertStringFromUnixTime(parseInt(sale.timestamp))}
           </div>
           <div style={{ flex: 0.35 }} className={styles.allocationsItemNormalStyle}>
             {formatWei(sale.amount)} {config.CURRENCY}

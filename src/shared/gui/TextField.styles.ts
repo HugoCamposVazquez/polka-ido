@@ -18,6 +18,10 @@ export const inputClassName = (color: string, placeholderColor: string) => style
   line-height: 1.5rem;
   border-style: solid;
 
+  :disabled {
+    background-color: ${placeholderColor};
+  }
+
   /* Chrome, Safari, Edge, Opera */
   ::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {

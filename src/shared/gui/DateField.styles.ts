@@ -14,6 +14,10 @@ export const inputClassName = (color: string, placeholderColor: string) => style
   border-style: solid;
   border-width: 0.062rem;
 
+  :disabled {
+    background-color: ${placeholderColor};
+  }
+
   ::-webkit-input-placeholder {
     /* Edge */
     color: ${placeholderColor};

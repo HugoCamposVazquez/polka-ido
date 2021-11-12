@@ -14,8 +14,14 @@ export const useJoinedProjects = (): ProjectsHook => {
     client,
   });
 
-  const data = joinedProjectData?.user?.allocations.map((joinedProject: any) => {
-    return { ...joinedProject.sale };
+  const data: SalesDto[] = joinedProjectData?.user?.allocations.map((joinedProject: { sale: SalesDto }): SalesDto => {
+    return {
+      ...joinedProject.sale,
+      token: {
+        ...joinedProject.sale.token,
+        id: joinedProject.sale.token.id.split('-')[1],
+      },
+    };
   });
 
   return { getJoinedProjects, data, loading };

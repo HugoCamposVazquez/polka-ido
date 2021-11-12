@@ -11,13 +11,29 @@ interface ProjectsHook {
 export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): ProjectsHook => {
   const apolloClient = client;
 
-  const { data, loading } = useQuery(FETCH_PROJECTS_DATA, {
+  const { data: projectSalesData, loading } = useQuery(FETCH_PROJECTS_DATA, {
     client: apolloClient,
     variables: {
       numberOfItems,
       loadFeatured,
     },
   });
+
+  const projectSales = projectSalesData as ProjectSales;
+
+  const data: ProjectsHook['data'] = {
+    ...projectSales,
+    sales: projectSales.sales.map((sale) => {
+      return {
+        ...sale,
+        token: {
+          ...sale.token,
+          id: sale.token.id.split('-')[1],
+        },
+      };
+    }),
+  };
+
   return { data, loading };
 };
 
