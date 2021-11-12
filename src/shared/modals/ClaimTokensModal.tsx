@@ -24,7 +24,6 @@ interface IProps {
 
 export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId }: IProps) => {
   const { data: tokenData } = useStatemintToken(tokenId);
-
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
   const [selectedDotAcc, setSelectedDotAcc] = useState<InjectedAccountWithMeta>();
   const [isTransactionInProgress, setIsTransactionInProgress] = useState(false);

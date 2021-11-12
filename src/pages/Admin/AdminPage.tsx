@@ -52,7 +52,7 @@ export const AdminPage = () => {
       }
     };
     setProjectData();
-  }, [projects]);
+  }, [projects?.sales.length]);
 
   if (projectsLoading) {
     return <Spin style={styles.spinnerStyle} size="large" />;
