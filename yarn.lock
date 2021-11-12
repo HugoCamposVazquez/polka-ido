@@ -1989,10 +1989,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@nodefactoryio/ryu-contracts@0.7.0":
-  version "0.7.0"
-  resolved "https://npm.pkg.github.com/download/@nodefactoryio/ryu-contracts/0.7.0/2bfd1a06f2014fa54f759877bb988ad331ed078d142f3f5eba7fec1c54e8024a#da2010fc9e1d028b6505d0cb569aa72dacc2548f"
-  integrity sha512-TVQ7feOEChX/5nLx8LWoz7vxwcP8adcPz7O9VfvGeat8bHJX1Vg4ytkm2I1XsRcOIMBq/mwFLLfPwTEhN73MJA==
+"@nodefactoryio/ryu-contracts@0.8.0":
+  version "0.8.0"
+  resolved "https://npm.pkg.github.com/download/@nodefactoryio/ryu-contracts/0.8.0/513e3657c4ffd6fce070d557c8ce4133e738bf96f8012d9ab7255649299f9f2a#44d133c2b3bdc3560e7bbe76b06862bdb88a9832"
+  integrity sha512-/mLTALJyq2HAUrX70r8TpaAjE7alX5+Z4aoR3Y/OwhLrmKeDAgHN8fbaLdx4CH6QGDiZ/DVO9ITuA89qs6v0+A==
   dependencies:
     "@openzeppelin/contracts" "^4.1.0"
 

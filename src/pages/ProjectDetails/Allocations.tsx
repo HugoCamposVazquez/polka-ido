@@ -85,7 +85,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, t
   useEffect(() => {
     try {
       if (contract)
-        contract.getUserClaimableTokens(account).then((count) => {
+        contract.getUserClaimedTokens(account).then((count) => {
           setClaimed(formatUnits(count, tokenDecimals));
         });
     } catch {
