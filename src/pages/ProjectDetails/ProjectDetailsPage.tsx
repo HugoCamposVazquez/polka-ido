@@ -67,12 +67,12 @@ export const ProjectDetailsPage = () => {
     }
   }, [data]);
 
-  const filledAllocationPercentage = useMemo((): string => {
+  const filledAllocationPercentage = useMemo((): number => {
     if (data) {
       const { currentDepositAmount, cap } = data;
       return getPercentage(currentDepositAmount, cap);
     }
-    return '0';
+    return 0;
   }, [data]);
 
   const tokenPrice = useMemo((): string => {

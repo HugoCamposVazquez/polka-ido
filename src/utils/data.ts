@@ -10,9 +10,9 @@ export const getIPFSResolvedLink = (uri: string): string => {
   return `${process.env.REACT_APP_IPFS_GATEWAY}${hash}`;
 };
 
-export const getPercentage = (fraction: string, total: string): string => {
+export const getPercentage = (fraction: string, total: string): number => {
   const percentage = BigNumber.from(fraction).mul(100).div(BigNumber.from(total));
-  return percentage.toString();
+  return percentage.toNumber();
 };
 
 export const getTokenPrice = (salePrice: string, decimals?: string): string => {
