@@ -43,6 +43,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const [isTextareaDisplay, setIsTextareaDisplayed] = useState<boolean>(false);
   const [areAddressesValid, setAreAddressesValid] = useState<boolean>(false);
   const [whitelistedAddresses, setWhitelistedAddresses] = useState<string[]>([]);
+  const [hasProjectStarted, setHasProjectStarted] = useState<boolean>(false);
   // TODO: Add fields validation
 
   const saleFactoryContract = useSaleFactoryContract();
@@ -72,7 +73,9 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         });
       } else {
         // Editing project
-
+        if (Date.now() >= defaultProjectData.starts.valueOf()) {
+          setHasProjectStarted(true);
+        }
         methods.reset(defaultProjectData);
       }
     }
@@ -127,7 +130,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           utils.parseEther(projectSubmit.minUserDepositAmount),
           utils.parseEther(projectSubmit.maxUserDepositAmount),
           utils.parseEther(projectSubmit.cap),
-          utils.parseEther(projectSubmit.tokenPrice.toString()), // should be token ratio?
+          utils.parseUnits(projectSubmit.tokenPrice.toString(), projectSubmit.decimals),
           {
             tokenID: projectSubmit.tokenId,
             decimals: projectSubmit.decimals,
@@ -237,15 +240,21 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Starts</div>
-              <DateField name={'starts'} mode={'light'} placeholder="Select start time" />
+              <DateField disabled={hasProjectStarted} name={'starts'} mode={'light'} placeholder="Select start time" />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Ends</div>
-              <DateField name={'ends'} mode={'light'} placeholder="Select end time" />
+              <DateField disabled={hasProjectStarted} name={'ends'} mode={'light'} placeholder="Select end time" />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Raise amount</div>
-              <TextField name={'cap'} styleType={'bordered'} mode={'light'} placeholder={'10,000,000'} />
+              <TextField
+                disabled={hasProjectStarted}
+                name={'cap'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'10,000,000'}
+              />
             </div>
           </div>
 
@@ -260,7 +269,13 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
               <div style={styles.fieldSectionStyle}>Token price</div>
-              <TextField name={'tokenPrice'} styleType={'bordered'} mode={'light'} placeholder={'0,022'} />
+              <TextField
+                disabled={hasProjectStarted}
+                name={'tokenPrice'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'0,022'}
+              />
             </div>
           </div>
 
@@ -301,12 +316,22 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Vesting start date</div>
-              <DateField name={'vestingStartDate'} mode={'light'} placeholder={'Select vesting start date'} />
+              <DateField
+                disabled={hasProjectStarted}
+                name={'vestingStartDate'}
+                mode={'light'}
+                placeholder={'Select vesting start date'}
+              />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Vesting end date</div>
-              <DateField name={'vestingEndDate'} mode={'light'} placeholder={'Select vesting end date'} />
+              <DateField
+                disabled={hasProjectStarted}
+                name={'vestingEndDate'}
+                mode={'light'}
+                placeholder={'Select vesting end date'}
+              />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
@@ -316,14 +341,20 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                 styleType={'bordered'}
                 mode={'light'}
                 placeholder={'Statemint token ID'}
-                {...methods.register('tokenId')}
                 onBlur={onTokenIdBlur}
+                disabled={hasProjectStarted}
               />
             </div>
 
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Token decimals</div>
-              <TextField name={'decimals'} styleType={'bordered'} mode={'light'} placeholder={'18'} />
+              <TextField
+                name={'decimals'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'18'}
+                disabled={hasProjectStarted}
+              />
             </div>
           </div>
 
@@ -335,6 +366,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                 styleType={'bordered'}
                 mode={'light'}
                 placeholder={'5FTrdVXtzt25ewJ2ADMzX83yEPY2nrKJGezZGstVrF51BXLX'}
+                disabled={hasProjectStarted}
               />
             </div>
           </div>

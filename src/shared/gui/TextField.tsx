@@ -5,7 +5,7 @@ import { sideColor, sideColor6, sideColor8, sideColor13 } from '../../utils/colo
 import { cs } from '../../utils/css';
 import * as styles from './TextField.styles';
 
-type IProps = {
+interface IProps {
   name: string;
   placeholder?: string;
   disabled?: boolean;
@@ -15,7 +15,8 @@ type IProps = {
   mode: 'light' | 'dark';
   type?: 'text' | 'number' | 'numerical';
   imposeMinMax?: any;
-};
+  onBlur?: () => void;
+}
 
 export const TextField = ({
   name,

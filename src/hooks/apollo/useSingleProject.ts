@@ -16,8 +16,12 @@ export const useSingleProject = (id?: string): ProjectHook => {
     },
   });
 
-  const data = projectData && {
+  const data: ProjectHook['data'] = projectData && {
     ...projectData.sales[0],
+    token: {
+      ...projectData.sales[0].token,
+      id: projectData.sales[0].token.id.split('-')[1],
+    },
   };
 
   return { data, loading };

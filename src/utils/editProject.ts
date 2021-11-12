@@ -6,6 +6,7 @@ import { formatEther, formatUnits, parseEther, parseUnits } from 'ethers/lib/uti
 import { getPinataApi, PinataResponse } from '../services/pinata';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
 import { ProjectMetadata, ProjectType, SalesDto } from '../types/ProjectType';
+import { convertDateFromUnixTime, convertDateToUnixtime } from './date';
 
 type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 type keyOfProjectType = keyof ProjectType;
@@ -68,7 +69,7 @@ export const editProject = async (
   if (isChanged(['starts', 'ends'])) {
     await editTx(
       saleContract.setTimeDates,
-      [submitedData.starts.valueOf(), submitedData.ends.valueOf()],
+      [convertDateToUnixtime(submitedData.starts), convertDateToUnixtime(submitedData.ends)],
       {
         successMessage: `${isChanged(['starts']) ? 'Starts successfuly updated.' : ''} 
         ${isChanged(['ends']) ? 'Ends successfuly updated.' : ''}`,
@@ -179,7 +180,12 @@ export const editProject = async (
   if (isChanged(['vestingStartDate', 'vestingEndDate'])) {
     await editTx(
       saleContract.updateVestingConfig,
-      [{ startTime: submitedData.vestingStartDate.valueOf(), endTime: submitedData.vestingEndDate.valueOf() }],
+      [
+        {
+          startTime: convertDateToUnixtime(submitedData.vestingStartDate),
+          endTime: convertDateToUnixtime(submitedData.vestingEndDate),
+        },
+      ],
       {
         successMessage: `${isChanged(['minUserDepositAmount']) ? 'Min. vesting successfuly updated.' : ''}
         ${isChanged(['maxUserDepositAmount']) ? 'Max. vesting successfuly updated.' : ''}`,
@@ -228,19 +234,18 @@ export const convertToProjectType = (project?: SalesDto, metadata?: ProjectMetad
       vestingEndDate,
       token,
     } = project;
-
     return {
       status: getStatus(startDate, endDate),
       access: whitelisted ? 'whitelist' : 'public',
       featured,
-      starts: new Date(parseInt(startDate) * 1000),
-      ends: new Date(parseInt(endDate) * 1000),
+      starts: convertDateFromUnixTime(startDate),
+      ends: convertDateFromUnixTime(endDate),
       minUserDepositAmount: formatEther(minUserDepositAmount),
       maxUserDepositAmount: formatEther(maxUserDepositAmount),
       cap: formatEther(cap),
       tokenPrice: formatUnits(salePrice, token.decimals),
-      vestingStartDate: new Date(parseInt(vestingStartDate) * 1000),
-      vestingEndDate: new Date(parseInt(vestingEndDate) * 1000),
+      vestingStartDate: convertDateFromUnixTime(vestingStartDate),
+      vestingEndDate: convertDateFromUnixTime(vestingEndDate),
       tokenId: parseInt(token.id),
       walletAddress: token.walletAddress,
       decimals: token.decimals,
