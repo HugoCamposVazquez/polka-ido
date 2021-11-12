@@ -64,7 +64,7 @@ export const LaunchpadPage = () => {
     } else {
       setProjects([]);
     }
-  }, [joinedProjects]);
+  }, [joinedProjects?.length]);
 
   const onClickShowAllProjects = useCallback((): void => {
     setShownProjects(undefined);
@@ -83,7 +83,7 @@ export const LaunchpadPage = () => {
 
   useEffect(() => {
     filterUpcoming();
-  }, [projectsData]);
+  }, [projectsData?.sales.length]);
 
   if (projectLoading) {
     return <LoadingData />;

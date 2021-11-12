@@ -153,8 +153,6 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           }
         }
         setIsSavingData(false);
-
-        navigation.goBack();
       } catch (e) {
         console.log(e);
         setIsSavingData(false);
