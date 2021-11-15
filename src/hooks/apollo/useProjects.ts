@@ -15,7 +15,7 @@ export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): Pro
     client: apolloClient,
     variables: {
       numberOfItems,
-      where: loadFeatured ? { loadFeatured } : {},
+      where: loadFeatured ? { featured: loadFeatured } : {},
     },
   });
 
