@@ -42,7 +42,7 @@ export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): Pro
 const FETCH_PROJECTS_DATA = gql(
   `
     query Projects($numberOfItems: Int, $loadFeatured: Boolean) {
-      sales(first: $numberOfItems,  featured: $loadFeatured) {
+      sales(first: $numberOfItems,  where: { featured: $loadFeatured }) {
         id
         token {
           id
@@ -61,7 +61,6 @@ const FETCH_PROJECTS_DATA = gql(
         maxUserDepositAmount
         currentDepositAmount
         cap
-
         allocations {
           id
         }
