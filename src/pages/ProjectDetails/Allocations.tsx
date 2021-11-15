@@ -14,7 +14,7 @@ interface IProps {
   projectId: string;
   tokenPrice: string;
   tokenSymbol?: string;
-  tokenDecimals?: string;
+  tokenDecimals: string;
 }
 
 export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol, tokenDecimals }: IProps) => {
@@ -80,7 +80,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, t
     [data],
   );
 
-  const [claimed, setClaimed] = useState('0.0');
+  const [claimed, setClaimed] = useState('');
   const contract = useSaleContract(projectId);
   useEffect(() => {
     try {
@@ -89,7 +89,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, t
           setClaimed(formatUnits(count, tokenDecimals));
         });
     } catch {
-      setClaimed('0.0');
+      setClaimed('');
     }
   }, [account, projectId, contract]);
 

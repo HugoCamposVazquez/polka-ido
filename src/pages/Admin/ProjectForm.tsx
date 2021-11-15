@@ -245,13 +245,13 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               <DateField disabled={hasProjectStarted} name={'ends'} mode={'light'} placeholder="Select end time" />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Raise amount</div>
+              <div style={styles.fieldSectionStyle}>Raise amount(MOVR)</div>
               <TextField
                 disabled={hasProjectStarted}
                 name={'cap'}
                 styleType={'bordered'}
                 mode={'light'}
-                placeholder={'10,000,000'}
+                placeholder={'10000'}
               />
             </div>
           </div>
@@ -259,20 +259,20 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Min. deposit ({config.CURRENCY})</div>
-              <TextField name={'minUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'0'} />
+              <TextField name={'minUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'1'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Max. deposit ({config.CURRENCY})</div>
-              <TextField name={'maxUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'0.02'} />
+              <TextField name={'maxUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'50'} />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Token price</div>
+              <div style={styles.fieldSectionStyle}>Token price(= 1MOVR / 10^Token decimals)</div>
               <TextField
                 disabled={hasProjectStarted}
                 name={'tokenPrice'}
                 styleType={'bordered'}
                 mode={'light'}
-                placeholder={'0,022'}
+                placeholder={'2'}
               />
             </div>
           </div>
