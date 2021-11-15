@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { getUnixTime } from 'date-fns';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ryu3 from '../assets/ryu3.png';
 import { config } from '../config';
@@ -17,75 +17,43 @@ import { formatBalance, formatWei } from '../utils/numModifiyngFuncs';
 import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
 
+enum ProjectsView {
+  upcoming,
+  joined,
+  featured,
+  all,
+}
+
 export const LaunchpadPage = () => {
-  const [shownProjects, setShownProjects] = useState<'upcoming' | 'joined' | 'featured' | undefined>('upcoming');
-  const [projects, setProjects] = useState<SalesDto[]>([]);
   const { width } = useWindowDimensions();
   const { account } = useWeb3React();
 
   const { data: platformsData } = usePlatformsStats();
   const { data: projectsData, loading: projectLoading } = useProjects();
-  const { getJoinedProjects, data: joinedProjects } = useJoinedProjects();
-  const filterUpcoming = useCallback((): void => {
-    setShownProjects('upcoming');
-    let upcomingProjects: SalesDto[] = [];
-    projectsData?.sales.map((project) => {
-      if (getUnixTime(new Date()) < +project.startDate) {
-        upcomingProjects.push(project);
-      } else {
-        upcomingProjects = [];
-      }
-      setProjects(upcomingProjects);
-    });
-  }, [projectsData]);
-  const onClickFilterFeatured = useCallback((): void => {
-    setShownProjects('featured');
-    let featuredProjects: SalesDto[] = [];
-    projectsData?.sales.map((project) => {
-      if (project.featured) {
-        featuredProjects.push(project);
-      } else {
-        featuredProjects = [];
-      }
-      setProjects(featuredProjects);
-    });
-  }, [projectsData]);
+  const { data: joinedProjects, loading: joinedLoading } = useJoinedProjects(account?.toLowerCase() || '');
 
-  const onClickFilterJoined = useCallback((): void => {
-    getJoinedProjects({ variables: { userAddress: account } });
-    setShownProjects('joined');
+  const [shownProjects, setShownProjects] = useState(ProjectsView.upcoming);
+  const setProjectView = (view: ProjectsView) => () => {
+    setShownProjects(view);
+  };
 
-    const allJoinedProjects = joinedProjects?.filter(
-      (joinedProject, index, arr) => index === arr.findIndex((project) => project.id === joinedProject.id),
-    );
-
-    if (allJoinedProjects) {
-      setProjects(allJoinedProjects);
-    } else {
-      setProjects([]);
-    }
-  }, [joinedProjects?.length]);
-
-  const onClickShowAllProjects = useCallback((): void => {
-    setShownProjects(undefined);
-    const allProjects: SalesDto[] = [];
-    projectsData?.sales.map((project) => {
-      allProjects.push(project);
-      setProjects(allProjects);
-    });
-  }, [projectsData]);
-
+  const [projects, setProjects] = useState<SalesDto[]>([]);
   useEffect(() => {
-    if (joinedProjects) {
-      onClickFilterJoined();
-    }
-  }, [joinedProjects?.length]);
+    if (shownProjects === ProjectsView.upcoming)
+      setProjects([...(projectsData?.sales || [])].filter((project) => getUnixTime(new Date()) < +project.startDate));
+    if (shownProjects === ProjectsView.featured)
+      setProjects([...(projectsData?.sales || [])].filter((project) => project.featured));
+    if (shownProjects === ProjectsView.joined)
+      setProjects(
+        [...(projectsData?.sales || [])].filter((project) => joinedProjects?.some(({ id }) => id === project.id)),
+      );
+    if (shownProjects === ProjectsView.all) setProjects([...(projectsData?.sales || [])]);
+  }, [shownProjects, projectsData?.sales.length, joinedProjects?.length, projectLoading, joinedLoading]);
 
-  useEffect(() => {
-    filterUpcoming();
-  }, [projectsData?.sales.length]);
-
-  if (projectLoading) {
+  if (
+    (projectLoading && shownProjects != ProjectsView.joined) ||
+    (joinedLoading && shownProjects === ProjectsView.joined)
+  ) {
     return <LoadingData />;
   }
 
@@ -138,33 +106,33 @@ export const LaunchpadPage = () => {
         <div style={{ flex: 1, display: 'flex' }}>
           <div
             className={styles.projectsCardsHeaderItemClassName}
-            style={shownProjects === 'upcoming' ? styles.selectedTabStyle : {}}
-            onClick={filterUpcoming}>
+            style={shownProjects === ProjectsView.upcoming ? styles.selectedTabStyle : {}}
+            onClick={setProjectView(ProjectsView.upcoming)}>
             Upcoming
           </div>
           <div
             className={styles.projectsCardsHeaderItemClassName}
-            style={shownProjects === 'featured' ? styles.selectedTabStyle : {}}
-            onClick={onClickFilterFeatured}>
+            style={shownProjects === ProjectsView.featured ? styles.selectedTabStyle : {}}
+            onClick={setProjectView(ProjectsView.featured)}>
             Featured
           </div>
           <div
             className={styles.projectsCardsHeaderItemClassName}
-            style={shownProjects === 'joined' ? styles.selectedTabStyle : {}}
-            onClick={onClickFilterJoined}>
+            style={shownProjects === ProjectsView.joined ? styles.selectedTabStyle : {}}
+            onClick={setProjectView(ProjectsView.joined)}>
             Joined
           </div>
           <div
             className={styles.projectsCardsHeaderItemClassName}
-            style={shownProjects === undefined ? styles.selectedTabStyle : {}}
-            onClick={onClickShowAllProjects}>
+            style={shownProjects === ProjectsView.all ? styles.selectedTabStyle : {}}
+            onClick={setProjectView(ProjectsView.all)}>
             All
           </div>
         </div>
       </div>
       <div className={styles.projectsCardsContainerParentClassName}>
         <div className={styles.projectsCardsContainerClassName}>
-          {!account && shownProjects === 'joined' ? (
+          {!account && shownProjects === ProjectsView.joined ? (
             <div>Please connect your wallet to see the sales which you have joined.</div>
           ) : (
             projects.map((project, index: number) => {

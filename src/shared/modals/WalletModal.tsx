@@ -3,9 +3,9 @@ import React from 'react';
 import copyAddress from '../../assets/copy_address.svg';
 import viewInExplorer from '../../assets/view_in_explorer.svg';
 import { notifySuccess } from '../../utils/notifications';
+import { useWindowDimensions } from '../../utils/windowDimensionsUtil';
 import { Modal } from './Modal';
 import * as styles from './WalletModal.styles';
-import { useWindowDimensions } from '../../utils/windowDimensionsUtil';
 
 interface IProps {
   closeModal: () => void;
