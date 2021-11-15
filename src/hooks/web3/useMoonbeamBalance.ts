@@ -7,19 +7,26 @@ export const useMoonbeanBalance = () => {
   const { account } = useWeb3React();
 
   useEffect(() => {
-    (async (): Promise<void> => {
+    const provider = new ethers.providers.JsonRpcProvider({
+      url: process.env.REACT_APP_MOONBEAM_NETWORK_URL,
+    });
+
+    const getBalance = () => {
       if (account) {
         try {
-          const provider = new ethers.providers.JsonRpcProvider({
-            url: process.env.REACT_APP_MOONBEAM_NETWORK_URL,
-          });
-          const balance = await provider.getBalance(account);
-          setBalance(balance);
+          provider.getBalance(account).then(setBalance);
         } catch (e) {
           console.log('Failed to connect to provider: ', e);
         }
       }
-    })();
+    };
+
+    getBalance();
+    provider.on('block', getBalance);
+
+    return () => {
+      provider.off('block', getBalance);
+    };
   }, [account]);
 
   return { balance };
