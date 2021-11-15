@@ -15,7 +15,7 @@ export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): Pro
     client: apolloClient,
     variables: {
       numberOfItems,
-      loadFeatured,
+      where: loadFeatured ? { loadFeatured } : {},
     },
   });
 
@@ -41,8 +41,8 @@ export const useProjects = (numberOfItems?: number, loadFeatured?: boolean): Pro
 
 const FETCH_PROJECTS_DATA = gql(
   `
-    query Projects($numberOfItems: Int, $loadFeatured: Boolean) {
-      sales(first: $numberOfItems,  where: { featured: $loadFeatured }) {
+    query Projects($numberOfItems: Int, $where: Sale_filter) {
+      sales(first: $numberOfItems,  where: $where) {
         id
         token {
           id
