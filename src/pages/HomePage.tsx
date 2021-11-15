@@ -44,7 +44,7 @@ export const HomePage = () => {
     }
   };
 
-  const { data, loading } = useProjects(4, false);
+  const { data, loading } = useProjects(4, true);
 
   return (
     <div>
