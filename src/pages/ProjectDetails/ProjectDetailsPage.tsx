@@ -218,7 +218,6 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {console.log(account, data, tokenData)}
       {account && data && tokenData && (
         <Allocations
           account={account}

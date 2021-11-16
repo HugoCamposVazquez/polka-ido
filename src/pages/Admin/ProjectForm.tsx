@@ -245,13 +245,16 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               <DateField disabled={hasProjectStarted} name={'ends'} mode={'light'} placeholder="Select end time" />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Raise amount(MOVR)</div>
+              <div style={styles.fieldSectionStyle}>Raise amount (MOVR)</div>
               <TextField
                 disabled={hasProjectStarted}
                 name={'cap'}
                 styleType={'bordered'}
                 mode={'light'}
                 placeholder={'10000'}
+                popupDescription={{
+                  description: 'Amount of MOVR project will raise',
+                }}
               />
             </div>
           </div>
@@ -259,20 +262,39 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           <div style={styles.sectionContainerStyle}>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Min. deposit ({config.CURRENCY})</div>
-              <TextField name={'minUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'1'} />
+              <TextField
+                name={'minUserDepositAmount'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'1'}
+                popupDescription={{
+                  description: 'Minimum amount users can deposit for this project in MOVR',
+                }}
+              />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.25 })}>
               <div style={styles.fieldSectionStyle}>Max. deposit ({config.CURRENCY})</div>
-              <TextField name={'maxUserDepositAmount'} styleType={'bordered'} mode={'light'} placeholder={'50'} />
+              <TextField
+                name={'maxUserDepositAmount'}
+                styleType={'bordered'}
+                mode={'light'}
+                placeholder={'50'}
+                popupDescription={{
+                  description: 'Maximum amount users can deposit for this project in MOVR',
+                }}
+              />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Token price(= 1MOVR / 10^Token decimals)</div>
+              <div style={styles.fieldSectionStyle}>Token price</div>
               <TextField
                 disabled={hasProjectStarted}
                 name={'tokenPrice'}
                 styleType={'bordered'}
                 mode={'light'}
                 placeholder={'2'}
+                popupDescription={{
+                  description: `Token price = 1MOVR / 10^Token decimals. Token decimals are fetched automatically when Token ID is entered.`,
+                }}
               />
             </div>
           </div>

@@ -1,8 +1,16 @@
+import { sideColor6 } from '../../utils/colorsUtil';
 import { styled } from '../../utils/css';
 
 export const inputParentStyle = styled.cssStyle`
   display: flex;
   flex: 1;
+`;
+
+export const popup = styled.cssStyle`
+  font-family: Titillium Web;
+  font-weight: 600;
+  font-size: 1rem;
+  color: ${sideColor6};
 `;
 
 export const inputClassName = (color: string, placeholderColor: string) => styled.cssClassName`
