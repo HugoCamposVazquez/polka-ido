@@ -1,3 +1,4 @@
+import { Popover } from 'antd';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -16,6 +17,10 @@ interface IProps {
   type?: 'text' | 'number' | 'numerical';
   imposeMinMax?: any;
   onBlur?: () => void;
+  popupDescription?: {
+    title?: string;
+    description: string;
+  };
 }
 
 export const TextField = ({
@@ -27,6 +32,7 @@ export const TextField = ({
   mode,
   style,
   type,
+  popupDescription,
   ...props
 }: IProps) => {
   const { control } = useFormContext();
@@ -56,7 +62,7 @@ export const TextField = ({
     };
   }
 
-  return (
+  const inputComponent = (
     <div style={styles.inputParentStyle}>
       <Controller
         name={name}
@@ -90,4 +96,16 @@ export const TextField = ({
       />
     </div>
   );
+
+  if (popupDescription)
+    return (
+      <Popover
+        trigger="focus"
+        content={() => <div style={styles.popup}>{popupDescription?.description}</div>}
+        title={popupDescription?.title}>
+        {inputComponent}
+      </Popover>
+    );
+
+  return inputComponent;
 };

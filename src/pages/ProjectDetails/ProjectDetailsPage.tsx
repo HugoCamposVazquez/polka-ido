@@ -177,12 +177,12 @@ export const ProjectDetailsPage = () => {
                   config.CURRENCY
                 }`}</div>
               </div>
-              {account && data && (
+              {account && data && tokenData && (
                 <TotalAllocation
                   account={account}
                   projectId={data?.id}
                   tokenPrice={tokenPrice}
-                  tokenDecimals={tokenData?.decimals}
+                  tokenDecimals={tokenData.decimals}
                 />
               )}
 
@@ -201,7 +201,7 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
+                  {console.log(tokenPrice)}1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
                 </div>
               </div>
             </div>
@@ -218,12 +218,12 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {account && data && (
+      {account && data && tokenData && (
         <Allocations
           account={account}
           projectId={data?.id}
           tokenPrice={tokenPrice}
-          tokenDecimals={tokenData?.decimals}
+          tokenDecimals={tokenData.decimals}
         />
       )}
       <div className={styles.projectDetailsRootContainerClassName}>
