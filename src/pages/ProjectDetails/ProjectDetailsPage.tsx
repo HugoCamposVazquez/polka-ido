@@ -201,7 +201,7 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
+                  {console.log(tokenPrice)}1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
                 </div>
               </div>
             </div>

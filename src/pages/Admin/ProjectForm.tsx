@@ -245,7 +245,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               <DateField disabled={hasProjectStarted} name={'ends'} mode={'light'} placeholder="Select end time" />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Raise amount (MOVR)</div>
+              <div style={styles.fieldSectionStyle}>Hard cap (MOVR)</div>
               <TextField
                 disabled={hasProjectStarted}
                 name={'cap'}
@@ -253,7 +253,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                 mode={'light'}
                 placeholder={'10000'}
                 popupDescription={{
-                  description: 'Amount of MOVR project will raise',
+                  description: 'Amount of MOVR that project is raising',
                 }}
               />
             </div>
@@ -268,7 +268,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                 mode={'light'}
                 placeholder={'1'}
                 popupDescription={{
-                  description: 'Minimum amount users can deposit for this project in MOVR',
+                  description: 'Minimum amount user should deposit for this project in MOVR',
                 }}
               />
             </div>
@@ -280,7 +280,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                 mode={'light'}
                 placeholder={'50'}
                 popupDescription={{
-                  description: 'Maximum amount users can deposit for this project in MOVR',
+                  description: 'Maximum amount user should deposit for this project in MOVR',
                 }}
               />
             </div>
@@ -293,7 +293,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                 mode={'light'}
                 placeholder={'2'}
                 popupDescription={{
-                  description: `Token price = 1MOVR / 10^Token decimals. Token decimals are fetched automatically when Token ID is entered.`,
+                  description: `How many tokens should a user get per 1 MOVR invested`,
                 }}
               />
             </div>
