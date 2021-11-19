@@ -3,6 +3,11 @@ import { styled } from '../../../utils/css';
 
 const headerHeight = 4.75;
 
+export const ryuLogoStyle = styled.cssStyle`
+  cursor: pointer;
+  width: 90px;
+`;
+
 export const ryuTextStyle = styled.cssStyle`
   font-weight: 400;
   line-height: 0;

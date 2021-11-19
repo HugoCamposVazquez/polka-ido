@@ -219,8 +219,12 @@ export const editProject = async (
   }
 };
 
-export const convertToProjectType = (project?: SalesDto, metadata?: ProjectMetadata): ProjectType | undefined => {
-  if (project && metadata) {
+export const convertToProjectType = (
+  project?: SalesDto,
+  metadata?: ProjectMetadata,
+  id?: string,
+): ProjectType | undefined => {
+  if (project && metadata && id) {
     const {
       salePrice,
       startDate,

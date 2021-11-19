@@ -46,7 +46,7 @@ export const AdminProjectPage = () => {
         )}
       </div>
       <ProjectForm
-        defaultProjectData={convertToProjectType(project, metaData)}
+        defaultProjectData={convertToProjectType(project, metaData, id)}
         loadingProjectData={projectLoading}
         projectId={id}
       />
