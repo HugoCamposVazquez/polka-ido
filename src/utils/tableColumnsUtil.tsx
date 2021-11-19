@@ -1,7 +1,6 @@
 import { format, fromUnixTime } from 'date-fns';
 import React from 'react';
 
-import binImage from '../assets/bin_image.svg';
 import starEmpty from '../assets/star_empty.svg';
 import startFill from '../assets/star_fill.svg';
 import { getIPFSResolvedLink } from './data';
@@ -83,19 +82,6 @@ export const getAllColumns = () => {
       renderRepresentation: (cellProps: any) => (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {cellProps.record.featured ? <img src={startFill} /> : <img src={starEmpty} />}
-        </div>
-      ),
-    },
-    {
-      title: '',
-      width: '5rem',
-      renderRepresentation: () => (
-        <div
-          style={{ display: 'flex', justifyContent: 'center', height: '100%' }}
-          onClick={() => {
-            console.log('deleted!');
-          }}>
-          {<img src={binImage} />}
         </div>
       ),
     },
