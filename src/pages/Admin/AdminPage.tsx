@@ -82,7 +82,7 @@ export const AdminPage = () => {
             className={styles.tableClassName}
             onRow={(record) => {
               return {
-                onDoubleClick: () => {
+                onClick: () => {
                   navigation.push(`/admin/project/${record.id}`);
                 },
               };
