@@ -22,6 +22,7 @@ export const fillButtonDisabledStyle = cs(
     background-color: ${sideColor};
     color: ${sideColor8};
     border-color: ${sideColor2};
+    cursor: not-allowed;
   `,
 );
 
@@ -40,3 +41,12 @@ export const borderedButtonStyle = styled.cssStyle`
   font-weight: 700;
   cursor: pointer;
 `;
+
+export const borderedButtonDisabledStyle = cs(
+  borderedButtonStyle,
+  styled.cssStyle`
+    color: ${sideColor};
+    border-color: ${sideColor};
+    cursor: not-allowed;
+  `,
+);

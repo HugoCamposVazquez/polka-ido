@@ -16,7 +16,7 @@ type IProps = {
 export const MainButton = ({ title, onClick, type, style, disabled, className }: IProps) => {
   const getButtonStyle = useCallback(() => {
     if (disabled) {
-      return styles.fillButtonDisabledStyle;
+      return type === 'fill' ? styles.fillButtonDisabledStyle : styles.borderedButtonDisabledStyle;
     }
 
     if (type === 'fill') {
