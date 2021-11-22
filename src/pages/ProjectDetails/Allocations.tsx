@@ -19,7 +19,12 @@ interface IProps {
 export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const getNumberOfTokens = useCallback(
-    (allocation: string) => formatUnits(Big(allocation).times(Big(tokenPrice)).valueOf()),
+    (allocation: string) =>
+      formatUnits(
+        Big(allocation)
+          .times(Big(1).div(Big(tokenPrice)))
+          .valueOf(),
+      ),
     [data],
   );
 
@@ -72,7 +77,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }:
     () =>
       formatUnits(
         Big(data?.totalAllocation || '0')
-          .times(Big(tokenPrice))
+          .times(Big(1).div(Big(tokenPrice)))
           .valueOf(),
       ),
     [data],
