@@ -18,9 +18,10 @@ import { useWindowDimensions } from '../utils/windowDimensionsUtil';
 import * as styles from './LaunchpadPage.styles';
 
 enum ProjectsView {
+  featured,
+  inProgress,
   upcoming,
   joined,
-  featured,
   all,
 }
 
@@ -41,6 +42,12 @@ export const LaunchpadPage = () => {
   useEffect(() => {
     if (shownProjects === ProjectsView.upcoming)
       setProjects([...(projectsData?.sales || [])].filter((project) => getUnixTime(new Date()) < +project.startDate));
+    if (shownProjects === ProjectsView.inProgress)
+      setProjects(
+        [...(projectsData?.sales || [])].filter(
+          (project) => getUnixTime(new Date()) > +project.startDate && getUnixTime(new Date()) < +project.endDate,
+        ),
+      );
     if (shownProjects === ProjectsView.featured)
       setProjects([...(projectsData?.sales || [])].filter((project) => project.featured));
     if (shownProjects === ProjectsView.joined)
@@ -106,15 +113,21 @@ export const LaunchpadPage = () => {
         <div style={{ flex: 1, display: 'flex' }}>
           <div
             className={styles.projectsCardsHeaderItemClassName}
-            style={shownProjects === ProjectsView.upcoming ? styles.selectedTabStyle : {}}
-            onClick={setProjectView(ProjectsView.upcoming)}>
-            Upcoming
-          </div>
-          <div
-            className={styles.projectsCardsHeaderItemClassName}
             style={shownProjects === ProjectsView.featured ? styles.selectedTabStyle : {}}
             onClick={setProjectView(ProjectsView.featured)}>
             Featured
+          </div>
+          <div
+            className={styles.projectsCardsHeaderItemClassName}
+            style={shownProjects === ProjectsView.inProgress ? styles.selectedTabStyle : {}}
+            onClick={setProjectView(ProjectsView.inProgress)}>
+            In Progress
+          </div>
+          <div
+            className={styles.projectsCardsHeaderItemClassName}
+            style={shownProjects === ProjectsView.upcoming ? styles.selectedTabStyle : {}}
+            onClick={setProjectView(ProjectsView.upcoming)}>
+            Upcoming
           </div>
           <div
             className={styles.projectsCardsHeaderItemClassName}

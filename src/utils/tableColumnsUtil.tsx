@@ -1,10 +1,10 @@
 import { format, fromUnixTime } from 'date-fns';
+import { utils } from 'ethers';
 import React from 'react';
 
 import starEmpty from '../assets/star_empty.svg';
 import startFill from '../assets/star_fill.svg';
 import { getIPFSResolvedLink } from './data';
-import { utils } from 'ethers';
 
 export const getAllColumns = () => {
   return [
