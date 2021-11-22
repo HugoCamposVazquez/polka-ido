@@ -31,17 +31,13 @@ export const getAllColumns = () => {
       title: 'Status',
       dataIndex: 'status',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => (
-        <div>
-          <div>{cellProps.record.startDate < fromUnixTime(Date.now()) && 'Upcoming'}</div>
-          <div>
-            {cellProps.record.startDate < fromUnixTime(Date.now()) &&
-              fromUnixTime(Date.now()) < cellProps.record.startDate &&
-              'In Progress'}
-          </div>
-          <div>{cellProps.record.endDate > fromUnixTime(Date.now()) && 'Ended'}</div>
-        </div>
-      ),
+      renderRepresentation: (cellProps: any) => {
+        if (cellProps.record.startDate * 1000 > Date.now()) return <div>Upcoming</div>;
+        if (cellProps.record.startDate * 1000 < Date.now() && cellProps.record.endDate * 1000 > Date.now())
+          return <div>In Progress</div>;
+        if (cellProps.record.endDate * 1000 < Date.now()) return <div>Ended</div>;
+        return <div>N/A</div>;
+      },
     },
     {
       title: 'Starts',
