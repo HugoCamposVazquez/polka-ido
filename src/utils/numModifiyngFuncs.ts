@@ -37,7 +37,7 @@ export const formatWei = (numberInWei: string | BigNumber): string => {
   return removeTrailingZeros(eth);
 };
 
-export const formatTokenAmount = (numberInWei: string | BigNumber, decimals: string): string => {
+export const formatTokenAmount = (numberInWei: string | BigNumber, decimals?: string): string => {
   const parsed = formatUnits(numberInWei, decimals);
   const basicNumber = parsed.replace(/\.0+$/, ''); // replace trailing zeros
   return numberWithSpaces(basicNumber);

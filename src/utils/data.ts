@@ -16,10 +16,6 @@ export const getPercentage = (fraction: string, total: string): number => {
 };
 
 export const getTokenPrice = (salePrice: string, decimals?: string): string => {
-  console.log('salePrice');
-  console.log(salePrice);
-  console.log('decimals');
-  console.log(decimals);
   const precision = 12;
   const precisonMul = (10 ** precision).toString();
 
