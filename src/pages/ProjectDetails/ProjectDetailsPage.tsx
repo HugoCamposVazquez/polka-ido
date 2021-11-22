@@ -206,7 +206,7 @@ export const ProjectDetailsPage = () => {
                 title="CLAIM TOKENS"
                 type={'bordered'}
                 onClick={onClaimClick}
-                disabled={projectStatus != 'Ended'}
+                disabled={getUnixTime(new Date()) < +(data?.vestingStartDate || 0)}
               />
               <MainButton
                 title="JOIN"

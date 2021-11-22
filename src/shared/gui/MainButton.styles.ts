@@ -40,6 +40,7 @@ export const borderedButtonStyle = styled.cssStyle`
   font-family: Titillium Web;
   font-weight: 700;
   cursor: pointer;
+  border-color: ${sideColor3};
 `;
 
 export const borderedButtonDisabledStyle = cs(
