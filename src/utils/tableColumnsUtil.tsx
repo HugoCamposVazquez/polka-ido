@@ -4,6 +4,7 @@ import React from 'react';
 import starEmpty from '../assets/star_empty.svg';
 import startFill from '../assets/star_fill.svg';
 import { getIPFSResolvedLink } from './data';
+import { utils } from 'ethers';
 
 export const getAllColumns = () => {
   return [
@@ -57,19 +58,19 @@ export const getAllColumns = () => {
       title: 'Raise amount',
       dataIndex: 'cap',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.currentDepositAmount}</div>,
+      renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.currentDepositAmount)}</div>,
+    },
+    {
+      title: 'Token price',
+      dataIndex: 'tokenPrice',
+      width: '9.375rem',
+      renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.salePrice)}</div>,
     },
     {
       title: 'Access',
       dataIndex: 'access',
       width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.whitelisted ? 'Whitelisted' : 'Public'}</div>,
-    },
-    {
-      title: 'Token price',
-      dataIndex: 'tokenPrice',
-      width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.salePrice}</div>,
     },
     {
       title: 'Featured',
