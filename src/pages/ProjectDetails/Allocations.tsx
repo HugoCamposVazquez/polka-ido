@@ -1,12 +1,11 @@
 import Big from 'big.js';
-import { formatUnits } from 'ethers/lib/utils';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { config } from '../../config';
 import { useUserAllocations } from '../../hooks/apollo/useUserAllocations';
 import { useSaleContract } from '../../hooks/web3/contract/useSaleContract';
 import { convertStringFromUnixTime } from '../../utils/date';
-import { formatWei } from '../../utils/numModifiyngFuncs';
+import { formatTokenAmount, formatWei } from '../../utils/numModifiyngFuncs';
 import * as styles from './ProjectDetailsPage.styles';
 
 interface IProps {
@@ -19,7 +18,7 @@ interface IProps {
 export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const getNumberOfTokens = useCallback(
-    (allocation: string) => formatUnits(Big(allocation).times(Big(tokenPrice)).valueOf()),
+    (allocation: string) => formatTokenAmount(Big(allocation).times(Big(tokenPrice)).valueOf()),
     [data],
   );
 
@@ -70,7 +69,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }:
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const totalAllocation = useMemo(
     () =>
-      formatUnits(
+      formatTokenAmount(
         Big(data?.totalAllocation || '0')
           .times(Big(tokenPrice))
           .valueOf(),
@@ -84,7 +83,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }:
     try {
       if (contract)
         contract.getUserClaimedTokens(account).then((count) => {
-          setClaimed(formatUnits(count));
+          setClaimed(formatTokenAmount(count));
         });
     } catch {
       setClaimed('');
