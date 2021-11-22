@@ -14,13 +14,12 @@ interface IProps {
   projectId: string;
   tokenPrice: string;
   tokenSymbol?: string;
-  tokenDecimals: string;
 }
 
-export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol, tokenDecimals }: IProps) => {
+export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const getNumberOfTokens = useCallback(
-    (allocation: string) => formatUnits(Big(allocation).times(Big(tokenPrice)).valueOf(), tokenDecimals),
+    (allocation: string) => formatUnits(Big(allocation).times(Big(tokenPrice)).valueOf()),
     [data],
   );
 
@@ -67,7 +66,7 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol, token
   );
 };
 
-export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, tokenDecimals }: IProps) => {
+export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const totalAllocation = useMemo(
     () =>
@@ -75,7 +74,6 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, t
         Big(data?.totalAllocation || '0')
           .times(Big(tokenPrice))
           .valueOf(),
-        tokenDecimals,
       ),
     [data],
   );
@@ -86,7 +84,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, t
     try {
       if (contract)
         contract.getUserClaimedTokens(account).then((count) => {
-          setClaimed(formatUnits(count, tokenDecimals));
+          setClaimed(formatUnits(count));
         });
     } catch {
       setClaimed('');

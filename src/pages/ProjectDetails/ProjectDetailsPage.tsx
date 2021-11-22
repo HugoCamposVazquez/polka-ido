@@ -83,7 +83,7 @@ export const ProjectDetailsPage = () => {
 
   const tokenPrice = useMemo((): string => {
     if (data && tokenData) {
-      return getTokenPrice(data.salePrice, tokenData.decimals);
+      return getTokenPrice(data.salePrice);
     }
     return '0';
   }, [data, tokenData]);
@@ -178,12 +178,7 @@ export const ProjectDetailsPage = () => {
                 }`}</div>
               </div>
               {account && data && tokenData && (
-                <TotalAllocation
-                  account={account}
-                  projectId={data?.id}
-                  tokenPrice={tokenPrice}
-                  tokenDecimals={tokenData.decimals}
-                />
+                <TotalAllocation account={account} projectId={data?.id} tokenPrice={tokenPrice} />
               )}
 
               <div style={{ marginTop: '2.25rem' }}>
@@ -201,7 +196,7 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  {console.log(tokenPrice)}1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
+                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
                 </div>
               </div>
             </div>
@@ -218,14 +213,7 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {account && data && tokenData && (
-        <Allocations
-          account={account}
-          projectId={data?.id}
-          tokenPrice={tokenPrice}
-          tokenDecimals={tokenData.decimals}
-        />
-      )}
+      {account && data && tokenData && <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>
