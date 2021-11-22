@@ -43,7 +43,7 @@ export const AccountsDropdown = ({ options, initialAccount, onAccountChange }: I
 
   return (
     <Dropdown overlay={menu} placement="bottomCenter" arrow trigger={['click']}>
-      <MainButton type="bordered" title={selectedAccount?.meta.name || 'CONNECT WALLET'} onClick={() => {}} />
+      <MainButton type="bordered" title={selectedAccount?.meta.name || 'SELECT WALLET'} onClick={() => {}} />
     </Dropdown>
   );
 };
