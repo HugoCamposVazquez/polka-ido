@@ -136,14 +136,16 @@ export const ProjectDetailsPage = () => {
               <div className={styles.shortDescriptionTextClassName}>{metadata?.shortDescription}</div>
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
                 {metadata &&
-                  ['webLink', 'twitterLink', 'telegramLink'].map((name, index) => (
-                    <ExternalLink href={metadata[name as keyof ProjectMetadata] || ''} key={name}>
-                      <img
-                        style={{ marginLeft: index === 0 ? '0' : '1rem', cursor: 'pointer' }}
-                        src={iconMap.get(name) || ''}
-                      />
-                    </ExternalLink>
-                  ))}
+                  ['webLink', 'twitterLink', 'telegramLink'].map((name, index) =>
+                    metadata[name as keyof ProjectMetadata] ? (
+                      <ExternalLink href={metadata[name as keyof ProjectMetadata] || ''} key={name}>
+                        <img
+                          style={{ marginLeft: index === 0 ? '0' : '1rem', cursor: 'pointer' }}
+                          src={iconMap.get(name) || ''}
+                        />
+                      </ExternalLink>
+                    ) : null,
+                  )}
               </div>
             </div>
           </div>
