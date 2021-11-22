@@ -202,7 +202,12 @@ export const ProjectDetailsPage = () => {
             </div>
 
             <div className={styles.projectDetailsBtnsParentStyle}>
-              <MainButton title="CLAIM TOKENS" type={'bordered'} onClick={onClaimClick} />
+              <MainButton
+                title="CLAIM TOKENS"
+                type={'bordered'}
+                onClick={onClaimClick}
+                disabled={projectStatus != 'Ended'}
+              />
               <MainButton
                 title="JOIN"
                 type={'fill'}

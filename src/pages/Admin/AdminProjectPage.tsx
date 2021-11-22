@@ -2,7 +2,6 @@ import { Spin } from 'antd';
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import binImage from '../../assets/bin_image.svg';
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
 import { ProjectMetadata } from '../../types/ProjectType';
@@ -38,12 +37,6 @@ export const AdminProjectPage = () => {
     <div style={styles.adminProjectPageContainerStyle}>
       <div style={styles.titleContainerStyle}>
         <div style={styles.titleStyle}>{id !== undefined ? 'Edit project' : 'New project'}</div>
-        {id !== undefined && (
-          <div style={styles.deleteProjectParentStyle}>
-            <div style={styles.deleteProjectTextStyle}>Delete project</div>
-            <img src={binImage} />
-          </div>
-        )}
       </div>
       <ProjectForm
         defaultProjectData={convertToProjectType(project, metaData, id)}

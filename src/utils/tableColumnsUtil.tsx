@@ -1,10 +1,10 @@
 import { format, fromUnixTime } from 'date-fns';
 import React from 'react';
 
-import binImage from '../assets/bin_image.svg';
 import starEmpty from '../assets/star_empty.svg';
 import startFill from '../assets/star_fill.svg';
 import { getIPFSResolvedLink } from './data';
+import { utils } from 'ethers';
 
 export const getAllColumns = () => {
   return [
@@ -32,17 +32,13 @@ export const getAllColumns = () => {
       title: 'Status',
       dataIndex: 'status',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => (
-        <div>
-          <div>{cellProps.record.startDate < fromUnixTime(Date.now()) && 'Upcoming'}</div>
-          <div>
-            {cellProps.record.startDate < fromUnixTime(Date.now()) &&
-              fromUnixTime(Date.now()) < cellProps.record.startDate &&
-              'In Progress'}
-          </div>
-          <div>{cellProps.record.endDate > fromUnixTime(Date.now()) && 'Ended'}</div>
-        </div>
-      ),
+      renderRepresentation: (cellProps: any) => {
+        if (cellProps.record.startDate * 1000 > Date.now()) return <div>Upcoming</div>;
+        if (cellProps.record.startDate * 1000 < Date.now() && cellProps.record.endDate * 1000 > Date.now())
+          return <div>In Progress</div>;
+        if (cellProps.record.endDate * 1000 < Date.now()) return <div>Ended</div>;
+        return <div>N/A</div>;
+      },
     },
     {
       title: 'Starts',
@@ -62,7 +58,13 @@ export const getAllColumns = () => {
       title: 'Raise amount',
       dataIndex: 'cap',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.currentDepositAmount}</div>,
+      renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.currentDepositAmount)}</div>,
+    },
+    {
+      title: 'Token price',
+      dataIndex: 'tokenPrice',
+      width: '9.375rem',
+      renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.salePrice)}</div>,
     },
     {
       title: 'Access',
@@ -71,31 +73,12 @@ export const getAllColumns = () => {
       renderRepresentation: (cellProps: any) => <div>{cellProps.record.whitelisted ? 'Whitelisted' : 'Public'}</div>,
     },
     {
-      title: 'Token price',
-      dataIndex: 'tokenPrice',
-      width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{cellProps.record.salePrice}</div>,
-    },
-    {
       title: 'Featured',
       dataIndex: 'featured',
       width: '6.25rem',
       renderRepresentation: (cellProps: any) => (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {cellProps.record.featured ? <img src={startFill} /> : <img src={starEmpty} />}
-        </div>
-      ),
-    },
-    {
-      title: '',
-      width: '5rem',
-      renderRepresentation: () => (
-        <div
-          style={{ display: 'flex', justifyContent: 'center', height: '100%' }}
-          onClick={() => {
-            console.log('deleted!');
-          }}>
-          {<img src={binImage} />}
         </div>
       ),
     },

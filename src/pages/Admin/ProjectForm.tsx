@@ -152,11 +152,11 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
             notifySuccess('Project successfuly created.', notificationTimer);
           }
         }
-        setIsSavingData(false);
       } catch (e) {
         console.log(e);
-        setIsSavingData(false);
         notifyError('Error while creating project.', notificationTimer);
+      } finally {
+        setIsSavingData(false);
       }
     }
   };
