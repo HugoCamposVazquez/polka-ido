@@ -17,7 +17,13 @@ export const numberWithSpaces = (num: string) => {
   return intPart + (decimals ? `.${decimals}` : '');
 };
 
-const removeTrailingZeros = (str: string): string => str.replace(/\.0+$/, '');
+export const removeTrailingZeros = (str: string): string => str.replace(/\.0+$/, '');
+
+export const removeExcessDecimal = (str: string, maxDecimals: number): string => {
+  const index = str.indexOf('.');
+  if (index === -1) return str;
+  return str.substring(0, index + maxDecimals + 1);
+};
 
 export const formatBalance = (str: string, maxDecimalDigits: number): string => {
   if (str.includes('.')) {
@@ -39,6 +45,5 @@ export const formatWei = (numberInWei: string | BigNumber): string => {
 
 export const formatTokenAmount = (numberInWei: string | BigNumber, decimals?: string): string => {
   const parsed = formatUnits(numberInWei, decimals);
-  const basicNumber = parsed.replace(/\.0+$/, ''); // replace trailing zeros
-  return numberWithSpaces(basicNumber);
+  return numberWithSpaces(removeTrailingZeros(parsed));
 };
