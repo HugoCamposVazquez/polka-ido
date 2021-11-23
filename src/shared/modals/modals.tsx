@@ -59,7 +59,12 @@ export const openWalletModal = (changeWallet: any, account: string) => {
   );
 };
 
-export const openUnsupportedNetworkModal = () => {
+export const openUnsupportedNetworkModal = (onClose: (declined?: boolean) => void) => {
+  const handleClose = (declined?: boolean) => {
+    detachDiv();
+    onClose(declined);
+  };
+
   attachDiv();
-  ReactDOM.render(<UnsupportedNetwork closeModal={detachDiv} />, stackOfModalDivs[stackOfModalDivs.length - 1]);
+  ReactDOM.render(<UnsupportedNetwork closeModal={handleClose} />, stackOfModalDivs[stackOfModalDivs.length - 1]);
 };

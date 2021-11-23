@@ -20,10 +20,14 @@ export const WalletConnect = ({ isMobile }: WalletConnectProps) => {
     alert('Not sure yet what this should do');
   };
 
+  const onSwitchModalClosed = (declined?: boolean) => {
+    if (!declined) onConnect();
+  };
+
   const onConnect = async () => {
     await activate(injected, (error) => {
       if (error instanceof UnsupportedChainIdError) {
-        openUnsupportedNetworkModal();
+        openUnsupportedNetworkModal(onSwitchModalClosed);
       }
     });
     onLogin();
