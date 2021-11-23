@@ -7,7 +7,7 @@ import { Modal } from './Modal';
 import { modalTextStyle } from './Modal.styles';
 
 interface IProps {
-  closeModal: () => void;
+  closeModal: (declined: boolean) => void;
 }
 
 export const UnsupportedNetwork = ({ closeModal }: IProps) => {
@@ -16,11 +16,15 @@ export const UnsupportedNetwork = ({ closeModal }: IProps) => {
   const onSwitchNetwork = async () => {
     // @ts-ignore
     await switchToNetwork(library || window.ethereum);
-    closeModal();
+    closeModal(false);
+  };
+
+  const handleClose = () => {
+    closeModal(true);
   };
 
   return (
-    <Modal title="Unsupported network" closeModal={closeModal}>
+    <Modal title="Unsupported network" closeModal={handleClose}>
       <div style={modalTextStyle}>
         It seems like your wallet is currently connected to an unsupported network. Do you want to switch it to{' '}
         <b>Moonbase Alpha</b>?
