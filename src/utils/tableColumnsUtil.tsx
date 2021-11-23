@@ -1,10 +1,10 @@
 import { format, fromUnixTime } from 'date-fns';
-import { utils } from 'ethers';
 import React from 'react';
 
 import starEmpty from '../assets/star_empty.svg';
 import startFill from '../assets/star_fill.svg';
 import { getIPFSResolvedLink } from './data';
+import { formatTokenAmount } from './numModifiyngFuncs';
 
 export const getAllColumns = () => {
   return [
@@ -58,13 +58,13 @@ export const getAllColumns = () => {
       title: 'Raise amount',
       dataIndex: 'cap',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.currentDepositAmount)}</div>,
+      renderRepresentation: (cellProps: any) => <div>{formatTokenAmount(cellProps.record.currentDepositAmount)}</div>,
     },
     {
       title: "Token's per MOVR",
       dataIndex: 'tokenPrice',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.salePrice)}</div>,
+      renderRepresentation: (cellProps: any) => <div>{formatTokenAmount(cellProps.record.salePrice)}</div>,
     },
     {
       title: 'Access',

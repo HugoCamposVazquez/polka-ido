@@ -198,7 +198,7 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
+                  1 {config.CURRENCY} = {tokenPrice} {tokenData?.symbol || 'token'}
                 </div>
               </div>
             </div>
