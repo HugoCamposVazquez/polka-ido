@@ -30,18 +30,16 @@ export async function switchToNetwork(provider: providers.ExternalProvider): Pro
 
   if (provider.request) {
     try {
-      console.log('provider.request');
       return await provider.request({
         method: 'wallet_addEthereumChain',
         params: [moonbeamChain],
       });
     } catch (e) {
-      console.log('Failed to switch to moonbeam with external provider: ' + e);
+      console.error('Failed to switch to moonbeam with external provider: ' + e);
     }
   }
 
   if ((window as any).ethereum) {
-    console.log('window ethereum frende');
     const { ethereum } = window as any;
     try {
       return await ethereum.request({
@@ -49,7 +47,7 @@ export async function switchToNetwork(provider: providers.ExternalProvider): Pro
         params: [moonbeamChain],
       });
     } catch (e) {
-      console.log('Failed to switch to moonbeam with window.ethereum provider: ' + e);
+      console.error('Failed to switch to moonbeam with window.ethereum provider: ' + e);
     }
   }
 
