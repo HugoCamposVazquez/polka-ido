@@ -61,7 +61,7 @@ export const getAllColumns = () => {
       renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.currentDepositAmount)}</div>,
     },
     {
-      title: 'Token price',
+      title: "Token's per MOVR",
       dataIndex: 'tokenPrice',
       width: '9.375rem',
       renderRepresentation: (cellProps: any) => <div>{utils.formatEther(cellProps.record.salePrice)}</div>,

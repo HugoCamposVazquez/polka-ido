@@ -285,7 +285,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
               />
             </div>
             <div style={cs(styles.fieldTitleWithMarginStyle, { flex: 0.2 })}>
-              <div style={styles.fieldSectionStyle}>Token price</div>
+              <div style={styles.fieldSectionStyle}>Token's per MOVR</div>
               <TextField
                 disabled={hasProjectStarted}
                 name={'tokenPrice'}
