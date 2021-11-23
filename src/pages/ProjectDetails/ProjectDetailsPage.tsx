@@ -225,7 +225,9 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
       </div>
-      {account && data && tokenData && <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
+      {account && data && tokenData && (
+        <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} tokenSymbol={tokenData?.symbol} />
+      )}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>
