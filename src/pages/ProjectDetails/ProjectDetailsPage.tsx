@@ -106,6 +106,11 @@ export const ProjectDetailsPage = () => {
     }
   }, [data]);
 
+  const isSoldOut = useMemo(
+    () => (data ? BigNumber.from(data?.cap).sub(BigNumber.from(data?.currentDepositAmount)).isZero() : true),
+    [data],
+  );
+
   return (
     <div>
       <div className={styles.imageParentContainerClassName}>
@@ -136,14 +141,16 @@ export const ProjectDetailsPage = () => {
               <div className={styles.shortDescriptionTextClassName}>{metadata?.shortDescription}</div>
               <div style={{ marginTop: '2.25rem', display: 'flex' }}>
                 {metadata &&
-                  ['webLink', 'twitterLink', 'telegramLink'].map((name, index) => (
-                    <ExternalLink href={metadata[name as keyof ProjectMetadata] || ''} key={name}>
-                      <img
-                        style={{ marginLeft: index === 0 ? '0' : '1rem', cursor: 'pointer' }}
-                        src={iconMap.get(name) || ''}
-                      />
-                    </ExternalLink>
-                  ))}
+                  ['webLink', 'twitterLink', 'telegramLink'].map((name, index) =>
+                    metadata[name as keyof ProjectMetadata] ? (
+                      <ExternalLink href={metadata[name as keyof ProjectMetadata] || ''} key={name}>
+                        <img
+                          style={{ marginLeft: index === 0 ? '0' : '1rem', cursor: 'pointer' }}
+                          src={iconMap.get(name) || ''}
+                        />
+                      </ExternalLink>
+                    ) : null,
+                  )}
               </div>
             </div>
           </div>
@@ -196,7 +203,7 @@ export const ProjectDetailsPage = () => {
                   />
                 </div>
                 <div style={styles.smallTextStyle}>
-                  1 {tokenData?.symbol || 'token'} = {tokenPrice} {config.CURRENCY}
+                  1 {config.CURRENCY} = {tokenPrice} {tokenData?.symbol || 'token'}
                 </div>
               </div>
             </div>
@@ -206,19 +213,21 @@ export const ProjectDetailsPage = () => {
                 title="CLAIM TOKENS"
                 type={'bordered'}
                 onClick={onClaimClick}
-                disabled={projectStatus != 'Ended'}
+                disabled={getUnixTime(new Date()) < +(data?.vestingStartDate || 0)}
               />
               <MainButton
                 title="JOIN"
                 type={'fill'}
                 onClick={() => navigation.push(`/project/${id}/join`)}
-                disabled={projectStatus === 'Ended' || projectStatus === 'Upcoming'}
+                disabled={projectStatus === 'Ended' || projectStatus === 'Upcoming' || isSoldOut}
               />
             </div>
           </div>
         </div>
       </div>
-      {account && data && tokenData && <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} />}
+      {account && data && tokenData && (
+        <Allocations account={account} projectId={data?.id} tokenPrice={tokenPrice} tokenSymbol={tokenData?.symbol} />
+      )}
       <div className={styles.projectDetailsRootContainerClassName}>
         <div className={styles.subtitleStyle}>Project details</div>
         <div className={styles.projectDetailsContainerClassName}>

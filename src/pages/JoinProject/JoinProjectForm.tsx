@@ -15,7 +15,7 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
-import { formatWei } from '../../utils/numModifiyngFuncs';
+import { formatWei, removeExcessDecimal } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 enum ActiveInput {
@@ -123,12 +123,9 @@ export const JoinProjectForm = () => {
       selectedInput.current = ActiveInput.From;
       if (!data?.token.decimals) return;
       try {
-        const dotIndex = fromInputValue.indexOf('.');
-        const fixedValue = fromInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + 19);
-        const wei = ethers.utils.parseEther(fixedValue);
-        // to get decimals it need to be multiplied by decimal point
-        const token = wei.mul(BigNumber.from(10).pow(data?.token.decimals || 0)).div(data?.salePrice || '1');
-        methods.setValue('toValue', ethers.utils.formatUnits(token, data.token.decimals));
+        const wei = ethers.utils.parseEther(fromInputValue);
+        const token = wei.mul(BigNumber.from(data?.salePrice)).div(ethers.utils.parseEther('1'));
+        methods.setValue('toValue', removeExcessDecimal(formatWei(token), data.token.decimals));
       } catch (e: any) {
         methods.setValue('toValue', '');
         console.error(`Error while calculating output value: ${e.message}`);
@@ -141,16 +138,12 @@ export const JoinProjectForm = () => {
   useEffect(() => {
     if (isSelectedInput(ActiveInput.To)) {
       selectedInput.current = ActiveInput.To;
+      if (!data?.token.decimals) return;
       try {
-        const tokenDecimals = data?.token.decimals || 0;
-        const dotIndex = toInputValue.indexOf('.');
-        const fixedValue = toInputValue.substring(0, dotIndex === -1 ? undefined : dotIndex + tokenDecimals + 1);
-        const token = ethers.utils.parseUnits(fixedValue, tokenDecimals);
-        const wei = token
-          .mul(BigNumber.from(data?.salePrice || '1'))
-          // fix number caused by decimal point
-          .div(BigNumber.from(10).pow(tokenDecimals));
-        methods.setValue('fromValue', ethers.utils.formatEther(wei));
+        const wei = ethers.utils.parseEther(removeExcessDecimal(toInputValue, data.token.decimals));
+        const token = wei.mul(ethers.utils.parseEther('1')).div(BigNumber.from(data?.salePrice));
+        console.warn(formatWei(token), formatWei(wei));
+        methods.setValue('fromValue', formatWei(token));
       } catch (e: any) {
         methods.setValue('fromValue', '');
         console.error(`Error while calculating output value: ${e.message}`);

@@ -91,74 +91,80 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
     getAccounts();
   }, []);
 
+  if (!selectedDotAcc) {
+    return (
+      <Modal title="CLAIM TOKENS" closeModal={closeModal}>
+        <div style={styles.walletConnectContainer}>
+          <div style={styles.subtitleTextStyle}>
+            Please select your Polkadot.js wallet first. Choose the account that you wish to receive the project tokens.
+          </div>
+          <AccountsDropdown options={accounts} initialAccount={undefined} onAccountChange={onAccountChange} />
+        </div>
+      </Modal>
+    );
+  }
+
   return (
-    <Modal title="CLAIM TOKEN" closeModal={closeModal}>
+    <Modal title="CLAIM TOKENS" closeModal={closeModal}>
       <div style={styles.walletConnectContainer}>
-        {!selectedDotAcc ? (
-          <>
-            <div style={styles.subtitleTextStyle}>
-              Please connect your Polkadot.js wallet first. Choose the account that you wish to receive the project
-              tokens.
-            </div>
-            <AccountsDropdown options={accounts} initialAccount={undefined} onAccountChange={onAccountChange} />
-          </>
-        ) : (
-          <>
-            <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
-            <AccountsDropdown options={accounts} initialAccount={selectedDotAcc} onAccountChange={onAccountChange} />
-          </>
-        )}
+        <div style={styles.subtitleTextStyle}>Connected account (extension):</div>
+        <AccountsDropdown options={accounts} initialAccount={selectedDotAcc} onAccountChange={onAccountChange} />
       </div>
 
       <div style={styles.tknValueTextStyle}>
         {amountOfClaimableTokens} {tokenData ? tokenData.symbol : ''}
       </div>
-      <div style={modalTextStyle}>
-        {isSufficientPolkadotBalance ? (
-          'Enter an address to claim the tokens.'
-        ) : (
+
+      {!isSufficientPolkadotBalance ? (
+        <div style={modalTextStyle}>
           <b>
             Sorry, can't claim any tokens as your account doesn't have the existential deposit required on the network.
           </b>
-        )}
-        {tokenDataError && (
-          <Fragment>
-            <br />
-            <b>Error fetching token data.</b>
-          </Fragment>
-        )}
-      </div>
-      <FormProvider {...methods}>
-        <form>
-          <div>
-            <div style={styles.addressInputContainerStyle}>
-              <div style={styles.recipientTextStyle}>Recipient</div>
-              <TextField
-                name={'address'}
-                styleType={'none'}
-                placeholder={'Address'}
-                mode={'dark'}
-                style={{ fontSize: '1.25rem' }}
-              />
-            </div>
-
-            <div style={{ marginTop: '1.5rem' }}>
-              <MainButton
-                disabled={
-                  !accounts.length ||
-                  amountOfClaimableTokens === '0' ||
-                  isTransactionInProgress ||
-                  !isSufficientPolkadotBalance
-                }
-                title={isTransactionInProgress ? 'Waiting for Conformation' : 'Claim'}
-                onClick={methods.handleSubmit(onSubmit)}
-                type={'fill'}
-                style={{ width: '100%' }}
-              />
-            </div>
+        </div>
+      ) : (
+        <>
+          <div style={modalTextStyle}>
+            Enter an address to claim the tokens.
+            {tokenDataError && (
+              <Fragment>
+                <br />
+                <b>Error fetching token data.</b>
+              </Fragment>
+            )}
           </div>
-        </form>
-      </FormProvider>
+          <FormProvider {...methods}>
+            <form>
+              <div>
+                <div style={styles.addressInputContainerStyle}>
+                  <div style={styles.recipientTextStyle}>Recipient</div>
+                  <TextField
+                    name={'address'}
+                    styleType={'none'}
+                    placeholder={'Address'}
+                    mode={'dark'}
+                    style={{ fontSize: '1.25rem' }}
+                  />
+                </div>
+
+                <div style={{ marginTop: '1.5rem' }}>
+                  <MainButton
+                    disabled={
+                      !accounts.length ||
+                      amountOfClaimableTokens === '0' ||
+                      isTransactionInProgress ||
+                      !isSufficientPolkadotBalance
+                    }
+                    title={isTransactionInProgress ? 'Waiting for Conformation' : 'Claim'}
+                    onClick={methods.handleSubmit(onSubmit)}
+                    type={'fill'}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              </div>
+            </form>
+          </FormProvider>
+        </>
+      )}
     </Modal>
   );
 };
