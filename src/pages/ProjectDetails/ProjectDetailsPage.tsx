@@ -106,6 +106,11 @@ export const ProjectDetailsPage = () => {
     }
   }, [data]);
 
+  const isSoldOut = useMemo(
+    () => (data ? BigNumber.from(data?.cap).sub(BigNumber.from(data?.currentDepositAmount)).isZero() : true),
+    [data],
+  );
+
   return (
     <div>
       <div className={styles.imageParentContainerClassName}>
@@ -214,7 +219,7 @@ export const ProjectDetailsPage = () => {
                 title="JOIN"
                 type={'fill'}
                 onClick={() => navigation.push(`/project/${id}/join`)}
-                disabled={projectStatus === 'Ended' || projectStatus === 'Upcoming'}
+                disabled={projectStatus === 'Ended' || projectStatus === 'Upcoming' || isSoldOut}
               />
             </div>
           </div>
