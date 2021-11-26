@@ -135,7 +135,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
           utils.parseEther(projectSubmit.minUserDepositAmount),
           utils.parseEther(projectSubmit.maxUserDepositAmount),
           utils.parseEther(projectSubmit.cap),
-          utils.parseEther(projectSubmit.tokenPrice.toString()),
+          utils.parseUnits(projectSubmit.tokenPrice.toString(), projectSubmit.decimals),
           {
             tokenID: projectSubmit.tokenId,
             decimals: projectSubmit.decimals,

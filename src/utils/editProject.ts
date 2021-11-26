@@ -1,7 +1,7 @@
 import { SaleContract } from '@nodefactoryio/ryu-contracts/typechain/SaleContract';
 import axios from 'axios';
 import { ContractTransaction } from 'ethers';
-import { formatEther, parseEther, parseUnits } from 'ethers/lib/utils';
+import { formatEther, parseEther, parseUnits, formatUnits } from 'ethers/lib/utils';
 
 import { getPinataApi, PinataResponse } from '../services/pinata';
 import { ProjectStatus } from '../types/enums/ProjectStatus';
@@ -247,7 +247,7 @@ export const convertToProjectType = (
       minUserDepositAmount: formatEther(minUserDepositAmount),
       maxUserDepositAmount: formatEther(maxUserDepositAmount),
       cap: formatEther(cap),
-      tokenPrice: formatEther(salePrice),
+      tokenPrice: formatUnits(salePrice, token.decimals),
       vestingStartDate: convertDateFromUnixTime(vestingStartDate),
       vestingEndDate: convertDateFromUnixTime(vestingEndDate),
       tokenId: parseInt(token.id),

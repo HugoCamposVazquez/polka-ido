@@ -83,7 +83,7 @@ export const ProjectDetailsPage = () => {
 
   const tokenPrice = useMemo((): string => {
     if (data && tokenData) {
-      return getTokenPrice(data.salePrice);
+      return getTokenPrice(data.salePrice, tokenData.decimals);
     }
     return '0';
   }, [data, tokenData]);
@@ -185,7 +185,12 @@ export const ProjectDetailsPage = () => {
                 }`}</div>
               </div>
               {account && data && tokenData && (
-                <TotalAllocation account={account} projectId={data?.id} tokenPrice={tokenPrice} />
+                <TotalAllocation
+                  account={account}
+                  projectId={data?.id}
+                  tokenPrice={tokenPrice}
+                  decimals={tokenData.decimals}
+                />
               )}
 
               <div style={{ marginTop: '2.25rem' }}>

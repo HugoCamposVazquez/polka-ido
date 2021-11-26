@@ -39,7 +39,7 @@ export const ClaimTokensModal = ({ closeModal, contract, userEthAddress, tokenId
       } else setTokenDataError(false);
       try {
         const claimableBalance = await contract.getUserClaimableTokens(userEthAddress);
-        const formattedClaimableBalance = formatTokenAmount(claimableBalance);
+        const formattedClaimableBalance = formatTokenAmount(claimableBalance, tokenData.decimals);
         setAmountOfClaimableTokens(formattedClaimableBalance);
       } catch (error) {
         setAmountOfClaimableTokens('0');
