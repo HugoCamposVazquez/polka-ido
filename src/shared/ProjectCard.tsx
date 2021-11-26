@@ -52,7 +52,7 @@ export const ProjectCard = ({ direction, project }: IProps) => {
 
   const tokenPrice = useMemo((): string => {
     if (tokenData && project) {
-      return getTokenPrice(project.salePrice);
+      return getTokenPrice(project.salePrice, tokenData.decimals);
     }
     return '0';
   }, [project, tokenData]);

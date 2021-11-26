@@ -64,7 +64,9 @@ export const getAllColumns = () => {
       title: "Token's per MOVR",
       dataIndex: 'tokenPrice',
       width: '9.375rem',
-      renderRepresentation: (cellProps: any) => <div>{formatTokenAmount(cellProps.record.salePrice)}</div>,
+      renderRepresentation: (cellProps: any) => (
+        <div>{formatTokenAmount(cellProps.record.salePrice, String(cellProps.record.token.decimals))}</div>
+      ),
     },
     {
       title: 'Access',

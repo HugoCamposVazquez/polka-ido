@@ -1,3 +1,4 @@
+import { formatUnits } from '@ethersproject/units';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber, ethers } from 'ethers';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,7 +16,7 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { TextField } from '../../shared/gui/TextField';
 import { cs } from '../../utils/css';
 import { notifyTransactionConfirmation, updateNotifyError, updateNotifySuccess } from '../../utils/notifications';
-import { formatWei, removeExcessDecimal } from '../../utils/numModifiyngFuncs';
+import { formatWei, removeExcessDecimal, removeTrailingZeros } from '../../utils/numModifiyngFuncs';
 import * as styles from './JoinProjectPage.styles';
 
 enum ActiveInput {
@@ -106,10 +107,10 @@ export const JoinProjectForm = () => {
         .mul(BigNumber.from(data?.salePrice))
         .div(ethers.utils.parseEther('1'));
 
-      return formatWei(calculatedRemainingTokens);
+      return removeTrailingZeros(formatUnits(calculatedRemainingTokens, tokenData?.decimals));
     }
     return '0';
-  }, [data]);
+  }, [data, tokenData]);
 
   const fromInputValue = methods.watch('fromValue', '0');
   const toInputValue = methods.watch('toValue', '0');
@@ -125,7 +126,10 @@ export const JoinProjectForm = () => {
       try {
         const wei = ethers.utils.parseEther(fromInputValue);
         const token = wei.mul(BigNumber.from(data?.salePrice)).div(ethers.utils.parseEther('1'));
-        methods.setValue('toValue', removeExcessDecimal(formatWei(token), data.token.decimals));
+        methods.setValue(
+          'toValue',
+          removeExcessDecimal(removeTrailingZeros(formatUnits(token, tokenData?.decimals)), data.token.decimals),
+        );
       } catch (e: any) {
         methods.setValue('toValue', '');
         console.error(`Error while calculating output value: ${e.message}`);
@@ -140,9 +144,11 @@ export const JoinProjectForm = () => {
       selectedInput.current = ActiveInput.To;
       if (!data?.token.decimals) return;
       try {
-        const wei = ethers.utils.parseEther(removeExcessDecimal(toInputValue, data.token.decimals));
+        const wei = ethers.utils.parseUnits(
+          removeExcessDecimal(toInputValue, data.token.decimals),
+          tokenData?.decimals,
+        );
         const token = wei.mul(ethers.utils.parseEther('1')).div(BigNumber.from(data?.salePrice));
-        console.warn(formatWei(token), formatWei(wei));
         methods.setValue('fromValue', formatWei(token));
       } catch (e: any) {
         methods.setValue('fromValue', '');

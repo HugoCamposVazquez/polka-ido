@@ -13,12 +13,19 @@ interface IProps {
   projectId: string;
   tokenPrice: string;
   tokenSymbol?: string;
+  decimals?: string;
 }
 
 export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
   const getNumberOfTokens = useCallback(
-    (allocation: string) => formatTokenAmount(Big(allocation).times(Big(tokenPrice)).valueOf()),
+    (allocation: string) => {
+      try {
+        return formatTokenAmount(Big(allocation).times(Big(tokenPrice)).valueOf());
+      } catch {
+        return 'N/A';
+      }
+    },
     [data],
   );
 
@@ -65,17 +72,19 @@ export const Allocations = ({ account, projectId, tokenPrice, tokenSymbol }: IPr
   );
 };
 
-export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }: IProps) => {
+export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol, decimals }: IProps) => {
   const { data } = useUserAllocations(projectId, account.toLowerCase());
-  const totalAllocation = useMemo(
-    () =>
-      formatTokenAmount(
+  const totalAllocation = useMemo(() => {
+    try {
+      return formatTokenAmount(
         Big(data?.totalAllocation || '0')
           .times(Big(tokenPrice))
           .valueOf(),
-      ),
-    [data],
-  );
+      );
+    } catch {
+      return 'N/A';
+    }
+  }, [data]);
 
   const [claimed, setClaimed] = useState('');
   const contract = useSaleContract(projectId);
@@ -83,7 +92,7 @@ export const TotalAllocation = ({ account, projectId, tokenPrice, tokenSymbol }:
     try {
       if (contract)
         contract.getUserClaimedTokens(account).then((count) => {
-          setClaimed(formatTokenAmount(count));
+          setClaimed(formatTokenAmount(count, decimals));
         });
     } catch {
       setClaimed('');
