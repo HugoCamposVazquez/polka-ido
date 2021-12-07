@@ -1,26 +1,31 @@
 import { Spin } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { useSingleProject } from '../../hooks/apollo/useSingleProject';
 import { useReadIPFS } from '../../hooks/ipfs/useReadIPFS';
-import { ProjectMetadata } from '../../types/ProjectType';
+import { ProjectMetadata, SalesDto } from '../../types/ProjectType';
 import { convertToProjectType } from '../../utils/editProject';
 import * as styles from './AdminProjectPage.styles';
 import { ProjectForm } from './ProjectForm';
 
-type IProps = {
+interface IProps {
+  onSuccessfulCreated?: (receipt: string) => void;
+}
+
+type IParams = {
   id: string | undefined;
 };
 
-export const AdminProjectPage = () => {
+export const AdminProjectPage = ({ onSuccessfulCreated }: IProps) => {
   const navigation = useHistory();
+  const [fallback, setFallback] = useState<SalesDto | undefined>();
 
-  const { id } = useParams<IProps>();
+  const { id } = useParams<IParams>();
 
-  const { data: project, loading: projectLoading } = useSingleProject(id);
+  const { data: project, loading: projectLoading } = useSingleProject(id, fallback);
 
-  const { data: metaData } = useReadIPFS<ProjectMetadata>(project?.metadataURI);
+  const { data: metaData, loading: metaLoading } = useReadIPFS<ProjectMetadata>(project?.metadataURI);
 
   useEffect(() => {
     // Project that needs to be edited is not found
@@ -33,6 +38,13 @@ export const AdminProjectPage = () => {
     return <Spin style={styles.spinnerStyle} size="large" />;
   }
 
+  const handleOnSuccessfulCreated = (receipt: string, data: SalesDto) => {
+    if (navigation.location.pathname === '/admin/project') {
+      setFallback(data);
+      onSuccessfulCreated && onSuccessfulCreated(receipt);
+    }
+  };
+
   return (
     <div style={styles.adminProjectPageContainerStyle}>
       <div style={styles.titleContainerStyle}>
@@ -40,7 +52,8 @@ export const AdminProjectPage = () => {
       </div>
       <ProjectForm
         defaultProjectData={convertToProjectType(project, metaData, id)}
-        loadingProjectData={projectLoading}
+        loadingProjectData={projectLoading && metaLoading}
+        onSuccessfulCreated={handleOnSuccessfulCreated}
         projectId={id}
       />
     </div>

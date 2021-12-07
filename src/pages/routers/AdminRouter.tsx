@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
 import { useSaleFactoryContract } from '../../hooks/web3/contract/useSaleFactoryContract';
 import { Header } from '../../shared/insets/admin/Header';
@@ -22,6 +22,7 @@ export const AdminRouter = (): any => {
   const salFactoryContract = useSaleFactoryContract();
 
   const [adminAddress, setAdminAddress] = useState<string>();
+  const navigation = useHistory();
 
   useEffect(() => {
     (async () => {
@@ -32,6 +33,11 @@ export const AdminRouter = (): any => {
       }
     })();
   });
+
+  const handleOnSuccessfulCreated = (receipt: string): void => {
+    if (navigation.location.pathname === '/admin/project')
+      navigation.replace(`/admin/project/${receipt}`, { redirected: true });
+  };
 
   if (adminAddress && account && account.toLowerCase() !== adminAddress.toLowerCase()) {
     return <Redirect to="/" />;
@@ -46,7 +52,11 @@ export const AdminRouter = (): any => {
       <Header />
       <Switch>
         <Route exact path="/admin" component={AdminPage} />
-        <Route exact path="/admin/project" component={AdminProjectPage} />
+        <Route
+          exact
+          path="/admin/project"
+          render={() => <AdminProjectPage onSuccessfulCreated={handleOnSuccessfulCreated} />}
+        />
         <Route exact path="/admin/project/:id" component={AdminProjectPage} />
         <Redirect from="/" to="/admin" />
       </Switch>

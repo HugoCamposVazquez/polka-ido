@@ -32,9 +32,9 @@ export const useReadIPFS = <ReturnData>(hash?: string): IData<ReturnData> => {
       } else {
         setError(`An unexpected error occurred: ${e.message}`);
       }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
