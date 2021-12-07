@@ -211,24 +211,41 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId,
     validateWhitelistedAddressesFormat();
   }, [whitelistedAddressesString]);
 
-  const onWhitelistAddresses = (): void => {
+  const onWhitelistAddresses = async (): Promise<void> => {
+    setIsSavingData(true);
     try {
-      saleContract?.addToWhitelist(whitelistedAddresses);
-      notifySuccess('Addresses successfully whitelisted', 2000);
-      methods.reset({ whitelistedAddresses: '' });
+      const tx = await saleContract?.addToWhitelist(whitelistedAddresses);
+      if (tx) {
+        const contractReceipt = await tx.wait(1);
+        if (contractReceipt) {
+          notifySuccess('Addresses successfully whitelisted', 2000);
+          methods.reset({ ...methods.getValues(), whitelistedAddresses: '' });
+        }
+      }
     } catch (error) {
       console.error(error);
       notifyError('Error while whitelisting addresses', 2000);
+    } finally {
+      setIsSavingData(false);
     }
   };
 
-  const onDeleteWhitelistedAddress = (): void => {
+  const onDeleteWhitelistedAddress = async (): Promise<void> => {
+    setIsSavingData(true);
     try {
-      saleContract?.removeFromWhitelist(whitelistedAddresses);
-      notifySuccess('Addresses succesfuly deleted', 2000);
-      methods.reset({ whitelistedAddresses: '' });
+      const tx = await saleContract?.removeFromWhitelist(whitelistedAddresses);
+      if (tx) {
+        const contractReceipt = await tx.wait(1);
+        if (contractReceipt) {
+          notifySuccess('Addresses successfully deleted', 2000);
+          methods.reset({ ...methods.getValues(), whitelistedAddresses: '' });
+        }
+      }
     } catch (error) {
-      notifyError('An error occured while deleting addresses', 2000);
+      console.error(error);
+      notifyError('An error occurred while deleting addresses', 2000);
+    } finally {
+      setIsSavingData(false);
     }
   };
 
@@ -271,7 +288,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId,
                 <p
                   onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
                   style={styles.addWhitelisteAddressesTitleStyle}>
-                  + Whitelist/Delete whitelisted adresses
+                  + Whitelist/Delete whitelisted addresses
                 </p>
               ) : (
                 <p style={styles.addWhitelisteAddressesTitleStyle}>
@@ -285,20 +302,22 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId,
                   mode="light"
                   style={{ height: '15.625rem' }}
                   placeholder="Add addresses you wish to whitelist/delete, please use commas for seperateing addresses"
+                  disabled={isSavingData}
                 />
                 <div style={styles.whitelistingButtonsContainer}>
+                  {isSavingData ? <Spin style={{ marginRight: '1.5rem', paddingTop: '2.5rem' }} /> : null}
                   <MainButton
                     title="Whitelist addresses"
                     type={'fill'}
                     style={{ margin: '1.5rem 0' }}
-                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    disabled={!areAddressesValid || !whitelistedAddressesString || isSavingData}
                     onClick={onWhitelistAddresses}
                   />
                   <MainButton
                     title="Delete addresses"
                     type={'bordered'}
                     style={{ margin: '1.5rem 1.5rem' }}
-                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    disabled={!areAddressesValid || !whitelistedAddressesString || isSavingData}
                     onClick={onDeleteWhitelistedAddress}
                   />
                 </div>
