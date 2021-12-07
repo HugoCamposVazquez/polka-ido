@@ -7,14 +7,13 @@ export const fixNums = (num: number, fixTo: number) => {
   return removeTrailingZeros(num.toFixed(fixTo));
 };
 
-export const numberWithSpaces = (num: string) => {
-  let intPart = num.split('.')[0];
-  const decimals = num.split('.')[1];
-  if (intPart === '0') return num;
+export const numberWithDots = (num: string) => {
+  num = num.toString();
 
-  const pattern = /\B(?=(\d{3})+(?!\d))/g;
-  intPart = intPart.replace(pattern, ' ');
-  return intPart + (decimals ? `.${decimals}` : '');
+  const pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(num)) num = num.replace(pattern, '$1.$2');
+
+  return num;
 };
 
 export const removeTrailingZeros = (str: string): string => str.replace(/\.0+$/, '');
@@ -45,5 +44,5 @@ export const formatWei = (numberInWei: string | BigNumber): string => {
 
 export const formatTokenAmount = (numberInWei: string | BigNumber, decimals?: string): string => {
   const parsed = formatUnits(numberInWei, decimals);
-  return numberWithSpaces(removeTrailingZeros(parsed));
+  return numberWithDots(removeTrailingZeros(parsed));
 };

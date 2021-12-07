@@ -131,6 +131,7 @@ export const projectDescriptionStyle = styled.cssStyle`
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.4rem;
+  word-wrap: break-word;
 `;
 
 export const raiseAmountStyle = styled.cssStyle`
