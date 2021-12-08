@@ -10,8 +10,8 @@ export const imageParentContainerClassName = styled.cssClassName`
   margin-top: 11.25rem;
 
   @media (max-width: 51.875rem) {
-    margin-left: 0rem;
-    margin-right: 0rem;
+    margin-left: 0;
+    margin-right: 0;
   }
 `;
 export const customTopRightObjectClassName = styled.cssClassName`
@@ -168,7 +168,7 @@ export const projectContainerStyle = styled.cssClassName`
   }
 
   @media (max-width: 51.875rem) {
-    margin: 0rem;
+    margin: 0;
   }
 `;
 
@@ -425,8 +425,7 @@ export const projectDetailsRootContainerClassName = styled.cssClassName`
 `;
 
 export const aboutTheProjectContainerClassName = styled.cssClassName`
-  margin: 7.5rem;
-  margin-bottom: 0rem;
+  margin: 7.5rem 7.5rem 0;
 
   @media (max-width: 51.875rem) {
     margin-left: 1.5rem;

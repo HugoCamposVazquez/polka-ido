@@ -1,3 +1,4 @@
+import { Event } from '@ethersproject/contracts/src.ts/index';
 import { useWeb3React } from '@web3-react/core';
 import { Spin } from 'antd';
 import { utils } from 'ethers';
@@ -17,7 +18,7 @@ import { MainButton } from '../../shared/gui/MainButton';
 import { RadioGroup } from '../../shared/gui/RadioGroup';
 import { TextArea } from '../../shared/gui/TextArea';
 import { TextField } from '../../shared/gui/TextField';
-import { ProjectType } from '../../types/ProjectType';
+import { ProjectType, SalesDto } from '../../types/ProjectType';
 import { sideColor3 } from '../../utils/colorsUtil';
 import { cs } from '../../utils/css';
 import { convertDateToUnixtime } from '../../utils/date';
@@ -29,9 +30,10 @@ interface IProps {
   projectId?: string;
   loadingProjectData: boolean;
   defaultProjectData?: ProjectType;
+  onSuccessfulCreated?: (receipt: string, data: SalesDto) => void;
 }
 
-export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId }: IProps) => {
+export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId, onSuccessfulCreated }: IProps) => {
   const methods = useForm<ProjectType>();
 
   const navigation = useHistory();
@@ -43,7 +45,6 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
   const [isTextareaDisplay, setIsTextareaDisplayed] = useState<boolean>(false);
   const [areAddressesValid, setAreAddressesValid] = useState<boolean>(false);
   const [whitelistedAddresses, setWhitelistedAddresses] = useState<string[]>([]);
-  const [whitelistEnabled, setWhitelistEnabled] = useState<boolean>(false);
   const [hasProjectStarted, setHasProjectStarted] = useState<boolean>(false);
   // TODO: Add fields validation
 
@@ -77,7 +78,8 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         });
       } else {
         // Editing project
-        setWhitelistEnabled(defaultProjectData.access === 'whitelist');
+        if (navigation.location.state && (navigation.location.state as { redirected: boolean }).redirected)
+          setIsTextareaDisplayed(true);
         if (Date.now() >= defaultProjectData.starts.valueOf()) {
           setHasProjectStarted(true);
         }
@@ -86,12 +88,14 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     }
   }, [loadingProjectData, defaultProjectData]);
 
+  const isEditing = !!projectId && defaultProjectData && saleContract;
+
   const onSubmit = async (projectSubmit: ProjectType) => {
     if (!account) return;
     setIsSavingData(true);
 
     //EDIT
-    if (!!projectId && defaultProjectData && saleContract) {
+    if (isEditing) {
       editProject(
         saleContract,
         defaultProjectData,
@@ -154,8 +158,29 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
         if (tx) {
           const contractReceipt = await tx.wait(1);
           if (contractReceipt) {
-            notifySuccess('Project successfuly created.', notificationTimer);
-            if (access === 'whitelist') setWhitelistEnabled(true);
+            notifySuccess('Project successfully created.', notificationTimer);
+            const contractId = (contractReceipt.events as Event[])[2].args?.tokenSaleAddress.toLowerCase() || '';
+            onSuccessfulCreated &&
+              onSuccessfulCreated(contractId, {
+                id: contractId,
+                salePrice: utils.parseUnits(projectSubmit.tokenPrice.toString(), projectSubmit.decimals).toString(),
+                startDate: convertDateToUnixtime(projectSubmit.starts).toString(),
+                endDate: convertDateToUnixtime(projectSubmit.ends).toString(),
+                whitelisted: projectSubmit.access === 'whitelist',
+                featured: projectSubmit.featured,
+                metadataURI: `ipfs://${response.IpfsHash}`,
+                minUserDepositAmount: utils.parseEther(projectSubmit.minUserDepositAmount).toString(),
+                maxUserDepositAmount: utils.parseEther(projectSubmit.maxUserDepositAmount).toString(),
+                cap: utils.parseEther(projectSubmit.cap).toString(),
+                currentDepositAmount: '0',
+                vestingStartDate: convertDateToUnixtime(projectSubmit.vestingStartDate).toString(),
+                vestingEndDate: convertDateToUnixtime(projectSubmit.vestingEndDate).toString(),
+                token: {
+                  id: projectSubmit.tokenId.toString(),
+                  decimals: projectSubmit.decimals,
+                  walletAddress: projectSubmit.walletAddress,
+                },
+              });
           }
         }
       } catch (e) {
@@ -186,24 +211,41 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
     validateWhitelistedAddressesFormat();
   }, [whitelistedAddressesString]);
 
-  const onWhitelistAddresses = (): void => {
+  const onWhitelistAddresses = async (): Promise<void> => {
+    setIsSavingData(true);
     try {
-      saleContract?.addToWhitelist(whitelistedAddresses);
-      notifySuccess('Addresses successfully whitelisted', 2000);
-      methods.reset({ whitelistedAddresses: '' });
+      const tx = await saleContract?.addToWhitelist(whitelistedAddresses);
+      if (tx) {
+        const contractReceipt = await tx.wait(1);
+        if (contractReceipt) {
+          notifySuccess('Addresses successfully whitelisted', 2000);
+          methods.reset({ ...methods.getValues(), whitelistedAddresses: '' });
+        }
+      }
     } catch (error) {
       console.error(error);
       notifyError('Error while whitelisting addresses', 2000);
+    } finally {
+      setIsSavingData(false);
     }
   };
 
-  const onDeleteWhitelistedAddress = (): void => {
+  const onDeleteWhitelistedAddress = async (): Promise<void> => {
+    setIsSavingData(true);
     try {
-      saleContract?.removeFromWhitelist(whitelistedAddresses);
-      notifySuccess('Addresses succesfuly deleted', 2000);
-      methods.reset({ whitelistedAddresses: '' });
+      const tx = await saleContract?.removeFromWhitelist(whitelistedAddresses);
+      if (tx) {
+        const contractReceipt = await tx.wait(1);
+        if (contractReceipt) {
+          notifySuccess('Addresses successfully deleted', 2000);
+          methods.reset({ ...methods.getValues(), whitelistedAddresses: '' });
+        }
+      }
     } catch (error) {
-      notifyError('An error occured while deleting addresses', 2000);
+      console.error(error);
+      notifyError('An error occurred while deleting addresses', 2000);
+    } finally {
+      setIsSavingData(false);
     }
   };
 
@@ -241,13 +283,18 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
             </div>
           </div>
           <div style={styles.whitelistedAddressesContainerStyle}>
-            {whitelistEnabled && (
-              <p
-                onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
-                style={styles.addWhitelisteAddressesTitleStyle}>
-                + Whitelist/Delete whitelisted adresses
-              </p>
-            )}
+            {access === 'whitelist' &&
+              (isEditing ? (
+                <p
+                  onClick={() => setIsTextareaDisplayed(!isTextareaDisplay)}
+                  style={styles.addWhitelisteAddressesTitleStyle}>
+                  + Whitelist/Delete whitelisted addresses
+                </p>
+              ) : (
+                <p style={styles.addWhitelisteAddressesTitleStyle}>
+                  Note: You can manage (add or remove) whitelisted addresses after the project is created.
+                </p>
+              ))}
             {isTextareaDisplay && (
               <div>
                 <TextArea
@@ -255,20 +302,22 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                   mode="light"
                   style={{ height: '15.625rem' }}
                   placeholder="Add addresses you wish to whitelist/delete, please use commas for seperateing addresses"
+                  disabled={isSavingData}
                 />
                 <div style={styles.whitelistingButtonsContainer}>
+                  {isSavingData ? <Spin style={{ marginRight: '1.5rem', paddingTop: '2.5rem' }} /> : null}
                   <MainButton
                     title="Whitelist addresses"
                     type={'fill'}
                     style={{ margin: '1.5rem 0' }}
-                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    disabled={!areAddressesValid || !whitelistedAddressesString || isSavingData}
                     onClick={onWhitelistAddresses}
                   />
                   <MainButton
                     title="Delete addresses"
                     type={'bordered'}
                     style={{ margin: '1.5rem 1.5rem' }}
-                    disabled={!areAddressesValid || !whitelistedAddressesString}
+                    disabled={!areAddressesValid || !whitelistedAddressesString || isSavingData}
                     onClick={onDeleteWhitelistedAddress}
                   />
                 </div>
@@ -442,7 +491,7 @@ export const ProjectForm = ({ loadingProjectData, defaultProjectData, projectId 
                 mode={'light'}
                 placeholder={'Short description text here'}
                 style={{ height: '6.25rem' }}
-                maxLength={200}
+                maxLength={190}
               />
             </div>
           </div>
